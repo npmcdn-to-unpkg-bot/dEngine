@@ -1,0 +1,19 @@
+os: Visual Studio 2015
+platform: 
+  - x64
+
+branches:
+  except: 
+  - gh-pages
+
+configuration:
+  - Release
+
+#install:
+# - ps: /dEngine/PreBuild.ps1
+
+before_build: 
+- ps: >-
+    nuget restore
+
+test: off # for some reaosn tests are trying to run in x86

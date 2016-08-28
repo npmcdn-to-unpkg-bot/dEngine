@@ -1,0 +1,22 @@
+
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/dandevpc/dengine?branch=master&svg=true)](https://ci.appveyor.com/project/dandevpc/dengine/branch/master) <a href="https://dengine-slack.herokuapp.com"><img src="https://worldvectorlogo.com/logos/slack.svg" width="60" /></a>
+
+# dEngine
+An open source engine based on the ROBLOX API for standalone games. It's currently early in development.
+## Requirements
+.NET Framework 4.6  
+Visual Studio 2015
+## Setup
+1. [Download](https://github.com/DanDevPC/dEngine/archive/master.zip) or `clone` the repository.
+2. Build the solution with the `x64` configuration.
+3. Start dEditor.
+4. Create a new project.  
+
+You can load a ROBLOX XML place by typing ```workspace:LoadRbxlx("path/to/place.rbxlx") ``` into the command bar.
+
+## Documentation
+You can view the (incomplete) documentation for the Lua API at http://dandevpc.github.io/dEngine.
+
+## License
+dEngine is a library licensed under the LGPL 3.0.  
+dEditor is an application licensed under the GPL 3.0.
