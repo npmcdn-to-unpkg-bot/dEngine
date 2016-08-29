@@ -45,7 +45,7 @@ namespace dEngine.Services
 		/// <remarks>
 		/// Changing this property will destroy the current queue.
 		/// </remarks>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public int MaxItems
 		{
 			get { return _maxItems; }

@@ -29,7 +29,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The content ID of the skeletal mesh data.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public Content<Geometry> MeshId
 		{
 			get { return _meshContent; }

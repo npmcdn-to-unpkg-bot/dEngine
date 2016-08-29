@@ -153,7 +153,7 @@ namespace dEngine.Services
             public override void Undo()
             {
                 if (_invert)
-                    Service.Select(_item, false);
+                    Service.Select(_item);
                 else
                     Service.Deselect(_item, false);
             }
@@ -163,7 +163,7 @@ namespace dEngine.Services
                 if (_invert)
                     Service.Deselect(_item, false);
                 else
-                    Service.Select(_item, false);
+                    Service.Select(_item);
             }
         }
     }

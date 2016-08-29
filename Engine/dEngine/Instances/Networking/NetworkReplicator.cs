@@ -41,7 +41,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The player that this replicator is connected to.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public Player Player { get; }
 
 		/// <summary>
@@ -61,13 +61,13 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The address of this connection.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public string Address { get; protected set; }
 
 		/// <summary>
 		/// The port this connection is running on.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public int Port { get; protected set; }
 
 		/// <summary>

@@ -154,7 +154,7 @@ namespace dEngine.Graphics
                 {
                     Name = "VsmSMap"
                 };
-                _tempVsm = new Texture(shadowMapSize, shadowMapSize, shadowMapFormat, false, BindFlags.RenderTarget | BindFlags.ShaderResource, 1) {Name="TempSMap"};
+                _tempVsm = new Texture(shadowMapSize, shadowMapSize, shadowMapFormat, false, BindFlags.RenderTarget | BindFlags.ShaderResource) {Name="TempSMap"};
             }
             else
             {

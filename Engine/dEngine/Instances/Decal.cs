@@ -48,7 +48,7 @@ namespace dEngine.Instances
 	    /// <summary>
 	    /// The material to apply to the decal.
 	    /// </summary>
-	    [InstMember(1), EditorVisible("Data")]
+	    [InstMember(1), EditorVisible]
 	    public MaterialBase Material
 	    {
 	        get { return _material; }

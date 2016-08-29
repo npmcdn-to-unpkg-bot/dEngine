@@ -61,7 +61,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The index of the caret.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public int CaretIndex
 		{
 			get { return _caretIndex; }
@@ -91,7 +91,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Determines if the current text should be cleared when the TextBox is focused.
 		/// </summary>
-		[EditorVisible("Data"), InstMember(1)]
+		[EditorVisible, InstMember(1)]
 		public bool ClearTextOnFocus
 		{
 			get { return _clearTextOnFocus; }
@@ -109,7 +109,7 @@ namespace dEngine.Instances
 		/// <remarks>
 		/// This does not affect text manually set by the <see cref="TextElement.Text" /> property.
 		/// </remarks>
-		[EditorVisible("Data"), InstMember(2)]
+		[EditorVisible, InstMember(2)]
 		public bool AllowMultiLine
 		{
 			get { return _allowMultiline; }
@@ -124,7 +124,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Determines if text can be selected by dragging.
 		/// </summary>
-		[EditorVisible("Data"), InstMember(3)]
+		[EditorVisible, InstMember(3)]
 		public bool AllowSelection
 		{
 			get { return _allowSelection; }

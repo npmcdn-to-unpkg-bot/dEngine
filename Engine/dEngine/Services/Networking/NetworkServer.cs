@@ -31,6 +31,9 @@ namespace dEngine.Services.Networking
 		private NetServer _netServer;
 	    private bool _authenticationRequired;
 
+        internal static bool IsRunning { get; set; }
+	    internal static bool IsHost => IsRunning;
+
 	    /// <inheritdoc />
 		public NetworkServer()
 		{
@@ -40,19 +43,19 @@ namespace dEngine.Services.Networking
 		/// <summary>
 		/// The port the server is hosted on.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public int Port { get; private set; }
 
 		/// <summary>
 		/// The address the server is hosted on.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public string Address { get; private set; }
 
 		/// <summary>
 		/// The number of clients connected to the server.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public int ClientCount => _netServer?.ConnectionsCount ?? 0;
 
 		/// <summary>
@@ -89,25 +92,20 @@ namespace dEngine.Services.Networking
 			_netServer = new NetServer(_peerConfig);
 			_peer = _netServer;
 
-			SteamGameServer.LogOnAnonymous();
-
 		    Logger.Trace($"NetworkServer starting at {Address}:{Port}");
 
 			try
 			{
-				_netServer.Start();
-
+                // TODO: init steamworks game server
+                _netServer.Start();
 				IsRunning = true;
-
 				Logger.Trace("NetworkServer started.");
-
-				IsRunning = true;
 			}
 			catch (SocketException e)
 			{
 				Logger.Warn("NetworkServer threw an exception while starting.");
 				Logger.Warn(e.Message);
-			}
+            }
 		}
 
         /// <summary>
@@ -212,5 +210,5 @@ namespace dEngine.Services.Networking
 		internal void ConfigureAsTeamBuildServer(bool b)
 		{
 		}
-    }
+	}
 }

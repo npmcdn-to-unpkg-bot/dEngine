@@ -16,4 +16,4 @@ before_build:
 - ps: >-
     nuget restore
 
-test: off # for some reaosn tests are trying to run in x86
+test: off # for some reason tests are trying to run in x86

@@ -228,12 +228,13 @@ namespace dEngine.Services
 		/// <summary>
 		/// The time of day.
 		/// </summary>
-		[InstMember(3), EditorVisible("Data")]
+		[InstMember(3), EditorVisible]
 		public TimeSpan TimeOfDay
 		{
 			get { return _timeOfDay; }
 			set
 			{
+			    if (value >= _maxTimeSpan) value = TimeSpan.Zero;
 				if (value == _timeOfDay) return;
 				_timeOfDay = value;
 				UpdateSun();
@@ -246,7 +247,7 @@ namespace dEngine.Services
 		/// <summary>
 		/// The latitude of the map for sun direction calculations.
 		/// </summary>
-		[InstMember(4), EditorVisible("Data")]
+		[InstMember(4), EditorVisible]
 		public float Latitude
 		{
 			get { return _latitude; }
@@ -262,7 +263,7 @@ namespace dEngine.Services
 		/// <summary>
 		/// The longitude of the map for sun direction calculations.
 		/// </summary>
-		[InstMember(5), EditorVisible("Data")]
+		[InstMember(5), EditorVisible]
 		public float Longitude
 		{
 			get { return _longitude; }
@@ -351,7 +352,7 @@ namespace dEngine.Services
 		/// <summary>
 		/// The current skybox.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public Sky Skybox
 		{
 			get { return _skybox; }
@@ -422,6 +423,7 @@ namespace dEngine.Services
 		}
 
 	    internal static SharpDX.Vector3 LightDirection;
+	    private static TimeSpan _maxTimeSpan = TimeSpan.FromHours(24);
 
 	    private void UpdateTime()
 		{
@@ -435,7 +437,7 @@ namespace dEngine.Services
 
 		private void UpdateSun()
 		{
-			var sunAngles = CalculateSunPosition(DateTime.Today() + _timeOfDay, _longitude, _latitude);
+			var sunAngles = CalculateSunPosition(DateTime.Today() + _timeOfDay, _latitude, _longitude);
 			var sunCF = CFrame.FromAxisAngle(Vector3.Up, (float)sunAngles.Azimuth) *
 						CFrame.FromAxisAngle(Vector3.Right, (float)sunAngles.Altitude);
 

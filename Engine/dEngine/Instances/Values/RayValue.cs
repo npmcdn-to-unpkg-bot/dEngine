@@ -30,7 +30,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The value that this container holds.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public Ray Value
         {
             get { return _value; }

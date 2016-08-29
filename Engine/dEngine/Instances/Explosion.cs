@@ -58,7 +58,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines the amount of force to apply to objects within the <see cref="BlastRadius" />
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public float BlastPressure
         {
             get { return _blastPressure; }
@@ -73,7 +73,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The radius of the explosion.
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public float BlastRadius
         {
             get { return _blastRadius; }
@@ -89,7 +89,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines whether the explosion will make craters terrain.
         /// </summary>
-        [InstMember(3), EditorVisible("Data")]
+        [InstMember(3), EditorVisible]
         public bool Craters
         {
             get { return _craters; }
@@ -104,7 +104,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines whether the explosion is visible.
         /// </summary>
-        [InstMember(4), EditorVisible("Data")]
+        [InstMember(4), EditorVisible]
         public bool Visible
         {
             get { return _visible; }

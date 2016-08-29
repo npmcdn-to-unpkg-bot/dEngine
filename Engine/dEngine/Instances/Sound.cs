@@ -111,12 +111,10 @@ namespace dEngine.Instances
             SoundService.AddSound(this);
         }
 
-        private bool _is3D;
-
         /// <summary>
         /// The source of the media file.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public Content<AudioData> SoundId
         {
             get { return _soundId; }
@@ -161,7 +159,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The volume multiplier of the sound.
         /// </summary>
-        [InstMember(4), EditorVisible("Data")]
+        [InstMember(4), EditorVisible]
         public float Volume
         {
             get { return _volume; }
@@ -177,7 +175,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The volume multiplier of the sound.
         /// </summary>
-        [InstMember(5), EditorVisible("Data")]
+        [InstMember(5), EditorVisible]
         public float Pitch
         {
             get { return _pitch; }
@@ -193,7 +191,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The distance at which the sound will begin to attenuate.
         /// </summary>
-        [InstMember(6), EditorVisible("Data")]
+        [InstMember(6), EditorVisible]
         public float MinDistance
         {
             get { return _minDistance; }
@@ -208,7 +206,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The maximum distance that the sound can be heard from.
         /// </summary>
-        [InstMember(7), EditorVisible("Data")]
+        [InstMember(7), EditorVisible]
         public float MaxDistance
         {
             get { return _maxDistance; }
@@ -223,7 +221,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The attenuation mode.
         /// </summary>
-        [InstMember(8), EditorVisible("Data")]
+        [InstMember(8), EditorVisible]
         public AttenuationType Attenuation
         {
             get { return _attenuationType; }
@@ -241,7 +239,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Gets whether or not the sound is playing.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public bool IsPlaying
         {
             get { return _isPlaying; }
@@ -256,7 +254,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Gets whether or not the sound is paused.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public bool IsPaused
         {
             get { return _isPaused; }
@@ -271,13 +269,13 @@ namespace dEngine.Instances
         /// <summary>
         /// Gets whether or not the sound has loaded.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public bool IsLoaded { get; private set; }
 
         /// <summary>
         /// The length of the current sound in seconds.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public TimeSpan TrackLength
         {
             get { return _trackLength; }
@@ -296,7 +294,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The playback position of the audio in seconds.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public TimeSpan TrackPosition
         {
             get
@@ -334,7 +332,7 @@ namespace dEngine.Instances
 
         internal void Update()
         {
-            if (!_is3D)
+            if (!Is3D)
                 return;
 
             var part = _parentPart;
@@ -342,6 +340,10 @@ namespace dEngine.Instances
             var pos = cf.p;
 
             var cam = Game.Workspace.CurrentCamera;
+
+            if (cam == null)
+                return;
+
             var camCF = cam.CFrame;
             var camPos = camCF.p;
 
@@ -378,10 +380,13 @@ namespace dEngine.Instances
         {
             base.OnAncestryChanged(child, parent);
             _parentPart = parent as Part;
-            _is3D = _parentPart != null;
+            Is3D = _parentPart != null;
             _attenuation = 1.0f;
-            SoundService.SetSound3D(this, _is3D);
+            SoundService.SetSound3D(this, Is3D);
         }
+
+        internal bool Is3D { get; private set; }
+        internal bool IsActive { get; set; }
 
         /// <inheritdoc />
         public override void Destroy()

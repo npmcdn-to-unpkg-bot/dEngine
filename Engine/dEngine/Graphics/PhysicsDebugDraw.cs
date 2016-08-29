@@ -29,7 +29,7 @@ namespace dEngine.Graphics
     internal class PhysicsDebugDraw : DebugDraw
     {
         private static readonly GfxShader LineShader = Shaders.Get("Line");
-        private static readonly GfxShader.Pass LinePass = LineShader.GetPass("Main");
+        private static readonly GfxShader.Pass LinePass = LineShader.GetPass();
         private static RenderObject _capsuleHeadRO;
         private static RenderObject _capsuleBodyRO;
         private readonly PointArray _points;

@@ -295,11 +295,11 @@ namespace dEngine.Graphics
 
             var camera = world.CurrentCamera;
 
-            if (camera == null)
-                return;
-
             lock (Locker)
             {
+                if (camera?.IsDestroyed == true)
+                    return;
+
                 if (camera.NeedsResize && (camera.SwapChain != null))
                 {
                     camera.Resize(Device);
@@ -385,7 +385,7 @@ namespace dEngine.Graphics
 
         private static void Draw3DGuis(Camera camera)
         {
-            //if (camera != Game.FocusedCamera) return;
+            Context.OutputMerger.SetRenderTargets(camera.DepthStencilBuffer, camera.BackBuffer);
             PixHelper.BeginEvent(Color.Zero, "3D Guis");
             lock (camera.Locker)
             {

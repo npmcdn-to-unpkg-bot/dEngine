@@ -25,7 +25,7 @@ namespace dEditor.Utility
 			if (IsDialogOpen)
 				return;
 
-            Editor.Current?.Logger.Error(e);
+            Editor.Logger.Error(e);
 
 			e = e.InnerException ?? e;
 

@@ -61,7 +61,7 @@ namespace dEngine.Instances
         }
 
         /// <inheritdoc />
-        [EditorVisible("Data")]
+        [EditorVisible]
         public override Vector2 AbsoluteSize
         {
             get { return _camera?.ViewportSize ?? Vector2.Zero; }
@@ -71,7 +71,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if the container and its elements are visible/usable.
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public bool Enabled
         {
             get { return _enabled; }
@@ -223,11 +223,10 @@ namespace dEngine.Instances
                 return true;
             }
 
-            var children = el.Children;
-            for (int i = 0; i < children.Count; i++)
+            foreach (var instance in el.Children)
             {
                 GuiElement item;
-                var child = children[i] as GuiElement;
+                var child = instance as GuiElement;
                 if (HitTestItem(ref child, x, y, includeZIndexed, out item))
                 {
                     result = item;
@@ -268,20 +267,16 @@ namespace dEngine.Instances
                 }
             }
 
-            children.EnterReadLock();
-            for (int i = children.Count; i-- > 0;)
+            foreach (var instance in children)
             {
-                var el = children[i] as GuiElement;
+                var el = instance as GuiElement;
                 GuiElement childRes;
-
                 if (HitTestItem(ref el, x, y, false, out childRes))
                 {
                     result = childRes;
-                    children.ExitReadLock();
                     return true;
                 }
             }
-            children.ExitReadLock();
 
             return false;
         }

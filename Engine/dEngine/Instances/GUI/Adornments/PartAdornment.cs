@@ -24,7 +24,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The object to adorn to.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public Part Adornee
 		{
 			get { return _adornee; }

@@ -61,7 +61,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The range of the light.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public float Range
 		{
 			get { return _range; }
@@ -77,7 +77,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The falloff distance for the light.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public float Falloff
 		{
 			get { return _falloff; }
@@ -93,7 +93,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Total energy that the light emits.
 		/// </summary>
-		[InstMember(3), EditorVisible("Data")]
+		[InstMember(3), EditorVisible]
 		public float Brightness
 		{
 			get { return _intensity; }

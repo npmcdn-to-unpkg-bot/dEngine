@@ -378,7 +378,7 @@ namespace dEngine.Serializer.V1
             {
                 Serialize(instance, stream, clone: true);
                 stream.Position = 0L;
-                return Deserialize(stream, null);
+                return Deserialize(stream);
             }
         }
 

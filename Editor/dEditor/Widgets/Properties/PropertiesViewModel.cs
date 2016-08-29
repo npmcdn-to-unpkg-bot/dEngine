@@ -170,7 +170,7 @@ namespace dEditor.Widgets.Properties
                             editor.PropertiesWidget = this;
                         }
                         else
-                            Debug.WriteLine($"No editor for type {property.PropertyType.Name}");
+                            Editor.Logger.Info($"No editor for type {property.PropertyType.Name}");
                     }
                     else
                     {

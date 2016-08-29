@@ -84,7 +84,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The team that this player is on.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public Team Team
         {
             get { return _team; }
@@ -107,7 +107,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The player's <see cref="Instances.Character" />.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public Character Character
         {
             get { return _character; }
@@ -127,7 +127,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The player's UserID. (SteamID3)
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public uint UserId { get; private set; }
 
         /// <summary>

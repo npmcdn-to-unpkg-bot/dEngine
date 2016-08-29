@@ -68,7 +68,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The value that the container holds.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public Enum Value
 		{
 			get { return _values[_typeFullName][_value]; }

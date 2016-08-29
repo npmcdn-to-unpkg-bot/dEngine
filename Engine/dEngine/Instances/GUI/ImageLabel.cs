@@ -41,7 +41,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The image file.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public Content<Texture> ImageId
 		{
 			get { return _imageContent; }

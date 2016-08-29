@@ -40,7 +40,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Determines how the `offset point` should be attached to <see cref="JointInstance.Part0" />
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public CFrame C0
 		{
 			get { return _c0; }
@@ -55,7 +55,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Determines how <see cref="JointInstance.Part1" /> should be attached to the `offset point`.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public CFrame C1
 		{
 			get { return _c1; }

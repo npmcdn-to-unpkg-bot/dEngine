@@ -65,7 +65,7 @@ namespace dEditor
 
         public WindowManager WindowManager { get; internal set; }
 
-        public ILogger Logger { get; internal set; }
+        public static ILogger Logger { get; internal set; }
 
         public string EditorDirectory { get; }
         public string EditorDocumentsPath { get; }

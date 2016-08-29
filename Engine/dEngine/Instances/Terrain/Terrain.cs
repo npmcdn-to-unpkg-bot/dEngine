@@ -105,7 +105,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Displays the boundaries of the largest possible region.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public Region3int16 MaxExtents =>
 			new Region3int16(new Vector3int16(short.MinValue, short.MinValue, short.MinValue),
 				new Vector3int16(short.MaxValue, short.MaxValue, short.MaxValue));
@@ -271,7 +271,7 @@ namespace dEngine.Instances
 			if (_terrainPass == null)
 			{
 				_terrainShader = Shaders.Get("Terrain");
-				_terrainPass = _terrainShader.GetPass("Main");
+				_terrainPass = _terrainShader.GetPass();
 			}
 
 			lock (Renderer.Context)

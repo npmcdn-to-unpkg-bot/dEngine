@@ -68,7 +68,7 @@ namespace dEngine.Instances
 	    /// <summary>
 	    /// The intensity of the colour grading.
 	    /// </summary>
-	    [InstMember(3), EditorVisible("Data"), Range(0, 1)]
+	    [InstMember(3), EditorVisible, Range(0, 1)]
 	    public float Intensity
 	    {
 	        get { return _intensity; }

@@ -34,7 +34,7 @@ namespace dEngine.Instances.Materials.Nodes
         /// <summary>
         /// The texture to sample.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public Content<Texture> TextureId
         {
             get { return _textureId; }

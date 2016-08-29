@@ -72,7 +72,7 @@ namespace dEngine.Instances.Materials
         /// <summary>
         /// The position of the node.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public Vector2 Position
         {
             get { return _position; }
@@ -87,7 +87,7 @@ namespace dEngine.Instances.Materials
         /// <summary>
         /// The size of the node.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public Vector2 Size
         {
             get { return _size; }
@@ -102,7 +102,7 @@ namespace dEngine.Instances.Materials
         /// <summary>
         /// The comment attached to the node.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public string Comment
         {
             get { return _comment; }

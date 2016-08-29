@@ -68,7 +68,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if this object can be occupied by touching it.
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public bool OccupyOnTouch
         {
             get { return _occupyOnTouch; }

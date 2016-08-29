@@ -43,7 +43,7 @@ namespace dEngine.Services.Networking
         /// <summary>
         /// If true, the peer has been started.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
 	    public bool IsRunning
 	    {
 	        get { return _isRunning; }

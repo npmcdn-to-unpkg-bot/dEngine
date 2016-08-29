@@ -128,7 +128,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if the emitter is enabled.
         /// </summary>
-        [InstMember(5), EditorVisible("Data")]
+        [InstMember(5), EditorVisible]
         public bool Enabled
         {
             get { return _enabled; }
@@ -219,7 +219,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Defines minimum/maximum rotation.
         /// </summary>
-        [InstMember(11), EditorVisible("Data")]
+        [InstMember(11), EditorVisible]
         public NumberRange Rotation
         {
             get { return _rotation; }
@@ -310,7 +310,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how offset a particle can be fired from the local positive Z of the emitter part.
         /// </summary>
-        [InstMember(17), EditorVisible("Data")]
+        [InstMember(17), EditorVisible]
         public float VelocitySpread
         {
             get { return _velocitySpread; }

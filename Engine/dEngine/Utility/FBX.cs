@@ -206,8 +206,7 @@ namespace dEngine.Utility.FileFormats.Model
                 }
 
                 importedMesh = true;
-                geometries[mesh.Name] = new Geometry(meshName, vertices.ToArray(), mesh.GetIndices(), weights?.ToArray(),
-                    PrimitiveTopology.TriangleList)
+                geometries[mesh.Name] = new Geometry(meshName, vertices.ToArray(), mesh.GetIndices(), weights?.ToArray())
                 { MaterialIndex = mesh.MaterialIndex };
             }
 

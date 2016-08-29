@@ -48,11 +48,10 @@ namespace dEngine.Utility
 		public static LuaTable ToLuaTable<T>(this IEnumerable<T> values)
 		{
 			var table = new LuaTable();
-			int i = 1;
+			var i = 0;
 			foreach (var v in values)
 			{
-				table[i] = v;
-				i++;
+                table.SetArrayValue(++i, v);
 			}
 			return table;
 		}

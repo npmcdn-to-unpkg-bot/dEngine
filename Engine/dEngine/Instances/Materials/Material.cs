@@ -39,19 +39,19 @@ namespace dEngine.Instances.Materials
         /// <summary>
         /// The material domain.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public override MaterialDomain Domain { get; set; }
 
         /// <summary>
         /// The shading model.
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public override ShadingModel ShadingModel { get; set; }
 
         /// <summary>
         /// The nodes that this material contains.
         /// </summary>
-        [InstMember(3), EditorVisible("Data")]
+        [InstMember(3), EditorVisible]
         internal MaterialNodeCollection Nodes
         {
             get { return _nodes; }

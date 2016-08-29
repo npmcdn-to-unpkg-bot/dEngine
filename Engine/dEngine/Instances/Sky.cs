@@ -66,7 +66,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The cubemap texture.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		[ContentId(ContentType.Texture)]
 		public Content<Cubemap> CubemapId
 		{

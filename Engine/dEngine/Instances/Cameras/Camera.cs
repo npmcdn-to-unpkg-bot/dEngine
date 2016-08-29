@@ -265,7 +265,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The position/rotation of the camera.
         /// </summary>
-        [InstMember(4), EditorVisible("Data")]
+        [InstMember(4), EditorVisible]
         public CFrame CFrame
         {
             get { return _cframe; }
@@ -356,7 +356,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The focus position of the camera.
         /// </summary>
-        [InstMember(8), EditorVisible("Data")]
+        [InstMember(8), EditorVisible]
         public CFrame Focus
         {
             get { return _focus; }
@@ -397,7 +397,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The size of the client's viewport.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public Vector2 ViewportSize
         {
             get { return _viewportSize; }
@@ -425,7 +425,7 @@ namespace dEngine.Instances
         internal SortedArray<LayerCollector> LayerCollectors { get; set; }
         internal SortedArray<PostEffect> PostEffects { get; }
 
-        internal bool CanRender { get; set; }
+        internal bool CanRender;
 
         internal Behaviour CurrentBehaviour
         {
@@ -642,7 +642,7 @@ namespace dEngine.Instances
             var backBufferTexture = Resource.FromSwapChain<Texture2D>(SwapChain, 0);
             BackBuffer = new Texture(backBufferTexture);
 
-            Buffer0 = CreateCameraBuffer("Buffer0", 1f, RenderConstants.BackBufferFormat);
+            Buffer0 = CreateCameraBuffer("Buffer0");
             Buffer1 = CreateCameraBuffer("Buffer1", 1f, Format.R8G8B8A8_UNorm);
             Buffer2 = CreateCameraBuffer("Buffer2", 1f, Format.R16G16B16A16_Float);
             Buffer3 = CreateCameraBuffer("Buffer3", 1f, Format.R8G8B8A8_UNorm);

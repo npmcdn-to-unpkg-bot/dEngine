@@ -41,7 +41,7 @@ namespace dEngine.Instances
             Value = new BinaryData(bytes);
         }
 
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
 		internal BinaryData Value { get; set; }
 	}
 }

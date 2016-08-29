@@ -215,12 +215,12 @@ namespace dEngine
             */
 		}
 
-		#endregion
+        #endregion
 
-		/// <summary>
-		/// The forward unit vector.
-		/// </summary>
-		public Vector3 lookVector => new Vector3(-_rotation.M13, -_rotation.M23, -_rotation.M33);
+        /// <summary>
+        /// The forward unit vector.
+        /// </summary>
+        public Vector3 lookVector => new Vector3(-_rotation.M13, -_rotation.M23, -_rotation.M33);
 
 		/// <summary>
 		/// The forward unit vector. (the same as lookVector)

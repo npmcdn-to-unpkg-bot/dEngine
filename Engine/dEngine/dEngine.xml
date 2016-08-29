@@ -3259,6 +3259,9 @@
             Returns a list of elements that contain the given point;
             </summary>
         </member>
+        <member name="M:dEngine.Instances.LayerCollector.Destroy">
+            <inheritdoc />
+        </member>
         <member name="T:dEngine.Instances.Part">
             <summary>
             A building block.
@@ -3271,6 +3274,22 @@
             <summary>
             Fired when <see cref="P:dEngine.Instances.Part.CFrame" /> is set or the part is moved in the physics engine.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.Part.SetNetworkOwner(dEngine.Instances.Player)">
+            <summary>
+            Sets the player who should own this part.
+            </summary>
+            <remarks>
+            If `player` is set to null, the server will take ownership.
+            </remarks>
+        </member>
+        <member name="M:dEngine.Instances.Part.GetNetworkOwner">
+            <summary>
+            Returns the player that owns this part.
+            </summary>
+            <remarks>
+            If `nil` is returned it means the server is the owner.
+            </remarks>
         </member>
         <member name="M:dEngine.Instances.Part.#ctor">
             <inheritdoc />
@@ -3959,9 +3978,6 @@
             <remarks>
             A <see cref="T:dEngine.Instances.ScreenGui" /> must be parented to a <see cref="T:dEngine.Instances.Camera" /> to be rendered.
             </remarks>
-        </member>
-        <member name="M:dEngine.Instances.ScreenGui.Destroy">
-            <inheritdoc />
         </member>
         <member name="T:dEngine.Instances.GuiElement">
             <summary>
@@ -4759,7 +4775,7 @@
             <seealso cref="T:dEngine.Instances.Folder" />
         </member>
         <member name="M:dEngine.Instances.Model.#ctor">
-            <inheritdoc />
+            <inheritdoc/>
         </member>
         <member name="P:dEngine.Instances.Model.PrimaryPart">
             <summary>
@@ -5109,11 +5125,6 @@
             If a server and a client open the same file, they should both be able to reference it with the same identifier.
             </remarks>
         </member>
-        <member name="M:dEngine.Instances.Instance.Equals(dEngine.Instances.Instance)">
-            <summary>
-            Compares two instances based on their <see cref="P:dEngine.Instances.Instance.InstanceId" />s.
-            </summary>
-        </member>
         <member name="M:dEngine.Instances.Instance.OnInstanceIdChanged(System.String,System.String)">
             <summary>
             Called when <see cref="P:dEngine.Instances.Instance.InstanceId" />. This can happen twice: first when the object is created, second when the object
@@ -5243,10 +5254,6 @@
             Sets the <see cref="P:dEngine.Instances.Instance.Parent" /> property to null and locks it, disconnects all events and calls <see cref="M:dEngine.Instances.Instance.Destroy" />
             on all children.
             </summary>
-            <remarks>
-            Instances which use unmanaged objects should override this.
-            </remarks>
-            <exception cref="T:System.InvalidOperationException">Thrown if object is protected.</exception>
         </member>
         <member name="M:dEngine.Instances.Instance.FindFirstChild(System.String,System.Boolean)">
             <summary>
@@ -5262,11 +5269,6 @@
             <param name="binder">The <see cref="T:System.Dynamic.GetMemberBinder" /></param>
             <param name="result">The child part, if it exists.</param>
             <returns>True if a child with the given name was found.</returns>
-        </member>
-        <member name="M:dEngine.Instances.Instance.Equals(System.Object)">
-            <summary>
-            Determines if two instances are the same.
-            </summary>
         </member>
         <member name="M:dEngine.Instances.Instance.GetHashCode">
             <summary>

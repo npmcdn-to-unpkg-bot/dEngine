@@ -20,6 +20,7 @@ using dEngine.Instances.Attributes;
 using dEngine.Instances.Interfaces;
 using dEngine.Instances.Materials;
 using dEngine.Serializer.V1;
+using dEngine.Services.Networking;
 using dEngine.Settings.Global;
 using dEngine.Utility;
 using SharpDX;
@@ -67,6 +68,31 @@ namespace dEngine.Instances
         internal volatile RigidBody RigidBody;
         internal Buffer TransparentInstanceBuffer;
         internal VertexBufferBinding TransparentInstanceBufferBinding;
+
+        internal Player NetworkOwner;
+
+        /// <summary>
+        /// Sets the player who should own this part.
+        /// </summary>
+        /// <remarks>
+        /// If `player` is set to null, the server will take ownership.
+        /// </remarks>
+        public void SetNetworkOwner(Player player = null)
+        {
+            if (NetworkServer.IsHost)
+                NetworkOwner = player;
+        }
+
+        /// <summary>
+        /// Returns the player that owns this part.
+        /// </summary>
+        /// <remarks>
+        /// If `nil` is returned it means the server is the owner.
+        /// </remarks>
+        public Player GetNetworkOwner()
+        {
+            return NetworkOwner;
+        }
 
         /// <inheritdoc />
         public Part()
@@ -296,7 +322,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The properties of the physics engine.
         /// </summary>
-        [InstMember(12), EditorVisible("Data")]
+        [InstMember(12), EditorVisible]
         public PhysicalProperties PhysicalProperties
         {
             get { return _physicalProperties; }
@@ -311,7 +337,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The position of <see cref="CFrame" />.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public Vector3 Position
         {
             get { return _cframe.p; }
@@ -326,7 +352,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The rotation of <see cref="CFrame" />.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public Vector3 Rotation
         {
             get { return _cframe.getEulerAngles() * Mathf.Rad2Deg; }
@@ -342,7 +368,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The linear velocity of this object.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public Vector3 Velocity
         {
             get
@@ -361,7 +387,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The angular velocity of this object.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public Vector3 RotVelocity
         {
             get
@@ -516,7 +542,7 @@ namespace dEngine.Instances
                 World?.Physics.RemovePart(this);
             }
         }
-        
+
         /// <summary>
         /// Breaks any joint or constraint this object is a part of.
         /// </summary>

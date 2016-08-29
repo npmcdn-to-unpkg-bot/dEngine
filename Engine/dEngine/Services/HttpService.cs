@@ -24,6 +24,7 @@ using dEngine.Utility;
 using dEngine.Utility.Extensions;
 using Neo.IronLua;
 using Newtonsoft.Json;
+using NLog.Common;
 
 
 namespace dEngine.Services
@@ -231,10 +232,13 @@ namespace dEngine.Services
             }
             catch (Exception e)
             {
-                _logger.Error(e, $"HTTP GET request failed for \"{url}\".");
+                _logger.Error(e, $"HTTP GET request failed for \"{url}\": {e.Message}");
+                InternalLogger.Error(e);
                 return null;
             }
         }
+
+        internal static ILogger InternalLogger = LogService.GetLogger("HttpService");
 
         internal static async Task<string> Post(string url, string data, string contentType, bool compress, Dictionary<string, object> headers)
         {

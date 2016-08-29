@@ -39,7 +39,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The amount of force applied on each axis.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public Vector3 MaxForce
         {
             get { return _maxForce; }
@@ -53,7 +53,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how aggressively the object tries to reach its goal.
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public float P
         {
             get { return _p; }
@@ -68,7 +68,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The desired velocity.
         /// </summary>
-        [InstMember(3), EditorVisible("Data")]
+        [InstMember(3), EditorVisible]
         public Vector3 Velocity
         {
             get { return _velocity; }

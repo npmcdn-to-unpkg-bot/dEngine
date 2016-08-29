@@ -113,7 +113,7 @@ namespace dEngine.Services
 	    /// <summary>
 	    /// The maximum amount of players.
 	    /// </summary>
-	    [InstMember(2), EditorVisible("Data")]
+	    [InstMember(2), EditorVisible]
 	    public int MaxPlayers
 	    {
 	        get { return _maxPlayers; }

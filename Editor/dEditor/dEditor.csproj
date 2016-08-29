@@ -287,6 +287,7 @@
     <Compile Include="Framework\Dialog.cs" />
     <Compile Include="Framework\KeyBindings\KeyBindings.cs" />
     <Compile Include="Framework\Project.cs" />
+    <Compile Include="Framework\Services\FindService.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Shell\CommandBar\CommandBarView.xaml.cs">
       <DependentUpon>CommandBarView.xaml</DependentUpon>

@@ -68,7 +68,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The maximum radius of a gap that will introduce ambient occlusion.
         /// </summary>
-        [InstMember(1), EditorVisible("Data"), Range(0.01f, 1.25f)]
+        [InstMember(1), EditorVisible, Range(0.01f, 1.25f)]
         public float Radius
         {
             get { return _radius; }
@@ -85,7 +85,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The degree of darkness added by ambient occlusion.
         /// </summary>
-        [InstMember(2), EditorVisible("Data"), Range(0f, 16f)]
+        [InstMember(2), EditorVisible, Range(0f, 16f)]
         public float Intensity
         {
             get { return _intensity; }
@@ -102,7 +102,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The distance between an occluded sample and its occluder.
         /// </summary>
-        [InstMember(3), EditorVisible("Data"), Range(0, 10f)]
+        [InstMember(3), EditorVisible, Range(0, 10f)]
         public float Distance
         {
             get { return _distance; }
@@ -119,7 +119,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Offsets the occlusion cone.
         /// </summary>
-        [InstMember(4), EditorVisible("Data"), Range(0, 1f)]
+        [InstMember(4), EditorVisible, Range(0, 1f)]
         public float Bias
         {
             get { return _bias; }
@@ -136,7 +136,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how much ambient occlusion should be added in bright areas.
         /// </summary>
-        [InstMember(5), EditorVisible("Data"), Range(0f, 1f)]
+        [InstMember(5), EditorVisible, Range(0f, 1f)]
         public float LumContribution
         {
             get { return _lumContribution; }
@@ -153,7 +153,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The colour of the occlusion. Usually black.
         /// </summary>
-        [InstMember(6), EditorVisible("Data")]
+        [InstMember(6), EditorVisible]
         public Colour OcclusionColour
         {
             get { return _occlusionColour; }

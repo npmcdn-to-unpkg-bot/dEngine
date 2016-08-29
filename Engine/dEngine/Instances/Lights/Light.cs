@@ -43,7 +43,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Determines if the light is enabled.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public bool IsEnabled
 		{
 			get { return _enabled; }
@@ -57,7 +57,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Determines if the light casts shadows.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public bool CastsShadows
 		{
 			get { return _castsShadows; }
@@ -71,7 +71,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The colour of the light.
 		/// </summary>
-		[InstMember(3), EditorVisible("Data")]
+		[InstMember(3), EditorVisible]
 		public Colour Colour
 		{
 			get { return _colour; }

@@ -112,7 +112,7 @@ namespace dEngine.Services
         /// <summary>
         /// The global environment reverb type.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public ReverbType AmbientReverb
         {
             get { return _ambientReverb; }
@@ -127,7 +127,7 @@ namespace dEngine.Services
         /// <summary>
         /// Modifies the distance for every sound.
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public float DistanceFactor
         {
             get { return _distanceFactor; }
@@ -143,7 +143,7 @@ namespace dEngine.Services
         /// <summary>
         /// Scales the doppler effect.
         /// </summary>
-        [InstMember(3), EditorVisible("Data")]
+        [InstMember(3), EditorVisible]
         public float DopplerScale
         {
             get { return _dopplerScale; }
@@ -159,7 +159,7 @@ namespace dEngine.Services
         /// <summary>
         /// Determines how fast sounds will drop off.
         /// </summary>
-        [InstMember(4), EditorVisible("Data")]
+        [InstMember(4), EditorVisible]
         public float RolloffScale
         {
             get { return _rolloffScale; }
@@ -400,6 +400,7 @@ namespace dEngine.Services
                 }
 
                 var result = _activeSounds.Add(sound);
+                sound.IsActive = true;
 
                 if (result)
                     SoundsActiveStats.Value++;
@@ -413,6 +414,7 @@ namespace dEngine.Services
             lock (SoundLocker)
             {
                 _activeSounds.Remove(sound);
+                sound.IsActive = false;
                 SoundsActiveStats.Value--;
             }
         }
@@ -422,6 +424,8 @@ namespace dEngine.Services
             lock (SoundLocker)
             {
                 _sounds.Add(sound);
+                if (sound.Is3D)
+                    _sounds3D.Add(sound);
                 SoundsTotalStats.Value++;
             }
         }
@@ -431,6 +435,7 @@ namespace dEngine.Services
             lock (SoundLocker)
             {
                 _sounds.Remove(sound);
+                _sounds3D.Remove(sound);
                 SoundsTotalStats.Value--;
             }
         }

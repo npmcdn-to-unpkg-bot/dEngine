@@ -59,7 +59,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if the effect is applied.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public bool Enabled
         {
             get { return _enabled; }

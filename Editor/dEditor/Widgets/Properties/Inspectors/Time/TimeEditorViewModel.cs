@@ -26,7 +26,7 @@ namespace dEditor.Widgets.Properties.Inspectors.Time
 			get { return Value.ToString(); }
 			set
 			{
-				if (value == null)
+				if (string.IsNullOrEmpty(value))
 					return;
 				Value = new TimeSpan(value);
 			}

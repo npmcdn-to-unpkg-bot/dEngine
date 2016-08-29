@@ -22,6 +22,7 @@ using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using dEditor.Framework;
+using dEditor.Framework.Services;
 using dEditor.Instances;
 using dEditor.Shell;
 using dEditor.Shell.Client;
@@ -73,7 +74,9 @@ namespace dEditor
             InputService.MouseInputApi = InputApi.Windows;
             Editor.Current.Settings = new EditorSettings { Name = "Editor", Parent = Engine.Settings };
             Engine.Settings.Load();
+
             KeyBindings.Init();
+            FindService.Init();
 
             //InstTest();
 
@@ -239,8 +242,8 @@ namespace dEditor
                 shell.OpenDocument(new StartPageViewModel());
 
                 // TODO: remove test autoload
-                var p = Project.Load(@"C:\Users\Dan\Documents\dEditor\Projects\MyGame\MyGame.dproj");
-                p.Open();
+                //var p = Project.Load(@"C:\Users\Dan\Documents\dEditor\Projects\MyGame\MyGame.dproj");
+                //p.Open();
                 
                 /*
                 var mat = new Material();

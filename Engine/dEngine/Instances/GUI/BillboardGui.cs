@@ -65,7 +65,7 @@ namespace dEngine.Instances
 		/// <see cref="UDim2.Scale" /> is relative to the size of the adornee.
 		/// <see cref="UDim2.Absolute" /> is in screen pixels.
 		/// </remarks>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public UDim2 Size
 		{
 			get { return _size; }
@@ -80,7 +80,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The offset from the adornee Position.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public Vector3 Offset
 		{
 			get { return _offset; }
@@ -94,7 +94,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The object this billboard is adorned to.
 		/// </summary>
-		[InstMember(3), EditorVisible("Data")]
+		[InstMember(3), EditorVisible]
 		public Part Adornee
 		{
 			get { return _adornee; }
@@ -120,7 +120,7 @@ namespace dEngine.Instances
 		}
 
 		/// <inheritdoc />
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public override Vector2 AbsolutePosition
 		{
 			get { return Vector2.Zero; }
@@ -128,7 +128,7 @@ namespace dEngine.Instances
 		}
 
 		/// <inheritdoc />
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public override Vector2 AbsoluteSize
 		{
 			get { return new Vector2(256, 256); }

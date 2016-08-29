@@ -21,7 +21,7 @@ namespace dEngine.Instances
 	[TypeId(130), ToolboxGroup("3D GUI")]
 	public abstract class GuiBase3D : GuiBase, ICameraUser
 	{
-		private Colour _colour;
+		protected Colour _colour;
 		private float _transparency;
 		private bool _visible;
 	    private Camera _camera;
@@ -37,7 +37,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The colour of the gui.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public Colour Colour
 		{
 			get { return _colour; }
@@ -54,7 +54,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The transparency of the gui.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public float Transparency
 		{
 			get { return _transparency; }
@@ -71,7 +71,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Determines if the gui object is visible.
 		/// </summary>
-		[InstMember(3), EditorVisible("Data")]
+		[InstMember(3), EditorVisible]
 		public bool Visible
 		{
 			get { return _visible; }

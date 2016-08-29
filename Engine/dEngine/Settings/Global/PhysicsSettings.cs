@@ -66,7 +66,7 @@ namespace dEngine.Settings.Global
         /// <summary>
         /// Summary
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public static bool ShowDecompositionGeometry
         {
             get { return _showDecompositionGeometry; }

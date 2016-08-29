@@ -33,7 +33,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The target position of the object.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public Vector3 Position
         {
             get { return _position; }
@@ -48,7 +48,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public Vector3 MaxForce
         {
             get { return _maxForce; }
@@ -63,7 +63,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The amount of dampening to apply.
         /// </summary>
-        [InstMember(3), EditorVisible("Data")]
+        [InstMember(3), EditorVisible]
         public float Damping
         {
             get { return _dampening; }
@@ -78,7 +78,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how aggressively the object tries to reach its goal.
         /// </summary>
-        [InstMember(4), EditorVisible("Data")]
+        [InstMember(4), EditorVisible]
         public float Power
         {
             get { return _pressure; }

@@ -22,10 +22,9 @@ struct AALineVertexOutput
 	float4 colour : COLOUR;
 	float4 start : START;
 	float4 end : END;
-	float lineThickness : LINETHICKNESS;
 };
 
-cbuffer AALineConstants
+cbuffer AALineConstants : register(b2)
 {
 	float LineThickness;
 };
@@ -63,11 +62,10 @@ AALineVertexOutput AALineVS(VertexInstanced input)
 		positionWS.xyz = endPosW.xyz + normalWS * pixel_radius;
 	}
 
-	result.positionH = mul(position4, worldViewProj);
+	result.positionH = mul(position4, Camera.viewProjMatrix);
 	result.position = result.positionH;
 	result.start = mul(startPosW, Camera.viewProjMatrix);
 	result.end = mul(endPosW, Camera.viewProjMatrix);
-	result.lineThickness = LineThickness;
 
 	result.position.y *= Camera.ScreenParams.z;
 	result.start.y *= Camera.ScreenParams.z;
@@ -81,7 +79,7 @@ AALineVertexOutput AALineVS(VertexInstanced input)
 float4 AALinePS(AALineVertexOutput input) : SV_TARGET0
 {
 	float4 colour = 1;
-	/*
+
 	input.position /= input.position.w;
 	input.start /= input.start.w;
 	input.end /= input.end.w;
@@ -100,15 +98,12 @@ float4 AALinePS(AALineVertexOutput input) : SV_TARGET0
 
 	float2 perpLineDir = float2(lineDir.y, -lineDir.x);
 	float dist = abs(dot(perpLineDir, fragToPoint));
-	float highPoint = 1 + (input.lineThickness - 1) * 0.5;
+	float highPoint = 1 + (LineThickness - 1) * 0.5;
 
 	colour.a = saturate(highPoint - (dist * 0.5 * Camera.ScreenParams.x));
 	colour *= input.colour;
 	colour.a = pow(saturate(1 - colour.a), 1 / 2.2);
 	colour.a = 1 - colour.a;
-	*/
-	// todo: fix
-	colour = input.colour;
 
 	return colour;
 }

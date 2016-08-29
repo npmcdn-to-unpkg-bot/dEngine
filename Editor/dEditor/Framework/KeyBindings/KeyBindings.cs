@@ -35,6 +35,7 @@ namespace dEditor.Framework
             ContextActionService.DefineState("scriptEditorFocus");
             ContextActionService.DefineState("dragging");
             ContextActionService.DefineState("selectionEmpty");
+            ContextActionService.DefineState("textSelectionEmpty");
         }
 
         internal static void RegisterAction(string name, Action action)
@@ -88,7 +89,7 @@ namespace dEditor.Framework
                 }
                 catch (ExpressionsException e)
                 {
-                    Editor.Current.Logger.Error(e, "An exception was thrown when parsing a keybinding expression.");
+                    Editor.Logger.Error(e, "An exception was thrown when parsing a keybinding expression.");
                 }
             }
         }

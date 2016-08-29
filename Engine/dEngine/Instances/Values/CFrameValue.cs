@@ -31,7 +31,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The value that the container holds.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public CFrame Value
 		{
 			get { return _value; }

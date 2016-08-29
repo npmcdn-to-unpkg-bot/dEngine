@@ -307,7 +307,6 @@ namespace dEngine
         /// </summary>
         public static void SetHandle(IntPtr handle)
         {
-
             var lastControl = Control;
 
             Handle = handle;

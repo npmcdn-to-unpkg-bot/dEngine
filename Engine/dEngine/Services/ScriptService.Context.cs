@@ -85,8 +85,8 @@ namespace dEngine.Services
                 {
                     var name = methodInfo.Name;
                     var del = CreateDelegate(methodInfo, this);
-                    DefineFunction(name, del, false);
-                    DefineFunction(char.ToLowerInvariant(name[0]) + name.Substring(1), del, false);
+                    DefineFunction(name, del);
+                    DefineFunction(char.ToLowerInvariant(name[0]) + name.Substring(1), del);
                 }
 
                 RegisterPackage("debug", typeof(DebugPackage));
@@ -376,7 +376,7 @@ namespace dEngine.Services
 
         public static LuaTuple<double, int> frexp(double x)
         {
-            if (x == 0) return new LuaTuple<double, int>(0.0, 0);
+            if (x == 0) return new LuaTuple<double, int>();
             double delta = x > 0 ? 1 : -1;
             x = x * delta;
             var exponent = (int)(Math.Floor(Math.Log(x) / Math.Log(2)) + 1);

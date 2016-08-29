@@ -31,7 +31,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The value that this containers holds.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public Vector4 Value
 		{
 			get { return _value; }

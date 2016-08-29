@@ -119,7 +119,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The Position of the element relative to its parent.
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public UDim2 Position
         {
             get { return _position; }
@@ -135,7 +135,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The size of the element.
         /// </summary>
-        [InstMember(3), EditorVisible("Data")]
+        [InstMember(3), EditorVisible]
         public UDim2 Size
         {
             get { return _size; }
@@ -153,7 +153,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The radius of each corner.
         /// </summary>
-        [InstMember(4), EditorVisible("Data")]
+        [InstMember(4), EditorVisible]
         public float CornerRadius
         {
             get { return _cornerRadius; }
@@ -169,7 +169,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if this element can be rendered.
         /// </summary>
-        [InstMember(5), EditorVisible("Data")]
+        [InstMember(5), EditorVisible]
         public bool Visible
         {
             get { return _visible; }
@@ -199,7 +199,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The layer that this element is drawn at.
         /// </summary>
-        [InstMember(7), EditorVisible("Data")]
+        [InstMember(7), EditorVisible]
         public int ZIndex
         {
             get { return _zIndex; }
@@ -223,7 +223,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The clockwise rotation of the gui in degrees.
         /// </summary>
-        [InstMember(8), EditorVisible("Data")]
+        [InstMember(8), EditorVisible]
         public float Rotation
         {
             get { return _rotation; }
@@ -272,7 +272,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The index for the parent frame. Used for <see cref="Stack" /> and <see cref="Flex" />.
         /// </summary>
-        [InstMember(11), EditorVisible("Data")]
+        [InstMember(11), EditorVisible]
         public int FrameIndex
         {
             get { return _frameIndex; }
@@ -291,7 +291,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The horizontal alignment of the element.
         /// </summary>
-        [InstMember(12), EditorVisible("Data")]
+        [InstMember(12), EditorVisible]
         public AlignmentX AlignmentX
         {
             get { return _alignmentX; }
@@ -307,7 +307,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The vertical alignment of the element.
         /// </summary>
-        [InstMember(13), EditorVisible("Data")]
+        [InstMember(13), EditorVisible]
         public AlignmentY AlignmentY
         {
             get { return _alignmentY; }
@@ -396,7 +396,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The container that this element is a descendant of.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public LayerCollector Container
         {
             get { return _container; }
@@ -433,13 +433,13 @@ namespace dEngine.Instances
         /// <summary>
         /// Gets the absolute size of the element, with scale taken into account.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public override Vector2 AbsoluteSize { get; internal set; }
 
         /// <summary>
         /// Gets the absolute size of the element, with scale taken into account.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public override Vector2 AbsolutePosition { get; internal set; }
 
         /// <summary>

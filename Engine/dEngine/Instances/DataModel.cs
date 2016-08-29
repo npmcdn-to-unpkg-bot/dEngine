@@ -262,7 +262,7 @@ namespace dEngine.Instances
         internal override void AfterDeserialization(Inst.Context context)
         {
             base.AfterDeserialization(context);
-            Children.Insert(Workspace, 0);
+            Children.Add(Workspace);
         }
 
         /// <inheritdoc />
@@ -376,7 +376,7 @@ namespace dEngine.Instances
             }
 
             if (filter == SaveFilter.SaveTogether)
-                Inst.Serialize(Game.DataModel, stream, includeWorkspaceInGame: true);
+                Inst.Serialize(Game.DataModel, stream);
         }
 
         #endregion

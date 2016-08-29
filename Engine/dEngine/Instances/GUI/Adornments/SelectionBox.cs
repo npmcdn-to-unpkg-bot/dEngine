@@ -158,9 +158,8 @@ namespace dEngine.Instances
 		private void TransformLines()
 		{
 			var adornee = Adornee;
-			Camera camera;
 
-		    if (adornee == null || (camera = Game.FocusedCamera) == null)
+		    if (adornee == null)
 		    {
 		        _boundingBoxDirty = false;
                 return;
@@ -172,9 +171,8 @@ namespace dEngine.Instances
 				_bufferDirty = true;
 			}
 
-			var adorneeCFrame = _boundingBox.GetCFrame();
-			var adorneeSize = _boundingBox.GetdEngineSize();
-
+		    var adorneeCFrame = adornee.CFrame;
+            var adorneeSize = adornee.Size;
 			var thickness = _lineThickness;
 
 			const int halfthick = 0;
@@ -250,25 +248,18 @@ namespace dEngine.Instances
 
 			lock (Renderer.Locker)
 			{
-				Renderer.AALinePass.Use(ref context);
+				Renderer.MainPass.Use(ref context);
 
 				context.VertexShader.SetConstantBuffer(2, _lineConstantBuffer);
+                context.PixelShader.SetConstantBuffer(2, _lineConstantBuffer);
 
-				if (_bufferDirty)
+                if (_bufferDirty)
 				{
 					DataStream stream;
 					context.MapSubresource(_instanceBuffer, MapMode.WriteDiscard, MapFlags.None, out stream);
-					for (int i = 0; i < 12; i++)
+					for (var i = 0; i < 12; i++)
 					{
-						var line = _handles[i];
-						stream.Write(new InstanceRenderData
-						{
-							Size = line.Size,
-							Colour = Colour,
-							ModelMatrix = line.Matrix,
-							Transparency = Transparency,
-							ShadingModel = ShadingModel.Unlit
-						});
+					    _handles[i].WriteToStream(stream, ref _colour, Transparency);
 					}
 					context.UnmapSubresource(_instanceBuffer, 0);
 					_bufferDirty = false;
@@ -290,13 +281,24 @@ namespace dEngine.Instances
 
 		private class SelectionLine
 		{
-			public Matrix Matrix;
-			public Vector3 Size;
+		    private InstanceRenderData _rd = new InstanceRenderData {ShadingModel = ShadingModel.Unlit};
 
 			public CFrame CFrame
 			{
-				set { Matrix = (Matrix)value; }
-			}
+				set { _rd.ModelMatrix = (Matrix)value; }
+            }
+
+            public Vector3 Size
+            {
+                set { _rd.Size = value; }
+            }
+
+            public void WriteToStream(DataStream stream, ref Colour colour, float transparency)
+            {
+                _rd.Transparency = transparency;
+                _rd.Colour = colour;
+                stream.Write(_rd);
+            }
 		}
 	}
 }

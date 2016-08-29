@@ -28,7 +28,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public Vector3 AngularVelocity
         {
             get { return _angularVelocity; }
@@ -43,7 +43,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public Vector3 MaxTorque
         {
             get { return _maxTorque; }
@@ -58,7 +58,7 @@ namespace dEngine.Instances
         /// <summary>
         /// How aggressively the object tries to reach its goal.
         /// </summary>
-        [InstMember(3), EditorVisible("Data")]
+        [InstMember(3), EditorVisible]
         public float Power
         {
             get { return _power; }

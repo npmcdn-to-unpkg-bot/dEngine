@@ -39,7 +39,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The intensity of the bloom.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public float Intensity
 		{
 			get { return _intensity; }
@@ -54,7 +54,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The size in percent of the screen width.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public float Size
 		{
 			get { return _size; }
@@ -69,7 +69,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The size in percent of the screen width.
 		/// </summary>
-		[InstMember(3), EditorVisible("Data")]
+		[InstMember(3), EditorVisible]
 		public float Threshold
 		{
 			get { return _threshold; }
@@ -99,7 +99,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The intensity of the dirty lens effect.
 		/// </summary>
-		[InstMember(5), EditorVisible("Data")]
+		[InstMember(5), EditorVisible]
 		public float DirtIntensity
 		{
 			get { return _intensity; }
@@ -114,7 +114,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The intensity of the dirty lens effect.
 		/// </summary>
-		[InstMember(6), EditorVisible("Data")]
+		[InstMember(6), EditorVisible]
 		public Colour DirtColour
 		{
 			get { return _dirtColour; }

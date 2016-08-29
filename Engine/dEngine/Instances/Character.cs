@@ -77,7 +77,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if the character is protected by a forcefield.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public bool IsShielded => ShieldCount > 0;
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The amount of health the Humanoid has.
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public float Health
         {
             get { return _health; }
@@ -165,7 +165,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The camera offset from the center of the capsule.
         /// </summary>
-        [InstMember(5), EditorVisible("Data")]
+        [InstMember(5), EditorVisible]
         public Vector3 HeadOffset
         {
             get { return _headOffset; }

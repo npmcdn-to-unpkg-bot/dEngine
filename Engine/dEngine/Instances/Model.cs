@@ -10,11 +10,11 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Linq;
 using C5;
 using dEngine.Instances.Attributes;
 using dEngine.Instances.Interfaces;
 using JetBrains.Annotations;
-using SharpDX;
 
 namespace dEngine.Instances
 {
@@ -25,7 +25,15 @@ namespace dEngine.Instances
     [TypeId(10), ToolboxGroup("Containers"), ExplorerOrder(10)]
     public class Model : PVInstance, ICameraSubject
     {
-        private readonly Vector3[] _boundingBoxPoints =
+        private readonly ArrayList<Part> _descendantParts;
+        private bool _boundsDirty;
+
+        private Part _primaryPart;
+        private CFrame _cframe;
+        private Vector3 _size;
+        private CFrame _modelInPrimary;
+
+        private static readonly Vector3[] _boundingBoxPoints =
         {
             new Vector3(-1, -1, -1),
             new Vector3(1, -1, -1),
@@ -34,29 +42,13 @@ namespace dEngine.Instances
             new Vector3(-1, -1, 1),
             new Vector3(1, -1, 1),
             new Vector3(-1, 1, 1),
-            new Vector3(1, 1, 1)
+            new Vector3(1, 1, 1),
         };
 
-        private readonly ArrayList<Part> _descendantParts;
-        private bool _boundsDirty;
-
-        private OrientedBoundingBox _obb;
-        private Part _primaryPart;
-        private CFrame _cframe;
-        private Vector3 _size;
-        private CFrame _identityOrientation;
-
-        private Part GetMainPart()
-        {
-            lock (Locker)
-            {
-                return _primaryPart ?? (_descendantParts.Count > 0 ? _descendantParts[0] : null);
-            }
-        }
-
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public Model()
         {
+            _modelInPrimary = CFrame.Identity;
             _descendantParts = new ArrayList<Part>();
 
             DescendantAdded.Event += descendant =>
@@ -86,7 +78,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The child part which represents the 'primary' part of this model.
         /// </summary>
-        [InstMember(1), EditorVisible("Data"), CanBeNull]
+        [InstMember(1), EditorVisible, CanBeNull]
         public Part PrimaryPart
         {
             get { return _primaryPart; }
@@ -104,14 +96,15 @@ namespace dEngine.Instances
             }
         }
 
-        [InstMember(2), EditorVisible("Data")]
-        internal CFrame IdentityOrientation
+        [InstMember(2), EditorVisible]
+        public CFrame ModelInPrimary
         {
-            get { return _identityOrientation; }
+            get { return _modelInPrimary; }
             set
             {
-                if (value == _identityOrientation) return;
-                _identityOrientation = value;
+                if (value == _modelInPrimary) return;
+                _modelInPrimary = value;
+                _boundsDirty = true;
                 NotifyChanged();
             }
         }
@@ -193,14 +186,83 @@ namespace dEngine.Instances
             return _cframe;
         }
 
-
-        public void SetIdentityOrientation()
+        private Vector3 ComputeAABB()
         {
-            _identityOrientation = GetModelCFrame();
+            var obbSides = new[]
+            {
+                float.NegativeInfinity, float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity,
+                float.NegativeInfinity, float.PositiveInfinity
+            };
+
+            foreach (var instance in Children)
+            {
+                var pv = instance as PVInstance;
+                if (pv != null)
+                {
+                    var rotation = pv.CFrame;
+                    //var rotation = pv.CFrame;
+                    var halfSize = pv.Size / 2.0f;
+
+                    for (var i = 0; i < _boundingBoxPoints.Length; i++)
+                    {
+                        var point = rotation * new CFrame(halfSize * _boundingBoxPoints[i]);
+                        ComparePointSides(ref point, ref obbSides);
+                    }
+                }
+            }
+
+            var bbPos = new Vector3((obbSides[0] + obbSides[1]) / 2, (obbSides[2] + obbSides[3]) / 2, (obbSides[4] + obbSides[5]) / 2);
+            var bbSize = new SharpDX.Vector3(obbSides[0] - obbSides[1], obbSides[2] - obbSides[3], obbSides[4] - obbSides[5]);
+            return bbPos;
         }
 
         internal void UpdateBounds()
         {
+            var pos = new CFrame(ComputeAABB());
+            var center = pos * _modelInPrimary;
+            var newLocation = pos;
+
+            var obbSides = new[]
+            {
+                float.NegativeInfinity, float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity,
+                float.NegativeInfinity, float.PositiveInfinity
+            };
+
+            foreach (var instance in Children)
+            {
+                var pv = instance as PVInstance;
+                if (pv != null)
+                {
+                    var obbRotation = center.inverse() * pv.CFrame;
+                    //var rotation = pv.CFrame;
+                    var halfSize = pv.Size / 2.0f;
+
+                    for (var i = 0; i < _boundingBoxPoints.Length; i++)
+                    {
+                        var obbPoint = obbRotation * new CFrame(halfSize * _boundingBoxPoints[i]);
+                        
+                        ComparePointSides(ref obbPoint, ref obbSides);
+                    }
+                }
+            }
+
+            var bbPos = new Vector3((obbSides[0] + obbSides[1]) / 2, (obbSides[2] + obbSides[3]) / 2, (obbSides[4] + obbSides[5]) / 2);
+            var bbSize = new Vector3(obbSides[0] - obbSides[1], obbSides[2] - obbSides[3], obbSides[4] - obbSides[5]);
+
+            _size = bbSize;
+            _cframe = new CFrame(bbPos) * center;
+
+            _boundsDirty = false;
+        }
+
+        private static void ComparePointSides(ref CFrame point, ref float[] sides)
+        {
+            if (point.x > sides[0]) sides[0] = point.x;
+            if (point.x < sides[1]) sides[1] = point.x;
+            if (point.y > sides[2]) sides[2] = point.y;
+            if (point.y < sides[3]) sides[3] = point.y;
+            if (point.z > sides[4]) sides[4] = point.z;
+            if (point.z < sides[5]) sides[5] = point.z;
         }
 
         /// <summary>

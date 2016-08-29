@@ -27,7 +27,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The primary part.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public Part Part0
 		{
 			get { return _part0; }
@@ -43,7 +43,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The secondary part.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public Part Part1
 		{
 			get { return _part1; }

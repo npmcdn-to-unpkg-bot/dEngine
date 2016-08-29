@@ -72,7 +72,7 @@ namespace dEngine.Instances
         /// <summary>
 		/// The position of <see cref="CFrame" />.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
         public Vector3 Position
         {
             get { return _cframe.p; }
@@ -87,7 +87,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The rotation of <see cref="CFrame" />.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public Vector3 Rotation
         {
             get { return _cframe.getEulerAngles() * Mathf.Rad2Deg; }
@@ -103,7 +103,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The size of the volume.
         /// </summary>
-        [InstMember(2), EditorVisible("Data")]
+        [InstMember(2), EditorVisible]
         public override Vector3 Size
         {
             get { return _size; }
@@ -121,7 +121,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(3), EditorVisible("Data")]
+        [InstMember(3), EditorVisible]
         public Shape Shape
         {
             get { return _shape; }

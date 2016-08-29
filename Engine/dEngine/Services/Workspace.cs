@@ -119,7 +119,7 @@ namespace dEngine.Services
         /// If CurrentCamera is set to null, or the camera's ancestral <see cref="IWorld" /> is no longer Workspace, a new camera
         /// is created.
         /// </remarks>
-        [InstMember(1), EditorVisible, NotNull]
+        [InstMember(1), EditorVisible]
         public Camera CurrentCamera
         {
             get { return _currentCamera; }

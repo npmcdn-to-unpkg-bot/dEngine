@@ -60,7 +60,7 @@ namespace dEngine.Services.Networking
 		/// <summary>
 		/// The authorization ticket.
 		/// </summary>
-		[EditorVisible("Data")]
+		[EditorVisible]
 		public string Ticket => _authTicket.m_HAuthTicket.ToString();
 
 		internal static object GetExisting()
@@ -88,8 +88,11 @@ namespace dEngine.Services.Networking
 		/// Creates a <see cref="Player" /> object and attempts to connect to the server.
 		/// </summary>
 		public void Connect(string serverIp, int serverPort, int clientTickRate = 30)
-		{
-			if (_netClient == null)
+        {
+            if (NetworkServer.IsRunning)
+                throw new InvalidOperationException("Cannot connect to a server while hosting one.");
+
+            if (_netClient == null)
 			{
 				throw new InvalidOperationException("Start() must be called before Connect()");
 			}

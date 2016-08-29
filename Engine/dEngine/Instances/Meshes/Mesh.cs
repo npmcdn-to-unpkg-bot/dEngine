@@ -50,7 +50,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The offset of the mesh from its origin.
 		/// </summary>
-		[InstMember(1), EditorVisible("Data")]
+		[InstMember(1), EditorVisible]
 		public Vector3 Offset
 		{
 			get { return _offset; }
@@ -66,7 +66,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The scale of the mesh.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public Vector3 Scale
 		{
 			get { return _scale; }
@@ -84,7 +84,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// Determines whether the mesh uses the parent's <see cref="Part.Size" /> property.
 		/// </summary>
-		[InstMember(3), EditorVisible("Data")]
+		[InstMember(3), EditorVisible]
 		public bool UsePartSize
 		{
 			get { return _usePartSize; }
@@ -102,7 +102,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The material to use for this mesh.
 		/// </summary>
-		[InstMember(4), EditorVisible("Data"), ContentId(ContentType.Material)]
+		[InstMember(4), EditorVisible, ContentId(ContentType.Material)]
 		public Material Material
 		{
 			get { return _material; }

@@ -72,7 +72,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The intensity of the sun rays.
         /// </summary>
-        [InstMember(1), EditorVisible("Data"), Range(0, 1)]
+        [InstMember(1), EditorVisible, Range(0, 1)]
         public float Intensity
         {
             get { return _intensity; }
@@ -88,7 +88,7 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how much the sun rays spread out.
         /// </summary>
-        [InstMember(2), EditorVisible("Data"), Range(0, 1)]
+        [InstMember(2), EditorVisible, Range(0, 1)]
         public float Spread
         {
             get { return _spread; }

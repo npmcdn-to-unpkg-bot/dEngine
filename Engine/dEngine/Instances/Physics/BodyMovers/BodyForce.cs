@@ -27,7 +27,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The force to be applied.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
 		public Vector3 Force
 		{
 			get { return _force; }

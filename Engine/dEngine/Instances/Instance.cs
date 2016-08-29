@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using dEngine.Instances.Attributes;
@@ -30,7 +32,7 @@ namespace dEngine.Instances
     /// Base class for all entities.
     /// </summary>
     [TypeId(1)]
-    public abstract class Instance : DynamicObject, IEquatable<Instance>, IDisposable
+    public abstract class Instance : DynamicObject, IDisposable
     {
         private static int _objectsCreated;
         private readonly Dictionary<string, List<LuaThread>> _waitForChildList;
@@ -189,13 +191,13 @@ namespace dEngine.Instances
         /// <summary>
         /// The name of the instance type.
         /// </summary>
-        [EditorVisible("Data")]
+        [EditorVisible]
         public string ClassName => GetType().Name;
 
         /// <summary>
         /// A non-unique identifier for the object.
         /// </summary>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public string Name
         {
             get { return _name; }
@@ -216,7 +218,7 @@ namespace dEngine.Instances
         /// <summary>
         /// The hierarchical parent of the object.
         /// </summary>
-        [InstMember(2), EditorVisible("Data"), CanBeNull]
+        [InstMember(2), EditorVisible, CanBeNull]
         public Instance Parent
         {
             get { return _parent; }
@@ -244,7 +246,8 @@ namespace dEngine.Instances
 
                 if (oldParent != null)
                 {
-                    oldParent.Children.Remove(this);
+                    var didRemove = oldParent.Children.Remove(this);
+                    Debug.Assert(didRemove);
                     oldParent.DescendantRemoving.Fire(this);
                     oldParent.ChildRemoved.Fire(this);
                     oldParent.OnChildRemoved(this);
@@ -325,16 +328,6 @@ namespace dEngine.Instances
         void IDisposable.Dispose()
         {
             Destroy();
-        }
-
-        /// <summary>
-        /// Compares two instances based on their <see cref="InstanceId" />s.
-        /// </summary>
-        public bool Equals(Instance other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return string.Equals(_instanceId, other._instanceId);
         }
 
         /// <summary>
@@ -445,7 +438,6 @@ namespace dEngine.Instances
         internal virtual void BeforeSerialization(Inst.Context sc)
         {
             _serializing = true;
-            Children.Filter = true;
         }
 
         /// <summary>
@@ -454,7 +446,6 @@ namespace dEngine.Instances
         [InstAfterSerialization]
         internal virtual void AfterSerialization(Inst.Context sc)
         {
-            Children.Filter = false;
             _serializing = false;
         }
 
@@ -639,22 +630,12 @@ namespace dEngine.Instances
         /// </summary>
         public void ClearChildren()
         {
-            Children.EnterUpgradeableReadLock();
-            var count = Children.Count;
-            var children = new Instance[count];
-
-            for (int i = 0; i < count; i++)
-            {
-                children[i] = Children[i];
-            }
-            Children.ExitUpgradeableReadLock();
-
-            for (int i = 0; i < count; i++)
+            var children = Children.ToList();
+            for (int i = 0; i < children.Count; i++)
             {
                 var child = children[i];
 
-                if (child.IsDestroyed)
-                    continue;
+                Debug.Assert(!child.IsDestroyed);
 
                 if (child.ParentLocked)
                     child.ClearChildren();
@@ -668,16 +649,7 @@ namespace dEngine.Instances
         /// </summary>
         public LuaTable GetChildren()
         {
-            var table = new LuaTable();
-            var children = Children;
-            children.EnterReadLock();
-            var count = children.Count;
-            for (int i = 0; i < count; i++)
-            {
-                table.SetArrayValue(i + 1, children[i]);
-            }
-            children.ExitReadLock();
-            return table;
+            return Children.ToLuaTable();
         }
 
         /// <summary>
@@ -703,10 +675,6 @@ namespace dEngine.Instances
         /// Sets the <see cref="Parent" /> property to null and locks it, disconnects all events and calls <see cref="Destroy" />
         /// on all children.
         /// </summary>
-        /// <remarks>
-        /// Instances which use unmanaged objects should override this.
-        /// </remarks>
-        /// <exception cref="InvalidOperationException">Thrown if object is protected.</exception>
         public virtual void Destroy()
         {
             if (IsDestroyed) return;
@@ -772,23 +740,12 @@ namespace dEngine.Instances
         }
 
         /// <summary>
-        /// Determines if two instances are the same.
-        /// </summary>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Instance)obj);
-        }
-
-        /// <summary>
         /// Gets the hashcode of the <see cref="InstanceId" />.
         /// </summary>
         public override int GetHashCode()
         {
             // ReSharper disable once NonReadonlyMemberInGetHashCode
-            return _instanceId.GetHashCode();
+            return ObjectId.GetHashCode();
         }
 
         /// <summary>

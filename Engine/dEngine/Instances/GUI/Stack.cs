@@ -53,7 +53,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The direction to stack child elements.
 		/// </summary>
-		[InstMember(2), EditorVisible("Data")]
+		[InstMember(2), EditorVisible]
 		public FlowDirection Orientation
 		{
 			get { return _orientation; }
@@ -70,7 +70,7 @@ namespace dEngine.Instances
 		/// <summary>
 		/// The space inbetween elements.
 		/// </summary>
-		[InstMember(3), EditorVisible("Data")]
+		[InstMember(3), EditorVisible]
 		public Vector2 Offset
 		{
 			get { return _offset; }
@@ -146,14 +146,12 @@ namespace dEngine.Instances
 						else
 							el.AbsolutePosition = startP + _offset + startS;
 						el.Arrange();
-
-						el.Children.EnterReadLock();
+                        
 						foreach (var child in el.Children)
 						{
 							var chel = child as GuiElement;
 							chel?.Measure();
 						}
-						el.Children.ExitReadLock();
 
 						lastEl = el;
 					}

@@ -38,7 +38,7 @@ namespace dEngine.Instances
         /// <remarks>
         /// Setting Disabled to false at runtime will force the script to execute.
         /// </remarks>
-        [InstMember(1), EditorVisible("Data")]
+        [InstMember(1), EditorVisible]
         public bool Disabled
         {
             get { return _disabled; }
