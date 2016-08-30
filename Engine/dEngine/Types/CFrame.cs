@@ -14,8 +14,6 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using CSCore.XAudio2.X3DAudio;
 using dEngine.Instances;
-using Neo.IronLua;
-
 using DxVector3 = SharpDX.Vector3;
 using DxMatrix3 = SharpDX.Matrix3x3;
 using DxMatrix4 = SharpDX.Matrix;
@@ -360,8 +358,8 @@ namespace dEngine
 		/// </summary>
 		public CFrame lerp(CFrame goal, float alpha)
 		{
-			if (alpha == 1.0f) return goal;
-			if (alpha == 0.0f) return this;
+			if (alpha >= 1.0f) return goal;
+			if (alpha <= 0.0f) return this;
 			var rot = _rotation;
 			var goalRot = goal._rotation;
             Vector4 q1;

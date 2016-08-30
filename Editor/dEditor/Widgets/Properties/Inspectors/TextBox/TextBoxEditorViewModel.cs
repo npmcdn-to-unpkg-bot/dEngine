@@ -18,6 +18,7 @@ namespace dEditor.Widgets.Properties.Inspectors.TextBox
 	{
 		public TextBoxEditorViewModel(object obj, Inst.CachedProperty desc) : base(obj, desc)
 		{
+		    EnableHistory = false;
 		}
 	}
 }

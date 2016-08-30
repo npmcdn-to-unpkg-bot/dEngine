@@ -10,7 +10,9 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
 using dEditor.Framework.Converters;
 
 namespace dEditor.Widgets.Properties.Inspectors.Number
@@ -54,6 +56,21 @@ namespace dEditor.Widgets.Properties.Inspectors.Number
             CurrentConverter.DecimalCount = 4;
             dynamic vm = DataContext;
             vm.NotifyOfPropertyChange("DoubleValue");
+            if (sender != null)
+                ((dynamic)DataContext).ApplyValueWithHistory();
+        }
+
+        private void Thumb_OnDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            ((dynamic)DataContext).ApplyValueWithHistory();
+        }
+
+        private void NumberTextBox_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+                return;
+
+            ((dynamic)DataContext).ApplyValueWithHistory();
         }
     }
 }

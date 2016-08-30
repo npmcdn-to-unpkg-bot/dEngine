@@ -45,6 +45,15 @@ namespace dEditor.Widgets.Properties.Inspectors
                 };
             }
         }
+        
+        public void ApplyValueWithHistory()
+        {
+            EnableHistory = true;
+            Value = Value;
+            EnableHistory = false;
+        }
+
+        public bool EnableHistory { get; protected set; } = true;
 
         public dynamic Value
         {
@@ -57,7 +66,7 @@ namespace dEditor.Widgets.Properties.Inspectors
             set
             {
                 var action = new SetPropertyAction(Objects.Values, value);
-                if (PropertiesWidget.UseHistoryService)
+                if (PropertiesWidget.UseHistoryService && EnableHistory)
                 {
                     HistoryService.ExecuteAction(action);
                     HistoryService.Waypoint(FirstObject.Value.DisplayName);

@@ -13,17 +13,19 @@
              xmlns:converters="clr-namespace:dEditor.Framework.Converters"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" x:Name="NumberEditor">
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="NumberEditor" d:DesignSource="{d:DesignInstance number:NumberEditorViewModel}">
     <DockPanel LastChildFill="{Binding IsRanged}">
         <TextBox 
             services:InputBindingManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text" 
+            KeyUp="NumberTextBox_OnKeyUp"
             DockPanel.Dock="{Binding Dock}" 
             Width="{Binding TextBoxWidth}"
+            Text="{Binding DoubleValue, Converter={StaticResource NumToTextConverter}}"
             x:Name="NumberTextBox"
             GotFocus="UIElement_OnGotFocus" 
-            LostFocus="UIElement_OnLostFocus" 
+            LostKeyboardFocus="UIElement_OnLostFocus" 
             TextAlignment="Left" 
             VerticalAlignment="Center"/>
-            <Slider DockPanel.Dock="Right" Value="{Binding DoubleValue}" Maximum="{Binding Upper}" Minimum="{Binding Lower}" VerticalAlignment="Center" Margin="8, 0" Visibility="{Binding Path=IsRanged, Converter={StaticResource BoolToVisConverter}}" />
+        <Slider DockPanel.Dock="Right" Thumb.DragCompleted="Thumb_OnDragCompleted" Value="{Binding DoubleValue}" Maximum="{Binding Upper}" Minimum="{Binding Lower}" VerticalAlignment="Center" Margin="8, 0" Visibility="{Binding Path=IsRanged, Converter={StaticResource BoolToVisConverter}}" />
     </DockPanel>
 </UserControl>

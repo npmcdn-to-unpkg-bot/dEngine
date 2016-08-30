@@ -9,7 +9,9 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace dEditor.Widgets.Properties.Inspectors.TextBox
 {
@@ -22,5 +24,16 @@ namespace dEditor.Widgets.Properties.Inspectors.TextBox
 		{
 			InitializeComponent();
 		}
+
+	    private void UIElement_OnKeyUp(object sender, KeyEventArgs e)
+	    {
+	        if (e.Key != Key.Enter) return;
+            ((dynamic)DataContext).ApplyValueWithHistory();
+        }
+
+	    private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            ((dynamic)DataContext).ApplyValueWithHistory();
+        }
 	}
 }

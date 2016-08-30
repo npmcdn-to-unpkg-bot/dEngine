@@ -7,5 +7,5 @@
              xmlns:services="clr-namespace:dEditor.Framework.Services"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <TextBox Text="{Binding Value, StringFormat='{}{0:G7}', TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" />
+    <TextBox Text="{Binding Value, StringFormat='{}{0:G7}', TargetNullValue='', UpdateSourceTrigger=PropertyChanged}" LostFocus="UIElement_OnLostFocus" KeyUp="UIElement_OnKeyUp" />
 </UserControl>

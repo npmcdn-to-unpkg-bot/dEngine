@@ -21,6 +21,7 @@ namespace dEditor.Widgets.Properties.Inspectors.Number
 {
 	public class NumberEditorViewModel<T> : EditorBase<T>, ILabelled where T : struct
 	{
+
 	    public NumberEditorViewModel(object obj, Inst.CachedProperty propDesc) : base(obj, propDesc)
 		{
 			var rangeAttr = propDesc.Range;
@@ -32,6 +33,9 @@ namespace dEditor.Widgets.Properties.Inspectors.Number
 				TextBoxWidth = 50;
 				IsRanged = true;
 			}
+
+		    EnableHistory = false;
+
 		}
 
 		public Dock Dock => IsRanged ? Dock.Left : Dock.Top;
@@ -45,8 +49,11 @@ namespace dEditor.Widgets.Properties.Inspectors.Number
 		public double DoubleValue
 		{
 			get { return Convert.ToDouble(Value); }
-			set { Value = (T)Convert.ChangeType(value, typeof(T)); }
-		}
+		    set
+		    {
+		        Value = (T)Convert.ChangeType(value, typeof(T));
+		    }
+        }
 
 	    public override void NotifyOfPropertyChange(string propertyName = null)
 		{
