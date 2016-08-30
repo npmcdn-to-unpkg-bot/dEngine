@@ -269,11 +269,22 @@ namespace dEngine.Instances
                     }
                 }
 
-                OnAncestryChanged(this, value);
+                InvokeAncestryChanged(this, value);
+
                 ParentChanged.Fire(value);
 
                 NotifyChanged(nameof(Parent));
             }
+        }
+
+        private void InvokeAncestryChanged(Instance child, Instance parent)
+        {
+            UpdateLogger();
+            World = parent as IWorld ?? parent?.World;
+            OnAncestryChanged(child, parent);
+            AncestryChanged.Fire(child, parent);
+            foreach (var c in Children)
+                c.InvokeAncestryChanged(child, parent);
         }
 
         /// <summary>
@@ -370,11 +381,6 @@ namespace dEngine.Instances
         /// <param name="parent">The new parent of the child.</param>
         protected virtual void OnAncestryChanged(Instance child, Instance parent)
         {
-            UpdateLogger();
-            World = Parent as IWorld ?? parent?.World;
-            AncestryChanged.Fire(child, parent);
-            foreach (var c in Children)
-                c.OnAncestryChanged(child, parent);
         }
 
         //public event PropertyChangedEventHandler PropertyChanged;

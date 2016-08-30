@@ -462,7 +462,7 @@ namespace dEngine.Settings.Global
 	        CascadeSplit1 = 0.3f;
 	        CascadeSplit2 = 0.65f;
 	        CascadeSplit3 = 1.0f;
-	        CascadePartitionMode = CascadePartitionMode.Logarithmic;
+	        CascadePartitionMode = CascadePartitionMode.Manual;
 	        AreCascadesShown = false;
 	        PssmLambda = 0.01f;
 	        ShadowDepthBias = 0.0009f;
