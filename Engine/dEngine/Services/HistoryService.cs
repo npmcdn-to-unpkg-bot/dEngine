@@ -162,7 +162,7 @@ namespace dEngine.Services
 					if (action.Waypoint != targetWaypoint)
 						break;
 
-					_redoStack.Remove(action);
+					_redoStack.RemoveLast();
 					_undoStack.Push(action);
 					action.Execute();
 					actionCount++;

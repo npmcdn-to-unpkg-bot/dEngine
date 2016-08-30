@@ -5401,6 +5401,9 @@
             <param name="modifiers">The modifier key(s).</param>
             <param name="when">An function to validate the context.</param>
         </member>
+        <member name="F:dEngine.Services.ContextActionService.KeyCollection.KeyComparer">
+            <summary />
+        </member>
         <member name="T:dEngine.Services.LoginService">
             <summary>
             A service for logging into a user account.

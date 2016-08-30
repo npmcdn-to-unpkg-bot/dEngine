@@ -153,17 +153,17 @@ namespace dEngine.Services
             public override void Undo()
             {
                 if (_invert)
-                    Service.Select(_item);
+                    Service.Select(_item, pushToHistory: false);
                 else
-                    Service.Deselect(_item, false);
+                    Service.Deselect(_item, pushToHistory: false);
             }
 
             public override void Execute()
             {
                 if (_invert)
-                    Service.Deselect(_item, false);
+                    Service.Deselect(_item, pushToHistory: false);
                 else
-                    Service.Select(_item);
+                    Service.Select(_item, pushToHistory: false);
             }
         }
     }

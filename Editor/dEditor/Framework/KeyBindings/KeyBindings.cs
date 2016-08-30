@@ -77,7 +77,7 @@ namespace dEditor.Framework
             foreach (var item in items)
             {
                 Key key;
-                HashSet<Key> modifiers;
+                ContextActionService.KeyCollection modifiers;
                 Func<bool> when;
 
                 ParseKey(item.Key, out key, out modifiers);
@@ -157,12 +157,12 @@ namespace dEditor.Framework
             }
         }
 
-        private static void ParseKey(string str, out Key key, out HashSet<Key> modifiers)
+        private static void ParseKey(string str, out Key key, out ContextActionService.KeyCollection modifiers)
         {
             var keys = str.Split('+');
             key = KeyFromString(keys[keys.Length - 1]);
-            modifiers = new HashSet<Key>();
-            
+            modifiers = new ContextActionService.KeyCollection();
+
             for (var i = 0; i < keys.Length - 1; i++)
                 modifiers.Add(KeyFromString(keys[i]));
         }
