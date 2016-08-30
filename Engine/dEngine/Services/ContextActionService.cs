@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
+using Neo.IronLua;
 
 namespace dEngine.Services
 {
@@ -26,7 +27,7 @@ namespace dEngine.Services
     {
         private static readonly List<ContextBinding> _bindings = new List<ContextBinding>();
         private static readonly ConcurrentDictionary<string, ContextAction> _contextActions = new ConcurrentDictionary<string, ContextAction>();
-        private Key _modifiers = Key.Unknown;
+        private HashSet<Key> _modifiers = new HashSet<Key>();
 
         private static readonly object ContextLocker = new object();
 
@@ -66,20 +67,21 @@ namespace dEngine.Services
                 {
                     case Key.LeftAlt:
                     case Key.RightAlt:
-                        _modifiers |= Key.LeftAlt;
+                        _modifiers.Add(Key.LeftAlt);
                         break;
                     case Key.LeftShift:
                     case Key.RightShift:
-                        _modifiers |= Key.LeftShift;
+                        _modifiers.Add(Key.LeftShift);
                         break;
                     case Key.LeftControl:
                     case Key.RightControl:
-                        _modifiers |= Key.LeftControl;
+                        _modifiers.Add(Key.LeftControl);
                         break;
                 }
 
                 foreach (var binding in _bindings)
-                    if ((binding.Key == obj.Key) && _modifiers.HasFlag(binding.Modifier))
+                    if ((binding.Key == obj.Key) &&
+                        binding.Modifiers.All(m => _modifiers.Contains(m)))
                         if (binding.When())
                             binding.ContextAction.Action();
             }
@@ -96,21 +98,21 @@ namespace dEngine.Services
                 {
                     case Key.LeftAlt:
                     case Key.RightAlt:
-                        _modifiers &= Key.LeftAlt;
+                        _modifiers.Remove(Key.LeftAlt);
                         break;
                     case Key.LeftShift:
                     case Key.RightShift:
-                        _modifiers &= Key.LeftShift;
+                        _modifiers.Remove(Key.LeftShift);
                         break;
                     case Key.LeftControl:
                     case Key.RightControl:
-                        _modifiers &= Key.LeftControl;
+                        _modifiers.Remove(Key.LeftControl);
                         break;
                 }
 
                 foreach (var binding in _bindings)
                     if ((binding.Key == obj.Key) &&
-                        ((binding.Modifier == Key.Unknown) || _modifiers.HasFlag(binding.Modifier)))
+                        binding.Modifiers.All(m => _modifiers.Contains(m)))
                         if (binding.When())
                             binding.ContextAction?.ActionRelease?.Invoke(false);
             }
@@ -150,18 +152,18 @@ namespace dEngine.Services
         /// </summary>
         /// <param name="action">The name of the action to bind.</param>
         /// <param name="key">The primary key.</param>
-        /// <param name="modifier">The modifier key(s).</param>
+        /// <param name="modifiers">The modifier key(s).</param>
         /// <param name="when">An function to validate the context.</param>
-        public void BindAction(string action, Key key, Key modifier = Key.Unknown, Func<bool> when = null)
+        public void BindAction(string action, Key key, IEnumerable<Key> modifiers, Func<bool> when = null)
         {
-            Bind(action, key, modifier, when);
+            Bind(action, key, new HashSet<Key>(modifiers), when);
         }
 
-        internal static ContextBinding Bind(string action, Key key, Key modifier = Key.Unknown, Func<bool> when = null)
+        internal static ContextBinding Bind(string action, Key key, HashSet<Key> modifiers, Func<bool> when = null)
         {
             lock (ContextLocker)
             {
-                var binding = new ContextBinding(action, key, modifier, when);
+                var binding = new ContextBinding(action, key, modifiers, when);
                 _bindings.Add(binding);
                 return binding;
             }
@@ -180,11 +182,11 @@ namespace dEngine.Services
             private readonly string _action;
             private ContextAction _contextAction;
 
-            public ContextBinding(string action, Key key, Key modifier, Func<bool> when)
+            public ContextBinding(string action, Key key, HashSet<Key> modifiers, Func<bool> when)
             {
                 _action = action;
                 Key = key;
-                Modifier = modifier;
+                Modifiers = modifiers;
                 When = when ?? (() => true);
             }
 
@@ -193,13 +195,13 @@ namespace dEngine.Services
                 get
                 {
                     if ((_contextAction == null) && !_contextActions.TryGetValue(_action, out _contextAction))
-                        throw new Exception($"Cannot get context action \"{_action}\". (For shortcut {Modifier}+{Key})");
+                        throw new Exception($"Cannot get context action \"{_action}\". (For shortcut {string.Concat('+', Modifiers)}+{Key})");
                     return _contextAction;
                 }
             }
 
             public readonly Key Key;
-            public readonly Key Modifier;
+            public readonly HashSet<Key> Modifiers;
             public readonly Func<bool> When;
         }
 

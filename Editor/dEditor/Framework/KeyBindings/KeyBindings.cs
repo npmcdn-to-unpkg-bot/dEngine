@@ -77,15 +77,15 @@ namespace dEditor.Framework
             foreach (var item in items)
             {
                 Key key;
-                Key modifier;
+                HashSet<Key> modifiers;
                 Func<bool> when;
 
-                ParseKey(item.Key, out key, out modifier);
+                ParseKey(item.Key, out key, out modifiers);
                 ParseWhen(item.When, out when);
 
                 try
                 {
-                    _bindings.Add(ContextActionService.Bind(item.Command, key, modifier, when));
+                    _bindings.Add(ContextActionService.Bind(item.Command, key, modifiers, when));
                 }
                 catch (ExpressionsException e)
                 {
@@ -157,14 +157,14 @@ namespace dEditor.Framework
             }
         }
 
-        private static void ParseKey(string str, out Key key, out Key modifier)
+        private static void ParseKey(string str, out Key key, out HashSet<Key> modifiers)
         {
             var keys = str.Split('+');
             key = KeyFromString(keys[keys.Length - 1]);
-            modifier = Key.Unknown;
-
+            modifiers = new HashSet<Key>();
+            
             for (var i = 0; i < keys.Length - 1; i++)
-                modifier |= KeyFromString(keys[i]);
+                modifiers.Add(KeyFromString(keys[i]));
         }
 
         private static void ParseWhen(string when, out Func<bool> predicate)

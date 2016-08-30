@@ -133,7 +133,7 @@ namespace dEngine.Services
 				WaypointSet.Fire(waypoint);
 
 				if (DebugSettings.LogHistoryWaypoints)
-					Logger.Trace($"HistoryService: Set Waypoint{_waypoints.Count - 1}. ({waypoint}). ({actionCount}. actions.)");
+					Logger.Trace($"HistoryService: Waypoint #{_waypoints.Count - 1} \"{waypoint}\" set. ({actionCount} actions)");
 			}
 		}
 
@@ -148,11 +148,11 @@ namespace dEngine.Services
 					throw new InvalidOperationException("Cannot redo: nothing to redo.");
 
 				var targetWaypoint = -1;
-
-				int actionCount = 0;
-				for (int i = _redoStack.Count - 1; i >= 0; i--)
-				{
-					var action = _redoStack[i];
+                
+				var actionCount = 0;
+				while (!_redoStack.IsEmpty)
+                {
+					var action = _redoStack.Last;
 
 					if (action.Waypoint != -1 && targetWaypoint == -1)
 					{
@@ -190,9 +190,9 @@ namespace dEngine.Services
 
 				int actionCount = 0;
 
-				for (int i = _undoStack.Count - 1; i >= 0; i--)
+				while (!_undoStack.IsEmpty)
 				{
-					var action = _undoStack[i];
+				    var action = _undoStack.Last;
 
 					if (action.Waypoint != -1 && targetWaypoint == -1)
 					{

@@ -14,11 +14,16 @@ using System;
 namespace dEngine
 {
 #pragma warning disable 1591
-    [Flags]
     public enum Key : short
     {
         None,
         Unknown,
+        LeftShift,
+        RightShift,
+        LeftAlt,
+        RightAlt,
+        LeftControl,
+        RightControl,
         Backspace,
         Tab,
         CapsLock,
@@ -50,12 +55,6 @@ namespace dEngine
         Apostrophe,
         LeftBracket,
         RightBracket,
-        LeftShift,
-        RightShift,
-        LeftAlt,
-        RightAlt,
-        LeftControl,
-        RightControl,
         Win,
         Menu,
         Hash,

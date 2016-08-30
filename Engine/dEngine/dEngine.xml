@@ -5392,13 +5392,13 @@
             <param name="name">The name of the action.</param>
             <param name="action">The function to be called.</param>
         </member>
-        <member name="M:dEngine.Services.ContextActionService.BindAction(System.String,dEngine.Key,dEngine.Key,System.Func{System.Boolean})">
+        <member name="M:dEngine.Services.ContextActionService.BindAction(System.String,dEngine.Key,System.Collections.Generic.IEnumerable{dEngine.Key},System.Func{System.Boolean})">
             <summary>
             Binds an action to a context.
             </summary>
             <param name="action">The name of the action to bind.</param>
             <param name="key">The primary key.</param>
-            <param name="modifier">The modifier key(s).</param>
+            <param name="modifiers">The modifier key(s).</param>
             <param name="when">An function to validate the context.</param>
         </member>
         <member name="T:dEngine.Services.LoginService">

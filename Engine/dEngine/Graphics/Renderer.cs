@@ -13,6 +13,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using C5;
 using dEngine.Data;
 using dEngine.Graphics.States;
@@ -317,8 +318,15 @@ namespace dEngine.Graphics
                     PixHelper.BeginEvent(Color.Zero, "Geometry");
                     {
                         Context.Rasterizer.SetViewport(camera.Viewport);
-                        Context.ClearDepthStencilView(camera.DepthStencilBuffer,
-                            DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1, 0);
+                        try // TODO: remove try
+                        {
+                            Context.ClearDepthStencilView(camera.DepthStencilBuffer,
+                                DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1, 0);
+                        }
+                        catch (SEHException e)
+                        {
+                            Debug.Assert(false);
+                        }
                         Context.ClearRenderTargetView(camera.Buffer0, Color.Zero);
                         Context.ClearRenderTargetView(camera.Buffer1, Color.Zero);
                         Context.ClearRenderTargetView(camera.Buffer2, Color.Zero);
