@@ -220,7 +220,6 @@ namespace dEngine.Instances
         {
             var pos = new CFrame(ComputeAABB());
             var center = pos * _modelInPrimary;
-            var newLocation = pos;
 
             var obbSides = new[]
             {
@@ -233,14 +232,12 @@ namespace dEngine.Instances
                 var pv = instance as PVInstance;
                 if (pv != null)
                 {
-                    var obbRotation = center.inverse() * pv.CFrame;
-                    //var rotation = pv.CFrame;
+                    var rotation = center.toObjectSpace(pv.CFrame);
                     var halfSize = pv.Size / 2.0f;
 
                     for (var i = 0; i < _boundingBoxPoints.Length; i++)
                     {
-                        var obbPoint = obbRotation * new CFrame(halfSize * _boundingBoxPoints[i]);
-                        
+                        var obbPoint = rotation * new CFrame(halfSize * _boundingBoxPoints[i]);
                         ComparePointSides(ref obbPoint, ref obbSides);
                     }
                 }
@@ -250,7 +247,7 @@ namespace dEngine.Instances
             var bbSize = new Vector3(obbSides[0] - obbSides[1], obbSides[2] - obbSides[3], obbSides[4] - obbSides[5]);
 
             _size = bbSize;
-            _cframe = new CFrame(bbPos) * center;
+            _cframe = center.toWorldSpace(new CFrame(bbPos));
 
             _boundsDirty = false;
         }

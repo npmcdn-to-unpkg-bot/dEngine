@@ -374,50 +374,50 @@ namespace dEngine
 			return new CFrame(p * (1 - alpha) + goal.p * alpha, q3);
 		}
 
-		/// <summary>
-		/// Returns a <see cref="CFrame" /> transformed from Object to World coordinates.
-		/// </summary>
-		public CFrame toWorldSpace(CFrame cf)
+        /// <summary>
+        /// Returns a <see cref="CFrame" /> transformed from Object to World coordinates. Equivalent to `CFrame * cf`.
+        /// </summary>
+        public CFrame toWorldSpace(CFrame cf)
 		{
 			return this * cf;
 		}
 
-		/// <summary>
-		/// Returns a <see cref="CFrame" /> transformed from World to Object coordinates.
-		/// </summary>
-		public CFrame toObjectSpace(CFrame cf)
+        /// <summary>
+        /// Returns a <see cref="CFrame" /> transformed from World to Object coordinates. Equivalent to `CFrame:inverse() * cf`.
+        /// </summary>
+        public CFrame toObjectSpace(CFrame cf)
 		{
 			return inverse() * cf;
 		}
 
-		/// <summary>
-		/// Returns a <see cref="Vector3" /> transformed from Object to World coordinates.
-		/// </summary>
-		public Vector3 pointToWorldSpace(Vector3 v3)
+        /// <summary>
+        /// Returns a <see cref="Vector3" /> transformed from Object to World coordinates. Equivalent to `CFrame * v3`
+        /// </summary>
+        public Vector3 pointToWorldSpace(Vector3 v3)
 		{
 			return this * v3;
 		}
 
-		/// <summary>
-		/// Returns a <see cref="Vector3" />  transformed from World to Object coordinates.
-		/// </summary>
-		public Vector3 pointToObjectSpace(Vector3 v3)
+        /// <summary>
+        /// Returns a <see cref="Vector3" />  transformed from World to Object coordinates. Equivalent to `CFrame:inverse() * v3`
+        /// </summary>
+        public Vector3 pointToObjectSpace(Vector3 v3)
 		{
 			return inverse() * v3;
 		}
 
-		/// <summary>
-		/// Returns a <see cref="Vector3" /> rotated from Object to World coordinates.
-		/// </summary>
-		public Vector3 vectorToWorldSpace(Vector3 v3)
+        /// <summary>
+        /// Returns a <see cref="Vector3" /> rotated from Object to World coordinates. Equivalent to `(CFrame - CFrame.p) * v3`
+        /// </summary>
+        public Vector3 vectorToWorldSpace(Vector3 v3)
 		{
 			return (this - p) * v3;
 		}
 
-		/// <summary>
-		/// Returns a <see cref="Vector3" />  rotated from World to Object coordinates.
-		/// </summary>
-		public Vector3 vectorToObjectSpace(Vector3 v3)
+        /// <summary>
+        /// Returns a <see cref="Vector3" />  rotated from World to Object coordinates.Equivalent to `(CFrame - CFrame.p):inverse() * v3`
+        /// </summary>
+        public Vector3 vectorToObjectSpace(Vector3 v3)
 		{
 			var a = (this - p);
 			var b = a.inverse();

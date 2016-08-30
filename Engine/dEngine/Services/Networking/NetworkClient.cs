@@ -87,9 +87,9 @@ namespace dEngine.Services.Networking
 		/// <summary>
 		/// Creates a <see cref="Player" /> object and attempts to connect to the server.
 		/// </summary>
-		public void Connect(string serverIp, int serverPort, int clientTickRate = 30)
+		public void Connect(string serverIp, int serverPort)
         {
-            if (NetworkServer.IsRunning)
+            if (NetworkServer.IsHost)
                 throw new InvalidOperationException("Cannot connect to a server while hosting one.");
 
             if (_netClient == null)

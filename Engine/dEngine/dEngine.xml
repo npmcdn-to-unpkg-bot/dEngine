@@ -6149,17 +6149,17 @@
         </member>
         <member name="F:dEngine.Services.Networking.NetworkClient.Connected">
             <summary>
-            Fired when <see cref="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32,System.Int32)" />successfully connects to a server. Returns the ClientReplicator.
+            Fired when <see cref="!:Connect(string, int, int)" />successfully connects to a server. Returns the ClientReplicator.
             </summary>
         </member>
         <member name="F:dEngine.Services.Networking.NetworkClient.Disconnected">
             <summary>
-            Fired if <see cref="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32,System.Int32)" /> fails to connect to a server.
+            Fired if <see cref="!:Connect(string, int, int)" /> fails to connect to a server.
             </summary>
         </member>
         <member name="F:dEngine.Services.Networking.NetworkClient.Rejected">
             <summary>
-            Fired if <see cref="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32,System.Int32)" /> connects to a server, but the request to join is rejected.
+            Fired if <see cref="!:Connect(string, int, int)" /> connects to a server, but the request to join is rejected.
             </summary>
             <remarks>
             This can happen if the client and server versions are mismatched, the player is banned from server, or ticket
@@ -6179,7 +6179,7 @@
             Sets up internal network client.
             </summary>
         </member>
-        <member name="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32,System.Int32)">
+        <member name="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32)">
             <summary>
             Creates a <see cref="T:dEngine.Instances.Player" /> object and attempts to connect to the server.
             </summary>
@@ -10504,32 +10504,32 @@
         </member>
         <member name="M:dEngine.CFrame.toWorldSpace(dEngine.CFrame)">
             <summary>
-            Returns a <see cref="T:dEngine.CFrame" /> transformed from Object to World coordinates.
+            Returns a <see cref="T:dEngine.CFrame" /> transformed from Object to World coordinates. Equivalent to `CFrame * cf`.
             </summary>
         </member>
         <member name="M:dEngine.CFrame.toObjectSpace(dEngine.CFrame)">
             <summary>
-            Returns a <see cref="T:dEngine.CFrame" /> transformed from World to Object coordinates.
+            Returns a <see cref="T:dEngine.CFrame" /> transformed from World to Object coordinates. Equivalent to `CFrame:inverse() * cf`.
             </summary>
         </member>
         <member name="M:dEngine.CFrame.pointToWorldSpace(dEngine.Vector3)">
             <summary>
-            Returns a <see cref="T:dEngine.Vector3" /> transformed from Object to World coordinates.
+            Returns a <see cref="T:dEngine.Vector3" /> transformed from Object to World coordinates. Equivalent to `CFrame * v3`
             </summary>
         </member>
         <member name="M:dEngine.CFrame.pointToObjectSpace(dEngine.Vector3)">
             <summary>
-            Returns a <see cref="T:dEngine.Vector3" />  transformed from World to Object coordinates.
+            Returns a <see cref="T:dEngine.Vector3" />  transformed from World to Object coordinates. Equivalent to `CFrame:inverse() * v3`
             </summary>
         </member>
         <member name="M:dEngine.CFrame.vectorToWorldSpace(dEngine.Vector3)">
             <summary>
-            Returns a <see cref="T:dEngine.Vector3" /> rotated from Object to World coordinates.
+            Returns a <see cref="T:dEngine.Vector3" /> rotated from Object to World coordinates. Equivalent to `(CFrame - CFrame.p) * v3`
             </summary>
         </member>
         <member name="M:dEngine.CFrame.vectorToObjectSpace(dEngine.Vector3)">
             <summary>
-            Returns a <see cref="T:dEngine.Vector3" />  rotated from World to Object coordinates.
+            Returns a <see cref="T:dEngine.Vector3" />  rotated from World to Object coordinates.Equivalent to `(CFrame - CFrame.p):inverse() * v3`
             </summary>
         </member>
         <member name="M:dEngine.CFrame.toWorldSpace(dEngine.Ray)">

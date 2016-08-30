@@ -31,13 +31,14 @@ namespace dEngine.Services.Networking
 		private NetServer _netServer;
 	    private bool _authenticationRequired;
 
-        internal static bool IsRunning { get; set; }
-	    internal static bool IsHost => IsRunning;
+	    internal static NetworkServer Service;
+        internal static bool IsHost => Service.IsRunning;
 
 	    /// <inheritdoc />
 		public NetworkServer()
-		{
-			Replicators = new ConcurrentDictionary<Player, ServerReplicator>();
+	    {
+            Service = this;
+            Replicators = new ConcurrentDictionary<Player, ServerReplicator>();
 		}
 
 		/// <summary>
