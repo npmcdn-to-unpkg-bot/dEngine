@@ -23,6 +23,7 @@
 				<ResourceDictionary Source="pack://application:,,,/Styles/Controls/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/ScrollBar.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/ComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/Controls/Expander.xaml" />
 
                 <ResourceDictionary Source="pack://application:,,,/dEditor;component/Styles/Colours.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/dEditor;component/Styles/Accents/Light.xaml" />

@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6256F786-9DC6-4181-B5FE-6A0C67E13DE3}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{DB7FC82B-70BC-426B-90A0-9C1B531B36BD}"
@@ -20,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editor", "Editor", "{98D6E9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dEngine", "Engine\dEngine\dEngine.csproj", "{9CEB02F6-9904-424A-9263-7AC95A867129}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Docs", "Docs\", "{41A98F78-0DFC-428C-ABD4-30B4A2064C95}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Docs", "docs\", "{41A98F78-0DFC-428C-ABD4-30B4A2064C95}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_20091"
@@ -48,8 +49,8 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3C44B226-2EC7-4D9F-9470-7C37D6D7F98C}.Debug|x64.ActiveCfg = Debug|x64
-		{3C44B226-2EC7-4D9F-9470-7C37D6D7F98C}.Debug|x64.Build.0 = Debug|x64
+		{3C44B226-2EC7-4D9F-9470-7C37D6D7F98C}.Debug|x64.ActiveCfg = Release|x64
+		{3C44B226-2EC7-4D9F-9470-7C37D6D7F98C}.Debug|x64.Build.0 = Release|x64
 		{3C44B226-2EC7-4D9F-9470-7C37D6D7F98C}.DumpAPI|x64.ActiveCfg = DumpAPI|x64
 		{3C44B226-2EC7-4D9F-9470-7C37D6D7F98C}.DumpAPI|x64.Build.0 = DumpAPI|x64
 		{3C44B226-2EC7-4D9F-9470-7C37D6D7F98C}.Release|x64.ActiveCfg = Release|x64
@@ -60,14 +61,14 @@ Global
 		{BD36F10C-A6BF-44A0-8956-1FF0348833EE}.DumpAPI|x64.Build.0 = Release|x64
 		{BD36F10C-A6BF-44A0-8956-1FF0348833EE}.Release|x64.ActiveCfg = Release|x64
 		{BD36F10C-A6BF-44A0-8956-1FF0348833EE}.Release|x64.Build.0 = Release|x64
-		{94764BBF-EED2-47C7-8A06-23BF17B7D613}.Debug|x64.ActiveCfg = Debug|x64
-		{94764BBF-EED2-47C7-8A06-23BF17B7D613}.Debug|x64.Build.0 = Debug|x64
+		{94764BBF-EED2-47C7-8A06-23BF17B7D613}.Debug|x64.ActiveCfg = Release|x64
+		{94764BBF-EED2-47C7-8A06-23BF17B7D613}.Debug|x64.Build.0 = Release|x64
 		{94764BBF-EED2-47C7-8A06-23BF17B7D613}.DumpAPI|x64.ActiveCfg = Release|x64
 		{94764BBF-EED2-47C7-8A06-23BF17B7D613}.DumpAPI|x64.Build.0 = Release|x64
 		{94764BBF-EED2-47C7-8A06-23BF17B7D613}.Release|x64.ActiveCfg = Release|x64
 		{94764BBF-EED2-47C7-8A06-23BF17B7D613}.Release|x64.Build.0 = Release|x64
-		{9CEB02F6-9904-424A-9263-7AC95A867129}.Debug|x64.ActiveCfg = Debug|x64
-		{9CEB02F6-9904-424A-9263-7AC95A867129}.Debug|x64.Build.0 = Debug|x64
+		{9CEB02F6-9904-424A-9263-7AC95A867129}.Debug|x64.ActiveCfg = Release|x64
+		{9CEB02F6-9904-424A-9263-7AC95A867129}.Debug|x64.Build.0 = Release|x64
 		{9CEB02F6-9904-424A-9263-7AC95A867129}.DumpAPI|x64.ActiveCfg = Debug|x64
 		{9CEB02F6-9904-424A-9263-7AC95A867129}.DumpAPI|x64.Build.0 = Debug|x64
 		{9CEB02F6-9904-424A-9263-7AC95A867129}.Release|x64.ActiveCfg = Release|x64
