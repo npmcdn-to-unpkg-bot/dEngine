@@ -13,12 +13,11 @@ using System;
 
 namespace dEngine.Instances.Attributes
 {
-	/// <summary>
-	/// Marker for methods which yield.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Method)]
-	public class YieldFunctionAttribute : Attribute
-	{
-		
-	}
+    /// <summary>
+    /// Marker for methods which yield.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    public class YieldFunctionAttribute : Attribute
+    {
+    }
 }

@@ -16,40 +16,41 @@ using dEngine.Services;
 
 namespace dEngine.Instances.Diagnostics
 {
-	[Uncreatable,  TypeId(196)]
-	public abstract class DebugGui : ScreenGui
-	{
-		protected DebugGui(CoreGui coreGui)
-		{
-			Parent = coreGui;
-			RunService.Service.Heartbeat.Event += OnHeartbeat;
-		}
+    [Uncreatable]
+    [TypeId(196)]
+    public abstract class DebugGui : ScreenGui
+    {
+        protected DebugGui(CoreGui coreGui)
+        {
+            Parent = coreGui;
+            RunService.Service.Heartbeat.Event += OnHeartbeat;
+        }
 
-		private void OnHeartbeat(double d)
-		{
-			OnUpdate();
-		}
+        private void OnHeartbeat(double d)
+        {
+            OnUpdate();
+        }
 
-		protected TextLabel MakeDebugTextLabel(Instance parent)
-		{
-			return new TextLabel
-			{
-				FontSize = 14,
-				Size = new UDim2(1, 0, 0, 16),
-				Parent = parent,
-				BackgroundColour = Colour.Transparent,
-				TextColour = Colour.White,
-				TextStrokeColour = Colour.Black,
-				TextAlignmentX = AlignmentX.Left
-			};
-		}
+        protected TextLabel MakeDebugTextLabel(Instance parent)
+        {
+            return new TextLabel
+            {
+                FontSize = 14,
+                Size = new UDim2(1, 0, 0, 16),
+                Parent = parent,
+                BackgroundColour = Colour.Transparent,
+                TextColour = Colour.White,
+                TextStrokeColour = Colour.Black,
+                TextAlignmentX = AlignmentX.Left
+            };
+        }
 
-		protected abstract void OnUpdate();
+        protected abstract void OnUpdate();
 
-		public override void Destroy()
-		{
-			base.Destroy();
-			RunService.Service.Heartbeat.Event -= OnHeartbeat;
-		}
-	}
+        public override void Destroy()
+        {
+            base.Destroy();
+            RunService.Service.Heartbeat.Event -= OnHeartbeat;
+        }
+    }
 }

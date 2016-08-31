@@ -11,7 +11,6 @@
 
 using System;
 using System.Windows.Controls;
-using dEditor.Widgets.MaterialEditor.Nodes;
 using dEngine;
 using dEngine.Instances.Materials;
 
@@ -33,6 +32,11 @@ namespace dEditor.Widgets.MaterialEditor
             _output = output;
         }
 
+        public void Dispose()
+        {
+            _canvas.Children.Remove(_bezier);
+        }
+
         public void Update()
         {
             var inputPosition = _input.Node.Position + new Vector2(_input.Node.Size.x, 0);
@@ -43,11 +47,6 @@ namespace dEditor.Widgets.MaterialEditor
 
             _bezier.X2 = outputPosition.X;
             _bezier.Y2 = outputPosition.Y;
-        }
-
-        public void Dispose()
-        {
-            _canvas.Children.Remove(_bezier);
         }
     }
 }

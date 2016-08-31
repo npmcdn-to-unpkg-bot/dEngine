@@ -11,8 +11,8 @@
 
 namespace dEditor.Widgets.Output
 {
-	public interface IOutput
-	{
-		bool WordWrap { get; set; }
-	}
+    public interface IOutput
+    {
+        bool WordWrap { get; set; }
+    }
 }

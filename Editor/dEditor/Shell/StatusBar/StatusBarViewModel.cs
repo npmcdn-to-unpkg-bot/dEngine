@@ -16,6 +16,5 @@ namespace dEditor.Shell.StatusBar
     [Export(typeof(IStatusBar))]
     public class StatusBarViewModel : IStatusBar
     {
-        
     }
 }

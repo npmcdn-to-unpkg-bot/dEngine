@@ -16,9 +16,7 @@ using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
 using dEngine.Utility;
-using JetBrains.Annotations;
 using Neo.IronLua;
-
 
 namespace dEngine.Services
 {
@@ -29,20 +27,11 @@ namespace dEngine.Services
     /// Objects need to be parented to the Workspace to physically intearact with the world.
     /// It will also execute all scripts that are parented to it when the game is running.
     /// </remarks>
-    [TypeId(3), ExplorerOrder(1), ToolboxGroup("Containers")]
+    [TypeId(3)]
+    [ExplorerOrder(1)]
+    [ToolboxGroup("Containers")]
     public sealed class Workspace : Service, IWorld
     {
-        /// <summary>
-        /// Fired when <see cref="CurrentCamera" /> changes.
-        /// </summary>
-        public readonly Signal<Camera> CameraChanged;
-
-        /// <summary>
-        /// Fired when a place is loaded.
-        /// </summary>
-        /// <seealso cref="LoadPlace"/>
-        public readonly Signal<string> PlaceLoaded;
-
         private Camera _currentCamera;
         private string _placeId = "";
         private float _voidHeight;
@@ -64,16 +53,11 @@ namespace dEngine.Services
             Game.AddWorld(this);
         }
 
-        /// <summary/>
-        protected override bool OnParentFilter(Instance newParent)
-        {
-            return newParent is DataModel;
-        }
-
         /// <summary>
         /// The gravity of the scene.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public Vector3 Gravity
         {
             get { return Physics.Gravity; }
@@ -83,7 +67,8 @@ namespace dEngine.Services
         /// <summary>
         /// The height at which parts are destroyed when they fall beneath.
         /// </summary>
-        [InstMember(3), EditorVisible]
+        [InstMember(3)]
+        [EditorVisible]
         public float VoidHeight
         {
             get { return _voidHeight; }
@@ -97,7 +82,8 @@ namespace dEngine.Services
         /// <summary>
         /// The name of the currently loaded place.
         /// </summary>
-        [EditorVisible, InstMember(4)]
+        [EditorVisible]
+        [InstMember(4)]
         public string PlaceId
         {
             get { return _placeId; }
@@ -110,6 +96,13 @@ namespace dEngine.Services
         }
 
         /// <summary>
+        /// The amount of time in seconds that the simulation
+        /// has been running.
+        /// </summary>
+        [EditorVisible]
+        public double DistributedGameTime => RunService.SimulationStopwatch.Elapsed.TotalSeconds;
+
+        /// <summary>
         /// If true, the place has been loaded.
         /// </summary>
         public bool IsLoaded { get; internal set; }
@@ -119,7 +112,8 @@ namespace dEngine.Services
         /// If CurrentCamera is set to null, or the camera's ancestral <see cref="IWorld" /> is no longer Workspace, a new camera
         /// is created.
         /// </remarks>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public Camera CurrentCamera
         {
             get { return _currentCamera; }
@@ -145,10 +139,8 @@ namespace dEngine.Services
 
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (value != null)
-                {
                     if (!ReferenceEquals(value.World, this) && !_deserializing)
                         return;
-                }
 
                 _currentCamera = value;
                 Game.FocusedCamera = value;
@@ -157,16 +149,21 @@ namespace dEngine.Services
                 if (value != null)
                 {
                     value.RenderHandle = Engine.Handle;
-                    Engine.Control?.BeginInvoke(new Action(() =>
-                    {
-                        value.ViewportSize = new Vector2(Engine.Control.Width, Engine.Control.Height);
-                    }));
+                    Engine.Control?.BeginInvoke(
+                        new Action(
+                            () => { value.ViewportSize = new Vector2(Engine.Control.Width, Engine.Control.Height); }));
                     value.ParentChanged.Event += OnCameraReparented;
                 }
 
                 CameraChanged?.Fire(value);
                 NotifyChanged(nameof(CurrentCamera));
             }
+        }
+
+        /// <summary />
+        protected override bool OnParentFilter(Instance newParent)
+        {
+            return newParent is DataModel;
         }
 
         internal static object GetExisting()
@@ -201,17 +198,8 @@ namespace dEngine.Services
         internal void SetGame(DataModel game)
         {
             if (game != null)
-            {
                 ParentLocked = true;
-            }
         }
-
-        /// <summary>
-        /// The amount of time in seconds that the simulation
-        ///  has been running.
-        /// </summary>
-        [EditorVisible]
-        public double DistributedGameTime => RunService.SimulationStopwatch.Elapsed.TotalSeconds;
 
         internal override void BeforeDeserialization()
         {
@@ -255,14 +243,12 @@ namespace dEngine.Services
                 var stream = ContentProvider.DownloadStream(placeId).Result;
 
                 if (stream == null)
-                {
                     throw new InvalidDataException($"Failed to load place \"{placeId}\": could not fetch.");
-                }
 #if !DEBUG
                 try
                 {
 #endif
-                Inst.Deserialize(stream, this);
+                    Inst.Deserialize(stream, this);
 #if !DEBUG
                 }
                 catch (Exception e)
@@ -273,14 +259,25 @@ namespace dEngine.Services
                     throw;
                 }
 #endif
-                }
+            }
 
             Logger.Trace($"Loaded place. ({placeName})");
             PlaceLoaded.Fire(placeName);
             IsLoaded = true;
         }
 
-#region IWorld
+        /// <summary>
+        /// Fired when <see cref="CurrentCamera" /> changes.
+        /// </summary>
+        public readonly Signal<Camera> CameraChanged;
+
+        /// <summary>
+        /// Fired when a place is loaded.
+        /// </summary>
+        /// <seealso cref="LoadPlace" />
+        public readonly Signal<string> PlaceLoaded;
+
+        #region IWorld
 
         /// <inheritdoc />
         public PhysicsSimulation Physics { get; }
@@ -309,11 +306,12 @@ namespace dEngine.Services
         }
 
         /// <inheritdoc />
-        public LuaTuple<Part, Vector3, Vector3> FindPartOnRay(Ray ray, Func<dynamic, dynamic> filterFunc, float maxLength = 1000)
+        public LuaTuple<Part, Vector3, Vector3> FindPartOnRay(Ray ray, Func<dynamic, dynamic> filterFunc,
+            float maxLength = 1000)
         {
             return Physics.FindPartOnRay(ray, part => filterFunc.Invoke(part), maxLength).ToTuple();
         }
 
-#endregion
+        #endregion
     }
 }

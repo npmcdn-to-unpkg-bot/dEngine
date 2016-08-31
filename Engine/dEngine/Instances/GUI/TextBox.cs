@@ -12,6 +12,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows.Forms;
 using dEngine.Graphics;
 using dEngine.Instances.Attributes;
@@ -22,287 +23,287 @@ using SharpDX.Mathematics.Interop;
 
 namespace dEngine.Instances
 {
-	/// <summary>
-	/// A text box which allows typing.
-	/// </summary>
-	[TypeId(158)]
-	public class TextBox : TextElement
-	{
-		private readonly Stopwatch _caretStopwatch;
-		private bool _allowMultiline;
-		private bool _allowSelection;
-		private Brush _caretBrush;
-		private SharpDX.Vector2 _caretEndPosition;
-		private HitTestMetrics _caretHitResult;
-		private int _caretIndex;
+    /// <summary>
+    /// A text box which allows typing.
+    /// </summary>
+    [TypeId(158)]
+    public class TextBox : TextElement
+    {
+        private readonly Stopwatch _caretStopwatch;
+        private bool _allowMultiline;
+        private bool _allowSelection;
+        private Brush _caretBrush;
+        private SharpDX.Vector2 _caretEndPosition;
+        private HitTestMetrics _caretHitResult;
+        private int _caretIndex;
 
-		private SharpDX.Vector2 _caretPosition;
+        private SharpDX.Vector2 _caretPosition;
 
-		private bool _caretVisible;
-		private bool _clearTextOnFocus;
-		private bool _controlHeld;
-		private bool _shiftHeld;
+        private bool _caretVisible;
+        private bool _clearTextOnFocus;
+        private bool _controlHeld;
+        private bool _shiftHeld;
 
-		/// <inheritdoc />
-		public TextBox()
-		{
-			_caretStopwatch = Stopwatch.StartNew();
+        /// <inheritdoc />
+        public TextBox()
+        {
+            _caretStopwatch = Stopwatch.StartNew();
 
-		    Focusable = true;
+            Focusable = true;
 
             GotFocus.Event += OnGotFocus;
 
-			InputService.Service.InputBegan.Event += OnInputBegan;
-			InputService.Service.InputEnded.Event += OnInputEnded;
+            InputService.Service.InputBegan.Event += OnInputBegan;
+            InputService.Service.InputEnded.Event += OnInputEnded;
 
-			Renderer.InvokeResourceDependent(() => { _caretBrush = Renderer.Brushes.Get(Colour.Black); });
-		}
+            Renderer.InvokeResourceDependent(() => { _caretBrush = Renderer.Brushes.Get(Colour.Black); });
+        }
 
-		/// <summary>
-		/// The index of the caret.
-		/// </summary>
-		[EditorVisible]
-		public int CaretIndex
-		{
-			get { return _caretIndex; }
-			set
-			{
-				value = Math.Max(0, Math.Min(_text.Length, value));
+        /// <summary>
+        /// The index of the caret.
+        /// </summary>
+        [EditorVisible]
+        public int CaretIndex
+        {
+            get { return _caretIndex; }
+            set
+            {
+                value = Math.Max(0, Math.Min(_text.Length, value));
 
-				if (value == _caretIndex) return;
+                if (value == _caretIndex) return;
 
-				_caretStopwatch.Restart();
-				_caretIndex = value;
+                _caretStopwatch.Restart();
+                _caretIndex = value;
 
-				lock (this)
-				{
-					float x, y;
-					_caretHitResult = _textLayout.HitTestTextPosition(_caretIndex, false, out x, out y);
+                lock (this)
+                {
+                    float x, y;
+                    _caretHitResult = _textLayout.HitTestTextPosition(_caretIndex, false, out x, out y);
 
-					var startPos = new SharpDX.Vector2(x - .5f, y - .5f);
-					var endPos = startPos + new SharpDX.Vector2(0, _caretHitResult.Height);
+                    var startPos = new SharpDX.Vector2(x - .5f, y - .5f);
+                    var endPos = startPos + new SharpDX.Vector2(0, _caretHitResult.Height);
 
-					_caretPosition = startPos;
-					_caretEndPosition = endPos;
-				}
-			}
-		}
+                    _caretPosition = startPos;
+                    _caretEndPosition = endPos;
+                }
+            }
+        }
 
-		/// <summary>
-		/// Determines if the current text should be cleared when the TextBox is focused.
-		/// </summary>
-		[EditorVisible, InstMember(1)]
-		public bool ClearTextOnFocus
-		{
-			get { return _clearTextOnFocus; }
-			set
-			{
-				if (value == _clearTextOnFocus) return;
-				_clearTextOnFocus = value;
-				NotifyChanged();
-			}
-		}
+        /// <summary>
+        /// Determines if the current text should be cleared when the TextBox is focused.
+        /// </summary>
+        [EditorVisible]
+        [InstMember(1)]
+        public bool ClearTextOnFocus
+        {
+            get { return _clearTextOnFocus; }
+            set
+            {
+                if (value == _clearTextOnFocus) return;
+                _clearTextOnFocus = value;
+                NotifyChanged();
+            }
+        }
 
-		/// <summary>
-		/// Determines if new lines can be inputed.
-		/// </summary>
-		/// <remarks>
-		/// This does not affect text manually set by the <see cref="TextElement.Text" /> property.
-		/// </remarks>
-		[EditorVisible, InstMember(2)]
-		public bool AllowMultiLine
-		{
-			get { return _allowMultiline; }
-			set
-			{
-				if (value == _allowMultiline) return;
-				_allowMultiline = value;
-				NotifyChanged();
-			}
-		}
+        /// <summary>
+        /// Determines if new lines can be inputed.
+        /// </summary>
+        /// <remarks>
+        /// This does not affect text manually set by the <see cref="TextElement.Text" /> property.
+        /// </remarks>
+        [EditorVisible]
+        [InstMember(2)]
+        public bool AllowMultiLine
+        {
+            get { return _allowMultiline; }
+            set
+            {
+                if (value == _allowMultiline) return;
+                _allowMultiline = value;
+                NotifyChanged();
+            }
+        }
 
-		/// <summary>
-		/// Determines if text can be selected by dragging.
-		/// </summary>
-		[EditorVisible, InstMember(3)]
-		public bool AllowSelection
-		{
-			get { return _allowSelection; }
-			set
-			{
-				if (value == _allowSelection) return;
-				_allowSelection = value;
+        /// <summary>
+        /// Determines if text can be selected by dragging.
+        /// </summary>
+        [EditorVisible]
+        [InstMember(3)]
+        public bool AllowSelection
+        {
+            get { return _allowSelection; }
+            set
+            {
+                if (value == _allowSelection) return;
+                _allowSelection = value;
 
-				if (!value)
-				{
-					Text = _text.Replace('\n', new char());
-				}
+                if (!value)
+                    Text = _text.Replace('\n', new char());
 
-				NotifyChanged();
-			}
-		}
+                NotifyChanged();
+            }
+        }
 
-		/// <inheritdoc />
-		public override void Destroy()
-		{
-			base.Destroy();
-			InputService.Service.InputBegan.Event -= OnInputBegan;
-			InputService.Service.InputEnded.Event -= OnInputEnded;
-		}
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            base.Destroy();
+            InputService.Service.InputBegan.Event -= OnInputBegan;
+            InputService.Service.InputEnded.Event -= OnInputEnded;
+        }
 
-		[System.Security.SuppressUnmanagedCodeSecurity]
-		[DllImport("user32.dll", SetLastError = true)]
-		internal static extern uint MapVirtualKey(uint uCode, uint uMapType);
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern uint MapVirtualKey(uint uCode, uint uMapType);
 
-		private void OnInputBegan(InputObject input)
-		{
-			if (IsFocused())
-			{
-				var key = input.Key;
+        private void OnInputBegan(InputObject input)
+        {
+            if (IsFocused())
+            {
+                var key = input.Key;
 
-				var newText = "";
+                var newText = "";
 
-				RawBool isTrailingHit;
-				RawBool isInside;
-				HitTestMetrics hit;
+                RawBool isTrailingHit;
+                RawBool isInside;
+                HitTestMetrics hit;
 
-				switch (key)
-				{
-					case Key.LeftShift:
-					case Key.RightShift:
-						_shiftHeld = true;
-						return;
-					case Key.LeftControl:
-					case Key.RightControl:
-						_controlHeld = true;
-						return;
-					case Key.Left:
-						MoveCaret(-1);
-						return;
-					case Key.Right:
-						MoveCaret(1);
-						return;
-					case Key.Up:
-						hit = _textLayout.HitTestPoint(_caretHitResult.Left, _caretHitResult.Top - 1, out isTrailingHit,
-							out isInside);
-						CaretIndex = hit.TextPosition;
-						return;
-					case Key.Down:
-						hit = _textLayout.HitTestPoint(_caretHitResult.Left,
-							_caretHitResult.Top + _caretHitResult.Height + 1,
-							out isTrailingHit, out isInside);
-						CaretIndex = hit.TextPosition + 1;
-						return;
-					case Key.Backspace:
-						if (_text.Length >= 1 && _caretIndex >= 1)
-						{
-							Text = _text.Remove(_caretIndex - 1, 1);
-							CaretIndex--;
-						}
-						return;
-					case Key.Enter:
-						if (AllowMultiLine)
-							newText += '\n';
-						else
-							Unfocus();
-						break;
-					case Key.Space:
-						newText += ' ';
-						break;
-					default:
-						if (key == Key.V && _controlHeld)
-						{
-							var pastedText = Clipboard.GetText();
-							newText += pastedText;
-							break;
-						}
+                switch (key)
+                {
+                    case Key.LeftShift:
+                    case Key.RightShift:
+                        _shiftHeld = true;
+                        return;
+                    case Key.LeftControl:
+                    case Key.RightControl:
+                        _controlHeld = true;
+                        return;
+                    case Key.Left:
+                        MoveCaret(-1);
+                        return;
+                    case Key.Right:
+                        MoveCaret(1);
+                        return;
+                    case Key.Up:
+                        hit = _textLayout.HitTestPoint(_caretHitResult.Left, _caretHitResult.Top - 1, out isTrailingHit,
+                            out isInside);
+                        CaretIndex = hit.TextPosition;
+                        return;
+                    case Key.Down:
+                        hit = _textLayout.HitTestPoint(_caretHitResult.Left,
+                            _caretHitResult.Top + _caretHitResult.Height + 1,
+                            out isTrailingHit, out isInside);
+                        CaretIndex = hit.TextPosition + 1;
+                        return;
+                    case Key.Backspace:
+                        if ((_text.Length >= 1) && (_caretIndex >= 1))
+                        {
+                            Text = _text.Remove(_caretIndex - 1, 1);
+                            CaretIndex--;
+                        }
+                        return;
+                    case Key.Enter:
+                        if (AllowMultiLine)
+                            newText += '\n';
+                        else
+                            Unfocus();
+                        break;
+                    case Key.Space:
+                        newText += ' ';
+                        break;
+                    default:
+                        if ((key == Key.V) && _controlHeld)
+                        {
+                            var pastedText = Clipboard.GetText();
+                            newText += pastedText;
+                            break;
+                        }
 
-						char keyChar;
-						var capsLockHeld = Control.IsKeyLocked(Keys.CapsLock);
-						uint nonVirtualKey = MapVirtualKey((uint)key, 2);
+                        char keyChar;
+                        var capsLockHeld = Control.IsKeyLocked(Keys.CapsLock);
+                        var nonVirtualKey = MapVirtualKey((uint)key, 2);
 
-						if ((_shiftHeld && !capsLockHeld) || (!_shiftHeld && capsLockHeld))
-							keyChar = Convert.ToChar(nonVirtualKey);
-						else if ((_shiftHeld && capsLockHeld) || (!_shiftHeld && !capsLockHeld))
-							keyChar = char.ToLower(Convert.ToChar(nonVirtualKey));
-						else
-							return;
+                        if ((_shiftHeld && !capsLockHeld) || (!_shiftHeld && capsLockHeld))
+                            keyChar = Convert.ToChar(nonVirtualKey);
+                        else if ((_shiftHeld && capsLockHeld) || (!_shiftHeld && !capsLockHeld))
+                            keyChar = char.ToLower(Convert.ToChar(nonVirtualKey));
+                        else
+                            return;
 
-						newText += keyChar;
-						break;
-				}
+                        newText += keyChar;
+                        break;
+                }
 
-				Text = _text.Insert(CaretIndex, newText);
-				CaretIndex += newText.Length;
-			}
-		}
+                Text = _text.Insert(CaretIndex, newText);
+                CaretIndex += newText.Length;
+            }
+        }
 
-		/// <summary>
-		/// Moves caret N spaces to right.
-		/// </summary>
-		private void MoveCaret(int n)
-		{
-			CaretIndex += 1 * n;
-			_caretVisible = true;
-		}
+        /// <summary>
+        /// Moves caret N spaces to right.
+        /// </summary>
+        private void MoveCaret(int n)
+        {
+            CaretIndex += 1*n;
+            _caretVisible = true;
+        }
 
-		private void OnInputEnded(InputObject input)
-		{
-			switch (input.Key)
-			{
-				case Key.LeftShift:
-				case Key.RightShift:
-					_shiftHeld = false;
-					break;
-				case Key.LeftControl:
-				case Key.RightControl:
-					_controlHeld = false;
-					break;
-			}
-		}
+        private void OnInputEnded(InputObject input)
+        {
+            switch (input.Key)
+            {
+                case Key.LeftShift:
+                case Key.RightShift:
+                    _shiftHeld = false;
+                    break;
+                case Key.LeftControl:
+                case Key.RightControl:
+                    _controlHeld = false;
+                    break;
+            }
+        }
 
-		private void OnGotFocus()
-		{
-			if (_clearTextOnFocus)
-				Text = "";
-			else
-			{
-				lock (this)
-				{
-					if (_textLayout == null)
-						return;
-					RawBool isTrailingHit;
-					RawBool isInside;
-					var hit = _textLayout.HitTestPoint(InputService.CursorX, InputService.CursorY, out isTrailingHit, out isInside);
-					CaretIndex = hit.TextPosition;
-					if (isTrailingHit)
-						CaretIndex++;
-				}
-			}
-		}
+        private void OnGotFocus()
+        {
+            if (_clearTextOnFocus)
+                Text = "";
+            else
+                lock (this)
+                {
+                    if (_textLayout == null)
+                        return;
+                    RawBool isTrailingHit;
+                    RawBool isInside;
+                    var hit = _textLayout.HitTestPoint(InputService.CursorX, InputService.CursorY, out isTrailingHit,
+                        out isInside);
+                    CaretIndex = hit.TextPosition;
+                    if (isTrailingHit)
+                        CaretIndex++;
+                }
+        }
 
-		internal override void Draw()
-		{
-			var collector = Container;
-			var target = Renderer.Context2D;
+        internal override void Draw()
+        {
+            var collector = Container;
+            var target = Renderer.Context2D;
 
-			base.Draw();
+            base.Draw();
 
-			if (Focused) // draw caret
-			{
-				if (_caretStopwatch.Elapsed.TotalMilliseconds >= SystemInformation.CaretBlinkTime)
-				{
-					_caretVisible = !_caretVisible;
-					_caretStopwatch.Restart();
-				}
+            if (Focused) // draw caret
+            {
+                if (_caretStopwatch.Elapsed.TotalMilliseconds >= SystemInformation.CaretBlinkTime)
+                {
+                    _caretVisible = !_caretVisible;
+                    _caretStopwatch.Restart();
+                }
 
-				if (!_caretVisible) return;
+                if (!_caretVisible) return;
 
-				var startPos = _caretPosition + new SharpDX.Vector2(-AbsoluteSize.x / 2, -AbsoluteSize.y / 2);
-				var endPos = _caretEndPosition + new SharpDX.Vector2(-AbsoluteSize.x / 2, -AbsoluteSize.y / 2);
+                var startPos = _caretPosition + new SharpDX.Vector2(-AbsoluteSize.x/2, -AbsoluteSize.y/2);
+                var endPos = _caretEndPosition + new SharpDX.Vector2(-AbsoluteSize.x/2, -AbsoluteSize.y/2);
 
-				target.DrawLine(startPos, endPos, _caretBrush);
-			}
-		}
-	}
+                target.DrawLine(startPos, endPos, _caretBrush);
+            }
+        }
+    }
 }

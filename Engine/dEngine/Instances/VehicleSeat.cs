@@ -119,7 +119,7 @@ namespace dEngine.Instances
         }
 
         /// <summary>
-        /// Determines how fast the vehicle is able to reach its <see cref="MaxSpeed"/>.
+        /// Determines how fast the vehicle is able to reach its <see cref="MaxSpeed" />.
         /// </summary>
         [EditorVisible("Control")]
         public float Torque

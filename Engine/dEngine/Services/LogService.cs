@@ -11,7 +11,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.Text;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
@@ -27,7 +26,8 @@ namespace dEngine.Services
     /// <summary>
     /// A service for managing logging.
     /// </summary>
-    [TypeId(140), ExplorerOrder(-1)]
+    [TypeId(140)]
+    [ExplorerOrder(-1)]
     public class LogService : Service
     {
         internal static LogService Service;
@@ -57,12 +57,12 @@ namespace dEngine.Services
 
         internal static ILogger GetLogger()
         {
-            int skipFrames = 2;
+            var skipFrames = 2;
             Type declaringType;
             string str;
             do
             {
-                MethodBase method = new StackFrame(skipFrames, false).GetMethod();
+                var method = new StackFrame(skipFrames, false).GetMethod();
                 declaringType = method.DeclaringType;
                 if (declaringType == null)
                 {
@@ -107,7 +107,7 @@ namespace dEngine.Services
                 CreateDirs = true,
                 KeepFileOpen = keepFileOpen,
                 ConcurrentWrites = true,
-                ConcurrentWriteAttempts = 1,
+                ConcurrentWriteAttempts = 1
             };
             ArchiveTarget(engineFileTarget);
 
@@ -121,7 +121,7 @@ namespace dEngine.Services
                 DeleteOldFileOnStartup = true,
                 CreateDirs = true,
                 KeepFileOpen = keepFileOpen,
-                ConcurrentWriteAttempts = 1,
+                ConcurrentWriteAttempts = 1
             };
 
             var scriptFileTarget = new FileTarget
@@ -134,7 +134,7 @@ namespace dEngine.Services
                 DeleteOldFileOnStartup = true,
                 CreateDirs = true,
                 KeepFileOpen = keepFileOpen,
-                ConcurrentWrites = true,
+                ConcurrentWrites = true
             };
             ArchiveTarget(scriptFileTarget);
 
@@ -142,7 +142,7 @@ namespace dEngine.Services
             {
                 Name = "EngineMethodTarget",
                 ClassName = "dEngine.Services.LogService, dEngine",
-                MethodName = nameof(OnLog),
+                MethodName = nameof(OnLog)
             };
 
             engineMethodTarget.Parameters.Add(new MethodCallParameter {Layout = "${logger}"});
@@ -191,6 +191,14 @@ namespace dEngine.Services
                     service.MessageOutput.Fire(message, logLevel, logger);
             }
         }
+
+        /// <summary>
+        /// Fired when a message is logged.
+        /// </summary>
+        /// <remarks>
+        /// Outputting a message within the callback will case a stack overflow.
+        /// </remarks>
+        public readonly Signal<string, LogLevel, string> MessageOutput;
 
         private class LoggerNLog : ILogger
         {
@@ -255,12 +263,8 @@ namespace dEngine.Services
                     _logger.Error(e.Message);
 
                     if (e.StackTrace != null)
-                    {
                         foreach (var item in e.StackTrace.Split(new[] {"\r\n", "\n"}, 0))
-                        {
                             _logger.Trace(item);
-                        }
-                    }
 
                     if (e.InnerException != null)
                     {
@@ -287,12 +291,8 @@ namespace dEngine.Services
                     _logger.Fatal(e.Message);
 
                     if (e.StackTrace != null)
-                    {
                         foreach (var item in e.StackTrace.Split(new[] {"\r\n", "\n"}, 0))
-                        {
                             _logger.Trace(item);
-                        }
-                    }
 
                     if (e.InnerException != null)
                     {
@@ -304,14 +304,6 @@ namespace dEngine.Services
                 }
             }
         }
-
-        /// <summary>
-        /// Fired when a message is logged.
-        /// </summary>
-        /// <remarks>
-        /// Outputting a message within the callback will case a stack overflow.
-        /// </remarks>
-        public readonly Signal<string, LogLevel, string> MessageOutput;
     }
 
 #pragma warning disable 1591

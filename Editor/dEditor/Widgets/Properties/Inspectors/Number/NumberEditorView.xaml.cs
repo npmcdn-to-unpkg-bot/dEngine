@@ -29,19 +29,20 @@ namespace dEditor.Widgets.Properties.Inspectors.Number
         {
             DataContextChanged += OnDataContextChanged;
             InitializeComponent();
-            var textBinding = new Binding("DoubleValue") { Converter = CurrentConverter = new NumberTextConverter() };
+            var textBinding = new Binding("DoubleValue") {Converter = CurrentConverter = new NumberTextConverter()};
             NumberTextBox.SetBinding(System.Windows.Controls.TextBox.TextProperty, textBinding);
-        }
-
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            UIElement_OnLostFocus(null, null);
         }
 
         public NumberTextConverter CurrentConverter
         {
             get { return (NumberTextConverter)GetValue(CurrentConverterProperty); }
             set { SetValue(CurrentConverterProperty, value); }
+        }
+
+        private void OnDataContextChanged(object sender,
+            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            UIElement_OnLostFocus(null, null);
         }
 
         private void UIElement_OnGotFocus(object sender, RoutedEventArgs e)

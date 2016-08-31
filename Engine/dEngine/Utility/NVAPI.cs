@@ -16,20 +16,6 @@ namespace dEngine.Utility
 {
     internal static class NvApi
     {
-        public enum ThermalTarget
-        {
-            None = 0,
-            Gpu = 1,
-            Memory = 2,
-            PowerSupply = 4,
-            Board = 8,
-            VcdBoard = 9,
-            VcdInlet = 10,
-            VcdOutlet = 11,
-            All = 15,
-            Unknown = -1
-        }
-
         public const int MaxPhysicalGpus = 64;
         public const int MaxUsagesPerGpu = 34;
 
@@ -52,19 +38,17 @@ namespace dEngine.Utility
 
         internal static unsafe void UpdateGpuHandles()
         {
-            var ptr = (int*)Marshal.AllocHGlobal(MaxPhysicalGpus * Marshal.SizeOf(typeof(IntPtr)));
+            var ptr = (int*)Marshal.AllocHGlobal(MaxPhysicalGpus*Marshal.SizeOf(typeof(IntPtr)));
             var ptr2 = (int*)Marshal.AllocHGlobal(4);
-            int test = 0;
+            var test = 0;
 
             EnumPhysicalGpus(ref ptr, ref test);
 
-            ThermalSettings temp = new ThermalSettings();
+            var temp = new ThermalSettings();
             GetThermalSettings(IntPtr.Zero, 0, ref temp);
 
-            for (int i = 0; i < (int)ptr2; i++)
-            {
-                GpuHandles[i] = Marshal.ReadIntPtr((IntPtr)ptr, IntPtr.Size* i);
-            }
+            for (var i = 0; i < (int)ptr2; i++)
+                GpuHandles[i] = Marshal.ReadIntPtr((IntPtr)ptr, IntPtr.Size*i);
         }
 
         [DllImport("nvapi64.dll", EntryPoint = "nvapi_QueryInterface")]
@@ -105,12 +89,26 @@ namespace dEngine.Utility
             public ThermalTarget Target;
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 8 + (17 * MaxPhysicalGpus))]
+        [StructLayout(LayoutKind.Explicit, Size = 8 + 17*MaxPhysicalGpus)]
         public class ThermalSettings
         {
             [FieldOffset(4)] public int Count;
             [FieldOffset(8)] public Sensor[] Sensors;
             [FieldOffset(0)] public int Version;
+        }
+
+        public enum ThermalTarget
+        {
+            None = 0,
+            Gpu = 1,
+            Memory = 2,
+            PowerSupply = 4,
+            Board = 8,
+            VcdBoard = 9,
+            VcdInlet = 10,
+            VcdOutlet = 11,
+            All = 15,
+            Unknown = -1
         }
     }
 }

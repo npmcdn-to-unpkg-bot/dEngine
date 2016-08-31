@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Widgets.Properties.Inspectors.Checkbox
 {
-	/// <summary>
-	/// Interaction logic for CheckboxEditorView.xaml
-	/// </summary>
-	public partial class CheckboxEditorView : UserControl
-	{
-		public CheckboxEditorView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for CheckboxEditorView.xaml
+    /// </summary>
+    public partial class CheckboxEditorView : UserControl
+    {
+        public CheckboxEditorView()
+        {
+            InitializeComponent();
+        }
+    }
 }

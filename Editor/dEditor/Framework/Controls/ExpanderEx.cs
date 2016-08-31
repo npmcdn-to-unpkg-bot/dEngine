@@ -14,12 +14,12 @@ using System.Windows.Controls;
 
 namespace dEditor.Framework.Controls
 {
-	public class ExpanderEx : Expander
-	{
-		static ExpanderEx()
-		{
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(ExpanderEx),
-				new FrameworkPropertyMetadata(typeof(ExpanderEx)));
-		}
-	}
+    public class ExpanderEx : Expander
+    {
+        static ExpanderEx()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ExpanderEx),
+                new FrameworkPropertyMetadata(typeof(ExpanderEx)));
+        }
+    }
 }

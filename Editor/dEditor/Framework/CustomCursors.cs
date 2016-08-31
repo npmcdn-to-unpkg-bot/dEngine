@@ -14,12 +14,12 @@ using System.Windows.Input;
 
 namespace dEditor.Framework
 {
-	public static class CustomCursors
-	{
-		public static Cursor ClosedHand =
-			new Cursor(Assembly.GetExecutingAssembly().GetManifestResourceStream("dEditor.Content.Icons.closedhand.cur"));
+    public static class CustomCursors
+    {
+        public static Cursor ClosedHand =
+            new Cursor(Assembly.GetExecutingAssembly().GetManifestResourceStream("dEditor.Content.Icons.closedhand.cur"));
 
-		public static Cursor OpenHand =
-			new Cursor(Assembly.GetExecutingAssembly().GetManifestResourceStream("dEditor.Content.Icons.openhand.cur"));
-	}
+        public static Cursor OpenHand =
+            new Cursor(Assembly.GetExecutingAssembly().GetManifestResourceStream("dEditor.Content.Icons.openhand.cur"));
+    }
 }

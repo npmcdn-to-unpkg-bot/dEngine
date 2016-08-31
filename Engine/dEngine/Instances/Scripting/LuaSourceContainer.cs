@@ -21,7 +21,7 @@ namespace dEngine.Instances
     [TypeId(209)]
     public class LuaSourceContainer : SourceContainer
     {
-        /// <summary/>
+        /// <summary />
         public LuaSourceContainer()
         {
             LuaGlobal = ScriptService.GlobalEnvironment;
@@ -45,7 +45,5 @@ namespace dEngine.Instances
         {
             Logger.Log(message, level);
         }
-
-        
     }
 }

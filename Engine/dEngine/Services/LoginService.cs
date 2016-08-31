@@ -20,15 +20,25 @@ namespace dEngine.Services
     /// <summary>
     /// A service for logging into a user account.
     /// </summary>
-    [TypeId(48), ExplorerOrder(-1)]
+    [TypeId(48)]
+    [ExplorerOrder(-1)]
     public class LoginService : Service
     {
+        internal static LoginService Service;
+
+        /// <summary />
+        public LoginService()
+        {
+            Service = this;
+
+            LoginSucceeded = new Signal<string, uint>(this);
+            LoginFailed = new Signal<string>(this);
+        }
+
         internal static bool LoggedIn { get; set; }
         internal static uint UserId { get; set; }
         internal static CSteamID SteamId { get; set; }
         internal static string ProfileName { get; set; }
-
-        internal static LoginService Service;
 
         internal static LoginService GetExisting()
         {
@@ -44,21 +54,12 @@ namespace dEngine.Services
         }
 
         /// <summary>
-        /// Used to get the user's ID when the <see cref="Player"/> object is not available.
+        /// Used to get the user's ID when the <see cref="Player" /> object is not available.
         /// </summary>
         /// <returns></returns>
         public uint GetUserId()
         {
             return UserId;
-        }
-
-        /// <summary/>
-        public LoginService()
-        {
-            Service = this;
-
-            LoginSucceeded = new Signal<string, uint>(this);
-            LoginFailed = new Signal<string>(this);
         }
 
         private bool FailLogin(string msg)
@@ -71,7 +72,6 @@ namespace dEngine.Services
         private bool SteamLogin()
         {
             if (!File.Exists("steam_appid.txt"))
-            {
                 try
                 {
                     File.WriteAllText("steam_appid.txt", Engine.AppId.ToString());
@@ -80,13 +80,10 @@ namespace dEngine.Services
                 {
                     return FailLogin(e.Message);
                 }
-            }
 
             if (!SteamAPI.Init())
-            {
                 return FailLogin(
                     "Could initialize SteamAPI - Make sure Steam is running and the AppID is valid.");
-            }
 
             SteamAPI.RunCallbacks();
             SteamId = SteamUser.GetSteamID();
@@ -104,18 +101,6 @@ namespace dEngine.Services
         }
 
         /// <summary>
-        /// Fired when a login attempt is successful.
-        /// </summary>
-        /// <eventParam name="username"/>
-        /// <eventParam name="userId"/>
-        public readonly Signal<string, uint> LoginSucceeded;
-
-        /// <summary>
-        /// Fired when a login attempt fails.
-        /// </summary>
-        public readonly Signal<string> LoginFailed;
-
-        /// <summary>
         /// Tries to login to the user's account.
         /// </summary>
         /// <returns>A boolean determining if the login was successful.</returns>
@@ -126,9 +111,7 @@ namespace dEngine.Services
             LoggedIn = SteamLogin();
 
             if (LoggedIn)
-            {
                 AnalyticsService.BeginSession();
-            }
 
             return LoggedIn;
         }
@@ -142,5 +125,17 @@ namespace dEngine.Services
             AnalyticsService.EndSession();
             //LoggedIn = false;
         }
+
+        /// <summary>
+        /// Fired when a login attempt is successful.
+        /// </summary>
+        /// <eventParam name="username" />
+        /// <eventParam name="userId" />
+        public readonly Signal<string, uint> LoginSucceeded;
+
+        /// <summary>
+        /// Fired when a login attempt fails.
+        /// </summary>
+        public readonly Signal<string> LoginFailed;
     }
 }

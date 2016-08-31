@@ -8,6 +8,7 @@
 //  
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -15,7 +16,6 @@ using Caliburn.Micro;
 using dEditor.Widgets.CodeEditor;
 using dEngine;
 using dEngine.Instances.Attributes;
-using Action = System.Action;
 using dEngine.Settings;
 
 namespace dEditor.Instances
@@ -49,7 +49,7 @@ namespace dEditor.Instances
         #region Output
 
         /// <summary>
-        ///     The number of outlines.
+        /// The number of outlines.
         /// </summary>
         [EditorVisible("Output", "Max Output Lines")]
         public static int MaxOutputLines
@@ -67,7 +67,7 @@ namespace dEditor.Instances
         #region Properties
 
         /// <summary>
-        ///     Shows deprecated/obsolete properties.
+        /// Shows deprecated/obsolete properties.
         /// </summary>
         [EditorVisible("Properties", "Show Deprecated")]
         public static bool ShowDeprecated
@@ -108,17 +108,17 @@ namespace dEditor.Instances
 
             Font = new Font("Roboto Mono", 14.0f);
             TabWidth = 4;
-            
-			BackgroundColour = Colour.fromRGB(255, 255, 255);
-			CommentColour = Colour.fromRGB(0, 127, 0);
-			ErrorColour = Colour.fromRGB(255, 0, 0);
-			KeywordColour = Colour.fromRGB(0, 0, 127);
-			NumberColour = Colour.fromRGB(0, 127, 127);
-			OperatorColour = Colour.fromRGB(127, 127, 0);
-			SelectionBackgroundColour = Colour.fromRGB(110, 161, 241);
-			SelectionTextColour = Colour.fromRGB(255, 255, 255);
-			StringColour = Colour.fromRGB(127, 0, 127);
-			TextColour = Colour.fromRGB(0, 0, 0);
+
+            BackgroundColour = Colour.fromRGB(255, 255, 255);
+            CommentColour = Colour.fromRGB(0, 127, 0);
+            ErrorColour = Colour.fromRGB(255, 0, 0);
+            KeywordColour = Colour.fromRGB(0, 0, 127);
+            NumberColour = Colour.fromRGB(0, 127, 127);
+            OperatorColour = Colour.fromRGB(127, 127, 0);
+            SelectionBackgroundColour = Colour.fromRGB(110, 161, 241);
+            SelectionTextColour = Colour.fromRGB(255, 255, 255);
+            StringColour = Colour.fromRGB(127, 0, 127);
+            TextColour = Colour.fromRGB(0, 0, 0);
         }
 
         #region Camera
@@ -128,7 +128,7 @@ namespace dEditor.Instances
         #region Autosave
 
         /// <summary>
-        ///     Determines if autosave is enabled.
+        /// Determines if autosave is enabled.
         /// </summary>
         [EditorVisible("Autosave", "Autosave Enabled")]
         public static bool AutosaveEnabled
@@ -142,7 +142,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The time between autosaves in minutes.
+        /// The time between autosaves in minutes.
         /// </summary>
         [EditorVisible("Autosave", "Autosave Interval")]
         public static int AutosaveInterval
@@ -156,7 +156,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The time between autosaves in minutes.
+        /// The time between autosaves in minutes.
         /// </summary>
         [EditorVisible("Autosave", "Autosave Path")]
         public static string AutosavePath
@@ -174,7 +174,7 @@ namespace dEditor.Instances
         #region Script Editor
 
         /// <summary>
-        ///     The script editor font.
+        /// The script editor font.
         /// </summary>
         [EditorVisible("Script Editor", "Font")]
         public static Font Font
@@ -188,7 +188,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The length for tabs.
+        /// The length for tabs.
         /// </summary>
         [EditorVisible("Script Editor", "Tab Width")]
         public static float TabWidth
@@ -202,7 +202,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     Pressing tab will insert spaces instead.
+        /// Pressing tab will insert spaces instead.
         /// </summary>
         [EditorVisible("Script Editor", "Tab Width")]
         public static bool TurnTabsIntoSpaces
@@ -220,7 +220,7 @@ namespace dEditor.Instances
         #region Script Editor Colours
 
         /// <summary>
-        ///     The colour of the background.
+        /// The colour of the background.
         /// </summary>
         [EditorVisible("Script Editor", "Background Colour")]
         public static Colour BackgroundColour
@@ -235,7 +235,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The colour of comments.
+        /// The colour of comments.
         /// </summary>
         [EditorVisible("Script Editor", "Comment Colour")]
         public static Colour CommentColour
@@ -250,7 +250,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The colour of errors.
+        /// The colour of errors.
         /// </summary>
         [EditorVisible("Script Editor", "Error Colour")]
         public static Colour ErrorColour
@@ -265,7 +265,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The colour of keywords.
+        /// The colour of keywords.
         /// </summary>
         [EditorVisible("Script Editor", "Keyword Colour")]
         public static Colour KeywordColour
@@ -280,7 +280,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The colour of operators.
+        /// The colour of operators.
         /// </summary>
         [EditorVisible("Script Editor", "Number Colour")]
         public static Colour NumberColour
@@ -295,7 +295,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The colour of operators.
+        /// The colour of operators.
         /// </summary>
         [EditorVisible("Script Editor", "Operator Colour")]
         public static Colour OperatorColour
@@ -310,7 +310,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The colour of the selection background.
+        /// The colour of the selection background.
         /// </summary>
         [EditorVisible("Script Editor", "Selection Background Colour")]
         public static Colour SelectionBackgroundColour
@@ -325,7 +325,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The colour of the selection text.
+        /// The colour of the selection text.
         /// </summary>
         [EditorVisible("Script Editor", "Selection Text Colour")]
         public static Colour SelectionTextColour
@@ -340,7 +340,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The colour of strings.
+        /// The colour of strings.
         /// </summary>
         [EditorVisible("Script Editor", "String Colour")]
         public static Colour StringColour
@@ -355,7 +355,7 @@ namespace dEditor.Instances
         }
 
         /// <summary>
-        ///     The colour of the text.
+        /// The colour of the text.
         /// </summary>
         [EditorVisible("Script Editor", "Text Colour")]
         public static Colour TextColour

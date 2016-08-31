@@ -21,13 +21,14 @@ namespace dEngine.Instances
     /// <summary>
     /// Renders sun shafts.
     /// </summary>
-    [TypeId(177), ExplorerOrder(0)]
+    [TypeId(177)]
+    [ExplorerOrder(0)]
     public sealed class GodRaysEffect : PostEffect
     {
-        private float _intensity;
-        private float _spread;
         private readonly GfxShader.Pass _downsamplePass = Shaders.Get("PostProcess").GetPass("Downsample4x4Avg");
         private readonly GfxShader.Pass _godRaysPass = Shaders.Get("PostProcess").GetPass("GodRays");
+        private float _intensity;
+        private float _spread;
         private GfxShader.Pass _radialBlurPass = Shaders.Get("PostProcess").GetPass("RadialBlur");
         private Texture _noiseTexture;
 
@@ -36,7 +37,7 @@ namespace dEngine.Instances
         // Params3: XYZ: SunShaftColour
         // Params4: 
 
-        /// <summary/>
+        /// <summary />
         public GodRaysEffect()
         {
             if (Renderer.IsInitialized)
@@ -48,7 +49,42 @@ namespace dEngine.Instances
             Game.Lighting.LightingChanged.Connect(UpdateSun);
         }
 
-        /// <summary/>
+        /// <summary>
+        /// The intensity of the sun rays.
+        /// </summary>
+        [InstMember(1)]
+        [EditorVisible]
+        [Range(0, 1)]
+        public float Intensity
+        {
+            get { return _intensity; }
+            set
+            {
+                if (value == _intensity) return;
+                _intensity = value;
+                //_postEffectConstants.Data.Params2.X = value;
+                NotifyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Determines how much the sun rays spread out.
+        /// </summary>
+        [InstMember(2)]
+        [EditorVisible]
+        [Range(0, 1)]
+        public float Spread
+        {
+            get { return _spread; }
+            set
+            {
+                if (value == _spread) return;
+                _spread = value;
+                NotifyChanged();
+            }
+        }
+
+        /// <summary />
         public override void Destroy()
         {
             base.Destroy();
@@ -69,37 +105,6 @@ namespace dEngine.Instances
             _noiseTexture.Load(ContentProvider.DownloadStream("internal://textures/noise2.png").Result);
         }
 
-        /// <summary>
-        /// The intensity of the sun rays.
-        /// </summary>
-        [InstMember(1), EditorVisible, Range(0, 1)]
-        public float Intensity
-        {
-            get { return _intensity; }
-            set
-            {
-                if (value == _intensity) return;
-                _intensity = value;
-                //_postEffectConstants.Data.Params2.X = value;
-                NotifyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Determines how much the sun rays spread out.
-        /// </summary>
-        [InstMember(2), EditorVisible, Range(0, 1)]
-        public float Spread
-        {
-            get { return _spread; }
-            set
-            {
-                if (value == _spread) return;
-                _spread = value;
-                NotifyChanged();
-            }
-        }
-
         internal override void Render(ref DeviceContext context)
         {
             var camera = Camera;
@@ -117,7 +122,7 @@ namespace dEngine.Instances
             context.Draw(4, 0);
         }
 
-        /// <summary/>
+        /// <summary />
         internal override void UpdateSize(Camera camera)
         {
             base.UpdateSize(camera);

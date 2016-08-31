@@ -14,13 +14,13 @@ using Xceed.Wpf.AvalonDock.Themes;
 
 namespace dEditor.Shell.Themes
 {
-	public class DockTheme : Theme
-	{
-		public override Uri GetResourceUri()
-		{
-			return new Uri(
-				"/dEditor;component/Shell/Themes/DockTheme.xaml",
-				UriKind.Relative);
-		}
-	}
+    public class DockTheme : Theme
+    {
+        public override Uri GetResourceUri()
+        {
+            return new Uri(
+                "/dEditor;component/Shell/Themes/DockTheme.xaml",
+                UriKind.Relative);
+        }
+    }
 }

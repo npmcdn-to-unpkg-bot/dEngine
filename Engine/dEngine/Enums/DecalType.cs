@@ -11,19 +11,19 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// The decal type.
-	/// </summary>
-	public enum DecalType
-	{
-		/// <summary>
-		/// Draws the decal on the side of the part.
-		/// </summary>
-		Face,
+    /// <summary>
+    /// The decal type.
+    /// </summary>
+    public enum DecalType
+    {
+        /// <summary>
+        /// Draws the decal on the side of the part.
+        /// </summary>
+        Face,
 
-		/// <summary>
-		/// Projects the decal onto the part.
-		/// </summary>
-		Projection
-	}
+        /// <summary>
+        /// Projects the decal onto the part.
+        /// </summary>
+        Projection
+    }
 }

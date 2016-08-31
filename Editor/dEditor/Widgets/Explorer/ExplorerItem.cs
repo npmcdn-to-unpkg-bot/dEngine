@@ -12,15 +12,12 @@
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using Caliburn.Micro;
 using dEditor.Framework.Services;
 using dEditor.Utility;
-using dEngine;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
-using Action = System.Action;
 
 namespace dEditor.Widgets.Explorer
 {
@@ -43,17 +40,6 @@ namespace dEditor.Widgets.Explorer
             SetParent(instance.Parent);
 
             instance.Changed.Event += OnInstancePropertyChanged;
-        }
-
-        private void ItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
-        {
-            int i = 0;
-            foreach (var item in Items)
-            {
-                item.ChildIndex = i++;
-                item.IsLastChild = i == Items.Count;
-                //item.NotifyOfPropertyChange(nameof(Name));
-            }
         }
 
         public int ExplorerOrder { get; }
@@ -94,6 +80,17 @@ namespace dEditor.Widgets.Explorer
             return 0;
         }
 
+        private void ItemsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            var i = 0;
+            foreach (var item in Items)
+            {
+                item.ChildIndex = i++;
+                item.IsLastChild = i == Items.Count;
+                //item.NotifyOfPropertyChange(nameof(Name));
+            }
+        }
+
         private void OnInstancePropertyChanged(string prop)
         {
             switch (prop)
@@ -127,10 +124,7 @@ namespace dEditor.Widgets.Explorer
                     WeakReference<ExplorerItem> weak;
                     ExplorerViewModel.ExplorerItems.TryGetValue(parent, out weak);
                     if (Name == "RegenGroupStairs")
-                    {
-                        //var test = ExplorerViewModel.ExplorerItems.FirstOrDefault(x => x.Key.Name == "RegenGroupStairs");
-                        ;
-                    }
+                    ;
                     if (weak == null)
                         return;
                     Debug.Assert(weak != null, "weak != null");

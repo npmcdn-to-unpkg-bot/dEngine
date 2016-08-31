@@ -9,7 +9,6 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System.Net.Mime;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,6 +17,8 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 {
     public class EditTextBox : TextBox
     {
+        private bool commiting;
+
         static EditTextBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(EditTextBox),
@@ -36,7 +37,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             get { return Item.Node; }
         }
 
-        void Init()
+        private void Init()
         {
             Text = Node.LoadEditText();
             Focus();
@@ -46,26 +47,18 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
                 Commit();
-            }
             else if (e.Key == Key.Escape)
-            {
                 Node.IsEditing = false;
-            }
         }
 
         protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             if (Node.IsEditing)
-            {
                 Commit();
-            }
         }
 
-        bool commiting;
-
-        void Commit()
+        private void Commit()
         {
             if (!commiting)
             {
@@ -73,9 +66,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 
                 Node.IsEditing = false;
                 if (!Node.SaveEditText(Text))
-                {
                     Item.Focus();
-                }
                 Node.RaisePropertyChanged("Text");
 
                 //if (Node.SaveEditText(Text)) {

@@ -9,42 +9,43 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
 namespace dEditor.Framework.Behaviours
 {
-	public class StackPanelReverseZIndex : Behavior<StackPanel>
-	{
-		/// <summary>
-		/// Handles the onAttached event
-		/// </summary>
-		protected override void OnAttached()
-		{
-			base.OnAttached();
+    public class StackPanelReverseZIndex : Behavior<StackPanel>
+    {
+        /// <summary>
+        /// Handles the onAttached event
+        /// </summary>
+        protected override void OnAttached()
+        {
+            base.OnAttached();
 
-			AssociatedObject.LayoutUpdated += AssociatedObject_LayoutUpdated;
-		}
+            AssociatedObject.LayoutUpdated += AssociatedObject_LayoutUpdated;
+        }
 
-		protected void AssociatedObject_LayoutUpdated(object sender, System.EventArgs e)
-		{
-			int childCount = AssociatedObject.Children.Count;
-			foreach (FrameworkElement element in AssociatedObject.Children)
-			{
-				element.SetValue(Panel.ZIndexProperty, childCount);
-				childCount--;
-			}
-		}
+        protected void AssociatedObject_LayoutUpdated(object sender, EventArgs e)
+        {
+            var childCount = AssociatedObject.Children.Count;
+            foreach (FrameworkElement element in AssociatedObject.Children)
+            {
+                element.SetValue(Panel.ZIndexProperty, childCount);
+                childCount--;
+            }
+        }
 
-		/// <summary>
-		/// Handles the OnDetaching event
-		/// </summary>
-		protected override void OnDetaching()
-		{
-			base.OnDetaching();
+        /// <summary>
+        /// Handles the OnDetaching event
+        /// </summary>
+        protected override void OnDetaching()
+        {
+            base.OnDetaching();
 
-			AssociatedObject.LayoutUpdated -= AssociatedObject_LayoutUpdated;
-		}
-	}
+            AssociatedObject.LayoutUpdated -= AssociatedObject_LayoutUpdated;
+        }
+    }
 }

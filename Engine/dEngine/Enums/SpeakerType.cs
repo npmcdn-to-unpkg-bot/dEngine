@@ -8,7 +8,10 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 #pragma warning disable 1591
+
 namespace dEngine
 {
     /// <summary>
@@ -20,6 +23,6 @@ namespace dEngine
         TV,
         HiFi,
         HomeCinema,
-        Headphones,
+        Headphones
     }
 }

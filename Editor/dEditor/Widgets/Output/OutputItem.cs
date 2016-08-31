@@ -5,11 +5,6 @@ namespace dEditor.Widgets.Output
 {
     public class OutputItem
     {
-        public string Message { get; }
-        public LogLevel Level { get; }
-        public string Logger { get; }
-        public Brush Brush { get; }
-
         public OutputItem(ref string message, ref LogLevel level, ref string logger)
         {
             Brush = Brushes.Black;
@@ -37,5 +32,10 @@ namespace dEditor.Widgets.Output
             Level = level;
             Logger = logger;
         }
+
+        public string Message { get; }
+        public LogLevel Level { get; }
+        public string Logger { get; }
+        public Brush Brush { get; }
     }
 }

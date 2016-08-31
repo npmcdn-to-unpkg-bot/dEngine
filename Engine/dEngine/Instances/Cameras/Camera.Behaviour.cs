@@ -22,8 +22,8 @@ namespace dEngine.Instances
     {
         internal abstract class Behaviour
         {
-            protected const float MinY = -80 * Mathf.Deg2Rad;
-            protected const float MaxY = 80 * Mathf.Deg2Rad;
+            protected const float MinY = -80*Mathf.Deg2Rad;
+            protected const float MaxY = 80*Mathf.Deg2Rad;
 
             protected bool _active;
             protected Camera _camera;
@@ -40,8 +40,6 @@ namespace dEngine.Instances
             protected Stopwatch _stopwatch;
             protected Vector2 _rotateInput;
             protected float _zoom;
-            private float _minZoomDistance;
-            private float _maxZoomDistance;
 
 
             protected Behaviour(Camera camera)
@@ -56,13 +54,6 @@ namespace dEngine.Instances
                 Game.RegisterInitializeCallback(OnGameInitialize);
             }
 
-            private void OnGameInitialize()
-            {
-                if (Game.Players.LocalPlayer != null)
-                    OnPlayerAdded(Game.Players.LocalPlayer);
-                Game.Players.PlayerAdded.Connect(OnPlayerAdded);
-            }
-
             protected float Zoom
             {
                 get { return _zoom; }
@@ -71,16 +62,15 @@ namespace dEngine.Instances
             }
 
 
-            public float MinZoomDistance
-            {
-                get { return _minZoomDistance; }
-                set { _minZoomDistance = value; }
-            }
+            public float MinZoomDistance { get; set; }
 
-            public float MaxZoomDistance
+            public float MaxZoomDistance { get; set; }
+
+            private void OnGameInitialize()
             {
-                get { return _maxZoomDistance; }
-                set { _maxZoomDistance = value; }
+                if (Game.Players.LocalPlayer != null)
+                    OnPlayerAdded(Game.Players.LocalPlayer);
+                Game.Players.PlayerAdded.Connect(OnPlayerAdded);
             }
 
             private void OnPlayerAdded(Player player)
@@ -94,9 +84,7 @@ namespace dEngine.Instances
             private void OnCharacterAdded(Character character)
             {
                 if (_active)
-                {
                     SetLookBehindCharacter(character);
-                }
             }
 
             private void SetLookBehindCharacter(Character character)
@@ -222,18 +210,18 @@ namespace dEngine.Instances
 
             private void OnMouseMoved(InputObject input)
             {
-                if (_startPos != null && _lastPos != null && _panBeginLook != null)
+                if ((_startPos != null) && (_lastPos != null) && (_panBeginLook != null))
                 {
                     var curPos = _lastPos + input.Delta;
                     //var totalTrans = curPos - _startPos;
-                    var desiredXYVector = MouseTranslationToAngle(input.Delta) *
+                    var desiredXYVector = MouseTranslationToAngle(input.Delta)*
                                           UserGameSettings.MouseSensitivityThirdPerson;
                     _rotateInput += desiredXYVector;
                     _lastPos = curPos;
                 }
                 else if (_isFirstPerson)
                 {
-                    var desiredXYVector = MouseTranslationToAngle(input.Delta) *
+                    var desiredXYVector = MouseTranslationToAngle(input.Delta)*
                                           UserGameSettings.MouseSensitivityFirstPerson;
                     _rotateInput += desiredXYVector;
                 }
@@ -241,10 +229,10 @@ namespace dEngine.Instances
 
             private Vector2 MouseTranslationToAngle(Vector3 translationVector)
             {
-                var xTheta = (translationVector.x / _camera.ViewportSize.X);
-                var yTheta = (translationVector.y / _camera.ViewportSize.Y);
+                var xTheta = translationVector.x/_camera.ViewportSize.X;
+                var yTheta = translationVector.y/_camera.ViewportSize.Y;
 
-                return new Vector2(xTheta * Mathf.Rad2Deg, yTheta * Mathf.Rad2Deg);
+                return new Vector2(xTheta*Mathf.Rad2Deg, yTheta*Mathf.Rad2Deg);
             }
 
             private void OnMouseWheel(InputObject input)
@@ -262,7 +250,7 @@ namespace dEngine.Instances
 
                 var acceleration = new Func<float, float, float>((p, v) =>
                 {
-                    var accel = direction * Math.Max(1, (p / 3.3f) + 0.5f);
+                    var accel = direction*Math.Max(1, p/3.3f + 0.5f);
                     return accel;
                 });
 
@@ -270,20 +258,20 @@ namespace dEngine.Instances
                 var v1 = velocity;
                 var a1 = acceleration(p1, v1);
 
-                var p2 = p1 + v1 * (t / 2);
-                var v2 = v1 + a1 * (t / 2);
+                var p2 = p1 + v1*(t/2);
+                var v2 = v1 + a1*(t/2);
                 var a2 = acceleration(p2, v2);
 
-                var p3 = p1 + v2 * (t / 2);
-                var v3 = v1 + a2 * (t / 2);
+                var p3 = p1 + v2*(t/2);
+                var v3 = v1 + a2*(t/2);
                 var a3 = acceleration(p3, v3);
 
-                var p4 = p1 + v3 * t;
-                var v4 = v1 + a3 * t;
+                var p4 = p1 + v3*t;
+                var v4 = v1 + a3*t;
                 var a4 = acceleration(p4, v4);
 
-                positionResult = position + (v1 + 2 * v2 + 2 * v3 + v4) * (t / 6);
-                velocityResult = velocity + (a1 + 2 * a2 + 2 * a3 + a4) * (t / 6);
+                positionResult = position + (v1 + 2*v2 + 2*v3 + v4)*(t/6);
+                velocityResult = velocity + (a1 + 2*a2 + 2*a3 + a4)*(t/6);
             }
 
             private float GetActualZoom()
@@ -296,7 +284,7 @@ namespace dEngine.Instances
                 var zoom = GetActualZoom();
                 float _;
                 Rk4Intergrator(zoom, amount, 1, out zoom, out _);
-                _zoom = Mathf.Clamp(zoom, _minZoomDistance, _maxZoomDistance);
+                _zoom = Mathf.Clamp(zoom, MinZoomDistance, MaxZoomDistance);
             }
 
             protected virtual void OnKey(InputObject input)
@@ -305,7 +293,7 @@ namespace dEngine.Instances
 
             protected static float FindAngleBetweenXZVectors(Vector3 vec2, Vector3 vec1)
             {
-                return Mathf.Atan2(vec1.X * vec2.Z - vec1.Z * vec2.X, vec1.X * vec2.X + vec1.Z * vec2.Z);
+                return Mathf.Atan2(vec1.X*vec2.Z - vec1.Z*vec2.X, vec1.X*vec2.X + vec1.Z*vec2.Z);
             }
 
             internal abstract void Update(double step);
@@ -314,7 +302,7 @@ namespace dEngine.Instances
             {
                 var startCFrame = new CFrame(Vector3.Zero, startVector);
                 resultLookVector =
-                    (CFrame.Angles(0, -xyRotateVector.x, 0) * startCFrame * CFrame.Angles(-xyRotateVector.y, 0, 0))
+                    (CFrame.Angles(0, -xyRotateVector.x, 0)*startCFrame*CFrame.Angles(-xyRotateVector.y, 0, 0))
                         .lookVector;
             }
 

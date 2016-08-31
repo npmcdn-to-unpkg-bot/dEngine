@@ -17,7 +17,6 @@ using dEngine.Graphics;
 using dEngine.Instances;
 using dEngine.Services;
 using dEngine.Settings.Global;
-using Neo.IronLua;
 using SharpDX.Direct3D11;
 
 namespace dEngine
@@ -30,19 +29,18 @@ namespace dEngine
         /// <summary>
         /// The scale of the physics engine.
         /// </summary>
-        public const float Scale = 1 / 20f;
+        public const float Scale = 1/20f;
 
-        internal static readonly object Locker = new object();
         private readonly Stopwatch _stopwatch = new Stopwatch();
 
         private readonly PhysicsDebugDraw _debugDraw;
+        private readonly GhostPairCallback _ghostPairCallback;
 
         internal DbvtBroadphase Broadphase;
         internal CollisionConfiguration CollisionConfiguration;
         internal CollisionDispatcher Dispatcher;
         internal SequentialImpulseConstraintSolver Solver;
         internal DynamicsWorld World;
-        private readonly GhostPairCallback _ghostPairCallback;
 
         /// <summary>
         /// Constructs a new PhysicsSimulation. Must be created on the physics thread.
@@ -151,7 +149,7 @@ namespace dEngine
 
                 if (!rigidBody.IsInWorld)
                     return;
-                
+
                 World.RemoveRigidBody(rigidBody);
             }
         }
@@ -187,7 +185,7 @@ namespace dEngine
 
                 Vector3.Multiply(ref ray.Direction, maxLength, out to);
                 Vector3.Add(ref to, ref from, out to);
-                
+
                 var bulletFrom = new BulletSharp.Math.Vector3(from.x, from.y, from.z);
                 var bulletTo = new BulletSharp.Math.Vector3(to.x, to.y, to.z);
 
@@ -226,6 +224,8 @@ namespace dEngine
             throw new NotImplementedException();
         }
 
+        internal static readonly object Locker = new object();
+
         /// <summary>
         /// Contains information about a raycast.
         /// </summary>
@@ -245,7 +245,7 @@ namespace dEngine
 
                 HitObject = callback.CollisionObject?.UserObject as Part;
                 Position = new Vector3(hitPoint.X, hitPoint.Y, hitPoint.Z);
-                Normal= new Vector3(hitNormal.X, hitNormal.Y, hitNormal.Z);
+                Normal = new Vector3(hitNormal.X, hitNormal.Y, hitNormal.Z);
             }
 
             /// <summary>

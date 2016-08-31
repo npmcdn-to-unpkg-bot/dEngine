@@ -18,13 +18,12 @@ using dEngine.Instances.Attributes;
 using dEngine.Services;
 
 #pragma warning disable 4014
+
 namespace dEditor.Framework.Plugins
 {
     [Uncreatable]
     public class Plugin : Instance
     {
-        public readonly Signal Deactivated;
-
         private Plugin()
         {
             Archivable = false;
@@ -58,7 +57,7 @@ namespace dEditor.Framework.Plugins
         public Widget CreateWidget(string name)
         {
             ScriptService.AssertIdentity(ScriptIdentity.Plugin);
-            return new Widget(name) { Parent = this, ParentLocked = true };
+            return new Widget(name) {Parent = this, ParentLocked = true};
         }
 
         [ScriptSecurity(ScriptIdentity.Plugin)]
@@ -100,5 +99,7 @@ namespace dEditor.Framework.Plugins
             plugin.Logger.Info($"Plugin \"{plugin.Name}\" loaded.");
             return plugin;
         }
+
+        public readonly Signal Deactivated;
     }
 }

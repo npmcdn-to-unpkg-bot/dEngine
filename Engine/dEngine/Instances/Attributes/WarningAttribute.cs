@@ -21,7 +21,7 @@ namespace dEngine.Instances.Attributes
          AllowMultiple = true, Inherited = false)]
     public class WarningAttribute : Attribute
     {
-        /// <summary/>
+        /// <summary />
         public WarningAttribute(string text)
         {
             Text = text;

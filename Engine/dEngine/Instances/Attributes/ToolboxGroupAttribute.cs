@@ -13,28 +13,28 @@ using System;
 
 namespace dEngine.Instances.Attributes
 {
-	/// <summary>
-	/// Attribute for group names in the toolbox.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-	public class ToolboxGroupAttribute : Attribute, IValueAttribute
-	{
-		/// <summary>
-		/// Sets the group name.
-		/// </summary>
-		public ToolboxGroupAttribute(string groupName)
-		{
-			GroupName = groupName;
-		}
+    /// <summary>
+    /// Attribute for group names in the toolbox.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class ToolboxGroupAttribute : Attribute, IValueAttribute
+    {
+        /// <summary>
+        /// Sets the group name.
+        /// </summary>
+        public ToolboxGroupAttribute(string groupName)
+        {
+            GroupName = groupName;
+        }
 
-		/// <summary>
-		/// The group name.
-		/// </summary>
-		public string GroupName { get; }
+        /// <summary>
+        /// The group name.
+        /// </summary>
+        public string GroupName { get; }
 
-	    string IValueAttribute.GetValue()
-	    {
-	        return GroupName;
-	    }
-	}
+        string IValueAttribute.GetValue()
+        {
+            return GroupName;
+        }
+    }
 }

@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Widgets.ObjectBrowser
 {
-	/// <summary>
-	/// Interaction logic for ObjectBrowserView.xaml
-	/// </summary>
-	public partial class ObjectBrowserView : UserControl
-	{
-		public ObjectBrowserView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for ObjectBrowserView.xaml
+    /// </summary>
+    public partial class ObjectBrowserView : UserControl
+    {
+        public ObjectBrowserView()
+        {
+            InitializeComponent();
+        }
+    }
 }

@@ -22,14 +22,11 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
                 new ComponentResourceKey(typeof(SharpTreeView), "GridViewItemContainerStyleKey");
         }
 
-        public static ResourceKey ItemContainerStyleKey { get; private set; }
+        public static ResourceKey ItemContainerStyleKey { get; }
 
         protected override object ItemContainerDefaultStyleKey
         {
-            get
-            {
-                return ItemContainerStyleKey;
-            }
+            get { return ItemContainerStyleKey; }
         }
     }
 }

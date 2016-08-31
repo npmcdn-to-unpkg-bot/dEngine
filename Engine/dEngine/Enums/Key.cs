@@ -9,8 +9,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-
 namespace dEngine
 {
 #pragma warning disable 1591
@@ -123,7 +121,7 @@ namespace dEngine
         DPadUp,
         DPadDown,
         Thumbstick1,
-        Thumbstick2,
+        Thumbstick2
     }
 #pragma warning restore 1591
 }

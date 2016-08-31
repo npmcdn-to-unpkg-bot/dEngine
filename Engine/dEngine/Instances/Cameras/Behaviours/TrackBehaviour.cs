@@ -8,6 +8,9 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+using System;
+
 namespace dEngine.Instances
 {
     internal class TrackBehaviour : Camera.Behaviour
@@ -18,7 +21,7 @@ namespace dEngine.Instances
 
         internal override void Update(double step)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

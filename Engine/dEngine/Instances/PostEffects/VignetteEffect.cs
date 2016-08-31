@@ -25,7 +25,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how dark the corners get.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public float Intensity
         {
             get { return _intensity; }

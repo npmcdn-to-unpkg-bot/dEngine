@@ -11,11 +11,15 @@
             <DataTemplate>
                 <Grid IsEnabled="{Binding IsReadOnly, Converter={StaticResource InverseBoolConverter}}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding Path=(properties:InspectorGrid.PropertyNameColumnWidth), Mode=TwoWay}" MinWidth="50" />
+                        <ColumnDefinition
+                            Width="{Binding Path=(properties:InspectorGrid.PropertyNameColumnWidth), Mode=TwoWay}"
+                            MinWidth="50" />
                         <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="{Binding Path=(properties:InspectorGrid.PropertyValueColumnWidth), Mode=TwoWay}" MinWidth="50" />
+                        <ColumnDefinition
+                            Width="{Binding Path=(properties:InspectorGrid.PropertyValueColumnWidth), Mode=TwoWay}"
+                            MinWidth="50" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" 
+                    <Label Grid.Column="0"
                            ToolTip="{Binding Description}"
                            HorizontalContentAlignment="Left"
                            VerticalAlignment="Center">

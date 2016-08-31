@@ -22,7 +22,9 @@ using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.WIC;
-using Bitmap = SharpDX.WIC.Bitmap;
+using AlphaMode = SharpDX.Direct2D1.AlphaMode;
+using Bitmap = System.Drawing.Bitmap;
+using MapFlags = SharpDX.Direct3D11.MapFlags;
 using PixelFormat = SharpDX.WIC.PixelFormat;
 
 #pragma warning disable 1591
@@ -44,14 +46,9 @@ namespace dEngine.Data
         // GIF89
         internal const uint MagicGIF = 'G' | ('I' << 8) | ('F' << 16) | (89 << 24);
         // RIFF
-        internal const int MagicRIFF = ('R' | ('I' << 8) | ('F' << 16) | ('F' << 24));
-        internal readonly List<DepthStencilView> DsvArraySlices;
+        internal const int MagicRIFF = 'R' | ('I' << 8) | ('F' << 16) | ('F' << 24);
 
-        internal readonly List<RenderTargetView> RtvArraySlices;
-        internal readonly List<ShaderResourceView> SrvArraySlices;
-
-        [InstMember(1)]
-        private byte[] _bytes;
+        [InstMember(1)] private byte[] _bytes;
 
         private Texture2D _nativeTexture;
 
@@ -80,7 +77,7 @@ namespace dEngine.Data
         /// <summary>
         /// Loads a bitmap into a texture.
         /// </summary>
-        public Texture(System.Drawing.Bitmap bitmap, BindFlags flags) : this()
+        public Texture(Bitmap bitmap, BindFlags flags) : this()
         {
             LoadBitmap(bitmap, flags);
             LoadArraySlices(flags);
@@ -125,8 +122,16 @@ namespace dEngine.Data
             ShaderResourceViewDescription shaderResourceViewDescription) : this()
         {
             NativeTexture = texture;
-            DsvArraySlices.Add(new DepthStencilView(Renderer.Device, texture, depthStencilViewDescription) { Tag = this, DebugName = Name });
-            SrvArraySlices.Add(new ShaderResourceView(Renderer.Device, texture, shaderResourceViewDescription) { Tag = this, DebugName = Name });
+            DsvArraySlices.Add(new DepthStencilView(Renderer.Device, texture, depthStencilViewDescription)
+            {
+                Tag = this,
+                DebugName = Name
+            });
+            SrvArraySlices.Add(new ShaderResourceView(Renderer.Device, texture, shaderResourceViewDescription)
+            {
+                Tag = this,
+                DebugName = Name
+            });
 
             IsLoaded = true;
         }
@@ -222,9 +227,9 @@ namespace dEngine.Data
                         break;
                 }
 
-                for (int i = 0; i < arraySize; i++)
+                for (var i = 0; i < arraySize; i++)
                 {
-                    var rtvDesc = new RenderTargetViewDescription { Format = format };
+                    var rtvDesc = new RenderTargetViewDescription {Format = format};
 
                     if (arraySize == 1)
                     {
@@ -239,7 +244,11 @@ namespace dEngine.Data
                         rtvDesc.Texture2DArray.MipSlice = 0;
                     }
 
-                    var rtv = new RenderTargetView(Renderer.Device, NativeTexture, rtvDesc) { Tag = this, DebugName = Name};
+                    var rtv = new RenderTargetView(Renderer.Device, NativeTexture, rtvDesc)
+                    {
+                        Tag = this,
+                        DebugName = Name
+                    };
 
                     RtvArraySlices.Add(rtv);
                 }
@@ -260,9 +269,9 @@ namespace dEngine.Data
                         break;
                 }
 
-                for (int i = 0; i < arraySize; i++)
+                for (var i = 0; i < arraySize; i++)
                 {
-                    var srvDesc = new ShaderResourceViewDescription { Format = format };
+                    var srvDesc = new ShaderResourceViewDescription {Format = format};
 
                     if (arraySize == 1)
                     {
@@ -279,15 +288,18 @@ namespace dEngine.Data
                         srvDesc.Texture2DArray.MostDetailedMip = 0;
                     }
 
-                    var srv = new ShaderResourceView(Renderer.Device, NativeTexture, srvDesc) { Tag = this, DebugName = Name };
+                    var srv = new ShaderResourceView(Renderer.Device, NativeTexture, srvDesc)
+                    {
+                        Tag = this,
+                        DebugName = Name
+                    };
 
                     SrvArraySlices.Add(srv);
                 }
             }
 
             if (dsvFlag)
-            {
-                for (int i = 0; i < arraySize; i++)
+                for (var i = 0; i < arraySize; i++)
                 {
                     var format = NativeTexture.Description.Format;
 
@@ -302,7 +314,7 @@ namespace dEngine.Data
                             break;
                     }
 
-                    var dsvDesc = new DepthStencilViewDescription { Format = format };
+                    var dsvDesc = new DepthStencilViewDescription {Format = format};
 
                     if (arraySize == 1)
                     {
@@ -317,11 +329,14 @@ namespace dEngine.Data
                         dsvDesc.Texture2DArray.MipSlice = 0;
                     }
 
-                    var dsv = new DepthStencilView(Renderer.Device, NativeTexture, dsvDesc) { Tag = this, DebugName = Name };
+                    var dsv = new DepthStencilView(Renderer.Device, NativeTexture, dsvDesc)
+                    {
+                        Tag = this,
+                        DebugName = Name
+                    };
 
                     DsvArraySlices.Add(dsv);
                 }
-            }
         }
 
         private void UpdateDimensions()
@@ -330,7 +345,7 @@ namespace dEngine.Data
             var h = NativeTexture.Description.Height;
             Width = w;
             Height = h;
-            TexelSize = new Vector4(1.0f / w, 1.0f / h, w, h);
+            TexelSize = new Vector4(1.0f/w, 1.0f/h, w, h);
         }
 
         public static implicit operator Texture2D(Texture texture)
@@ -371,12 +386,9 @@ namespace dEngine.Data
                 Texture2D texture;
 
                 if (fourCC == HDRImage.Magic)
-                {
                     texture = new HDRImage(stream, staging).Texture2D;
-                }
-                else if (fourCC == MagicPNG || fourCC == MagicBMP || fourCC == MagicGIF || twoCC == MagicJPEG ||
-                         twoCC == MagicBMP || fourCC == MagicRIFF || fourCC == DDSImage.Magic)
-                {
+                else if ((fourCC == MagicPNG) || (fourCC == MagicBMP) || (fourCC == MagicGIF) || (twoCC == MagicJPEG) ||
+                         (twoCC == MagicBMP) || (fourCC == MagicRIFF) || (fourCC == DDSImage.Magic))
                     using (
                         var decoder = new BitmapDecoder(Renderer.ImagingFactory, stream,
                             DecodeOptions.CacheOnDemand))
@@ -387,8 +399,8 @@ namespace dEngine.Data
                         {
                             converter.Initialize(frame, PixelFormat.Format32bppPRGBA);
 
-                            int stride = frame.Size.Width * 4;
-                            using (var buffer = new DataStream(frame.Size.Height * stride, true, true))
+                            var stride = frame.Size.Width*4;
+                            using (var buffer = new DataStream(frame.Size.Height*stride, true, true))
                             {
                                 converter.CopyPixels(stride, buffer);
 
@@ -398,7 +410,7 @@ namespace dEngine.Data
                                     Height = frame.Size.Height,
                                     ArraySize = 1,
                                     BindFlags =
-                                        staging ? BindFlags.None : (BindFlags.ShaderResource | BindFlags.RenderTarget),
+                                        staging ? BindFlags.None : BindFlags.ShaderResource | BindFlags.RenderTarget,
                                     Usage = staging ? ResourceUsage.Staging : ResourceUsage.Default,
                                     Format = Format.R8G8B8A8_UNorm,
                                     MipLevels = 1,
@@ -409,15 +421,12 @@ namespace dEngine.Data
                             }
                         }
                     }
-                }
                 else
-                {
                     throw new NotSupportedException("Unknown texture format or corrupt data.");
-                }
 
                 NativeTexture = texture;
                 if (texture.Description.BindFlags.HasFlag(BindFlags.ShaderResource))
-                    SrvArraySlices.Add(new ShaderResourceView(Renderer.Device, texture) { Tag = this, DebugName = Name });
+                    SrvArraySlices.Add(new ShaderResourceView(Renderer.Device, texture) {Tag = this, DebugName = Name});
             }
 
             IsLoaded = true;
@@ -445,7 +454,7 @@ namespace dEngine.Data
             _disposed = true;
         }
 
-        private void LoadBitmap(System.Drawing.Bitmap bitmap, BindFlags flags)
+        private void LoadBitmap(Bitmap bitmap, BindFlags flags)
         {
             var texDesc = new Texture2DDescription
             {
@@ -528,7 +537,7 @@ namespace dEngine.Data
                     0,
                     0,
                     MapMode.Read,
-                    SharpDX.Direct3D11.MapFlags.None,
+                    MapFlags.None,
                     out dataStream);
 
                 var dataRectangle = new DataRectangle
@@ -537,19 +546,19 @@ namespace dEngine.Data
                     Pitch = dataBox.RowPitch
                 };
 
-                var bitmap = new Bitmap(
+                var bitmap = new SharpDX.WIC.Bitmap(
                     Renderer.ImagingFactory,
                     width,
                     height,
                     WICTranslate.GUIDFromFormat(NativeTexture.Description.Format),
                     dataRectangle);
 
-                var bytes = new byte[height * (width * 4)];
+                var bytes = new byte[height*width*4];
 
                 using (var converter = new FormatConverter(Renderer.ImagingFactory))
                 {
                     converter.Initialize(bitmap, PixelFormat.Format32bppPBGRA);
-                    converter.CopyPixels(bytes, width * 4);
+                    converter.CopyPixels(bytes, width*4);
                 }
 
                 return bytes;
@@ -563,7 +572,7 @@ namespace dEngine.Data
             return new Bitmap1(Renderer.Context2D, surface,
                 new BitmapProperties1(
                     new SharpDX.Direct2D1.PixelFormat(surface.Description.Format,
-                        SharpDX.Direct2D1.AlphaMode.Premultiplied),
+                        AlphaMode.Premultiplied),
                     96,
                     96, BitmapOptions.Target));
         }
@@ -578,5 +587,10 @@ namespace dEngine.Data
             desc.Height = y;
             NativeTexture = new Texture2D(Renderer.Device, desc);
         }
+
+        internal readonly List<DepthStencilView> DsvArraySlices;
+
+        internal readonly List<RenderTargetView> RtvArraySlices;
+        internal readonly List<ShaderResourceView> SrvArraySlices;
     }
 }

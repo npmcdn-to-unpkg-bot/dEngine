@@ -13,7 +13,7 @@ using Caliburn.Micro;
 
 namespace dEditor.Framework.Controls.CustomTreeView
 {
-	public class CustomTreeViewModel : Screen
-	{
-	}
+    public class CustomTreeViewModel : Screen
+    {
+    }
 }

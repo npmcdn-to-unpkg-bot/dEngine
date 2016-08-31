@@ -27,7 +27,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The starting UDim2.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public UDim2 From
         {
             get { return _from; }
@@ -43,7 +44,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The ending UDim2.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public UDim2 To
         {
             get { return _to; }

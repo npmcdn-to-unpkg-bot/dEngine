@@ -26,11 +26,8 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         static SharpTreeNodeView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SharpTreeNodeView),
-                                                     new FrameworkPropertyMetadata(typeof(SharpTreeNodeView)));
+                new FrameworkPropertyMetadata(typeof(SharpTreeNodeView)));
         }
-
-        public static readonly DependencyProperty TextBackgroundProperty =
-            DependencyProperty.Register("TextBackground", typeof(Brush), typeof(SharpTreeNodeView));
 
         public Brush TextBackground
         {
@@ -44,10 +41,6 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         }
 
         public SharpTreeViewItem ParentItem { get; private set; }
-
-        public static readonly DependencyProperty CellEditorProperty =
-            DependencyProperty.Register("CellEditor", typeof(Control), typeof(SharpTreeNodeView),
-                                        new FrameworkPropertyMetadata());
 
         public Control CellEditor
         {
@@ -72,7 +65,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
             base.OnVisualParentChanged(oldParent);
-            ParentItem = this.FindAncestor<SharpTreeViewItem>();
+            ParentItem = FindAncestor<SharpTreeViewItem>();
             ParentItem.NodeView = this;
         }
 
@@ -94,37 +87,29 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         public static void AddOnce(IList list, object item)
         {
             if (!list.Contains(item))
-            {
                 list.Add(item);
-            }
         }
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
             if (e.Property == DataContextProperty)
-            {
                 UpdateDataContext(e.OldValue as SharpTreeNode, e.NewValue as SharpTreeNode);
-            }
         }
 
-        void UpdateDataContext(SharpTreeNode oldNode, SharpTreeNode newNode)
+        private void UpdateDataContext(SharpTreeNode oldNode, SharpTreeNode newNode)
         {
             if (newNode != null)
             {
                 newNode.PropertyChanged += Node_PropertyChanged;
                 if (Template != null)
-                {
                     UpdateTemplate();
-                }
             }
             if (oldNode != null)
-            {
                 oldNode.PropertyChanged -= Node_PropertyChanged;
-            }
         }
 
-        void Node_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void Node_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsEditing")
             {
@@ -133,16 +118,13 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             else if (e.PropertyName == "IsLast")
             {
                 if (ParentTreeView.ShowLines)
-                {
                     foreach (var child in Node.VisibleDescendantsAndSelf())
                     {
-                        var container = ParentTreeView.ItemContainerGenerator.ContainerFromItem(child) as SharpTreeViewItem;
+                        var container =
+                            ParentTreeView.ItemContainerGenerator.ContainerFromItem(child) as SharpTreeViewItem;
                         if (container != null)
-                        {
                             container.NodeView.LinesRenderer.InvalidateVisual();
-                        }
                     }
-                }
             }
             else if (e.PropertyName == "IsExpanded")
             {
@@ -151,50 +133,38 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             }
         }
 
-        void OnIsEditingChanged()
+        private void OnIsEditingChanged()
         {
             var textEditorContainer = Template.FindName("textEditorContainer", this) as Border;
             if (Node.IsEditing)
-            {
                 if (CellEditor == null)
-                    textEditorContainer.Child = new EditTextBox() { Item = ParentItem };
+                    textEditorContainer.Child = new EditTextBox {Item = ParentItem};
                 else
                     textEditorContainer.Child = CellEditor;
-            }
             else
-            {
                 textEditorContainer.Child = null;
-            }
         }
 
-        void UpdateTemplate()
+        private void UpdateTemplate()
         {
             var spacer = Template.FindName("spacer", this) as FrameworkElement;
             spacer.Width = CalculateIndent();
 
             var expander = Template.FindName("expander", this) as ToggleButton;
-            if (ParentTreeView.Root == Node && !ParentTreeView.ShowRootExpander)
-            {
+            if ((ParentTreeView.Root == Node) && !ParentTreeView.ShowRootExpander)
                 expander.Visibility = Visibility.Collapsed;
-            }
             else
-            {
                 expander.ClearValue(VisibilityProperty);
-            }
         }
 
         internal double CalculateIndent()
         {
-            var result = 19 * Node.Level;
+            var result = 19*Node.Level;
             if (ParentTreeView.ShowRoot)
             {
                 if (!ParentTreeView.ShowRootExpander)
-                {
                     if (ParentTreeView.Root != Node)
-                    {
                         result -= 15;
-                    }
-                }
             }
             else
             {
@@ -204,5 +174,12 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
                 throw new InvalidOperationException();
             return result;
         }
+
+        public static readonly DependencyProperty TextBackgroundProperty =
+            DependencyProperty.Register("TextBackground", typeof(Brush), typeof(SharpTreeNodeView));
+
+        public static readonly DependencyProperty CellEditorProperty =
+            DependencyProperty.Register("CellEditor", typeof(Control), typeof(SharpTreeNodeView),
+                new FrameworkPropertyMetadata());
     }
 }

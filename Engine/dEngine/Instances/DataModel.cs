@@ -104,7 +104,6 @@ namespace dEngine.Instances
             {
                 var callbacks = _closeBindings.Values.OrderBy(binding => binding.Priority);
                 foreach (var binding in callbacks)
-                {
                     try
                     {
                         binding.Callback();
@@ -113,7 +112,6 @@ namespace dEngine.Instances
                     {
                         Logger.Error(e, $"DataModel.OnClose binding failed: {e.Message}");
                     }
-                }
             }
         }
 

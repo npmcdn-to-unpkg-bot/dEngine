@@ -15,17 +15,17 @@ using System;
 
 namespace dEngine.Instances.Attributes
 {
-	/// <summary>
-	/// The order of the instance in the explorer.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
-	public class ExplorerOrderAttribute : Attribute
-	{
-		public int Order;
+    /// <summary>
+    /// The order of the instance in the explorer.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public class ExplorerOrderAttribute : Attribute
+    {
+        public int Order;
 
-		public ExplorerOrderAttribute(int index)
-		{
-			Order = index;
-		}
-	}
+        public ExplorerOrderAttribute(int index)
+        {
+            Order = index;
+        }
+    }
 }

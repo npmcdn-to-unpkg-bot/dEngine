@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Widgets.Properties.Inspectors.Enum
 {
-	/// <summary>
-	/// Interaction logic for EnumEditorView.xaml
-	/// </summary>
-	public partial class EnumEditorView : UserControl
-	{
-		public EnumEditorView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for EnumEditorView.xaml
+    /// </summary>
+    public partial class EnumEditorView : UserControl
+    {
+        public EnumEditorView()
+        {
+            InitializeComponent();
+        }
+    }
 }

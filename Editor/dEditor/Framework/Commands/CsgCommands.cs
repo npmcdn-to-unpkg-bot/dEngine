@@ -9,7 +9,6 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using System.Linq;
 using System.Windows.Input;
 using dEngine;
@@ -20,86 +19,86 @@ using Key = System.Windows.Input.Key;
 
 namespace dEditor.Framework.Commands
 {
-	public abstract class CsgCommand : Framework.Command
-	{
-		public CsgCommand()
-		{
-			Game.Selection.SelectionChanged.Event +=
-				() => Editor.Current.Dispatcher.InvokeAsync(UpdateCanExecute);
-		}
-	}
+    public abstract class CsgCommand : Command
+    {
+        public CsgCommand()
+        {
+            Game.Selection.SelectionChanged.Event +=
+                () => Editor.Current.Dispatcher.InvokeAsync(UpdateCanExecute);
+        }
+    }
 
-	public class UnionCommand : CsgCommand
-	{
-		public override string Name => "Union";
-		public override string Text => "Merge selected parts.";
-		public override KeyGesture KeyGesture => new KeyGesture(Key.G, ModifierKeys.Control | ModifierKeys.Shift);
+    public class UnionCommand : CsgCommand
+    {
+        public override string Name => "Union";
+        public override string Text => "Merge selected parts.";
+        public override KeyGesture KeyGesture => new KeyGesture(Key.G, ModifierKeys.Control | ModifierKeys.Shift);
 
-		public override bool CanExecute(object parameter)
-		{
-			return SelectionService.Any(x => x is Part);
-		}
+        public override bool CanExecute(object parameter)
+        {
+            return SelectionService.Any(x => x is Part);
+        }
 
-		public override void Execute(object parameter)
-		{
-			var selection = SelectionService.OfType<Part>();
-			SolidModelingManager.Union(selection);
-		}
-	}
+        public override void Execute(object parameter)
+        {
+            var selection = SelectionService.OfType<Part>();
+            SolidModelingManager.Union(selection);
+        }
+    }
 
-	public class NegateCommand : CsgCommand
-	{
-		public override string Name => "Negate";
-		public override string Text => "Negates the part.";
-		public override KeyGesture KeyGesture => new KeyGesture(Key.N, ModifierKeys.Control | ModifierKeys.Shift);
+    public class NegateCommand : CsgCommand
+    {
+        public override string Name => "Negate";
+        public override string Text => "Negates the part.";
+        public override KeyGesture KeyGesture => new KeyGesture(Key.N, ModifierKeys.Control | ModifierKeys.Shift);
 
-		public override bool CanExecute(object parameter)
-		{
-			return SelectionService.Any(x => x is Part);
-		}
+        public override bool CanExecute(object parameter)
+        {
+            return SelectionService.Any(x => x is Part);
+        }
 
-		public override void Execute(object parameter)
-		{
-			var selection = SelectionService.OfType<Part>();
-			selection.ForEach(x => SolidModelingManager.MakeOp<NegateOperation>(x));
-		}
-	}
+        public override void Execute(object parameter)
+        {
+            var selection = SelectionService.OfType<Part>();
+            selection.ForEach(x => SolidModelingManager.MakeOp<NegateOperation>(x));
+        }
+    }
 
-	public class IntersectCommand : CsgCommand
-	{
-		public override string Name => "Intersect";
-		public override string Text => "The common area between two objects.";
-		public override KeyGesture KeyGesture => new KeyGesture(Key.None);
+    public class IntersectCommand : CsgCommand
+    {
+        public override string Name => "Intersect";
+        public override string Text => "The common area between two objects.";
+        public override KeyGesture KeyGesture => new KeyGesture(Key.None);
 
-		public override bool CanExecute(object parameter)
-		{
-			return SelectionService.Any(x => x is Part);
-		}
+        public override bool CanExecute(object parameter)
+        {
+            return SelectionService.Any(x => x is Part);
+        }
 
-		public override void Execute(object parameter)
-		{
-			var selection = SelectionService.OfType<Part>();
-			selection.ForEach(x => SolidModelingManager.MakeOp<IntersectOperation>(x));
-		}
-	}
+        public override void Execute(object parameter)
+        {
+            var selection = SelectionService.OfType<Part>();
+            selection.ForEach(x => SolidModelingManager.MakeOp<IntersectOperation>(x));
+        }
+    }
 
-	public class SeparateCommand : CsgCommand
-	{
-		public override string Name => "Seperate";
-		public override string Text => "Seperate parts from a fused selection.";
+    public class SeparateCommand : CsgCommand
+    {
+        public override string Name => "Seperate";
+        public override string Text => "Seperate parts from a fused selection.";
 
-		public override KeyGesture KeyGesture
-			=> new KeyGesture(Key.DbeCodeInput, ModifierKeys.Control | ModifierKeys.Shift);
+        public override KeyGesture KeyGesture
+            => new KeyGesture(Key.DbeCodeInput, ModifierKeys.Control | ModifierKeys.Shift);
 
-		public override bool CanExecute(object parameter)
-		{
-			return SelectionService.Any() && SelectionService.All(x => x is PartOperation);
-		}
+        public override bool CanExecute(object parameter)
+        {
+            return SelectionService.Any() && SelectionService.All(x => x is PartOperation);
+        }
 
-		public override void Execute(object parameter)
-		{
-			var selection = SelectionService.OfType<PartOperation>();
-			SolidModelingManager.Seperate(selection.First());
-		}
-	}
+        public override void Execute(object parameter)
+        {
+            var selection = SelectionService.OfType<PartOperation>();
+            SolidModelingManager.Seperate(selection.First());
+        }
+    }
 }

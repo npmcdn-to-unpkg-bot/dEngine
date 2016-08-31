@@ -12,9 +12,7 @@
 using System;
 using System.Runtime.InteropServices;
 using dEngine.Data;
-using dEngine.Graphics.States;
 using dEngine.Instances;
-using dEngine.Services;
 using dEngine.Settings.Global;
 using dEngine.Utility;
 using SharpDX;
@@ -32,10 +30,26 @@ namespace dEngine.Graphics
     {
         public const float ShadowNearClip = 1.0f;
         public const bool UseComputeReduction = false;
+
+        public const int CascadeCount = 4;
+        public const int MinCascadeDistance = 0;
+        public const int MaxCascadeDistance = 1;
         private static readonly ConstantBuffer<Matrix> _depthConstants;
         private static DxVector3[] _frustumCorners;
         public static ConstantBuffer<ShadowReceiverData> ReceiverConstants;
         public static GfxShader.Pass DepthOnlyPass;
+
+        public static bool ShadowMapsNeedRemade;
+        public static bool AreSplitsDirty;
+        public static Texture ShadowMap;
+        private static Texture _varianceShadowMap;
+        private static Texture _tempVsm;
+        private static Matrix _texScaleBias;
+        public static DxVector3 Direction;
+        private static Camera _lastCamera;
+
+        private static float[] _cascadeSplits;
+        private static RawViewportF _viewport;
 
         static Shadows()
         {
@@ -54,14 +68,6 @@ namespace dEngine.Graphics
             };
         }
 
-        public static bool ShadowMapsNeedRemade;
-        public static bool AreSplitsDirty;
-        public static Texture ShadowMap;
-        private static Texture _varianceShadowMap;
-        private static Texture _tempVsm;
-        private static Matrix _texScaleBias;
-        public static DxVector3 Direction;
-
         public static void Init()
         {
             DepthOnlyPass = Shaders.Get("ShadowMapping").GetPass("Depth");
@@ -77,7 +83,7 @@ namespace dEngine.Graphics
 
             ResetFrustumCorners(ref _frustumCorners);
             var frustumCenter = DxVector3.Zero;
-            for (int i = 0; i < 8; ++i)
+            for (var i = 0; i < 8; ++i)
             {
                 DxVector3.TransformCoordinate(ref _frustumCorners[i], ref cameraCb.Data.InverseViewProjection,
                     out _frustumCorners[i]);
@@ -96,7 +102,7 @@ namespace dEngine.Graphics
             DxVector3 shadowCameraPos;
             //DxVector3.Multiply(ref Lighting.LightDirection, -0.5f, out shadowCameraPos);
             //DxVector3.Add(ref frustumCenter, ref shadowCameraPos, out shadowCameraPos);
-            shadowCameraPos = frustumCenter + Direction * -0.5f;
+            shadowCameraPos = frustumCenter + Direction*-0.5f;
 
             Matrix viewMatrix;
             Matrix projMatrix;
@@ -108,44 +114,41 @@ namespace dEngine.Graphics
             Matrix.Multiply(ref viewProjMatrix, ref _texScaleBias, out globalShadowMatrix);
         }
 
-        [StructLayout(LayoutKind.Explicit, Size = 220, Pack = 16)]
-        internal struct ShadowReceiverData : IConstantBufferData
-        {
-            [FieldOffset(0)] public Matrix ShadowMatrix;
-            [FieldOffset(64)] public float[] CascadeSplits;
-            [FieldOffset(80)] public DxVector4[] CascadeOffsets;
-            [FieldOffset(144)] public DxVector4[] CascadeScales;
-            [FieldOffset(208)] public float ShadowDepthBias;
-            [FieldOffset(212)] public float ShadowOffsetScale;
-            [FieldOffset(216)] public int VisualizeCascades;
-        }
-
         private static void CreateShadowMaps()
         {
-            int shadowMapSize = RenderSettings.ShadowMapSize;
+            var shadowMapSize = RenderSettings.ShadowMapSize;
 
             ShadowMap?.Dispose();
 
             if (RenderSettings.UseFilterableShadows)
             {
-                ShadowMap = new Texture(shadowMapSize, shadowMapSize, Format.R24_UNorm_X8_Typeless, true, BindFlags.DepthStencil) {Name="ShadowMap"};
+                ShadowMap = new Texture(shadowMapSize, shadowMapSize, Format.R24_UNorm_X8_Typeless, true,
+                    BindFlags.DepthStencil) {Name = "ShadowMap"};
 
                 Format shadowMapFormat;
 
                 switch (RenderSettings.ShadowMode)
                 {
                     case ShadowMode.Evsm4:
-                        shadowMapFormat = RenderSettings.ShadowMapFormat == ShadowFormat.Sm16Bit ? Format.R16G16B16A16_Float : Format.R32G32B32A32_Float;
+                        shadowMapFormat = RenderSettings.ShadowMapFormat == ShadowFormat.Sm16Bit
+                            ? Format.R16G16B16A16_Float
+                            : Format.R32G32B32A32_Float;
                         break;
                     case ShadowMode.Evsm2:
-                        shadowMapFormat = RenderSettings.ShadowMapFormat == ShadowFormat.Sm16Bit ? Format.R16G16_Float : Format.R32G32_Float;
+                        shadowMapFormat = RenderSettings.ShadowMapFormat == ShadowFormat.Sm16Bit
+                            ? Format.R16G16_Float
+                            : Format.R32G32_Float;
                         break;
                     case ShadowMode.MsmHamburger:
                     case ShadowMode.MsmHausdorff:
-                        shadowMapFormat = RenderSettings.ShadowMapFormat == ShadowFormat.Sm16Bit ? Format.R16G16B16A16_UNorm : Format.R32G32B32A32_Float;
+                        shadowMapFormat = RenderSettings.ShadowMapFormat == ShadowFormat.Sm16Bit
+                            ? Format.R16G16B16A16_UNorm
+                            : Format.R32G32B32A32_Float;
                         break;
                     default:
-                        shadowMapFormat = RenderSettings.ShadowMapFormat == ShadowFormat.Sm16Bit ? Format.R16G16_UNorm : Format.R32G32_Float;
+                        shadowMapFormat = RenderSettings.ShadowMapFormat == ShadowFormat.Sm16Bit
+                            ? Format.R16G16_UNorm
+                            : Format.R32G32_Float;
                         break;
                 }
 
@@ -154,7 +157,8 @@ namespace dEngine.Graphics
                 {
                     Name = "VsmSMap"
                 };
-                _tempVsm = new Texture(shadowMapSize, shadowMapSize, shadowMapFormat, false, BindFlags.RenderTarget | BindFlags.ShaderResource) {Name="TempSMap"};
+                _tempVsm = new Texture(shadowMapSize, shadowMapSize, shadowMapFormat, false,
+                    BindFlags.RenderTarget | BindFlags.ShaderResource) {Name = "TempSMap"};
             }
             else
             {
@@ -167,14 +171,6 @@ namespace dEngine.Graphics
             ShadowMapsNeedRemade = false;
         }
 
-        public const int CascadeCount = 4;
-        public const int MinCascadeDistance = 0;
-        public const int MaxCascadeDistance = 1;
-        private static Camera _lastCamera;
-
-        private static float[] _cascadeSplits;
-        private static RawViewportF _viewport;
-
         private static void ComputeSplits(ref Camera camera)
         {
             _cascadeSplits = new float[4];
@@ -183,10 +179,10 @@ namespace dEngine.Graphics
             switch (partitionMode)
             {
                 case CascadePartitionMode.Manual:
-                    _cascadeSplits[0] = MinCascadeDistance + RenderSettings.CascadeSplit0 * MaxCascadeDistance;
-                    _cascadeSplits[1] = MinCascadeDistance + RenderSettings.CascadeSplit1 * MaxCascadeDistance;
-                    _cascadeSplits[2] = MinCascadeDistance + RenderSettings.CascadeSplit2 * MaxCascadeDistance;
-                    _cascadeSplits[3] = MinCascadeDistance + RenderSettings.CascadeSplit3 * MaxCascadeDistance;
+                    _cascadeSplits[0] = MinCascadeDistance + RenderSettings.CascadeSplit0*MaxCascadeDistance;
+                    _cascadeSplits[1] = MinCascadeDistance + RenderSettings.CascadeSplit1*MaxCascadeDistance;
+                    _cascadeSplits[2] = MinCascadeDistance + RenderSettings.CascadeSplit2*MaxCascadeDistance;
+                    _cascadeSplits[3] = MinCascadeDistance + RenderSettings.CascadeSplit3*MaxCascadeDistance;
                     break;
                 case CascadePartitionMode.Logarithmic:
                 case CascadePartitionMode.ParallelSplit:
@@ -199,23 +195,23 @@ namespace dEngine.Graphics
                     var farClip = camera.ClipFar;
                     var clipRange = farClip - nearClip;
 
-                    var minZ = nearClip + MinCascadeDistance * clipRange;
-                    var maxZ = nearClip + MaxCascadeDistance * clipRange;
+                    var minZ = nearClip + MinCascadeDistance*clipRange;
+                    var maxZ = nearClip + MaxCascadeDistance*clipRange;
 
                     var range = maxZ - minZ;
-                    var ratio = maxZ / minZ;
+                    var ratio = maxZ/minZ;
 
-                    for (int i = 0; i < CascadeCount; i++)
+                    for (var i = 0; i < CascadeCount; i++)
                     {
-                        float p = (i + 1) / (float)CascadeCount;
-                        float log = minZ * Mathf.Pow(ratio, p);
-                        float uniform = minZ + range * p;
-                        float d = lambda * (log - uniform) + uniform;
-                        _cascadeSplits[i] = (d - nearClip);
+                        var p = (i + 1)/(float)CascadeCount;
+                        var log = minZ*Mathf.Pow(ratio, p);
+                        var uniform = minZ + range*p;
+                        var d = lambda*(log - uniform) + uniform;
+                        _cascadeSplits[i] = d - nearClip;
                     }
-                    
+
                     // TODO: debug
-                    _cascadeSplits = new [] { 0.00120558857f, 0.0120992521f, 0.110534795f, 1.0f };
+                    _cascadeSplits = new[] {0.00120558857f, 0.0120992521f, 0.110534795f, 1.0f};
 
                     break;
             }
@@ -232,16 +228,16 @@ namespace dEngine.Graphics
 
                 var shadowMapSize = ShadowMap.Width;
 
-                if (AreSplitsDirty || camera != _lastCamera)
+                if (AreSplitsDirty || (camera != _lastCamera))
                     ComputeSplits(ref camera);
 
                 _lastCamera = camera;
-                
+
                 MakeGlobalShadowMatrix(ref camera, out ReceiverConstants.Data.ShadowMatrix);
 
                 context.Rasterizer.SetViewport(_viewport);
 
-                for (int cascadeIndex = 0; cascadeIndex < CascadeCount; ++cascadeIndex)
+                for (var cascadeIndex = 0; cascadeIndex < CascadeCount; ++cascadeIndex)
                 {
                     PixHelper.BeginEvent(default(RawColorBGRA), "Cascade");
                     {
@@ -250,11 +246,11 @@ namespace dEngine.Graphics
                         var prevSplitDist = cascadeIndex == 0 ? MinCascadeDistance : _cascadeSplits[cascadeIndex - 1];
                         var splitDist = _cascadeSplits[cascadeIndex];
 
-                        for (int i = 0; i < 8; i++)
+                        for (var i = 0; i < 8; i++)
                             DxVector3.TransformCoordinate(ref _frustumCorners[i],
                                 ref camera.Constants.Data.InverseViewProjection, out _frustumCorners[i]);
 
-                        for (int i = 0; i < 4; i++)
+                        for (var i = 0; i < 4; i++)
                         {
                             DxVector3 cornerRay;
                             DxVector3 nearCornerRay;
@@ -267,21 +263,21 @@ namespace dEngine.Graphics
                         }
 
                         var frustumCenter = DxVector3.Zero;
-                        for (int i = 0; i < 8; i++)
+                        for (var i = 0; i < 8; i++)
                             DxVector3.Add(ref frustumCenter, ref _frustumCorners[i], out frustumCenter);
                         DxVector3.Multiply(ref frustumCenter, 0.125F, out frustumCenter);
 
                         var upDir = DxVector3.Up;
 
-                        float sphereRadius = 0.0f;
-                        for (int i = 0; i < 8; ++i)
+                        var sphereRadius = 0.0f;
+                        for (var i = 0; i < 8; ++i)
                         {
                             DxVector3 sum;
                             DxVector3.Subtract(ref _frustumCorners[i], ref frustumCenter, out sum);
                             sphereRadius = Math.Max(sphereRadius, sum.Length());
                         }
 
-                        sphereRadius = (float)Math.Ceiling(sphereRadius * 16.0f) / 16.0f;
+                        sphereRadius = (float)Math.Ceiling(sphereRadius*16.0f)/16.0f;
 
                         var maxExtents = new DxVector3(sphereRadius, sphereRadius, sphereRadius);
                         DxVector3 minExtents;
@@ -291,7 +287,7 @@ namespace dEngine.Graphics
                         DxVector3.Subtract(ref maxExtents, ref minExtents, out cascadeExtents);
 
                         // TODO: optimize
-                        var shadowCameraPos = frustumCenter + Direction * -minExtents.Z;
+                        var shadowCameraPos = frustumCenter + Direction*-minExtents.Z;
 
                         Matrix viewMatrix;
                         Matrix projectionMatrix;
@@ -304,13 +300,13 @@ namespace dEngine.Graphics
 
                         var shadowOrigin = DxVector4.UnitW;
                         DxVector4.Transform(ref shadowOrigin, ref viewProjMatrix, out shadowOrigin);
-                        DxVector4.Multiply(ref shadowOrigin, shadowMapSize / 2.0f, out shadowOrigin);
+                        DxVector4.Multiply(ref shadowOrigin, shadowMapSize/2.0f, out shadowOrigin);
 
                         var roundedOrigin = new DxVector4(Mathf.Round(shadowOrigin.X), Mathf.Round(shadowOrigin.Y),
                             Mathf.Round(shadowOrigin.Z), Mathf.Round(shadowOrigin.W));
                         DxVector4 roundOffset;
                         DxVector4.Subtract(ref roundedOrigin, ref shadowOrigin, out roundOffset);
-                        DxVector4.Multiply(ref roundOffset, 2.0f / shadowMapSize, out roundOffset);
+                        DxVector4.Multiply(ref roundOffset, 2.0f/shadowMapSize, out roundOffset);
                         roundOffset.Z = 0.0f;
                         roundOffset.W = 0.0f;
 
@@ -323,17 +319,17 @@ namespace dEngine.Graphics
 
                         var texScaleBias = new Matrix
                         {
-                            Row1 = new SharpDX.Vector4(0.5f, 0.0f, 0.0f, 0.0f),
-                            Row2 = new SharpDX.Vector4(0.0f, -0.5f, 0.0f, 0.0f),
-                            Row3 = new SharpDX.Vector4(0.0f, 0.0f, 1.0f, 0.0f),
-                            Row4 = new SharpDX.Vector4(0.5f, 0.5f, 0.0f, 1.0f)
+                            Row1 = new DxVector4(0.5f, 0.0f, 0.0f, 0.0f),
+                            Row2 = new DxVector4(0.0f, -0.5f, 0.0f, 0.0f),
+                            Row3 = new DxVector4(0.0f, 0.0f, 1.0f, 0.0f),
+                            Row4 = new DxVector4(0.5f, 0.5f, 0.0f, 1.0f)
                         };
                         Matrix.Multiply(ref viewProjMatrix, ref texScaleBias, out viewProjMatrix);
 
                         var clipNear = camera.ClipNear;
                         var clipFar = camera.ClipFar;
                         var clipDist = clipFar - clipNear;
-                        ReceiverConstants.Data.CascadeSplits[cascadeIndex] = clipNear + splitDist * clipDist;
+                        ReceiverConstants.Data.CascadeSplits[cascadeIndex] = clipNear + splitDist*clipDist;
 
                         Matrix invCascadeMatrix;
                         Matrix.Invert(ref viewProjMatrix, out invCascadeMatrix);
@@ -347,9 +343,10 @@ namespace dEngine.Graphics
                         var one = DxVector3.One;
                         DxVector3 otherCorner;
                         DxVector3.TransformCoordinate(ref one, ref invCascadeMatrix, out otherCorner);
-                        DxVector3.TransformCoordinate(ref otherCorner, ref ReceiverConstants.Data.ShadowMatrix, out otherCorner);
+                        DxVector3.TransformCoordinate(ref otherCorner, ref ReceiverConstants.Data.ShadowMatrix,
+                            out otherCorner);
 
-                        var cascadeScale = DxVector3.One / (otherCorner - cascadeCorner);
+                        var cascadeScale = DxVector3.One/(otherCorner - cascadeCorner);
                         ReceiverConstants.Data.CascadeOffsets[cascadeIndex] = new DxVector4(-cascadeCorner, 0.0f);
                         ReceiverConstants.Data.CascadeScales[cascadeIndex] = new DxVector4(cascadeScale, 1.0f);
 
@@ -378,7 +375,8 @@ namespace dEngine.Graphics
             //ReceiverConstants.Update(ref context);
         }
 
-        private static void ConvertToVsm(ref DeviceContext context, int cascadeIndex, ref float cascadeSplit, ref DxVector4 cascadeScale)
+        private static void ConvertToVsm(ref DeviceContext context, int cascadeIndex, ref float cascadeSplit,
+            ref DxVector4 cascadeScale)
         {
             throw new NotImplementedException();
         }
@@ -386,8 +384,8 @@ namespace dEngine.Graphics
         private static void ResetFrustumCorners(ref DxVector3[] corners)
         {
             corners[0] = new DxVector3(-1.0f, 1.0f, 0.0f);
-            corners[1] = new DxVector3( 1.0f,  1.0f, 0.0f);
-            corners[2] = new DxVector3( 1.0f, -1.0f, 0.0f);
+            corners[1] = new DxVector3(1.0f, 1.0f, 0.0f);
+            corners[2] = new DxVector3(1.0f, -1.0f, 0.0f);
             corners[3] = new DxVector3(-1.0f, -1.0f, 0.0f);
             corners[4] = new DxVector3(-1.0f, 1.0f, 1.0f);
             corners[5] = new DxVector3(1.0f, 1.0f, 1.0f);
@@ -415,6 +413,18 @@ namespace dEngine.Graphics
                 context.VertexShader.SetConstantBuffer(0, _depthConstants);
                 context.PixelShader.SetShaderResources(0, null, null, null);
             }
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 220, Pack = 16)]
+        internal struct ShadowReceiverData : IConstantBufferData
+        {
+            [FieldOffset(0)] public Matrix ShadowMatrix;
+            [FieldOffset(64)] public float[] CascadeSplits;
+            [FieldOffset(80)] public DxVector4[] CascadeOffsets;
+            [FieldOffset(144)] public DxVector4[] CascadeScales;
+            [FieldOffset(208)] public float ShadowDepthBias;
+            [FieldOffset(212)] public float ShadowOffsetScale;
+            [FieldOffset(216)] public int VisualizeCascades;
         }
     }
 }

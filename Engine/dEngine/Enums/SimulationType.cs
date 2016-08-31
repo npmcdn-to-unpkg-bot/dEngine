@@ -11,19 +11,19 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// Types of simulation.
-	/// </summary>
-	public enum SimulationType
-	{
-		/// <summary>
-		/// The game is being simulated as a player.
-		/// </summary>
-		Play,
+    /// <summary>
+    /// Types of simulation.
+    /// </summary>
+    public enum SimulationType
+    {
+        /// <summary>
+        /// The game is being simulated as a player.
+        /// </summary>
+        Play,
 
-		/// <summary>
-		/// The game is being simulated as a server.
-		/// </summary>
-		Run
-	}
+        /// <summary>
+        /// The game is being simulated as a server.
+        /// </summary>
+        Run
+    }
 }

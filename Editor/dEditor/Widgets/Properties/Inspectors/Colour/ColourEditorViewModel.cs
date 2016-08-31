@@ -10,7 +10,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Reflection;
+using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 using dEngine.Serializer.V1;
@@ -36,7 +36,7 @@ namespace dEditor.Widgets.Properties.Inspectors.Colour
             {
                 if (AreMultipleValuesSame)
                     return
-                        $"{Math.Round(255 * Value.r)}, {Math.Round(255 * Value.g)}, {Math.Round(255 * Value.b)}, {Math.Round(Value.a, 3)}";
+                        $"{Math.Round(255*Value.r)}, {Math.Round(255*Value.g)}, {Math.Round(255*Value.b)}, {Math.Round(Value.a, 3)}";
                 return null;
             }
             set { Value = dEngine.Colour.parseRGBA(value); }
@@ -46,12 +46,12 @@ namespace dEditor.Widgets.Properties.Inspectors.Colour
     public class ColourConverter : IValueConverter
     {
         public object Convert(object value, System.Type targetType, object parameter,
-            System.Globalization.CultureInfo culture)
+            CultureInfo culture)
         {
             try
             {
                 var c = (dEngine.Colour)value;
-                var color = Color.FromArgb((byte)(c.a * 255), (byte)(c.r * 255), (byte)(c.g * 255), (byte)(c.b * 255));
+                var color = Color.FromArgb((byte)(c.a*255), (byte)(c.r*255), (byte)(c.g*255), (byte)(c.b*255));
                 return color;
             }
             catch
@@ -61,7 +61,7 @@ namespace dEditor.Widgets.Properties.Inspectors.Colour
         }
 
         public object ConvertBack(object value, System.Type targetType, object parameter,
-            System.Globalization.CultureInfo culture)
+            CultureInfo culture)
         {
             try
             {

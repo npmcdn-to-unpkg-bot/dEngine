@@ -34,9 +34,7 @@ namespace dEditor.Widgets.Explorer
             Game.InstanceAdded += GameOnInstanceAdded;
 
             foreach (var i in Game.Instances)
-            {
                 GameOnInstanceAdded(i.Value);
-            }
 
             Game.InstanceRemoved +=
                 i => Editor.Current.Dispatcher.InvokeAsync(() => ExplorerItems.TryRemove(i));
@@ -46,8 +44,6 @@ namespace dEditor.Widgets.Explorer
         {
             DisplayName = "Explorer";
         }
-
-        public Instance LastClickedInstance { get; set; }
 
         public bool IsFolderSelected => LastClickedInstance is Folder;
 
@@ -63,6 +59,12 @@ namespace dEditor.Widgets.Explorer
         public ZoomToCommand ZoomToCommand { get; } = new ZoomToCommand();
         public InsertPartCommand InsertPartCommand { get; } = new InsertPartCommand();
 
+        public static ConcurrentDictionary<Instance, WeakReference<ExplorerItem>> ExplorerItems { get; }
+
+        public override PaneLocation PreferredLocation => PaneLocation.Right;
+
+        public Instance LastClickedInstance { get; set; }
+
         public ExplorerItem RootItem
         {
             get { return _rootItem; }
@@ -74,10 +76,6 @@ namespace dEditor.Widgets.Explorer
                 NotifyOfPropertyChange();
             }
         }
-
-        public static ConcurrentDictionary<Instance, WeakReference<ExplorerItem>> ExplorerItems { get; }
-
-        public override PaneLocation PreferredLocation => PaneLocation.Right;
 
         private static void GameOnInstanceAdded(Instance i)
         {

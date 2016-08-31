@@ -20,8 +20,6 @@ using dEngine.Data;
 using dEngine.Instances.Attributes;
 using dEngine.Services;
 using WpfToggleButton = System.Windows.Controls.Primitives.ToggleButton;
-using Application = System.Windows.Application;
-using Binding = System.Windows.Data.Binding;
 
 namespace dEditor.Framework.Plugins
 {
@@ -30,7 +28,6 @@ namespace dEditor.Framework.Plugins
         private WpfToggleButton _button;
         private Toolbar _toolbar;
         private bool _isChecked;
-        public readonly Signal Clicked;
 
         public Button(string text, string tooltip, string iconId, Toolbar toolbar)
         {
@@ -63,8 +60,8 @@ namespace dEditor.Framework.Plugins
                         _button.Content = new Image
                         {
                             Source = BitmapSource.Create(texture.Width, texture.Height, 96, 96, PixelFormats.Pbgra32,
-                            BitmapPalettes.WebPalette,
-                            texture.GetBytesPBGRA(), texture.Width * 4)
+                                BitmapPalettes.WebPalette,
+                                texture.GetBytesPBGRA(), texture.Width*4)
                         };
                     });
                 });
@@ -78,12 +75,6 @@ namespace dEditor.Framework.Plugins
             });
         }
 
-        private void ButtonOnChecked(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (_button.IsChecked != _isChecked)
-                NotifyOfPropertyChange(nameof(IsChecked));
-        }
-
         public bool IsChecked
         {
             get { return _isChecked; }
@@ -95,36 +86,34 @@ namespace dEditor.Framework.Plugins
             }
         }
 
+        private void ButtonOnChecked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (_button.IsChecked != _isChecked)
+                NotifyOfPropertyChange(nameof(IsChecked));
+        }
+
         private void UpdateButtonEnabled(Document doc)
         {
-            if (doc?.IsActive == true && doc is ViewportViewModel)
-            {
+            if ((doc?.IsActive == true) && doc is ViewportViewModel)
                 _button.IsEnabled = true;
-            }
             else
-            {
                 _button.IsEnabled = false;
-            }
         }
 
         [ScriptSecurity(ScriptIdentity.Plugin)]
         public void SetActive(bool active)
         {
             ScriptService.AssertIdentity(ScriptIdentity.Plugin);
-            Editor.Current.Dispatcher.InvokeAsync(() =>
-            {
-                IsChecked = active;
-            });
+            Editor.Current.Dispatcher.InvokeAsync(() => { IsChecked = active; });
         }
 
         public override void Destroy()
         {
             ParentLocked = false;
             base.Destroy();
-            Editor.Current.Dispatcher.InvokeAsync(() =>
-            {
-                _toolbar?.WpfToolBar.Items.Remove(_button);
-            });
+            Editor.Current.Dispatcher.InvokeAsync(() => { _toolbar?.WpfToolBar.Items.Remove(_button); });
         }
+
+        public readonly Signal Clicked;
     }
 }

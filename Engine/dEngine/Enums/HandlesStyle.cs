@@ -13,19 +13,19 @@ using dEngine.Instances;
 
 namespace dEngine
 {
-	/// <summary>
-	/// Style for <see cref="BaseHandles" />
-	/// </summary>
-	public enum HandlesStyle
-	{
-		/// <summary>
-		/// Displays arrows for each axis.
-		/// </summary>
-		Movement,
+    /// <summary>
+    /// Style for <see cref="BaseHandles" />
+    /// </summary>
+    public enum HandlesStyle
+    {
+        /// <summary>
+        /// Displays arrows for each axis.
+        /// </summary>
+        Movement,
 
-		/// <summary>
-		/// Displayes spheres for each axis.
-		/// </summary>
-		Resize
-	}
+        /// <summary>
+        /// Displayes spheres for each axis.
+        /// </summary>
+        Resize
+    }
 }

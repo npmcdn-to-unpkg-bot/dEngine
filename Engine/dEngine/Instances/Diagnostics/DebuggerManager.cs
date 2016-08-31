@@ -16,15 +16,16 @@ using dEngine.Settings.Global;
 namespace dEngine.Instances.Diagnostics
 {
     /// <summary>
-    /// Manager for <see cref="ScriptDebugger"/>s.
+    /// Manager for <see cref="ScriptDebugger" />s.
     /// </summary>
-    [Uncreatable, TypeId(216)]
+    [Uncreatable]
+    [TypeId(216)]
     public class DebuggerManager : Instance
     {
         private readonly object _locker = new object();
         private readonly List<ScriptDebugger> _debuggers;
 
-        /// <summary/>
+        /// <summary />
         public DebuggerManager()
         {
             _debuggers = new List<ScriptDebugger>();
@@ -49,7 +50,7 @@ namespace dEngine.Instances.Diagnostics
         }
 
         /// <summary>
-        /// Returns an array of all <see cref="ScriptDebugger"/>s.
+        /// Returns an array of all <see cref="ScriptDebugger" />s.
         /// </summary>
         public ScriptDebugger[] GetDebuggers()
         {
@@ -64,7 +65,6 @@ namespace dEngine.Instances.Diagnostics
         /// </summary>
         public void Resume()
         {
-
         }
 
         /// <summary>
@@ -72,7 +72,6 @@ namespace dEngine.Instances.Diagnostics
         /// </summary>
         public void StepIn()
         {
-
         }
 
         /// <summary>
@@ -80,7 +79,6 @@ namespace dEngine.Instances.Diagnostics
         /// </summary>
         public void StepOut()
         {
-
         }
 
         /// <summary>
@@ -88,7 +86,6 @@ namespace dEngine.Instances.Diagnostics
         /// </summary>
         public void StepOver()
         {
-
         }
     }
 }

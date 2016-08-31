@@ -20,11 +20,23 @@ using MoreLinq;
 using Newtonsoft.Json;
 
 // ReSharper disable once LocalizableElement
+
 namespace dEditor.Framework
 {
     public static class KeyBindings
     {
-        public static string CustomShortcutsPath = Path.Combine(Editor.Current.EditorDocumentsPath, "KeyboardShortcuts.json");
+        public static string CustomShortcutsPath = Path.Combine(Editor.Current.EditorDocumentsPath,
+            "KeyboardShortcuts.json");
+
+        private static readonly BoundExpressionOptions WhenExpressionOptions = new BoundExpressionOptions
+        {
+            AllowPrivateAccess = false,
+            ResultType = typeof(bool)
+        };
+
+        private static FileSystemWatcher _watcher;
+        private static string _defaultShortcutsJson;
+        private static readonly List<ContextActionService.ContextBinding> _bindings;
 
         static KeyBindings()
         {
@@ -54,7 +66,7 @@ namespace dEditor.Framework
                 Path = Editor.Current.EditorDocumentsPath,
                 Filter = "KeyboardShortcuts.json",
                 NotifyFilter = NotifyFilters.LastWrite,
-                EnableRaisingEvents = true,
+                EnableRaisingEvents = true
             };
             _watcher.Changed += (s, e) => ReloadKeymap();
 
@@ -186,25 +198,14 @@ namespace dEditor.Framework
             };
         }
 
-        private static readonly BoundExpressionOptions WhenExpressionOptions = new BoundExpressionOptions
-        {
-            AllowPrivateAccess = false,
-            ResultType = typeof(bool)
-        };
-
-        private static FileSystemWatcher _watcher;
-        private static string _defaultShortcutsJson;
-        private static List<ContextActionService.ContextBinding> _bindings;
-
         [JsonObject]
         public class KeymapItem
         {
-            [JsonProperty("key")]
-            public string Key;
-            [JsonProperty("Command")]
-            public string Command;
-            [JsonProperty("when")]
-            public string When;
+            [JsonProperty("key")] public string Key;
+
+            [JsonProperty("Command")] public string Command;
+
+            [JsonProperty("when")] public string When;
         }
     }
 }

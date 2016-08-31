@@ -20,7 +20,6 @@ using System.Text;
 using dEngine.Data;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
-using dEngine.Instances.Materials;
 using dEngine.Services;
 using dEngine.Utility;
 using dEngine.Utility.Extensions;
@@ -38,6 +37,7 @@ namespace dEngine.Serializer.V1
     /*
 172
      */
+
     /// <summary>
     /// Inst is a custom serialization format for <see cref="Instance" />s.
     /// </summary>
@@ -57,40 +57,18 @@ namespace dEngine.Serializer.V1
 
         internal static int HighestTypeId;
 
-        public enum DataType : byte
+        static Inst()
         {
-            Unknown,
-            String,
-            Boolean,
-            Int16,
-            Int32,
-            Int64,
-            Single,
-            Double,
-            UserData,
-            Content,
-            Enum,
-            Referent,
-            BinaryData,
-            InstanceId,
-            FontFamily,
-            Invalid = 255,
+            Init();
         }
 
         private static void PrintAvailableIds(int upTo)
         {
-            string str = "";
-            for (int i = 0; i < upTo; i++)
-            {
+            var str = "";
+            for (var i = 0; i < upTo; i++)
                 if (Types.Values.All(t => t.TypeId != i))
-                    str += i.ToString() + "\n";
-            }
+                    str += i + "\n";
             Debug.WriteLine(str);
-        }
-
-        static Inst()
-        {
-            Init();
         }
 
         internal static void Init()
@@ -163,9 +141,7 @@ namespace dEngine.Serializer.V1
                 writer.Write(new byte[8], 0, 8);
 
                 foreach (var kvp in context.TypeRecords)
-                {
                     context.WriteFileRecord(kvp.Value, writer);
-                }
 
                 // Write Properties
                 foreach (var record in context.TypeRecords)
@@ -192,7 +168,6 @@ namespace dEngine.Serializer.V1
                         obj.Value.Instance.AfterSerialization(context);
             }
         }
-
 
 
         /// <summary>
@@ -234,7 +209,7 @@ namespace dEngine.Serializer.V1
 
                 var typeHeaders = new TypeRecord[totalTypes];
 
-                for (int i = 0; i < totalTypes; i++)
+                for (var i = 0; i < totalTypes; i++)
                 {
                     var typeRecord = new TypeRecord(context);
                     if (!ReadFileRecord(typeRecord, reader))
@@ -247,8 +222,8 @@ namespace dEngine.Serializer.V1
                 #region Referents & Object Creation
 
                 var objects = new Instance[totalObjects];
-                int objIndex = 0;
-                for (int i = 0; i < totalTypes; i++)
+                var objIndex = 0;
+                for (var i = 0; i < totalTypes; i++)
                 {
                     var typeRecord = typeHeaders[i];
 
@@ -267,11 +242,11 @@ namespace dEngine.Serializer.V1
 
                 #region Reading Properties
 
-                for (int i = 0; i < totalTypes; i++)
+                for (var i = 0; i < totalTypes; i++)
                 {
                     var typeRecord = typeHeaders[i];
                     var propCount = reader.ReadInt32();
-                    for (int j = 0; j < propCount; j++)
+                    for (var j = 0; j < propCount; j++)
                     {
                         var propRecord = new PropertyRecord(context, typeRecord);
                         if (!ReadFileRecord(propRecord, reader))
@@ -284,13 +259,12 @@ namespace dEngine.Serializer.V1
 
                 #region Setting Properties
 
-                for (int pass = 0; pass < 2; pass++)
-                {
-                    for (int i = 0; i < totalTypes; i++)
+                for (var pass = 0; pass < 2; pass++)
+                    for (var i = 0; i < totalTypes; i++)
                     {
                         var typeRecord = typeHeaders[i];
 
-                        int j = 0;
+                        var j = 0;
                         foreach (var referent in typeRecord.Referents.Values)
                         {
                             var instance = referent.Instance;
@@ -300,9 +274,7 @@ namespace dEngine.Serializer.V1
                                 if (prop.Name == "Parent")
                                 {
                                     if (pass == 1)
-                                    {
                                         continue;
-                                    }
                                 }
                                 else if (pass == 0)
                                     continue;
@@ -315,20 +287,18 @@ namespace dEngine.Serializer.V1
                                     if (refr != null)
                                         data = refr.Instance;
 
-                                    if (prop.DataType == DataType.Content || (record.Property.PropertyType == typeof(FontFamily) && data is string)) // coerce string into content
-                                    {
+                                    if ((prop.DataType == DataType.Content) ||
+                                        ((record.Property.PropertyType == typeof(FontFamily)) && data is string))
+                                        // coerce string into content
                                         data = Dynamic.CoerceConvert(data, record.Property.PropertyType);
-                                    }
 
                                     //prop.Property.Set(instance, data);
                                     prop.Property.Set.FastDynamicInvoke(instance, data);
                                 }
-
                             }
                             j++;
                         }
                     }
-                }
 
                 #endregion
 
@@ -376,7 +346,7 @@ namespace dEngine.Serializer.V1
         {
             using (var stream = new MemoryStream())
             {
-                Serialize(instance, stream, clone: true);
+                Serialize(instance, stream, true);
                 stream.Position = 0L;
                 return Deserialize(stream);
             }
@@ -418,6 +388,30 @@ namespace dEngine.Serializer.V1
             return valid;
         }
 
+        internal static int EncodePropertyTag(short typeId, short propId)
+        {
+            return (propId << 16) | (typeId & 0xFFFF);
+        }
+
+        internal static void DecodePropertyTag(int encoded, out short typeId, out short propId)
+        {
+            typeId = (short)(encoded & 0xFFFF);
+            propId = (short)((encoded >> 16) & 0xFFFF);
+        }
+
+        internal static CachedType CacheType(Type type, int? typeId = null)
+        {
+            CachedType cached;
+            if (!TypeDictionary.TryGetValue(type.Name, out cached))
+            {
+                cached = new CachedType(type);
+                if (typeId.HasValue)
+                    Types.Add(typeId.Value, cached);
+                TypeDictionary.Add(type.Name, cached);
+            }
+            return cached;
+        }
+
         internal interface IFileRecord
         {
             char[] Magic { get; }
@@ -440,14 +434,12 @@ namespace dEngine.Serializer.V1
             public void Read(BinaryReader reader)
             {
                 foreach (var typeRecord in Context.TypeRecords.Values)
-                {
-                    for (int i = 0; i < typeRecord.ObjectCount; i++)
+                    for (var i = 0; i < typeRecord.ObjectCount; i++)
                     {
                         var id = reader.ReadInt32();
                         var referent = new Referent(id);
                         Context.GlobalReferents[id] = typeRecord.Referents[id] = referent;
                     }
-                }
             }
 
             public MemoryStream Write(Context context)
@@ -456,42 +448,22 @@ namespace dEngine.Serializer.V1
                 using (var writer = new BinaryWriter(stream, Encoding.UTF8, true))
                 {
                     foreach (var typeRecord in context.TypeRecords.Values)
-                    {
                         foreach (var record in typeRecord.Referents)
-                        {
                             writer.Write(record.Key);
-                        }
-                    }
                 }
                 return stream;
             }
         }
 
-        internal static int EncodePropertyTag(short typeId, short propId)
-        {
-            return (propId << 16) | (typeId & 0xFFFF);
-        }
-
-        internal static void DecodePropertyTag(int encoded, out short typeId, out short propId)
-        {
-            typeId = (short)(encoded & 0xFFFF);
-            propId = (short)((encoded >> 16) & 0xFFFF);
-        }
-
         internal class PropertyRecord : IFileRecord
         {
-            private static readonly char[] _nullChars = { 'N', 'U', 'L' };
+            private static readonly char[] _nullChars = {'N', 'U', 'L'};
 
             public PropertyRecord(Context context, TypeRecord typeRecord)
             {
                 Data = new List<object>();
                 TypeRecord = typeRecord;
                 Context = context;
-            }
-
-            public override string ToString()
-            {
-                return Name;
             }
 
             public PropertyRecord(Context context, TypeRecord typeRecord, CachedProperty prop)
@@ -515,9 +487,9 @@ namespace dEngine.Serializer.V1
             public List<object> Data { get; }
             public TypeRecord TypeRecord { get; set; }
             public Context Context { get; set; }
-            public char[] Magic { get; } = "PROP".ToCharArray();
             public int EncodeTag { get; set; }
             public CachedProperty Property { get; set; }
+            public char[] Magic { get; } = "PROP".ToCharArray();
 
 
             public MemoryStream Write(Context context)
@@ -529,7 +501,6 @@ namespace dEngine.Serializer.V1
                     recordWriter.Write((byte)DataType);
 
                     foreach (dynamic data in Data)
-                    {
                         switch (DataType)
                         {
                             case DataType.String:
@@ -570,7 +541,8 @@ namespace dEngine.Serializer.V1
                                     Referent referent;
                                     var cachedType = TypeDictionary[value.ClassName];
                                     TypeRecord record;
-                                    if (!context.TypeRecords.TryGetValue(cachedType, out record) || !record.Objects.TryGetValue(value, out referent))
+                                    if (!context.TypeRecords.TryGetValue(cachedType, out record) ||
+                                        !record.Objects.TryGetValue(value, out referent))
                                         id = -1;
                                     else
                                         id = referent.ReferentId;
@@ -578,7 +550,7 @@ namespace dEngine.Serializer.V1
                                 recordWriter.Write(id);
                                 break;
                             case DataType.UserData:
-                                var userData = ((IDataType)data);
+                                var userData = (IDataType)data;
                                 if (userData != null)
                                 {
                                     recordWriter.Write(GetIdFromDataType(PropertyType));
@@ -590,7 +562,6 @@ namespace dEngine.Serializer.V1
                             default:
                                 throw new NotSupportedException($"Property type \"{PropertyType.Name}\" not supported.");
                         }
-                    }
                 }
                 return recordStream;
             }
@@ -616,7 +587,6 @@ namespace dEngine.Serializer.V1
                 DataType = (DataType)propReader.ReadByte();
 
                 while (propReader.BaseStream.Position < propReader.BaseStream.Length)
-                {
                     switch (DataType)
                     {
                         case DataType.String:
@@ -749,9 +719,13 @@ namespace dEngine.Serializer.V1
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                }
             }
-            
+
+            public override string ToString()
+            {
+                return Name;
+            }
+
             private byte GetIdFromDataType(Type type) // TODO: use attributes and build a dictionary
             {
                 var name = type.Name;
@@ -832,7 +806,8 @@ namespace dEngine.Serializer.V1
                 {
                     if (prop.Tag == -1)
                         continue;
-                    Properties.Add(EncodePropertyTag(prop.DeclaringTypeId, prop.Tag), new PropertyRecord(context, this, prop));
+                    Properties.Add(EncodePropertyTag(prop.DeclaringTypeId, prop.Tag),
+                        new PropertyRecord(context, this, prop));
                 }
             }
 
@@ -840,9 +815,9 @@ namespace dEngine.Serializer.V1
             public Dictionary<int, PropertyRecord> Properties { get; }
             public CachedType Type { get; private set; }
             public int ObjectCount { get; internal set; }
+            public Dictionary<int, Referent> Referents { get; }
+            public Dictionary<Instance, Referent> Objects { get; }
             public char[] Magic { get; } = "TYPE".ToCharArray();
-            public Dictionary<int, Referent> Referents { get; private set; }
-            public Dictionary<Instance, Referent> Objects { get; private set; }
 
             public MemoryStream Write(Context context)
             {
@@ -853,9 +828,7 @@ namespace dEngine.Serializer.V1
                     recordWriter.Write(false); // additional data flag
                     recordWriter.Write(ObjectCount);
                     foreach (var referent in Referents)
-                    {
                         recordWriter.Write(referent.Key);
-                    }
                 }
                 return recordStream;
             }
@@ -869,7 +842,7 @@ namespace dEngine.Serializer.V1
                 Type = Types[typeId];
                 _typeId = typeId;
 
-                for (int i = 0; i < ObjectCount; i++)
+                for (var i = 0; i < ObjectCount; i++)
                 {
                     var id = typeReader.ReadInt32();
                     var referent = new Referent(id);
@@ -878,9 +851,7 @@ namespace dEngine.Serializer.V1
                 }
 
                 if (hasAdditionalData)
-                {
                     throw new NotImplementedException();
-                }
             }
 
             public bool Equals(TypeRecord other)
@@ -896,14 +867,7 @@ namespace dEngine.Serializer.V1
 
         internal class CachedType
         {
-            internal readonly short TypeId;
-
             public Func<object> GetInstance;
-
-            public override string ToString()
-            {
-                return Type.Name;
-            }
 
             public CachedType(Type type)
             {
@@ -914,8 +878,9 @@ namespace dEngine.Serializer.V1
 
                 foreach (
                     var prop in
-                        Enumerable.Reverse(type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy |
-                                                                                             BindingFlags.Instance | BindingFlags.Static)))
+                    Enumerable.Reverse(
+                        type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy |
+                                           BindingFlags.Instance | BindingFlags.Static)))
                 {
                     var cachedProp = new CachedProperty(prop);
                     Properties.Add(cachedProp);
@@ -953,6 +918,7 @@ namespace dEngine.Serializer.V1
             /// A list of cached properties which can be serialized.
             /// </summary>
             public Dictionary<int, CachedProperty> TaggedProperties { get; set; }
+
             /// <summary>
             /// A list of cached properties.
             /// </summary>
@@ -966,10 +932,17 @@ namespace dEngine.Serializer.V1
             public bool IsEnum => Type.IsEnum;
             public bool IsSingleton { get; }
 
+            public override string ToString()
+            {
+                return Type.Name;
+            }
+
             public Attribute GetCustomAttribute<T>() where T : Attribute
             {
                 return Type.GetCustomAttribute<T>();
             }
+
+            internal readonly short TypeId;
         }
 
         internal class Referent
@@ -992,13 +965,6 @@ namespace dEngine.Serializer.V1
 
         public class CachedProperty
         {
-            public readonly DataType DataType;
-            public readonly Type DeclaringType;
-            public readonly Func<object, object> Get;
-            public readonly Type PropertyType;
-            public readonly Action<object, object> Set;
-            public readonly short Tag;
-
             public CachedProperty(PropertyInfo info)
             {
                 Name = info.Name;
@@ -1068,11 +1034,17 @@ namespace dEngine.Serializer.V1
             {
                 Set.FastDynamicInvoke(o, val);
             }
+
+            public readonly DataType DataType;
+            public readonly Type DeclaringType;
+            public readonly Func<object, object> Get;
+            public readonly Type PropertyType;
+            public readonly Action<object, object> Set;
+            public readonly short Tag;
         }
 
         public class Context
         {
-            internal readonly OrderedDictionary<CachedType, TypeRecord> TypeRecords;
             internal Dictionary<int, Referent> GlobalReferents;
 
             public Context()
@@ -1139,33 +1111,38 @@ namespace dEngine.Serializer.V1
                 instance.BeforeSerialization(context);
 
                 foreach (var prop in type.Properties)
-                {
                     if (typeof(Instance).IsAssignableFrom(prop.PropertyType))
                     {
                         var inst = (Instance)prop.Get.FastDynamicInvoke(instance);
-                        if (inst != null && inst.IsDescendantOf(Root))
+                        if ((inst != null) && inst.IsDescendantOf(Root))
                             Traverse(inst);
                     }
-                }
 
                 foreach (var child in instance.Children)
-                {
                     Traverse(child);
-                }
             }
+
+            internal readonly OrderedDictionary<CachedType, TypeRecord> TypeRecords;
         }
 
-        internal static CachedType CacheType(Type type, int? typeId = null)
+        public enum DataType : byte
         {
-            CachedType cached;
-            if (!TypeDictionary.TryGetValue(type.Name, out cached))
-            {
-                cached = new CachedType(type);
-                if (typeId.HasValue)
-                    Types.Add(typeId.Value, cached);
-                TypeDictionary.Add(type.Name, cached);
-            }
-            return cached;
+            Unknown,
+            String,
+            Boolean,
+            Int16,
+            Int32,
+            Int64,
+            Single,
+            Double,
+            UserData,
+            Content,
+            Enum,
+            Referent,
+            BinaryData,
+            InstanceId,
+            FontFamily,
+            Invalid = 255
         }
     }
 }

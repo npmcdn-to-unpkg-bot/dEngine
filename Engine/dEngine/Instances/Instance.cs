@@ -36,14 +36,6 @@ namespace dEngine.Instances
     {
         private static int _objectsCreated;
         private readonly Dictionary<string, List<LuaThread>> _waitForChildList;
-        
-        /// <summary>
-        /// A collection of instances which are parented to this instance.
-        /// </summary>
-        /// <seealso cref="Parent" />
-        internal readonly ChildrenCollection Children;
-
-        internal readonly object Locker = new object();
 
         private bool _archivable;
         protected bool _deserializing;
@@ -100,7 +92,7 @@ namespace dEngine.Instances
 
             _waitForChildList = new Dictionary<string, List<LuaThread>>();
             Children = new ChildrenCollection();
-            
+
             Name = type.Name;
             _archivable = true;
             IsDestroyed = false;
@@ -197,7 +189,8 @@ namespace dEngine.Instances
         /// <summary>
         /// A non-unique identifier for the object.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public string Name
         {
             get { return _name; }
@@ -218,7 +211,9 @@ namespace dEngine.Instances
         /// <summary>
         /// The hierarchical parent of the object.
         /// </summary>
-        [InstMember(2), EditorVisible, CanBeNull]
+        [InstMember(2)]
+        [EditorVisible]
+        [CanBeNull]
         public Instance Parent
         {
             get { return _parent; }
@@ -235,7 +230,7 @@ namespace dEngine.Instances
                 }
 
                 // Objects cannot be parented to their children.
-                if (value != null && value.IsDescendantOf(this))
+                if ((value != null) && value.IsDescendantOf(this))
                 {
                     var errMsg =
                         $"Attempt to set parent of {GetFullName()} to {value.GetFullName()} would result in circular reference.";
@@ -277,16 +272,6 @@ namespace dEngine.Instances
             }
         }
 
-        private void InvokeAncestryChanged(Instance child, Instance parent)
-        {
-            UpdateLogger();
-            World = parent as IWorld ?? parent?.World;
-            OnAncestryChanged(child, parent);
-            AncestryChanged.Fire(child, parent);
-            foreach (var c in Children)
-                c.InvokeAncestryChanged(child, parent);
-        }
-
         /// <summary>
         /// Determines whether the object can be serialized.
         /// </summary>
@@ -294,7 +279,8 @@ namespace dEngine.Instances
         /// If this is set to false, the object will not be saved by level editors and the <see cref="Clone" /> method will return
         /// null.
         /// </remarks>
-        [InstMember(3), EditorVisible("Behaviour")]
+        [InstMember(3)]
+        [EditorVisible("Behaviour")]
         public bool Archivable
         {
             get { return _archivable; }
@@ -327,9 +313,7 @@ namespace dEngine.Instances
                     return;
 
                 if (Game.Instances.ContainsKey(value))
-                {
                     value = InstanceId.Generate();
-                }
 
                 _instanceId = value;
                 OnInstanceIdChanged(value, oldId);
@@ -339,6 +323,16 @@ namespace dEngine.Instances
         void IDisposable.Dispose()
         {
             Destroy();
+        }
+
+        private void InvokeAncestryChanged(Instance child, Instance parent)
+        {
+            UpdateLogger();
+            World = parent as IWorld ?? parent?.World;
+            OnAncestryChanged(child, parent);
+            AncestryChanged.Fire(child, parent);
+            foreach (var c in Children)
+                c.InvokeAncestryChanged(child, parent);
         }
 
         /// <summary>
@@ -390,7 +384,7 @@ namespace dEngine.Instances
         /// </summary>
         protected Instance GetAncestor(Func<Instance, bool> predicate)
         {
-            Instance parent = Parent;
+            var parent = Parent;
 
             while (parent != null)
             {
@@ -430,7 +424,7 @@ namespace dEngine.Instances
         {
             List<LuaThread> threads;
             var parent = _parent;
-            if (parent == null || !parent._waitForChildList.TryGetValue(_name, out threads)) return;
+            if ((parent == null) || !parent._waitForChildList.TryGetValue(_name, out threads)) return;
             foreach (var t in threads)
                 ScriptService.ResumeThread(t);
             threads.Clear();
@@ -517,10 +511,8 @@ namespace dEngine.Instances
             var fullName = Name;
             var parent = this;
 
-            while ((parent = parent.Parent) != null && parent != Game.DataModel)
-            {
+            while (((parent = parent.Parent) != null) && (parent != Game.DataModel))
                 fullName = $"{parent.Name}.{fullName}";
-            }
 
             return fullName;
         }
@@ -536,10 +528,8 @@ namespace dEngine.Instances
                 throw new ArgumentException("Name parameter cannot be empty.");
 
             foreach (var c in Children)
-            {
                 if (c.Name == name)
                     return c;
-            }
 
             var thread = (LuaThread)LuaThread.running().Values[0];
 
@@ -547,13 +537,9 @@ namespace dEngine.Instances
             {
                 List<LuaThread> threads;
                 if (_waitForChildList.TryGetValue(name, out threads))
-                {
                     threads.Add(thread);
-                }
                 else
-                {
                     _waitForChildList.Add(name, new List<LuaThread>(new[] {thread}));
-                }
             }
 
             Timer timer = null;
@@ -562,7 +548,7 @@ namespace dEngine.Instances
                 ScriptService.ResumeThread(thread);
                 timer?.Dispose();
             });
-            timer = timeout == null ? new Timer(timerAction) : new Timer(timerAction, null, (int)(timeout * 1000), -1);
+            timer = timeout == null ? new Timer(timerAction) : new Timer(timerAction, null, (int)(timeout*1000), -1);
 
             ScriptService.YieldThread();
 
@@ -575,17 +561,13 @@ namespace dEngine.Instances
         /// <param name="type">The type to check/</param>
         public bool IsA(string type)
         {
-            if (ClassName == type || type == "<<<ROOT>>")
-            {
+            if ((ClassName == type) || (type == "<<<ROOT>>"))
                 return true;
-            }
 
             Inst.CachedType t;
 
             if (!Inst.TypeDictionary.TryGetValue(type, out t))
-            {
                 return false;
-            }
 
             return t.Type.IsAssignableFrom(GetType());
         }
@@ -637,7 +619,7 @@ namespace dEngine.Instances
         public void ClearChildren()
         {
             var children = Children.ToList();
-            for (int i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Count; i++)
             {
                 var child = children[i];
 
@@ -686,10 +668,8 @@ namespace dEngine.Instances
             if (IsDestroyed) return;
 
             if (ParentLocked)
-            {
                 throw new ParentException(
                     $"Cannot destroy object \"{GetFullName()}\" because it is protected.");
-            }
 
             IsDestroyed = true;
             Parent = null;
@@ -762,6 +742,14 @@ namespace dEngine.Instances
             Instance inst;
             return weakRef.TryGetTarget(out inst) ? inst : null;
         }
+
+        /// <summary>
+        /// A collection of instances which are parented to this instance.
+        /// </summary>
+        /// <seealso cref="Parent" />
+        internal readonly ChildrenCollection Children;
+
+        internal readonly object Locker = new object();
 
         /// <summary>
         /// Fired when the Parent property of the instance or its ancestors changes.

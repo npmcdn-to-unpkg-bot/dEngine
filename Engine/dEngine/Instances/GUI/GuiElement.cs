@@ -103,7 +103,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The colour of the background.
         /// </summary>
-        [InstMember(1), EditorVisible("Appearance")]
+        [InstMember(1)]
+        [EditorVisible("Appearance")]
         public virtual Colour BackgroundColour
         {
             get { return _backgroundColour; }
@@ -119,7 +120,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The Position of the element relative to its parent.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public UDim2 Position
         {
             get { return _position; }
@@ -135,7 +137,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The size of the element.
         /// </summary>
-        [InstMember(3), EditorVisible]
+        [InstMember(3)]
+        [EditorVisible]
         public UDim2 Size
         {
             get { return _size; }
@@ -153,7 +156,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The radius of each corner.
         /// </summary>
-        [InstMember(4), EditorVisible]
+        [InstMember(4)]
+        [EditorVisible]
         public float CornerRadius
         {
             get { return _cornerRadius; }
@@ -169,7 +173,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if this element can be rendered.
         /// </summary>
-        [InstMember(5), EditorVisible]
+        [InstMember(5)]
+        [EditorVisible]
         public bool Visible
         {
             get { return _visible; }
@@ -184,7 +189,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if overflowing descendants are clipped.
         /// </summary>
-        [InstMember(6), EditorVisible("Behaviour")]
+        [InstMember(6)]
+        [EditorVisible("Behaviour")]
         public bool ClipDescendants
         {
             get { return _clipping; }
@@ -199,7 +205,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The layer that this element is drawn at.
         /// </summary>
-        [InstMember(7), EditorVisible]
+        [InstMember(7)]
+        [EditorVisible]
         public int ZIndex
         {
             get { return _zIndex; }
@@ -223,7 +230,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The clockwise rotation of the gui in degrees.
         /// </summary>
-        [InstMember(8), EditorVisible]
+        [InstMember(8)]
+        [EditorVisible]
         public float Rotation
         {
             get { return _rotation; }
@@ -239,7 +247,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The thickness of the border.
         /// </summary>
-        [InstMember(9), EditorVisible("Appearance")]
+        [InstMember(9)]
+        [EditorVisible("Appearance")]
         public float BorderThickness
         {
             get { return _borderThickness; }
@@ -256,7 +265,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The colour of the border.
         /// </summary>
-        [InstMember(10), EditorVisible("Appearance")]
+        [InstMember(10)]
+        [EditorVisible("Appearance")]
         public Colour BorderColour
         {
             get { return _borderColour; }
@@ -272,7 +282,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The index for the parent frame. Used for <see cref="Stack" /> and <see cref="Flex" />.
         /// </summary>
-        [InstMember(11), EditorVisible]
+        [InstMember(11)]
+        [EditorVisible]
         public int FrameIndex
         {
             get { return _frameIndex; }
@@ -291,7 +302,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The horizontal alignment of the element.
         /// </summary>
-        [InstMember(12), EditorVisible]
+        [InstMember(12)]
+        [EditorVisible]
         public AlignmentX AlignmentX
         {
             get { return _alignmentX; }
@@ -307,7 +319,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The vertical alignment of the element.
         /// </summary>
-        [InstMember(13), EditorVisible]
+        [InstMember(13)]
+        [EditorVisible]
         public AlignmentY AlignmentY
         {
             get { return _alignmentY; }
@@ -323,7 +336,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines whether this element is ingored by hit tests.
         /// </summary>
-        [InstMember(15), EditorVisible("Behaviour")]
+        [InstMember(15)]
+        [EditorVisible("Behaviour")]
         public bool IsHitTestVisible
         {
             get { return _isHitTestVisible; }
@@ -406,25 +420,19 @@ namespace dEngine.Instances
                     return;
 
                 if (_container != null)
-                {
                     lock (_container)
                     {
                         _container.ZIndexedElements.Remove(this);
                     }
-                }
 
                 _container = value;
 
                 if (value != null)
-                {
                     if (ZIndex > 0)
-                    {
                         lock (_container)
                         {
                             value.ZIndexedElements.Add(this);
                         }
-                    }
-                }
 
                 NotifyChanged(nameof(Container));
             }
@@ -487,9 +495,7 @@ namespace dEngine.Instances
             Instance ancestor = this;
 
             if (child == this)
-            {
                 Measure();
-            }
 
             while (ancestor != null)
             {
@@ -542,7 +548,7 @@ namespace dEngine.Instances
             else if (_alignmentX == AlignmentX.Center)
             {
                 xScaleOffset = 0.5f;
-                xAbsoluteOffset = (int)-AbsoluteSize.X / 2;
+                xAbsoluteOffset = (int)-AbsoluteSize.X/2;
             }
 
             if (_alignmentY == AlignmentY.Bottom)
@@ -554,11 +560,11 @@ namespace dEngine.Instances
             else if (_alignmentY == AlignmentY.Middle)
             {
                 yScaleOffset = 0.5f;
-                yAbsoluteOffset = (int)-AbsoluteSize.Y / 2;
+                yAbsoluteOffset = (int)-AbsoluteSize.Y/2;
             }
 
-            position = new UDim2(xScaleOffset + position.Scale.X * xMult, xAbsoluteOffset + position.Absolute.X * xMult,
-                yScaleOffset + position.Scale.Y * xMult, yAbsoluteOffset + position.Absolute.Y * yMult);
+            position = new UDim2(xScaleOffset + position.Scale.X*xMult, xAbsoluteOffset + position.Absolute.X*xMult,
+                yScaleOffset + position.Scale.Y*xMult, yAbsoluteOffset + position.Absolute.Y*yMult);
 
             AbsolutePosition = (parentPosition + position.toAbsolute(parentSize)).round();
 
@@ -579,8 +585,8 @@ namespace dEngine.Instances
         public virtual void Arrange()
         {
             LayoutRect = new RectangleF(AbsolutePosition.x, AbsolutePosition.y, AbsoluteSize.x, AbsoluteSize.y);
-            RenderRect = new RectangleF(-AbsoluteSize.x / 2, -AbsoluteSize.y / 2, AbsoluteSize.x, AbsoluteSize.y);
-            var borderRect = new RectangleF(-AbsoluteSize.x / 2 - .5f, -AbsoluteSize.y / 2 - .5f, AbsoluteSize.x,
+            RenderRect = new RectangleF(-AbsoluteSize.x/2, -AbsoluteSize.y/2, AbsoluteSize.x, AbsoluteSize.y);
+            var borderRect = new RectangleF(-AbsoluteSize.x/2 - .5f, -AbsoluteSize.y/2 - .5f, AbsoluteSize.x,
                 AbsoluteSize.y);
 
             _roundedRectangle = new RoundedRectangle
@@ -627,8 +633,8 @@ namespace dEngine.Instances
             {
                 var context = Renderer.Context2D;
 
-                if (_borderThickness > 0 && _borderColour.a > 0)
-                    context.DrawRoundedRectangle(_borderRectangle, _borderBrush, _borderThickness * 2);
+                if ((_borderThickness > 0) && (_borderColour.a > 0))
+                    context.DrawRoundedRectangle(_borderRectangle, _borderBrush, _borderThickness*2);
 
                 if (_cornerRadius > 0)
                     context.FillRoundedRectangle(_roundedRectangle, _backgroundBrush);

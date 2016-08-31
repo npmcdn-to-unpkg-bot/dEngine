@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using dEngine.Instances;
 using dEngine.Instances.Diagnostics;
 using dEngine.Services;
@@ -26,10 +25,6 @@ namespace dEngine
     /// </summary>
     public static class Game
     {
-        internal static readonly ILogger Logger = LogService.GetLogger();
-
-        internal static readonly object Locker = new object();
-
         /// <summary>
         /// If true, <see cref="Init" /> has finished.
         /// </summary>
@@ -40,7 +35,7 @@ namespace dEngine
             Instances = new ConcurrentDictionary<string, WeakReference<Instance>>(StringComparer.Ordinal);
             Worlds = new ConcurrentDictionary<IWorld, byte>();
             DataModel = new DataModel();
-            Stats = new DebugStats { Parent = DataModel, ParentLocked = true };
+            Stats = new DebugStats {Parent = DataModel, ParentLocked = true};
         }
 
         internal static ConcurrentDictionary<string, WeakReference<Instance>> Instances { get; }
@@ -96,7 +91,7 @@ namespace dEngine
             Selection = DataModel.GetService<SelectionService>();
             Selection.Name = "Selection";
             CoreEnvironment = new CoreEnvironment();
-            StarterGui = new StarterGui { Parent = DataModel, ParentLocked = true };
+            StarterGui = new StarterGui {Parent = DataModel, ParentLocked = true};
 
             DebuggerManager = new DebuggerManager();
 
@@ -131,6 +126,18 @@ namespace dEngine
             return instance;
         }
 
+        internal static void RegisterInitializeCallback(Action callback)
+        {
+            if (IsInitialized)
+                callback();
+            else
+                Initialized += (s, e) => callback();
+        }
+
+        internal static readonly ILogger Logger = LogService.GetLogger();
+
+        internal static readonly object Locker = new object();
+
 #pragma warning disable 1591
         public static DataModel DataModel;
         public static Workspace Workspace;
@@ -149,13 +156,5 @@ namespace dEngine
         internal static DebugStats Stats;
         public static StarterGui StarterGui;
 #pragma warning restore 1591
-
-        internal static void RegisterInitializeCallback(Action callback)
-        {
-            if (IsInitialized)
-                callback();
-            else
-                Initialized += (s, e) => callback();
-        }
     }
 }

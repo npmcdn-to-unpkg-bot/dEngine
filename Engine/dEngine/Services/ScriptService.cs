@@ -21,10 +21,8 @@ using System.Text;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using dEngine.Utility;
-using dEngine.Utility.Extensions;
 using Neo.IronLua;
 using NLog;
-
 
 #pragma warning disable 4014
 
@@ -33,21 +31,11 @@ namespace dEngine.Services
     /// <summary>
     /// <see cref="ScriptService" /> handles the execution of scripts at runtime.
     /// </summary>
-    [TypeId(148), ExplorerOrder(-1)]
+    [TypeId(148)]
+    [ExplorerOrder(-1)]
     public partial class ScriptService : Service
     {
         internal static ScriptService Service;
-
-        /// <summary>
-        /// Fires when a script errors.
-        /// </summary>
-        public readonly Signal<string, string, Script> ScriptErrored;
-
-        internal ScriptService()
-        {
-            ScriptErrored = new Signal<string, string, Script>(this);
-            Service = this;
-        }
 
         private static readonly Stopwatch _stopwatch;
         private static readonly ConcurrentDictionary<LuaThread, ScriptIdentity> _threadIdentities;
@@ -63,6 +51,12 @@ namespace dEngine.Services
             _threadIdentities = new ConcurrentDictionary<LuaThread, ScriptIdentity>();
             _typeCache = new ConcurrentDictionary<string, TypeCacheItem>();
             Scripts = new ConcurrentDictionary<string, Script>();
+        }
+
+        internal ScriptService()
+        {
+            ScriptErrored = new Signal<string, string, Script>(this);
+            Service = this;
         }
 
         internal static bool IsWritingError => ErrorStringBuilder.Length != 0;
@@ -123,14 +117,12 @@ namespace dEngine.Services
             {
                 foreach (
                     var line in
-                        ErrorStringBuilder.ToString()
-                            .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
-                {
+                    ErrorStringBuilder.ToString()
+                        .Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
                     if (line.StartsWith("Script"))
                         script.Print(line, LogLevel.Trace);
                     else
                         script.Print(line, LogLevel.Error);
-                }
 
                 script.Print("Stack End", LogLevel.Trace);
             }
@@ -139,8 +131,9 @@ namespace dEngine.Services
                 var parseException = e as LuaParseException;
 
                 script.Print(parseException != null
-                    ? $"{script.GetFullName()}:{parseException.Line}: {e.Message}"
-                    : $"{script.GetFullName()}:{script.Debugger?.CurrentLine.ToString() ?? "?"}: {e.Message}", LogLevel.Info);
+                        ? $"{script.GetFullName()}:{parseException.Line}: {e.Message}"
+                        : $"{script.GetFullName()}:{script.Debugger?.CurrentLine.ToString() ?? "?"}: {e.Message}",
+                    LogLevel.Info);
             }
 
             //LoggerInternal.Trace(luaExceptionData.StackTrace);
@@ -184,25 +177,17 @@ namespace dEngine.Services
 
             foreach (var type in asm.GetTypes().Where(x => baseType.IsAssignableFrom(x) && !x.IsAbstract))
             {
-                TypeProblem problem = TypeProblem.NoProblem;
+                var problem = TypeProblem.NoProblem;
                 Func<Instance> creator = null;
 
                 if (type.IsAbstract)
-                {
                     problem = TypeProblem.NotCreatable;
-                }
                 else if (typeof(Service).IsAssignableFrom(type))
-                {
                     problem = TypeProblem.IsAService;
-                }
                 else if (type.GetConstructor(Type.EmptyTypes) == null)
-                {
                     problem = TypeProblem.RequiresParameters;
-                }
                 else if (type.GetCustomAttributes(typeof(UncreatableAttribute), false).Any())
-                {
                     problem = TypeProblem.NotCreatable;
-                }
 
                 if (problem == TypeProblem.NoProblem)
                 {
@@ -213,7 +198,7 @@ namespace dEngine.Services
                             .Compile();
                 }
 
-                var item = new TypeCacheItem(type, creator) { Problem = problem };
+                var item = new TypeCacheItem(type, creator) {Problem = problem};
 
                 _typeCache.TryAdd(type.Name, item);
             }
@@ -227,10 +212,8 @@ namespace dEngine.Services
             _typeCache.TryGetValue(name, out cacheItem);
 
             if (cacheItem == null)
-            {
                 throw new InvalidOperationException(
                     $"Cannot create instance of type \"{name}\": non existent type.");
-            }
 
             switch (cacheItem.Problem)
             {
@@ -253,6 +236,56 @@ namespace dEngine.Services
 
             return instance;
         }
+
+        /// <summary>
+        /// Asserts that the calling thread has the required identity.
+        /// </summary>
+        /// <param name="target">The required identity.</param>
+        /// <param name="condition">
+        /// If true, an exception is thrown when the thread does not meet target identity.
+        /// If false, an exception is thrown when the thread does the target identity.
+        /// </param>
+        internal static void AssertIdentity(ScriptIdentity target, bool condition = true)
+        {
+            var thread = LuaThread.running();
+            var identity = GetIdentity(thread);
+            if ((identity == null) || (target.HasFlag(identity) == condition))
+                return; // threads with no identity are unrestricted
+#if DEBUG
+            var frame = new StackFrame(1);
+            var method = frame.GetMethod();
+            var type = method.DeclaringType;
+            var name = method.Name;
+            throw new SecurityException($"Method {type}.{name} requires identity level {target}. (Current: {identity})");
+#else
+            throw new SecurityException();
+#endif
+        }
+
+        internal static ScriptIdentity? GetIdentity(LuaResult thread)
+        {
+            ScriptIdentity identity;
+
+            var th = (LuaThread)thread.Values[0];
+
+            if (th == null)
+                return null;
+
+            if (_threadIdentities.TryGetValue(th, out identity))
+                return identity;
+
+            return null;
+        }
+
+        internal static void ResumeThread(LuaThread thread)
+        {
+            Engine.GameThread.Enqueue(() => thread.resume(null));
+        }
+
+        /// <summary>
+        /// Fires when a script errors.
+        /// </summary>
+        public readonly Signal<string, string, Script> ScriptErrored;
 
         private enum TypeProblem
         {
@@ -294,55 +327,9 @@ namespace dEngine.Services
                 var prop = memberExpression?.Member as PropertyInfo;
 
                 if (prop?.Name == "Clr")
-                {
                     AssertIdentity(ScriptIdentity.Editor);
-                }
                 return base.SandboxCore(expression, instance, sMember);
             }
-        }
-
-        /// <summary>
-        /// Asserts that the calling thread has the required identity.
-        /// </summary>
-        /// <param name="target">The required identity.</param>
-        /// <param name="condition">
-        /// If true, an exception is thrown when the thread does not meet target identity.
-        /// If false, an exception is thrown when the thread does the target identity.
-        /// </param>
-        internal static void AssertIdentity(ScriptIdentity target, bool condition = true)
-        {
-            var thread = LuaThread.running();
-            var identity = GetIdentity(thread);
-            if (identity == null || (target.HasFlag(identity) == condition)) return; // threads with no identity are unrestricted
-#if DEBUG
-            var frame = new StackFrame(1);
-            var method = frame.GetMethod();
-            var type = method.DeclaringType;
-            var name = method.Name;
-            throw new SecurityException($"Method {type}.{name} requires identity level {target}. (Current: {identity})");
-#else
-            throw new SecurityException();
-#endif
-        }
-
-        internal static ScriptIdentity? GetIdentity(LuaResult thread)
-        {
-            ScriptIdentity identity;
-
-            var th = (LuaThread)thread.Values[0];
-
-            if (th == null)
-                return null;
-
-            if (_threadIdentities.TryGetValue(th, out identity))
-                return identity;
-
-            return null;
-        }
-        
-        internal static void ResumeThread(LuaThread thread)
-        {
-            Engine.GameThread.Enqueue(() => thread.resume(null));
         }
     }
 }

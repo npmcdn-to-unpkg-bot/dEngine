@@ -25,9 +25,7 @@ namespace dEngine.Utility.Extensions
                 int read;
                 var temporaryBuffer = new byte[source.WaveFormat.BytesPerSecond];
                 while ((read = source.Read(temporaryBuffer, 0, temporaryBuffer.Length)) > 0)
-                {
                     buffer.Write(temporaryBuffer, 0, read);
-                }
                 return buffer.ToArray();
             }
         }

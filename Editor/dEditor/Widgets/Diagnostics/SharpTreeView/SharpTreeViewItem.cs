@@ -22,7 +22,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         static SharpTreeViewItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SharpTreeViewItem),
-                                                     new FrameworkPropertyMetadata(typeof(SharpTreeViewItem)));
+                new FrameworkPropertyMetadata(typeof(SharpTreeViewItem)));
         }
 
         public SharpTreeNode Node
@@ -51,17 +51,15 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 
         #region Mouse
 
-        Point startPoint;
-        bool wasSelected;
-        bool wasDoubleClick;
+        private Point startPoint;
+        private bool wasSelected;
+        private bool wasDoubleClick;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             wasSelected = IsSelected;
             if (!IsSelected)
-            {
                 base.OnMouseLeftButtonDown(e);
-            }
 
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
@@ -69,9 +67,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
                 CaptureMouse();
 
                 if (e.ClickCount == 2)
-                {
                     wasDoubleClick = true;
-                }
             }
         }
 
@@ -80,15 +76,12 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             if (IsMouseCaptured)
             {
                 var currentPoint = e.GetPosition(null);
-                if (Math.Abs(currentPoint.X - startPoint.X) >= SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(currentPoint.Y - startPoint.Y) >= SystemParameters.MinimumVerticalDragDistance)
+                if ((Math.Abs(currentPoint.X - startPoint.X) >= SystemParameters.MinimumHorizontalDragDistance) ||
+                    (Math.Abs(currentPoint.Y - startPoint.Y) >= SystemParameters.MinimumVerticalDragDistance))
                 {
-
                     var selection = ParentTreeView.GetTopLevelSelection().ToArray();
                     if (Node.CanDrag(selection))
-                    {
                         Node.StartDrag(this, selection);
-                    }
                 }
             }
         }
@@ -100,19 +93,13 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
                 wasDoubleClick = false;
                 Node.ActivateItem(e);
                 if (!e.Handled)
-                {
                     if (!Node.IsRoot || ParentTreeView.ShowRootExpander)
-                    {
                         Node.IsExpanded = !Node.IsExpanded;
-                    }
-                }
             }
 
             ReleaseMouseCapture();
             if (wasSelected)
-            {
                 base.OnMouseLeftButtonDown(e);
-            }
         }
 
         #endregion

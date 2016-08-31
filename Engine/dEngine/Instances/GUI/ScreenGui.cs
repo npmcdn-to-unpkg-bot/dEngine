@@ -10,7 +10,6 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using dEngine.Instances.Attributes;
-using dEngine.Instances.Interfaces;
 
 namespace dEngine.Instances
 {
@@ -20,7 +19,9 @@ namespace dEngine.Instances
     /// <remarks>
     /// A <see cref="ScreenGui" /> must be parented to a <see cref="Camera" /> to be rendered.
     /// </remarks>
-    [TypeId(67), ToolboxGroup("GUI"), ExplorerOrder(14)]
+    [TypeId(67)]
+    [ToolboxGroup("GUI")]
+    [ExplorerOrder(14)]
     public class ScreenGui : LayerCollector
     {
     }

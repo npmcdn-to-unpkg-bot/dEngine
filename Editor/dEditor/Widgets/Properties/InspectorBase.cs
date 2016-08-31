@@ -14,15 +14,15 @@ using Caliburn.Micro;
 
 namespace dEditor.Widgets.Properties
 {
-	public abstract class InspectorBase : PropertyChangedBase, IComparable<InspectorBase>
-	{
-		public abstract string Name { get; }
-		public abstract string Description { get; }
-		public abstract bool IsReadOnly { get; }
+    public abstract class InspectorBase : PropertyChangedBase, IComparable<InspectorBase>
+    {
+        public abstract string Name { get; }
+        public abstract string Description { get; }
+        public abstract bool IsReadOnly { get; }
 
-		public int CompareTo(InspectorBase other)
-		{
-			return string.CompareOrdinal(Name, other.Name);
-		}
-	}
+        public int CompareTo(InspectorBase other)
+        {
+            return string.CompareOrdinal(Name, other.Name);
+        }
+    }
 }

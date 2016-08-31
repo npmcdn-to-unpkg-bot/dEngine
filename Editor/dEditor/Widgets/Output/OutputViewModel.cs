@@ -18,91 +18,86 @@ using dEngine;
 using dEngine.Instances;
 using dEngine.Services;
 
-
 namespace dEditor.Widgets.Output
 {
-	[Export(typeof(IOutput))]
-	public class OutputViewModel : Widget, IOutput
-	{
-		private bool _wordWrap;
-	    private ObservableCollection<OutputItem> _entries;
+    [Export(typeof(IOutput))]
+    public class OutputViewModel : Widget, IOutput
+    {
+        private bool _wordWrap;
+        private ObservableCollection<OutputItem> _entries;
 
-	    public OutputViewModel()
-		{
-			WordWrap = true;
+        public OutputViewModel()
+        {
+            WordWrap = true;
             Entries = new ObservableCollection<OutputItem>();
 
-	        var logService = DataModel.GetService<LogService>();
+            var logService = DataModel.GetService<LogService>();
             logService.MessageOutput.Event += OnMessageOutputEvent;
-		}
+        }
 
-	    private void OnMessageOutputEvent(string msg, LogLevel level, string logger)
+        public override string DisplayName => "Output";
+        public override PaneLocation PreferredLocation => PaneLocation.Bottom;
+
+        public ObservableCollection<OutputItem> Entries
+        {
+            get { return _entries; }
+            set
+            {
+                if (Equals(value, _entries)) return;
+                _entries = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        [Export]
+        public bool WordWrap
+        {
+            get { return _wordWrap; }
+            set
+            {
+                if (value == _wordWrap) return;
+                _wordWrap = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        private void OnMessageOutputEvent(string msg, LogLevel level, string logger)
         {
             if (!logger.StartsWith("dEngine.Instances") &&
                 !logger.StartsWith("dEngine.Services") &&
                 !logger.StartsWith("I:"))
                 return;
 
-            Application.Current?.Dispatcher.InvokeAsync(() =>
-            {
-                Entries.Add(new OutputItem(ref msg, ref level, ref logger));
-            });
+            Application.Current?.Dispatcher.InvokeAsync(
+                () => { Entries.Add(new OutputItem(ref msg, ref level, ref logger)); });
         }
 
-	    protected override void OnDeactivate(bool close)
-	    {
-	        base.OnDeactivate(close);
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
 
-	        if (close)
-	        {
+            if (close)
                 LogService.GetExisting().MessageOutput.Event -= OnMessageOutputEvent;
-            }
-	    }
+        }
 
-	    public override string DisplayName => "Output";
-		public override PaneLocation PreferredLocation => PaneLocation.Bottom;
+        public void Clear()
+        {
+            Entries = new ObservableCollection<OutputItem>();
+        }
 
-	    [Export]
-	    public bool WordWrap
-	    {
-	        get { return _wordWrap; }
-	        set
-	        {
-	            if (value == _wordWrap) return;
-	            _wordWrap = value;
-	            NotifyOfPropertyChange();
-	        }
-	    }
+        public override void SaveState(BinaryWriter writer)
+        {
+            writer.Write(WordWrap);
+        }
 
-	    public void Clear()
-	    {
-	        Entries = new ObservableCollection<OutputItem>();
-	    }
+        public override void LoadState(BinaryReader reader)
+        {
+            WordWrap = reader.ReadBoolean();
+        }
 
-	    public ObservableCollection<OutputItem> Entries
-	    {
-	        get { return _entries; }
-	        set
-	        {
-	            if (Equals(value, _entries)) return;
-	            _entries = value;
-	            NotifyOfPropertyChange();
-	        }
-	    }
-
-	    public override void SaveState(BinaryWriter writer)
-		{
-			writer.Write(WordWrap);
-		}
-
-		public override void LoadState(BinaryReader reader)
-		{
-			WordWrap = reader.ReadBoolean();
-		}
-
-		public void ToggleWordWrap()
-		{
-			WordWrap = !WordWrap;
-		}
-	}
+        public void ToggleWordWrap()
+        {
+            WordWrap = !WordWrap;
+        }
+    }
 }

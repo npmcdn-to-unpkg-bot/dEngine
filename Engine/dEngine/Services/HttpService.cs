@@ -24,18 +24,17 @@ using dEngine.Utility;
 using dEngine.Utility.Extensions;
 using Neo.IronLua;
 using Newtonsoft.Json;
-using NLog.Common;
-
 
 namespace dEngine.Services
 {
     /// <summary>
     /// A service for sending and receiving HTTP data.
     /// </summary>
-    [TypeId(12), ExplorerOrder(-1)]
+    [TypeId(12)]
+    [ExplorerOrder(-1)]
     public partial class HttpService : Service
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public HttpService()
         {
             Service = this;
@@ -130,15 +129,17 @@ namespace dEngine.Services
 
     public partial class HttpService
     {
-        internal static HttpService Service;
-
         /// <summary>
         /// If the data to be sent in a POST request exceeds this size it will be compressed.
         /// </summary>
         public const int NumberOfBytesForGZip = 256;
 
+        internal static HttpService Service;
+
         private static ILogger _logger;
         private static CookieContainer _robloxCookieContainer;
+
+        internal static ILogger InternalLogger = LogService.GetLogger("HttpService");
 
         internal static object GetExisting()
         {
@@ -167,12 +168,13 @@ namespace dEngine.Services
             {
                 var key = cookies[i];
                 var val = cookies[i + 1];
-                var cookie = new Cookie(key, val) { Domain = "www.roblox.com" };
+                var cookie = new Cookie(key, val) {Domain = "www.roblox.com"};
                 _robloxCookieContainer.Add(cookie);
             }
         }
 
-        internal static async Task<MemoryStream> Get(string url, bool noCache = false, Dictionary<string, object> headers = null)
+        internal static async Task<MemoryStream> Get(string url, bool noCache = false,
+            Dictionary<string, object> headers = null)
         {
             try
             {
@@ -181,9 +183,7 @@ namespace dEngine.Services
                 var cookieContainer = new CookieContainer();
 
                 if (uri.Host == "www.roblox.com")
-                {
                     cookieContainer = _robloxCookieContainer;
-                }
 
                 using (
                     var handler = new HttpClientHandler
@@ -192,41 +192,41 @@ namespace dEngine.Services
                         AllowAutoRedirect = true,
                         AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
                     })
-                using (var client = new HttpClient(handler))
                 {
-                    client.DefaultRequestHeaders.Add("Accept",
-                        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-                    client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, sdch");
-                    client.DefaultRequestHeaders.Add("Accept-Language", "en-GB,en-US;q=0.8,en;q=0.6");
-                    client.DefaultRequestHeaders.Add("User-Agent",
-                        $"Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10136 dEngine/{Engine.Version}");
-                    client.DefaultRequestHeaders.Add("Upgrade-Insecure-Requests", "1");
-                    client.DefaultRequestHeaders.Add("Connection", "keep-alive");
-
-                    if (noCache)
-                        client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
-
-
-                    if (headers != null)
-                        foreach (var header in headers)
-                            client.DefaultRequestHeaders.Add(header.Key, header.Value.ToString());
-
-                    using (var response = await client.GetAsync(uri))
+                    using (var client = new HttpClient(handler))
                     {
-                        if (response.IsSuccessStatusCode)
+                        client.DefaultRequestHeaders.Add("Accept",
+                            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+                        client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, sdch");
+                        client.DefaultRequestHeaders.Add("Accept-Language", "en-GB,en-US;q=0.8,en;q=0.6");
+                        client.DefaultRequestHeaders.Add("User-Agent",
+                            $"Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10136 dEngine/{Engine.Version}");
+                        client.DefaultRequestHeaders.Add("Upgrade-Insecure-Requests", "1");
+                        client.DefaultRequestHeaders.Add("Connection", "keep-alive");
+
+                        if (noCache)
+                            client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
+
+
+                        if (headers != null)
+                            foreach (var header in headers)
+                                client.DefaultRequestHeaders.Add(header.Key, header.Value.ToString());
+
+                        using (var response = await client.GetAsync(uri))
                         {
-                            using (var content = response.Content)
-                            {
-                                var mem = new MemoryStream();
-                                // when content is disposed by the using statement, it also closes the stream, so create a new copy of it.
-                                var stream = content.ReadAsStreamAsync().Result;
-                                stream.CopyTo(mem);
-                                stream.Close();
-                                mem.Position = 0;
-                                return mem;
-                            }
+                            if (response.IsSuccessStatusCode)
+                                using (var content = response.Content)
+                                {
+                                    var mem = new MemoryStream();
+                                    // when content is disposed by the using statement, it also closes the stream, so create a new copy of it.
+                                    var stream = content.ReadAsStreamAsync().Result;
+                                    stream.CopyTo(mem);
+                                    stream.Close();
+                                    mem.Position = 0;
+                                    return mem;
+                                }
+                            throw new HttpRequestException("HTTP bad response code: " + response.StatusCode);
                         }
-                        throw new HttpRequestException("HTTP bad response code: " + response.StatusCode);
                     }
                 }
             }
@@ -238,17 +238,14 @@ namespace dEngine.Services
             }
         }
 
-        internal static ILogger InternalLogger = LogService.GetLogger("HttpService");
-
-        internal static async Task<string> Post(string url, string data, string contentType, bool compress, Dictionary<string, object> headers)
+        internal static async Task<string> Post(string url, string data, string contentType, bool compress,
+            Dictionary<string, object> headers)
         {
             Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
             var contentLength = stream.Length;
 
-            if (compress || data.Length * sizeof(char) > NumberOfBytesForGZip)
-            {
+            if (compress || (data.Length*sizeof(char) > NumberOfBytesForGZip))
                 stream = new GZipStream(stream, CompressionMode.Compress);
-            }
 
             var content = new StreamContent(stream);
 

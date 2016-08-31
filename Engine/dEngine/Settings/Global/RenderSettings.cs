@@ -15,109 +15,84 @@ using dEngine.Graphics;
 using dEngine.Instances.Attributes;
 using dEngine.Utility;
 using Neo.IronLua;
-using SharpDX.Direct2D1;
-
 
 namespace dEngine.Settings.Global
 {
-	/// <summary>
-	/// Settings for rendering.
-	/// </summary>
-	[TypeId(186)]
-	public class RenderSettings : Settings
-	{
-		private static int _graphicsAdapter;
-		private static NumberSequence _manualCascadeSplits;
-		private static CascadePartitionMode _cascadePartitionMode;
-		private static int _shadowMapSize;
-		private static float _pssmLambda;
-		private static bool _areCascadesShown;
-		private static GraphicsMode _graphicsMode;
-		private static float _shadowOffsetScale;
-		private static float _shadowDepthBias;
-	    private static string _shaderCache;
-	    private static SampleCount _sampleCount;
-	    private static DownsampleSize _ssaoDownsampleSize;
-	    private static int _ssaoBlurPasses;
-	    private static BlurMode _ssaoBlurMode;
-	    private static bool _ssaoDownsampling;
-	    private static bool _showSsaoVisualization;
-	    private static bool _useFilterableShadows;
-	    private static ShadowMode _shadowMode;
-	    private static ShadowFormat _shadowMapFormat;
-	    private static bool _useShadowMips;
+    /// <summary>
+    /// Settings for rendering.
+    /// </summary>
+    [TypeId(186)]
+    public class RenderSettings : Settings
+    {
+        private static int _graphicsAdapter;
+        private static NumberSequence _manualCascadeSplits;
+        private static CascadePartitionMode _cascadePartitionMode;
+        private static int _shadowMapSize;
+        private static float _pssmLambda;
+        private static bool _areCascadesShown;
+        private static GraphicsMode _graphicsMode;
+        private static float _shadowOffsetScale;
+        private static float _shadowDepthBias;
+        private static string _shaderCache;
+        private static SampleCount _sampleCount;
+        private static DownsampleSize _ssaoDownsampleSize;
+        private static int _ssaoBlurPasses;
+        private static BlurMode _ssaoBlurMode;
+        private static bool _ssaoDownsampling;
+        private static bool _showSsaoVisualization;
+        private static bool _useFilterableShadows;
+        private static ShadowMode _shadowMode;
+        private static ShadowFormat _shadowMapFormat;
+        private static bool _useShadowMips;
         private static float _cascadeSplit0;
         private static float _cascadeSplit1;
         private static float _cascadeSplit2;
         private static float _cascadeSplit3;
-	    private static bool _useClearTypeRendering;
-	    private static bool _guiAntiAliasing;
+        private static bool _useClearTypeRendering;
+        private static bool _guiAntiAliasing;
 
-	    /// <summary>
-        /// Gets the tempature of the graphics card.
+        /// <summary>
+        /// The resolution of the shadow maps.
         /// </summary>
-        /// <returns></returns>
-	    public LuaResult GetGpuTemps()
-	    {
-	        switch (DebugSettings.GpuVendor)
-	        {
-	            case GpuVendor.Nvidia:
-	                NvApi.ThermalSettings thermalSettings = new NvApi.ThermalSettings();
-	                if (NvApi.GetThermalSettings(Renderer.Device.NativePointer, 0, ref thermalSettings) != 0)
-                        throw new Exception("NvidiaControlPanel.GetThermalSettings() returned false.");
-	                var sensor = thermalSettings.Sensors[0];
-                    return new LuaResult(sensor.CurrentTemp, sensor.DefaultMinTemp, sensor.DefaultMaxTemp);
-                case GpuVendor.AMD:
-                    throw new NotImplementedException();
-	            case GpuVendor.Intel:
-                    throw new NotImplementedException();
-	            default:
-                    throw new NotSupportedException($"Tempature measurements are not supported for vendor {DebugSettings.GpuVendor}");
+        [EditorVisible("Shadows", "Shadow Map Resolution")]
+        public static int ShadowMapSize
+        {
+            get { return _shadowMapSize; }
+            set
+            {
+                _shadowMapSize = Math.Min(16384, Math.Max(256, value));
+                Shadows.ShadowMapsNeedRemade = true;
+                NotifyChangedStatic();
             }
-	    }
-
-	    /// <summary>
-	    /// The resolution of the shadow maps.
-	    /// </summary>
-	    [EditorVisible("Shadows", "Shadow Map Resolution")]
-	    public static int ShadowMapSize
-	    {
-	        get { return _shadowMapSize; }
-	        set
-	        {
-	            _shadowMapSize = Math.Min(16384, Math.Max(256, value));
-	            Shadows.ShadowMapsNeedRemade = true;
-	            NotifyChangedStatic();
-	        }
-	    }
+        }
 
         /// <summary>
         /// The current shader cache file. If set to blank, the cache will be rebuilt.
         /// </summary>
         [EditorVisible("Shaders", "Shader Cache")]
         public static string ShaderCache
-	    {
-	        get { return _shaderCache; }
-	        set
-	        {
-	            _shaderCache = value;
-	            NotifyChangedStatic();
-	        }
-	    }
+        {
+            get { return _shaderCache; }
+            set
+            {
+                _shaderCache = value;
+                NotifyChangedStatic();
+            }
+        }
 
-	    /// <summary>
-	    /// The first cascade manual split.
-	    /// </summary>
-	    [EditorVisible("Shadows", "Cascade Split 0")]
-	    public static float CascadeSplit0
-	    {
-	        get { return _cascadeSplit0; }
-	        set
-	        {
+        /// <summary>
+        /// The first cascade manual split.
+        /// </summary>
+        [EditorVisible("Shadows", "Cascade Split 0")]
+        public static float CascadeSplit0
+        {
+            get { return _cascadeSplit0; }
+            set
+            {
                 _cascadeSplit0 = value;
-	            Shadows.AreSplitsDirty = true;
-	            NotifyChangedStatic();
-	        }
+                Shadows.AreSplitsDirty = true;
+                NotifyChangedStatic();
+            }
         }
 
         /// <summary>
@@ -169,81 +144,81 @@ namespace dEngine.Settings.Global
         /// The mode for partitioning the shadow map cascades.
         /// </summary>
         [EditorVisible("Shadows", "Cascade Partition Mode")]
-	    public static CascadePartitionMode CascadePartitionMode
-	    {
-	        get { return _cascadePartitionMode; }
-	        set
-	        {
-	            _cascadePartitionMode = value;
-	            Shadows.AreSplitsDirty = true;
-	            NotifyChangedStatic();
-	        }
-	    }
+        public static CascadePartitionMode CascadePartitionMode
+        {
+            get { return _cascadePartitionMode; }
+            set
+            {
+                _cascadePartitionMode = value;
+                Shadows.AreSplitsDirty = true;
+                NotifyChangedStatic();
+            }
+        }
 
-	    /// <summary>
-	    /// The mix between linear and logarithmic partitioning when using the PSSM partition mode.
-	    /// </summary>
-	    [EditorVisible("Shadows", "Parallel-Split Lambda")]
-	    public static float PssmLambda
-	    {
-	        get { return _pssmLambda; }
-	        set
-	        {
-	            _pssmLambda = value;
-	            Shadows.AreSplitsDirty = true;
-	            NotifyChangedStatic();
-	        }
-	    }
+        /// <summary>
+        /// The mix between linear and logarithmic partitioning when using the PSSM partition mode.
+        /// </summary>
+        [EditorVisible("Shadows", "Parallel-Split Lambda")]
+        public static float PssmLambda
+        {
+            get { return _pssmLambda; }
+            set
+            {
+                _pssmLambda = value;
+                Shadows.AreSplitsDirty = true;
+                NotifyChangedStatic();
+            }
+        }
 
-	    /// <summary>
-	    /// The shadow depth bias. Used to mitigate self-shadowing issues.
-	    /// </summary>
-	    /// <remarks>
-	    /// If the bias is too large "peter panning" will occur. If the number is too small self-shadowing will occur.
-	    /// </remarks>
-	    [EditorVisible("Shadows", "Depth Bias")]
-	    public static float ShadowDepthBias
-	    {
-	        get { return _shadowDepthBias; }
-	        set
-	        {
-	            _shadowDepthBias = value;
+        /// <summary>
+        /// The shadow depth bias. Used to mitigate self-shadowing issues.
+        /// </summary>
+        /// <remarks>
+        /// If the bias is too large "peter panning" will occur. If the number is too small self-shadowing will occur.
+        /// </remarks>
+        [EditorVisible("Shadows", "Depth Bias")]
+        public static float ShadowDepthBias
+        {
+            get { return _shadowDepthBias; }
+            set
+            {
+                _shadowDepthBias = value;
                 Shadows.ReceiverConstants.Data.ShadowDepthBias = value;
                 NotifyChangedStatic();
-	        }
-	    }
+            }
+        }
 
-	    /// <summary>
-	    /// The normal-offset bias. Used to mitigate self-shadowing issues.
-	    /// </summary>
-	    /// <remarks>
-	    /// If the offset is too long "peter panning" will occur. If the number is too small self-shadowing will occur.
-	    /// </remarks>
-	    [EditorVisible("Shadows", "Offset Scale")]
-	    public static float ShadowOffsetScale
-	    {
-	        get { return _shadowOffsetScale; }
-	        set
-	        {
-	            _shadowOffsetScale = value;
-	            Shadows.ReceiverConstants.Data.ShadowOffsetScale = value;
+        /// <summary>
+        /// The normal-offset bias. Used to mitigate self-shadowing issues.
+        /// </summary>
+        /// <remarks>
+        /// If the offset is too long "peter panning" will occur. If the number is too small self-shadowing will occur.
+        /// </remarks>
+        [EditorVisible("Shadows", "Offset Scale")]
+        public static float ShadowOffsetScale
+        {
+            get { return _shadowOffsetScale; }
+            set
+            {
+                _shadowOffsetScale = value;
+                Shadows.ReceiverConstants.Data.ShadowOffsetScale = value;
                 NotifyChangedStatic();
-	        }
-	    }
+            }
+        }
 
-	    /// <summary>
-	    /// Determines whether a debug visualization of the cascade splits is drawn.
-	    /// </summary>
-	    [EditorVisible("Shadows", "Are Cascades Shown")]
-	    public static bool AreCascadesShown
-	    {
-	        get { return _areCascadesShown; }
-	        set
-	        {
-	            _areCascadesShown = value;
-	            Shadows.ReceiverConstants.Data.VisualizeCascades = value ? 1 : 0;
+        /// <summary>
+        /// Determines whether a debug visualization of the cascade splits is drawn.
+        /// </summary>
+        [EditorVisible("Shadows", "Are Cascades Shown")]
+        public static bool AreCascadesShown
+        {
+            get { return _areCascadesShown; }
+            set
+            {
+                _areCascadesShown = value;
+                Shadows.ReceiverConstants.Data.VisualizeCascades = value ? 1 : 0;
                 NotifyChangedStatic();
-	        }
+            }
         }
 
         /// <summary>
@@ -310,68 +285,70 @@ namespace dEngine.Settings.Global
         /// The primary graphics adapter.
         /// </summary>
         [EditorVisible("General", "Graphics Adapter")]
-	    public static int GraphicsAdapter
-	    {
-	        get { return _graphicsAdapter; }
-	        set
-	        {
-	            _graphicsAdapter = value;
-	            //if (Renderer.IsInitialized)
-	            //	Renderer.SetAdapter(value);
-	            NotifyChangedStatic();
-	        }
-	    }
+        public static int GraphicsAdapter
+        {
+            get { return _graphicsAdapter; }
+            set
+            {
+                _graphicsAdapter = value;
+                //if (Renderer.IsInitialized)
+                //	Renderer.SetAdapter(value);
+                NotifyChangedStatic();
+            }
+        }
 
-	    /// <summary>
-	    /// The graphics library to use.
-	    /// </summary>
-	    [EditorVisible("General", "Graphics Mode")]
-	    public static GraphicsMode GraphicsMode
-	    {
-	        get { return _graphicsMode; }
-	        set
-	        {
-	            _graphicsMode = value;
-	            NotifyChangedStatic();
-	        }
-	    }
+        /// <summary>
+        /// The graphics library to use.
+        /// </summary>
+        [EditorVisible("General", "Graphics Mode")]
+        public static GraphicsMode GraphicsMode
+        {
+            get { return _graphicsMode; }
+            set
+            {
+                _graphicsMode = value;
+                NotifyChangedStatic();
+            }
+        }
 
         /// <summary>
         /// The sample count for the SSAO effect.
         /// </summary>
         [EditorVisible("SSAO", "Sample Count")]
-	    public static SampleCount SSAOSampleCount
-	    {
-	        get { return _sampleCount; }
-	        set
-	        {
-	            _sampleCount = value;
-	            NotifyChangedStatic();
-	        }
-	    }
+        public static SampleCount SSAOSampleCount
+        {
+            get { return _sampleCount; }
+            set
+            {
+                _sampleCount = value;
+                NotifyChangedStatic();
+            }
+        }
 
         /// <summary>
         /// Show a visualization of the ambient occlusion.
         /// </summary>
         [EditorVisible("SSAO", "Show Ambient Occlusion")]
         public static bool ShowAmbientOcclusion
-	    {
-	        get { return _showSsaoVisualization; }
-	        set
-	        {
-	            _showSsaoVisualization = value;
-	            NotifyChangedStatic();
-	        }
-	    }
+        {
+            get { return _showSsaoVisualization; }
+            set
+            {
+                _showSsaoVisualization = value;
+                NotifyChangedStatic();
+            }
+        }
 
-	    /// <summary>
-	    /// The downsample size for the SSAO effect.
-	    /// </summary>
-	    [EditorVisible("SSAO", "Downsample Size")]
+        /// <summary>
+        /// The downsample size for the SSAO effect.
+        /// </summary>
+        [EditorVisible("SSAO", "Downsample Size")]
         public static DownsampleSize SSAODownsampleSize
-	    {
-	        get { return _ssaoDownsampleSize; }
-	        set { _ssaoDownsampleSize = value;
+        {
+            get { return _ssaoDownsampleSize; }
+            set
+            {
+                _ssaoDownsampleSize = value;
                 NotifyChangedStatic();
             }
         }
@@ -422,14 +399,14 @@ namespace dEngine.Settings.Global
         /// Determines whether text is anti-aliased.
         /// </summary>
         [EditorVisible("GUI", "Use ClearType Rendering")]
-	    public static bool UseClearTypeRendering
-	    {
-	        get { return _useClearTypeRendering; }
-	        set
-	        {
-	            _useClearTypeRendering = value;
-	            NotifyChangedStatic();
-	        }
+        public static bool UseClearTypeRendering
+        {
+            get { return _useClearTypeRendering; }
+            set
+            {
+                _useClearTypeRendering = value;
+                NotifyChangedStatic();
+            }
         }
 
         /// <summary>
@@ -446,40 +423,64 @@ namespace dEngine.Settings.Global
             }
         }
 
+        /// <summary>
+        /// Gets the tempature of the graphics card.
+        /// </summary>
+        /// <returns></returns>
+        public LuaResult GetGpuTemps()
+        {
+            switch (DebugSettings.GpuVendor)
+            {
+                case GpuVendor.Nvidia:
+                    var thermalSettings = new NvApi.ThermalSettings();
+                    if (NvApi.GetThermalSettings(Renderer.Device.NativePointer, 0, ref thermalSettings) != 0)
+                        throw new Exception("NvidiaControlPanel.GetThermalSettings() returned false.");
+                    var sensor = thermalSettings.Sensors[0];
+                    return new LuaResult(sensor.CurrentTemp, sensor.DefaultMinTemp, sensor.DefaultMaxTemp);
+                case GpuVendor.AMD:
+                    throw new NotImplementedException();
+                case GpuVendor.Intel:
+                    throw new NotImplementedException();
+                default:
+                    throw new NotSupportedException(
+                        $"Tempature measurements are not supported for vendor {DebugSettings.GpuVendor}");
+            }
+        }
+
         private static void NotifyChangedStatic([CallerMemberName] string propertyName = null)
-	    {
-	        Engine.Settings?.RenderSettings?.NotifyChanged(propertyName);
-	    }
+        {
+            Engine.Settings?.RenderSettings?.NotifyChanged(propertyName);
+        }
 
-	    /// <inheritdoc />
-	    public override void RestoreDefaults()
-	    {
-	        GraphicsAdapter = 0;
-	        GraphicsMode = GraphicsMode.Direct3D11;
+        /// <inheritdoc />
+        public override void RestoreDefaults()
+        {
+            GraphicsAdapter = 0;
+            GraphicsMode = GraphicsMode.Direct3D11;
 
-	        ShadowMapSize = 2048;
-	        CascadeSplit0 = 0.05f;
-	        CascadeSplit1 = 0.3f;
-	        CascadeSplit2 = 0.65f;
-	        CascadeSplit3 = 1.0f;
-	        CascadePartitionMode = CascadePartitionMode.Manual;
-	        AreCascadesShown = false;
-	        PssmLambda = 0.01f;
-	        ShadowDepthBias = 0.0009f;
-	        ShadowOffsetScale = 2.0f;
-	        ShaderCache = "";
+            ShadowMapSize = 2048;
+            CascadeSplit0 = 0.05f;
+            CascadeSplit1 = 0.3f;
+            CascadeSplit2 = 0.65f;
+            CascadeSplit3 = 1.0f;
+            CascadePartitionMode = CascadePartitionMode.Manual;
+            AreCascadesShown = false;
+            PssmLambda = 0.01f;
+            ShadowDepthBias = 0.0009f;
+            ShadowOffsetScale = 2.0f;
+            ShaderCache = "";
             ShadowMode = ShadowMode.FixedSizePcf;
             ShadowMapFormat = ShadowFormat.Sm16Bit;
-	        UseFilterableShadows = false;
-	        UseShadowMips = false;
+            UseFilterableShadows = false;
+            UseShadowMips = false;
 
-	        SSAOBlurPasses = 1;
+            SSAOBlurPasses = 1;
             SSAODownsampleSize = DownsampleSize.QuarterSize;
-	        SSAOSampleCount = SampleCount.Medium;
-	        SSAOBlurMode = BlurMode.HighQualityBilateral;
+            SSAOSampleCount = SampleCount.Medium;
+            SSAOBlurMode = BlurMode.HighQualityBilateral;
 
-	        GuiAntiAliasing = true;
-	        UseClearTypeRendering = true;
-	    }
-	}
+            GuiAntiAliasing = true;
+            UseClearTypeRendering = true;
+        }
+    }
 }

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Caliburn.Micro;
 using dEditor.Widgets.CodeEditor;
-using dEditor.Widgets.StartPage;
 using dEngine;
 using dEngine.Instances;
 using Key = System.Windows.Input.Key;
@@ -17,9 +15,12 @@ namespace dEditor.Widgets.Explorer
     /// </summary>
     public partial class ExplorerView
     {
+        internal const int ItemHeight = 23;
         private int _startClickY;
         private int _dist;
-        internal const int ItemHeight = 23;
+
+        private List<Instance> _shiftSelection;
+        private ExplorerItem _startingItem;
 
         public ExplorerView()
         {
@@ -38,7 +39,7 @@ namespace dEditor.Widgets.Explorer
             var treeViewItem = (TreeViewItem)sender;
             var item = (ExplorerItem)treeViewItem.DataContext;
 
-            if (item == _startingItem && item.IsSelected)
+            if ((item == _startingItem) && item.IsSelected)
                 return;
 
             var controlHeld = Keyboard.IsKeyDown(Key.LeftCtrl);
@@ -77,7 +78,7 @@ namespace dEditor.Widgets.Explorer
 
             _shiftSelection = new List<Instance>();
 
-            int cur = ItemHeight;
+            var cur = ItemHeight;
             _dist = Math.Abs(clickY - _startClickY);
 
             Traverse(_startingItem, ref cur, true);
@@ -86,9 +87,10 @@ namespace dEditor.Widgets.Explorer
                 Game.Selection.Select(inst);
         }
 
-        private bool Traverse(ExplorerItem item, ref int cur, bool root = false, int offset = 0, ExplorerItem test = null)
+        private bool Traverse(ExplorerItem item, ref int cur, bool root = false, int offset = 0,
+            ExplorerItem test = null)
         {
-            if (offset == 0 && !root)
+            if ((offset == 0) && !root)
             {
                 cur += ItemHeight;
                 _shiftSelection.Add(item.Instance);
@@ -101,7 +103,7 @@ namespace dEditor.Widgets.Explorer
             {
                 var items = item.Items;
                 var count = items.Count;
-                for (int i = offset; i < count; i++)
+                for (var i = offset; i < count; i++)
                 {
                     var child = items[i];
                     if (child == test)
@@ -114,18 +116,13 @@ namespace dEditor.Widgets.Explorer
             var parent = item.Parent;
 
             if (parent != null)
-            {
-                if (parent.Parent != null && item.IsLastChild)
+                if ((parent.Parent != null) && item.IsLastChild)
                     Traverse(parent.Parent, ref cur, true, parent.ChildIndex + 1, parent);
                 else
                     Traverse(parent, ref cur, true, item.ChildIndex + 1, parent);
-            }
 
             return false;
         }
-
-        private List<Instance> _shiftSelection;
-        private ExplorerItem _startingItem;
 
         private void TreeViewItem_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -138,9 +135,7 @@ namespace dEditor.Widgets.Explorer
 
             Script script;
             if ((script = item.Instance as Script) != null)
-            {
                 CodeEditorViewModel.TryOpenScript(script);
-            }
         }
     }
 }

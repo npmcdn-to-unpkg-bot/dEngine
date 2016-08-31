@@ -11,10 +11,10 @@
 
 namespace dEngine
 {
-	public enum TextureDimension
-	{
-		OneD,
-		TwoD,
-		ThreeD
-	}
+    public enum TextureDimension
+    {
+        OneD,
+        TwoD,
+        ThreeD
+    }
 }

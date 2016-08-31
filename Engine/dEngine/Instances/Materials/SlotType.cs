@@ -8,7 +8,10 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 #pragma warning disable 1591
+
 namespace dEngine.Instances.Materials
 {
     public enum SlotType
@@ -16,6 +19,6 @@ namespace dEngine.Instances.Materials
         Float,
         Float2,
         Float3,
-        Float4,
+        Float4
     }
 }

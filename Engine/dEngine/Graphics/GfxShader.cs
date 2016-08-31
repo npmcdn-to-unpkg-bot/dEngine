@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +19,6 @@ using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using dEngine.Graphics.States;
 using dEngine.Utility.Extensions;
-using JetBrains.Annotations;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -50,23 +48,19 @@ namespace dEngine.Graphics
         [XmlAttribute("Name")]
         public string Name { get; set; }
 
-        [XmlArray, XmlArrayItem(typeof(Pass))]
+        [XmlArray]
+        [XmlArrayItem(typeof(Pass))]
         public List<Pass> Passes { get; set; }
 
         [XmlIgnore]
         public string Source { get; set; }
-
-        public void UpdatePassDictionary()
-        {
-            _passDictionary = Passes.ToDictionary(pass => pass.Name, pass => pass);
-        }
 
         public void Load(BinaryReader reader)
         {
             _passDictionary = new Dictionary<string, Pass>();
             Name = reader.ReadString();
             var passCount = reader.ReadInt32();
-            for (int i = 0; i < passCount; i++)
+            for (var i = 0; i < passCount; i++)
             {
                 var pass = new Pass();
                 pass.Load(reader);
@@ -81,21 +75,22 @@ namespace dEngine.Graphics
             writer.Write(Name);
             var passCount = Passes.Count;
             writer.Write(passCount);
-            for (int i = 0; i < passCount; i++)
-            {
+            for (var i = 0; i < passCount; i++)
                 Passes[i].Save(writer);
-            }
             writer.Write(Source);
         }
 
         public void Dispose()
         {
             foreach (var pass in _passDictionary.Values)
-            {
                 pass.Dispose();
-            }
 
             _passDictionary.Clear();
+        }
+
+        public void UpdatePassDictionary()
+        {
+            _passDictionary = Passes.ToDictionary(pass => pass.Name, pass => pass);
         }
 
         public override string ToString()
@@ -166,25 +161,9 @@ namespace dEngine.Graphics
             [XmlIgnore]
             public SortedDictionary<string, object> Parameters { get; } = new SortedDictionary<string, object>();
 
-            [XmlArray, XmlArrayItem(typeof(Define))]
+            [XmlArray]
+            [XmlArrayItem(typeof(Define))]
             public List<Define> Defines { get; set; }
-            /*
-             * lend { get; set; }
-                public CullMode CullMode { get; set; }
-                public FillMode FillMode { get; set; }
-                public bool ZWrite { get; set; } = true;
-             */
-
-            private void SaveBytecode(BinaryWriter writer, ref byte[] bytecode)
-            {
-                writer.Write(bytecode.Length);
-            }
-
-            private void LoadBytecode(BinaryReader reader, out byte[] bytecode)
-            {
-                var byteCount = reader.ReadInt32();
-                bytecode = reader.ReadBytes(byteCount);
-            }
 
             public void Load(BinaryReader reader)
             {
@@ -231,11 +210,29 @@ namespace dEngine.Graphics
                 return string.Equals(Name, other.Name);
             }
 
+            /*
+             * lend { get; set; }
+                public CullMode CullMode { get; set; }
+                public FillMode FillMode { get; set; }
+                public bool ZWrite { get; set; } = true;
+             */
+
+            private void SaveBytecode(BinaryWriter writer, ref byte[] bytecode)
+            {
+                writer.Write(bytecode.Length);
+            }
+
+            private void LoadBytecode(BinaryReader reader, out byte[] bytecode)
+            {
+                var byteCount = reader.ReadInt32();
+                bytecode = reader.ReadBytes(byteCount);
+            }
+
             public override string ToString()
             {
                 return $"{Name} (Pass)";
             }
-            
+
             private byte[] CompileShaderDef(string definition, string source, string fileName = null)
             {
 #if DEBUG

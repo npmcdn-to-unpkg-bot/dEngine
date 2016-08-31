@@ -11,7 +11,7 @@
 
 namespace dEngine.Tests
 {
-	public class QuaternionTest
-	{
-	}
+    public class QuaternionTest
+    {
+    }
 }

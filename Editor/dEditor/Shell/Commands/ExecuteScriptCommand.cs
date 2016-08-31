@@ -18,7 +18,7 @@ using Microsoft.Win32;
 
 namespace dEditor.Shell.Commands
 {
-    public class ExecuteScriptCommand : Framework.Command
+    public class ExecuteScriptCommand : Command
     {
         public override string Name { get; } = "Execute Script";
         public override string Text { get; } = "Executes a script from a file.";
@@ -34,9 +34,7 @@ namespace dEditor.Shell.Commands
             var dialog = new OpenFileDialog {Filter = "Lua Script|*.lua;"};
 
             if (dialog.ShowDialog() == true)
-            {
                 IoC.Get<ICommandBar>().Execute(dialog.OpenFile().ReadString(), true);
-            }
         }
     }
 }

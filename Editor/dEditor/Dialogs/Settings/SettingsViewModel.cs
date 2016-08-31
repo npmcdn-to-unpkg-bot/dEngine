@@ -11,18 +11,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using Caliburn.Micro;
 using dEditor.Widgets.Properties;
 using dEngine;
 
 namespace dEditor.Dialogs.Settings
 {
-    using Settings = dEngine.Settings.Settings;
     public class SettingsViewModel : Conductor<PropertiesViewModel>
     {
-        public readonly PropertiesViewModel Properties;
-        private Settings _selectedSettings;
+        private dEngine.Settings.Settings _selectedSettings;
 
         public SettingsViewModel()
         {
@@ -31,13 +28,13 @@ namespace dEditor.Dialogs.Settings
             Properties.FilteredCategories.Add("Behaviour");
 
             Settings =
-                Engine.Settings.Children.OfType<Settings>()
-                    .Concat(Engine.UserSettings.Children.OfType<Settings>());
+                Engine.Settings.Children.OfType<dEngine.Settings.Settings>()
+                    .Concat(Engine.UserSettings.Children.OfType<dEngine.Settings.Settings>());
         }
 
-        public IEnumerable<Settings> Settings { get; }
+        public IEnumerable<dEngine.Settings.Settings> Settings { get; }
 
-        public Settings SelectedSettings
+        public dEngine.Settings.Settings SelectedSettings
         {
             get { return _selectedSettings; }
             set
@@ -72,5 +69,7 @@ namespace dEditor.Dialogs.Settings
         {
             ActivateItem(Properties);
         }
+
+        public readonly PropertiesViewModel Properties;
     }
 }

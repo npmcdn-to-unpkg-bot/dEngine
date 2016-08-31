@@ -9,21 +9,16 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.ObjectModel;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Xceed.Wpf.Toolkit;
-
 namespace dEditor.Widgets.Properties.Inspectors.Colour
 {
-	/// <summary>
-	/// Interaction logic for ColourEditorView.xaml
-	/// </summary>
-	public partial class ColourEditorView
-	{
-		public ColourEditorView()
-		{
-			InitializeComponent();
+    /// <summary>
+    /// Interaction logic for ColourEditorView.xaml
+    /// </summary>
+    public partial class ColourEditorView
+    {
+        public ColourEditorView()
+        {
+            InitializeComponent();
 
             /*
 			ColorPicker.AvailableColors = new ObservableCollection<ColorItem>
@@ -50,6 +45,6 @@ namespace dEditor.Widgets.Properties.Inspectors.Colour
 				new ColorItem(Color.FromRgb(0, 0, 0), "Extra") // extra
 			};
             */
-		}
-	}
+        }
+    }
 }

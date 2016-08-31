@@ -35,22 +35,11 @@ namespace dEditor.Widgets.Properties.Inspectors
             var instance = obj as dEngine.Instances.Instance;
 
             if (instance != null)
-            {
                 instance.Changed.Event += propertyName =>
                 {
                     if (propertyName == propDesc.Name)
-                    {
                         NotifyOfPropertyChange(() => Value);
-                    }
                 };
-            }
-        }
-        
-        public void ApplyValueWithHistory()
-        {
-            EnableHistory = true;
-            Value = Value;
-            EnableHistory = false;
         }
 
         public bool EnableHistory { get; protected set; } = true;
@@ -101,7 +90,7 @@ namespace dEditor.Widgets.Properties.Inspectors
         {
             get
             {
-                string desc = Name;
+                var desc = Name;
                 var prop = FirstObject.Value.Property;
                 Comments.Comment comment;
                 API.Comments.Get($"P:{prop.DeclaringType}.{prop.Name}", out comment);
@@ -127,6 +116,13 @@ namespace dEditor.Widgets.Properties.Inspectors
             Objects.Remove(obj);
         }
 
+        public void ApplyValueWithHistory()
+        {
+            EnableHistory = true;
+            Value = Value;
+            EnableHistory = false;
+        }
+
         public int CompareTo(IEditor other)
         {
             return string.CompareOrdinal(DisplayName, other.DisplayName);
@@ -150,7 +146,7 @@ namespace dEditor.Widgets.Properties.Inspectors
 
             public override void Undo()
             {
-                int i = 0;
+                var i = 0;
                 foreach (var prop in _props)
                     prop.Value = _originalValues[i++];
             }

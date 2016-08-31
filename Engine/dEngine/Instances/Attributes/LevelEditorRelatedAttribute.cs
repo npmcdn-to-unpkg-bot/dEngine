@@ -13,10 +13,10 @@ using System;
 
 namespace dEngine.Instances.Attributes
 {
-	/// <summary>
-	/// An attribute for members related to level editors.
-	/// </summary>
-	public class LevelEditorRelatedAttribute : Attribute
-	{
-	}
+    /// <summary>
+    /// An attribute for members related to level editors.
+    /// </summary>
+    public class LevelEditorRelatedAttribute : Attribute
+    {
+    }
 }

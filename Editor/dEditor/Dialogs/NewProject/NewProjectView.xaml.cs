@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Dialogs.NewProject
 {
-	/// <summary>
-	/// Interaction logic for NewProjectView.xaml
-	/// </summary>
-	public partial class NewProjectView : UserControl
-	{
-		public NewProjectView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for NewProjectView.xaml
+    /// </summary>
+    public partial class NewProjectView : UserControl
+    {
+        public NewProjectView()
+        {
+            InitializeComponent();
+        }
+    }
 }

@@ -35,9 +35,7 @@ namespace dEngine.Services
         private static Delegate CreateDelegate(MethodInfo method, object target = null)
         {
             if (method == null)
-            {
                 throw new ArgumentNullException(nameof(method));
-            }
 
             if (!method.IsStatic)
             {
@@ -50,9 +48,7 @@ namespace dEngine.Services
                     .ToArray());
 
             if (method.IsStatic)
-            {
                 return method.CreateDelegate(del);
-            }
             return method.CreateDelegate(del, target);
         }
 
@@ -79,9 +75,9 @@ namespace dEngine.Services
 
                 foreach (
                     var methodInfo in
-                        GetType()
-                            .GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static |
-                                        BindingFlags.DeclaredOnly))
+                    GetType()
+                        .GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static |
+                                    BindingFlags.DeclaredOnly))
                 {
                     var name = methodInfo.Name;
                     var del = CreateDelegate(methodInfo, this);
@@ -92,9 +88,7 @@ namespace dEngine.Services
                 RegisterPackage("debug", typeof(DebugPackage));
 
                 foreach (var t in typeof(IDataType).GetDescendantTypes())
-                {
                     RegisterPackage(t.Name, t);
-                }
 
                 var pprintSource = ContentProvider.DownloadStream("internal://scripts/pprint.lua").Result.ReadString();
                 var pprint = ScriptService.Lua.CompileChunk(pprintSource, "pprint", new LuaCompileOptions());
@@ -164,13 +158,9 @@ namespace dEngine.Services
             {
                 var identity = GetIdentity(LuaThread.running());
                 if (identity.HasValue)
-                {
                     OnPrint($"Current identity is {(byte)identity.Value} ({identity})");
-                }
                 else
-                {
                     OnPrint("This thread has no identity.");
-                }
             }
 
             public static double Wait(double seconds)
@@ -190,7 +180,7 @@ namespace dEngine.Services
 
             public static double ElapsedTime()
             {
-                return Environment.TickCount / 10000000.0;
+                return Environment.TickCount/10000000.0;
             }
 
             public static double Tick()
@@ -246,9 +236,7 @@ namespace dEngine.Services
                     var values = Enum.GetValues(type).Cast<dynamic>().ToList();
 
                     for (var i = 0; i < names.Length; i++)
-                    {
                         subTable[names[i]] = values[i];
-                    }
 
                     enumTable[type.Name] = subTable;
                 }
@@ -356,7 +344,7 @@ namespace dEngine.Services
 
         public static double deg(double x)
         {
-            return x * 180.0 / Math.PI;
+            return x*180.0/Math.PI;
         }
 
         public static double exp(double x)
@@ -371,22 +359,22 @@ namespace dEngine.Services
 
         public static double fmod(double x, double y)
         {
-            return x % y;
+            return x%y;
         }
 
         public static LuaTuple<double, int> frexp(double x)
         {
             if (x == 0) return new LuaTuple<double, int>();
             double delta = x > 0 ? 1 : -1;
-            x = x * delta;
-            var exponent = (int)(Math.Floor(Math.Log(x) / Math.Log(2)) + 1);
-            var mantissa = x / Math.Pow(2, exponent);
-            return new LuaTuple<double, int>(mantissa * delta, exponent);
+            x = x*delta;
+            var exponent = (int)(Math.Floor(Math.Log(x)/Math.Log(2)) + 1);
+            var mantissa = x/Math.Pow(2, exponent);
+            return new LuaTuple<double, int>(mantissa*delta, exponent);
         }
 
         public static double ldexp(double m, int exp)
         {
-            return m * (2 ^ exp);
+            return m*(2 ^ exp);
         }
 
         public static double log(double x, double b = Math.E)
@@ -396,11 +384,11 @@ namespace dEngine.Services
 
         public static double max(double[] x)
         {
-            if (x == null || x.Length == 0)
+            if ((x == null) || (x.Length == 0))
                 throw new ArgumentException("Number expected, got no value.", nameof(x));
 
-            double r = double.MinValue;
-            for (int i = 0; i < x.Length; i++)
+            var r = double.MinValue;
+            for (var i = 0; i < x.Length; i++)
                 if (r < x[i])
                     r = x[i];
 
@@ -409,11 +397,11 @@ namespace dEngine.Services
 
         public static double min(double[] x)
         {
-            if (x == null || x.Length == 0)
+            if ((x == null) || (x.Length == 0))
                 throw new ArgumentException("Number expected, got no value.", nameof(x));
 
-            double r = Double.MaxValue;
-            for (int i = 0; i < x.Length; i++)
+            var r = double.MaxValue;
+            for (var i = 0; i < x.Length; i++)
                 if (r > x[i])
                     r = x[i];
 
@@ -441,7 +429,7 @@ namespace dEngine.Services
 
         public static double rad(double x)
         {
-            return x * Math.PI / 180.0;
+            return x*Math.PI/180.0;
         }
 
         public static object random(object m = null, object n = null)
@@ -504,13 +492,13 @@ namespace dEngine.Services
 
         public static double lerp(double a, double b, double k)
         {
-            return a * (1 - k) + b * k;
+            return a*(1 - k) + b*k;
         }
 
         public static double smoothstep(double edge0, double edge1, double x)
         {
-            x = saturate((x - edge0) / (edge1 - edge0));
-            return x * x * (3 - 2 * x);
+            x = saturate((x - edge0)/(edge1 - edge0));
+            return x*x*(3 - 2*x);
         }
 
         public static double smootherstep(double amount)
@@ -518,7 +506,7 @@ namespace dEngine.Services
             if (amount <= 0.0)
                 return 0.0f;
             if (amount < 1.0)
-                return (amount * amount * amount * (amount * (amount * 6.0 - 15.0) + 10.0));
+                return amount*amount*amount*(amount*(amount*6.0 - 15.0) + 10.0);
             return 1f;
         }
 
@@ -534,11 +522,11 @@ namespace dEngine.Services
         public static double gaussian(double amplitude, double x, double y, double centerX, double centerY,
             double sigmaX, double sigmaY)
         {
-            double num1 = x - centerX;
-            double num2 = y - centerY;
-            double num3 = num1 * num1 / (2.0 * sigmaX * sigmaX);
-            double num4 = num2 * num2 / (2.0 * sigmaY * sigmaY);
-            return amplitude * Math.Exp(-(num3 + num4));
+            var num1 = x - centerX;
+            var num2 = y - centerY;
+            var num3 = num1*num1/(2.0*sigmaX*sigmaX);
+            var num4 = num2*num2/(2.0*sigmaY*sigmaY);
+            return amplitude*Math.Exp(-(num3 + num4));
         }
 
         public static object tointeger(object x)
@@ -592,7 +580,7 @@ namespace dEngine.Services
             var builder = new StringBuilder();
 
             var stackFrame = LuaExceptionData.GetStackTrace(new StackTrace()).Where(x =>
-                x.Type == LuaStackFrameType.Lua);
+                    x.Type == LuaStackFrameType.Lua);
 
             Script script = null;
 

@@ -16,7 +16,9 @@ namespace dEngine.Instances
     /// <summary>
     /// A <see cref="ValueContainer" /> that holds an integer.
     /// </summary>
-    [TypeId(207), ToolboxGroup("Values"), ExplorerOrder(3)]
+    [TypeId(207)]
+    [ToolboxGroup("Values")]
+    [ExplorerOrder(3)]
     public sealed class IntValue : ValueContainer
     {
         private int _value;
@@ -30,7 +32,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The value this container holds.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public int Value
         {
             get { return _value; }

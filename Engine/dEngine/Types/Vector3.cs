@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Assimp;
 using dEngine.Utility;
 using SharpDX;
 
@@ -80,17 +81,17 @@ namespace dEngine
         /// <summary>
         /// Gets the length of this vector.
         /// </summary>
-        public float magnitude => Mathf.Sqrt(x * x + y * y + z * z);
+        public float magnitude => Mathf.Sqrt(x*x + y*y + z*z);
 
         /// <summary>
         /// Gets the length squared of this vector.
         /// </summary>
-        public float mag2 => x * x + y * y + z * z;
+        public float mag2 => x*x + y*y + z*z;
 
         /// <summary>
         /// Gets a normalized version of the vector.
         /// </summary>
-        public Vector3 unit => this / magnitude;
+        public Vector3 unit => this/magnitude;
 
         /// <summary>
         /// Returns a Vector2 of the x and y components.
@@ -190,8 +191,8 @@ namespace dEngine
             unchecked
             {
                 var hashCode = x.GetHashCode();
-                hashCode = (hashCode * 397) ^ y.GetHashCode();
-                hashCode = (hashCode * 397) ^ z.GetHashCode();
+                hashCode = (hashCode*397) ^ y.GetHashCode();
+                hashCode = (hashCode*397) ^ z.GetHashCode();
                 return hashCode;
             }
         }
@@ -216,7 +217,7 @@ namespace dEngine
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static explicit operator Vector3(Assimp.Vector3D v)
+        public static explicit operator Vector3(Vector3D v)
         {
             return new Vector3(v.X, v.Y, v.Z);
         }
@@ -332,7 +333,7 @@ namespace dEngine
         /// </summary>
         public static void Lerp(ref Vector3 from, ref Vector3 target, ref float delta, out Vector3 result)
         {
-            result = from * (1f - delta) + target * delta;
+            result = from*(1f - delta) + target*delta;
         }
 
 
@@ -341,7 +342,7 @@ namespace dEngine
         /// </summary>
         public static void Dot(ref Vector3 lhs, ref Vector3 rhs, out float result)
         {
-            result = (float)(lhs.x * (double)rhs.x + lhs.y * (double)rhs.y + lhs.z * (double)rhs.z);
+            result = (float)(lhs.x*(double)rhs.x + lhs.y*(double)rhs.y + lhs.z*(double)rhs.z);
         }
 
         /// <summary>
@@ -357,14 +358,14 @@ namespace dEngine
 
         internal static void Multiply(ref Vector3 lhs, float n, out Vector3 result)
         {
-            result = lhs * n;
+            result = lhs*n;
         }
 
         internal static void Cross(ref Vector3 lhs, ref Vector3 rhs, out Vector3 result)
         {
-            result = new Vector3((float)(lhs.y * (double)rhs.z - lhs.z * (double)rhs.y),
-                (float)(lhs.z * (double)rhs.x - lhs.x * (double)rhs.z),
-                (float)(lhs.x * (double)rhs.y - lhs.y * (double)rhs.x));
+            result = new Vector3((float)(lhs.y*(double)rhs.z - lhs.z*(double)rhs.y),
+                (float)(lhs.z*(double)rhs.x - lhs.x*(double)rhs.z),
+                (float)(lhs.x*(double)rhs.y - lhs.y*(double)rhs.x));
         }
 
         internal static void Add(ref Vector3 left, ref Vector3 right, out Vector3 result)
@@ -382,7 +383,8 @@ namespace dEngine
             result = new Vector3(left.x - right.X, left.y - right.Y, left.z - right.Z);
         }
 
-        internal static void Subtract(ref BulletSharp.Math.Vector3 left, ref BulletSharp.Math.Vector3 right, out Vector3 result)
+        internal static void Subtract(ref BulletSharp.Math.Vector3 left, ref BulletSharp.Math.Vector3 right,
+            out Vector3 result)
         {
             result = new Vector3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
         }
@@ -403,7 +405,7 @@ namespace dEngine
 
         internal static void Divide(ref Vector3 v, ref float n, out Vector3 result)
         {
-            result = new Vector3(v.x / n, v.y / n, v.z / n);
+            result = new Vector3(v.x/n, v.y/n, v.z/n);
         }
 
         #region Operators
@@ -441,28 +443,28 @@ namespace dEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator >(Vector3 left, Vector3 right)
         {
-            return left.x > right.x && left.y > right.y && left.z > right.z;
+            return (left.x > right.x) && (left.y > right.y) && (left.z > right.z);
         }
 
         /// <summary />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator >=(Vector3 left, Vector3 right)
         {
-            return left.x >= right.x && left.y >= right.y && left.z >= right.z;
+            return (left.x >= right.x) && (left.y >= right.y) && (left.z >= right.z);
         }
 
         /// <summary />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator <(Vector3 left, Vector3 right)
         {
-            return left.x < right.x && left.y < right.y && left.z < right.z;
+            return (left.x < right.x) && (left.y < right.y) && (left.z < right.z);
         }
 
         /// <summary />
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator <=(Vector3 left, Vector3 right)
         {
-            return left.x <= right.x && left.y <= right.y && left.z <= right.z;
+            return (left.x <= right.x) && (left.y <= right.y) && (left.z <= right.z);
         }
 
         /// <summary>
@@ -493,7 +495,7 @@ namespace dEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 operator *(Vector3 lhs, Vector3 rhs)
         {
-            return new Vector3(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
+            return new Vector3(lhs.x*rhs.x, lhs.y*rhs.y, lhs.z*rhs.z);
         }
 
         /// <summary>
@@ -511,7 +513,7 @@ namespace dEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 operator *(Vector3 v, float n)
         {
-            return new Vector3(v.x * n, v.y * n, v.z * n);
+            return new Vector3(v.x*n, v.y*n, v.z*n);
         }
 
         /// <summary>
@@ -520,7 +522,7 @@ namespace dEngine
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 operator *(float number, Vector3 vector)
         {
-            return vector * number;
+            return vector*number;
         }
 
         /// <summary>
@@ -554,27 +556,29 @@ namespace dEngine
 
         #endregion
 
-        internal static void TransformCoordinate(ref Vector3 coordinate, ref SharpDX.Matrix transform, out Vector3 result)
+        internal static void TransformCoordinate(ref Vector3 coordinate, ref Matrix transform, out Vector3 result)
         {
-            var x = (coordinate.x * transform.M11 + coordinate.y * transform.M21 + coordinate.z * transform.M31) + transform.M41;
-            var y = (coordinate.x * transform.M12 + coordinate.y * transform.M22 + coordinate.z * transform.M32) + transform.M42;
-            var z = (coordinate.x * transform.M13 + coordinate.y * transform.M23 + coordinate.z * transform.M33) + transform.M43;
-            var w = (1.0f / (coordinate.x * transform.M14 + coordinate.y * transform.M24 + coordinate.z * transform.M34 + transform.M44));
-            result = new Vector3(x * w, y * w, z * w);
+            var x = coordinate.x*transform.M11 + coordinate.y*transform.M21 + coordinate.z*transform.M31 + transform.M41;
+            var y = coordinate.x*transform.M12 + coordinate.y*transform.M22 + coordinate.z*transform.M32 + transform.M42;
+            var z = coordinate.x*transform.M13 + coordinate.y*transform.M23 + coordinate.z*transform.M33 + transform.M43;
+            var w = 1.0f/
+                    (coordinate.x*transform.M14 + coordinate.y*transform.M24 + coordinate.z*transform.M34 +
+                     transform.M44);
+            result = new Vector3(x*w, y*w, z*w);
         }
 
         internal static void TransformCoordinate(ref Vector3 coordinate, ref Matrix3 transform, out Vector3 result)
         {
             result = new Vector3(
                 (float)
-                    (coordinate.x * (double)transform.M11 + coordinate.y * (double)transform.M21 +
-                     coordinate.z * (double)transform.M31),
+                (coordinate.x*(double)transform.M11 + coordinate.y*(double)transform.M21 +
+                 coordinate.z*(double)transform.M31),
                 (float)
-                    (coordinate.x * (double)transform.M12 + coordinate.y * (double)transform.M22 +
-                     coordinate.z * (double)transform.M32),
+                (coordinate.x*(double)transform.M12 + coordinate.y*(double)transform.M22 +
+                 coordinate.z*(double)transform.M32),
                 (float)
-                    (coordinate.x * (double)transform.M13 + coordinate.y * (double)transform.M23 +
-                     coordinate.z * (double)transform.M33));
+                (coordinate.x*(double)transform.M13 + coordinate.y*(double)transform.M23 +
+                 coordinate.z*(double)transform.M33));
         }
 
         /// <summary>
@@ -622,19 +626,20 @@ namespace dEngine
             var vec = this;
             return Max(ref vec);
         }
-        
-        internal static void Unproject(float vectorX, float vectorY, float z, float x, float y, float width, float height, float minZ, float maxZ, ref Matrix worldViewProjection, out Vector3 result)
+
+        internal static void Unproject(float vectorX, float vectorY, float z, float x, float y, float width,
+            float height, float minZ, float maxZ, ref Matrix worldViewProjection, out Vector3 result)
         {
             Matrix result1;
             Matrix.Invert(ref worldViewProjection, out result1);
             var coordinate = new Vector3(
-            ((vectorX - x) / width * 2.0f - 1.0f),
-            -((vectorY - y) / height * 2.0f - 1.0f),
-           ((z - minZ) / (maxZ - minZ)));
+                (vectorX - x)/width*2.0f - 1.0f,
+                -((vectorY - y)/height*2.0f - 1.0f),
+                (z - minZ)/(maxZ - minZ));
             TransformCoordinate(ref coordinate, ref result1, out result);
         }
 
-        /// <summary/>
+        /// <summary />
         public void Load(BinaryReader reader)
         {
             x = reader.ReadSingle();
@@ -642,7 +647,7 @@ namespace dEngine
             z = reader.ReadSingle();
         }
 
-        /// <summary/>
+        /// <summary />
         public void Save(BinaryWriter writer)
         {
             writer.Write(x);

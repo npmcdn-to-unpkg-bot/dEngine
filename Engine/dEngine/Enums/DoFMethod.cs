@@ -11,19 +11,19 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// Depth of Field methods.
-	/// </summary>
-	public enum DoFMethod
-	{
-		/// <summary>
-		/// Gaussian DoF blurs the scene using a standard Guassian blur.
-		/// </summary>
-		Gaussian,
+    /// <summary>
+    /// Depth of Field methods.
+    /// </summary>
+    public enum DoFMethod
+    {
+        /// <summary>
+        /// Gaussian DoF blurs the scene using a standard Guassian blur.
+        /// </summary>
+        Gaussian,
 
-		/// <summary>
-		/// Bokeh is the name of the shape that can be seen in photos or movies when objects are out of focus.
-		/// </summary>
-		Bokeh
-	}
+        /// <summary>
+        /// Bokeh is the name of the shape that can be seen in photos or movies when objects are out of focus.
+        /// </summary>
+        Bokeh
+    }
 }

@@ -10,20 +10,21 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+
 #pragma warning disable 1591
 
 namespace dEngine
 {
-	/// <summary>
-	/// The type of the input device.
-	/// </summary>
-	public enum InputDeviceType
-	{
-		Keyboard,
-		Mouse,
-		Gamepad0,
-		Gamepad1,
-		Gamepad2,
-		Gamepad3
-	}
+    /// <summary>
+    /// The type of the input device.
+    /// </summary>
+    public enum InputDeviceType
+    {
+        Keyboard,
+        Mouse,
+        Gamepad0,
+        Gamepad1,
+        Gamepad2,
+        Gamepad3
+    }
 }

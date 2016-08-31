@@ -10,26 +10,27 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+
 #pragma warning disable 1591
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for content types.
-	/// </summary>
-	public enum ContentType : byte
-	{
-		Unknown,
-		StaticMesh,
-		SkeletalMesh,
-		Model,
-		Texture,
-		Sound,
-		Animation,
+    /// <summary>
+    /// Enum for content types.
+    /// </summary>
+    public enum ContentType : byte
+    {
+        Unknown,
+        StaticMesh,
+        SkeletalMesh,
+        Model,
+        Texture,
+        Sound,
+        Animation,
         Text,
         Cubemap,
-		Video,
-		Material,
+        Video,
+        Material,
         Instance
-	}
+    }
 }

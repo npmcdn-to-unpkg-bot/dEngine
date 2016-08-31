@@ -1,4 +1,4 @@
-// AssemblyInfo.cs - dEngine
+﻿// AssemblyInfo.cs - dEngine
 // Copyright (C) 2015-2016 DanDev (dandev.sco@gmail.com)
 // 
 // This library is free software: you can redistribute it and/or modify
@@ -9,7 +9,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;

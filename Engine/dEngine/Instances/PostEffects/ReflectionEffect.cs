@@ -15,12 +15,13 @@ using SharpDX.Direct3D11;
 
 namespace dEngine.Instances
 {
-	[TypeId(179), ExplorerOrder(0)]
-	public sealed class ReflectionEffect : PostEffect
-	{
-		internal override void Render(ref DeviceContext context)
-		{
-			throw new NotImplementedException();
-		}
-	}
+    [TypeId(179)]
+    [ExplorerOrder(0)]
+    public sealed class ReflectionEffect : PostEffect
+    {
+        internal override void Render(ref DeviceContext context)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -84,10 +84,10 @@ namespace dEngine
             unchecked
             {
                 var hashCode = Density.GetHashCode();
-                hashCode = (hashCode * 397) ^ Elasticity.GetHashCode();
-                hashCode = (hashCode * 397) ^ ElasticityWeight.GetHashCode();
-                hashCode = (hashCode * 397) ^ Friction.GetHashCode();
-                hashCode = (hashCode * 397) ^ FrictionWeight.GetHashCode();
+                hashCode = (hashCode*397) ^ Elasticity.GetHashCode();
+                hashCode = (hashCode*397) ^ ElasticityWeight.GetHashCode();
+                hashCode = (hashCode*397) ^ Friction.GetHashCode();
+                hashCode = (hashCode*397) ^ FrictionWeight.GetHashCode();
                 return hashCode;
             }
         }

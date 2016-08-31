@@ -10,7 +10,6 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System.Windows.Controls;
-using Caliburn.Micro;
 
 namespace dEditor.Widgets.MaterialEditor.Nodes
 {

@@ -10,17 +10,18 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+
 #pragma warning disable 1591
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for vertical text alignment.
-	/// </summary>
-	public enum AlignmentY
-	{
-		Top,
-		Bottom,
-		Middle
-	}
+    /// <summary>
+    /// Enum for vertical text alignment.
+    /// </summary>
+    public enum AlignmentY
+    {
+        Top,
+        Bottom,
+        Middle
+    }
 }

@@ -15,11 +15,20 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Caliburn.Micro;
 using dEngine.Instances;
+using Action = System.Action;
 
 namespace dEditor.Framework.Plugins
 {
     public class PluginItemBase : Instance, INotifyPropertyChangedEx
     {
+        /// <summary>
+        /// Creates an instance of <see cref="T:Caliburn.Micro.PropertyChangedBase" />.
+        /// </summary>
+        public PluginItemBase()
+        {
+            IsNotifying = true;
+        }
+
         /// <summary>
         /// Enables/Disables property change notification.
         /// Virtualized in order to help with document oriented view models.
@@ -30,19 +39,11 @@ namespace dEditor.Framework.Plugins
         public virtual event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Creates an instance of <see cref="T:Caliburn.Micro.PropertyChangedBase" />.
-        /// </summary>
-        public PluginItemBase()
-        {
-            IsNotifying = true;
-        }
-
-        /// <summary>
         /// Raises a change notification indicating that all bindings should be refreshed.
         /// </summary>
         public virtual void Refresh()
         {
-            this.NotifyOfPropertyChange(string.Empty);
+            NotifyOfPropertyChange(string.Empty);
         }
 
         /// <summary>Notifies subscribers of the property change.</summary>
@@ -50,9 +51,9 @@ namespace dEditor.Framework.Plugins
         public virtual void NotifyOfPropertyChange([CallerMemberName] string propertyName = null)
         {
             // ISSUE: reference to a compiler-generated field
-            if (!this.IsNotifying || this.PropertyChanged == null)
+            if (!IsNotifying || (PropertyChanged == null))
                 return;
-            ((System.Action)(() => OnPropertyChanged(new PropertyChangedEventArgs(propertyName)))).OnUIThread();
+            ((Action)(() => OnPropertyChanged(new PropertyChangedEventArgs(propertyName)))).OnUIThread();
         }
 
         /// <summary>Notifies subscribers of the property change.</summary>
@@ -70,7 +71,7 @@ namespace dEditor.Framework.Plugins
         [EditorBrowsable(EditorBrowsableState.Never)]
         protected void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            PropertyChangedEventHandler changedEventHandler = PropertyChanged;
+            var changedEventHandler = PropertyChanged;
             changedEventHandler?.Invoke(this, e);
         }
     }

@@ -12,10 +12,9 @@
 using System;
 using dEngine.Instances.Attributes;
 using dEngine.Services;
-using dEngine.Services.Networking;
 using Neo.IronLua;
-
 using Steamworks;
+
 // ReSharper disable UnusedVariable
 
 namespace dEngine.Instances
@@ -24,24 +23,11 @@ namespace dEngine.Instances
     /// Represents a user in-game. A player object is added to the <see cref="Players" /> service when a player joins the
     /// server.
     /// </summary>
-    [TypeId(20), Uncreatable, ToolboxGroup("Gameplay")]
+    [TypeId(20)]
+    [Uncreatable]
+    [ToolboxGroup("Gameplay")]
     public class Player : Instance
     {
-        /// <summary>
-        /// Fired when the player's character has spawned.
-        /// </summary>
-        public readonly Signal<Character> CharacterAdded;
-
-        /// <summary>
-        /// Fired when the player's character is about to be removed.
-        /// </summary>
-        public readonly Signal<Character> CharacterRemoving;
-
-        /// <summary>
-        /// Fired when the player has been disconnected or kicked from the server.
-        /// </summary>
-        public readonly Signal<string> Disconnected;
-
         private Character _character;
         private CSteamID _steamId;
 
@@ -84,7 +70,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The team that this player is on.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public Team Team
         {
             get { return _team; }
@@ -195,11 +182,9 @@ namespace dEngine.Instances
         /// </summary>
         public void LoadCharacter()
         {
-            if (this != Players.Service.LocalPlayer && RunService.Service.IsServer())
-            {
+            if ((this != Players.Service.LocalPlayer) && RunService.Service.IsServer())
                 throw new InvalidOperationException(
                     "LoadCharacter can only be called by the host or on the local player.");
-            }
 
             Character?.Destroy();
 
@@ -233,9 +218,7 @@ namespace dEngine.Instances
             Character.Died.Event += () =>
             {
                 if (Game.Players.CharacterAutoLoads)
-                {
                     LoadCharacter();
-                }
             };
 
             Logger.Info("Character loaded.");
@@ -256,5 +239,20 @@ namespace dEngine.Instances
             return new CSteamID(new AccountID_t(userId), EUniverse.k_EUniversePublic,
                 EAccountType.k_EAccountTypeIndividual);
         }
+
+        /// <summary>
+        /// Fired when the player's character has spawned.
+        /// </summary>
+        public readonly Signal<Character> CharacterAdded;
+
+        /// <summary>
+        /// Fired when the player's character is about to be removed.
+        /// </summary>
+        public readonly Signal<Character> CharacterRemoving;
+
+        /// <summary>
+        /// Fired when the player has been disconnected or kicked from the server.
+        /// </summary>
+        public readonly Signal<string> Disconnected;
     }
 }

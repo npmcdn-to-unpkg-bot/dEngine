@@ -33,12 +33,10 @@ namespace dEngine.Instances
     {
         private const int _selectionBorderOffset = 4;
 
-        private static readonly Colour _selectionColour = new Colour(25 / 255f, 152 / 255f, 255 / 255f);
+        private static readonly Colour _selectionColour = new Colour(25/255f, 152/255f, 255/255f);
         private static readonly Brush _selectionBrush = Renderer.Brushes?.Get(_selectionColour);
         private static readonly RoundedRectangle _emptyRectangle = new RoundedRectangle();
         private readonly object _zIndexLocker = new object();
-
-        internal readonly SortedArray<GuiElement> ZIndexedElements;
         private Camera _camera;
         private bool _enabled;
         private Bitmap1 _target;
@@ -71,7 +69,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if the container and its elements are visible/usable.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public bool Enabled
         {
             get { return _enabled; }
@@ -130,9 +129,7 @@ namespace dEngine.Instances
         private void OnViewportSizeChanged(Vector2 vector2)
         {
             foreach (var kv in Children)
-            {
                 (kv as GuiElement)?.Measure();
-            }
         }
 
         protected override void OnAncestryChanged(Instance child, Instance parent)
@@ -140,9 +137,7 @@ namespace dEngine.Instances
             base.OnAncestryChanged(child, parent);
 
             if (child == this)
-            {
-                _validParent = IsDescendantOf(Players.Service.LocalPlayer) || parent == Game.StarterGui;
-            }
+                _validParent = IsDescendantOf(Players.Service.LocalPlayer) || (parent == Game.StarterGui);
         }
 
         internal override bool CheckCanDraw()
@@ -175,13 +170,13 @@ namespace dEngine.Instances
                     foreach (var inst in children)
                     {
                         var element = inst as GuiElement;
-                        if (element == null || !element.CheckCanDraw() || element.ZIndex != 0)
+                        if ((element == null) || !element.CheckCanDraw() || (element.ZIndex != 0))
                             continue;
 
                         // transform target
-                        var pos = element.AbsolutePosition + (element.AbsoluteSize / 2);
+                        var pos = element.AbsolutePosition + element.AbsoluteSize/2;
                         context.Transform =
-                            Matrix3x2.Rotation(element.Rotation * Mathf.Deg2Rad) *
+                            Matrix3x2.Rotation(element.Rotation*Mathf.Deg2Rad)*
                             Matrix3x2.Translation((SharpDX.Vector2)pos);
 
                         var doClip = element.ClipDescendants;
@@ -214,10 +209,10 @@ namespace dEngine.Instances
         {
             result = null;
 
-            if (el == null || !el.CheckCanDraw() || (el.ZIndex != 0 && !includeZIndexed))
+            if ((el == null) || !el.CheckCanDraw() || ((el.ZIndex != 0) && !includeZIndexed))
                 return false;
 
-            if (el.LayoutRect.Contains(x, y) && el.IsHitTestVisible & el.BackgroundColour.a > 0)
+            if (el.LayoutRect.Contains(x, y) && (el.IsHitTestVisible & (el.BackgroundColour.a > 0)))
             {
                 result = el;
                 return true;
@@ -256,7 +251,7 @@ namespace dEngine.Instances
 
             result = null;
 
-            for (int i = zIndexedElements.Count; i-- > 0;)
+            for (var i = zIndexedElements.Count; i-- > 0;)
             {
                 var el = zIndexedElements[i];
                 HitTestItem(ref el, x, y, true, out el);
@@ -296,12 +291,10 @@ namespace dEngine.Instances
                 foreach (var inst in items)
                 {
                     var el = inst as GuiElement;
-                    if (el == null || !el.CheckCanDraw() || (el.ZIndex != 0 && !includeZIndexed)) continue;
+                    if ((el == null) || !el.CheckCanDraw() || ((el.ZIndex != 0) && !includeZIndexed)) continue;
 
                     if (el.LayoutRect.Contains(pointDX))
-                    {
                         results.Push(el);
-                    }
 
                     scanElements(el.Children, false);
                 }
@@ -335,6 +328,8 @@ namespace dEngine.Instances
             base.Destroy();
             ((ICameraUser)this).Camera = null;
         }
+
+        internal readonly SortedArray<GuiElement> ZIndexedElements;
 
         internal class HitTestRequest
         {

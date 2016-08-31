@@ -11,24 +11,24 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for application types.
-	/// </summary>
-	public enum EngineMode
-	{
-		/// <summary>
-		/// A regular game.
-		/// </summary>
-		Game,
+    /// <summary>
+    /// Enum for application types.
+    /// </summary>
+    public enum EngineMode
+    {
+        /// <summary>
+        /// A regular game.
+        /// </summary>
+        Game,
 
-		/// <summary>
-		/// A level editor.
-		/// </summary>
-		LevelEditor,
+        /// <summary>
+        /// A level editor.
+        /// </summary>
+        LevelEditor,
 
-		/// <summary>
-		/// A standalone server.
-		/// </summary>
-		Server
-	}
+        /// <summary>
+        /// A standalone server.
+        /// </summary>
+        Server
+    }
 }

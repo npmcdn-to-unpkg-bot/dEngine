@@ -15,26 +15,26 @@ using dEngine.Instances;
 
 namespace dEngine
 {
-	/// <summary>
-	/// The material for a <see cref="Terrain" /> cell.
-	/// </summary>
-	public enum CellMaterial
-	{
-		Air,
-		Water,
-		WoodPlanks,
-		Slate,
-		Concrete,
-		Brick,
-		Grass,
-		Sand,
-		Rock,
-		Glacier,
-		Snow,
-		Sandstone,
-		Mud,
-		Basalt,
-		Ground,
-		CrackedLava
-	}
+    /// <summary>
+    /// The material for a <see cref="Terrain" /> cell.
+    /// </summary>
+    public enum CellMaterial
+    {
+        Air,
+        Water,
+        WoodPlanks,
+        Slate,
+        Concrete,
+        Brick,
+        Grass,
+        Sand,
+        Rock,
+        Glacier,
+        Snow,
+        Sandstone,
+        Mud,
+        Basalt,
+        Ground,
+        CrackedLava
+    }
 }

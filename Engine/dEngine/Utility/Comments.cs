@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+
 #pragma warning disable 1591
 
 namespace dEngine.Utility
@@ -32,10 +33,10 @@ namespace dEngine.Utility
             _commentDictionary = new Dictionary<string, Comment>();
             using (var reader = new XmlTextReader(file))
             {
-                string key = "?";
+                var key = "?";
                 var comment = new Comment();
-                string parentName = "";
-                int eventParamIndex = 0;
+                var parentName = "";
+                var eventParamIndex = 0;
 
                 while (reader.Read())
                 {
@@ -45,7 +46,7 @@ namespace dEngine.Utility
                             if (reader.Name == "member")
                             {
                                 key = reader.GetAttribute("name");
-                                comment = new Comment { Parameters = new Dictionary<string, string>() };
+                                comment = new Comment {Parameters = new Dictionary<string, string>()};
                             }
                             else if (reader.Name == "param")
                             {
@@ -56,7 +57,7 @@ namespace dEngine.Utility
                                 var text = reader.ReadInnerXml().Trim();
                                 if (!string.IsNullOrEmpty(text))
                                     comment.Summary = string.Join(Environment.NewLine,
-                                        text.Split(new[] { Environment.NewLine }, StringSplitOptions.None)
+                                        text.Split(new[] {Environment.NewLine}, StringSplitOptions.None)
                                             .Select(l => l.Trim()));
                             }
                             else if (reader.Name == "remarks")
@@ -64,7 +65,7 @@ namespace dEngine.Utility
                                 var text = reader.ReadInnerXml().Trim();
                                 if (!string.IsNullOrEmpty(text))
                                     comment.Remarks = string.Join(Environment.NewLine,
-                                        text.Split(new[] { Environment.NewLine }, StringSplitOptions.None)
+                                        text.Split(new[] {Environment.NewLine}, StringSplitOptions.None)
                                             .Select(l => l.Trim()));
                             }
                             else if (reader.Name == "eventParam")

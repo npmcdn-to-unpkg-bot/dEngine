@@ -9,13 +9,12 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using dEngine.Graphics;
 using dEngine.Graphics.Structs;
 
 namespace dEngine.Instances
 {
-	internal interface ISurfaceExtractor
-	{
-		void GenLodCell(Terrain.Chunk chunk, int lod, out TerrainVertex[] vertices, out ushort[] indices);
-	}
+    internal interface ISurfaceExtractor
+    {
+        void GenLodCell(Terrain.Chunk chunk, int lod, out TerrainVertex[] vertices, out ushort[] indices);
+    }
 }

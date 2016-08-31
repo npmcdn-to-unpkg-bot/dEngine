@@ -15,51 +15,47 @@ using System.Windows.Interactivity;
 
 namespace dEditor.Framework.Behaviours
 {
-	public class BindableSelectedItemBehavior : Behavior<TreeView>
-	{
-		protected override void OnAttached()
-		{
-			base.OnAttached();
+    public class BindableSelectedItemBehavior : Behavior<TreeView>
+    {
+        protected override void OnAttached()
+        {
+            base.OnAttached();
 
-			AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
-		}
+            AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
+        }
 
-		protected override void OnDetaching()
-		{
-			base.OnDetaching();
+        protected override void OnDetaching()
+        {
+            base.OnDetaching();
 
-			if (AssociatedObject != null)
-			{
-				AssociatedObject.SelectedItemChanged -= OnTreeViewSelectedItemChanged;
-			}
-		}
+            if (AssociatedObject != null)
+                AssociatedObject.SelectedItemChanged -= OnTreeViewSelectedItemChanged;
+        }
 
-		private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-		{
-			SelectedItem = e.NewValue;
-		}
+        private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            SelectedItem = e.NewValue;
+        }
 
-		#region SelectedItem Property
+        #region SelectedItem Property
 
-		public object SelectedItem
-		{
-			get { return GetValue(SelectedItemProperty); }
-			set { SetValue(SelectedItemProperty, value); }
-		}
+        public object SelectedItem
+        {
+            get { return GetValue(SelectedItemProperty); }
+            set { SetValue(SelectedItemProperty, value); }
+        }
 
-		public static readonly DependencyProperty SelectedItemProperty =
-			DependencyProperty.Register("SelectedItem", typeof(object), typeof(BindableSelectedItemBehavior),
-				new UIPropertyMetadata(null, OnSelectedItemChanged));
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register("SelectedItem", typeof(object), typeof(BindableSelectedItemBehavior),
+                new UIPropertyMetadata(null, OnSelectedItemChanged));
 
-		private static void OnSelectedItemChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-		{
-			var item = e.NewValue as TreeViewItem;
-			if (item != null)
-			{
-				item.SetValue(TreeViewItem.IsSelectedProperty, true);
-			}
-		}
+        private static void OnSelectedItemChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var item = e.NewValue as TreeViewItem;
+            if (item != null)
+                item.SetValue(TreeViewItem.IsSelectedProperty, true);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -11,14 +11,14 @@
 
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Instances
 {
-	/// <summary>
-	/// Base class for value containers.
-	/// </summary>
-	[TypeId(83), ToolboxGroup("Values")]
-	public abstract class ValueContainer : Instance
-	{
-	}
+    /// <summary>
+    /// Base class for value containers.
+    /// </summary>
+    [TypeId(83)]
+    [ToolboxGroup("Values")]
+    public abstract class ValueContainer : Instance
+    {
+    }
 }

@@ -14,15 +14,15 @@ using System.Windows.Controls;
 
 namespace dEditor.Framework
 {
-	public class PaneTemplateSelector : DataTemplateSelector
-	{
-		public DataTemplate Template { get; set; }
+    public class PaneTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate Template { get; set; }
 
-		public override DataTemplate SelectTemplate(object item, DependencyObject container)
-		{
-			if (item is LayoutItem)
-				return Template;
-			return base.SelectTemplate(item, container);
-		}
-	}
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            if (item is LayoutItem)
+                return Template;
+            return base.SelectTemplate(item, container);
+        }
+    }
 }

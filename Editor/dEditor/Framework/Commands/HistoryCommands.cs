@@ -16,59 +16,55 @@ using Key = System.Windows.Input.Key;
 
 namespace dEditor.Framework.Commands
 {
-	public abstract class UndoRedoCommand : Command
-	{
-		protected UndoRedoCommand()
-		{
-			if (Game.IsInitialized)
-			{
-				HookHistoryEvents();
-			}
-			else
-			{
-				Game.Initialized += (s, e) => { HookHistoryEvents(); };
-			}
-		}
+    public abstract class UndoRedoCommand : Command
+    {
+        protected UndoRedoCommand()
+        {
+            if (Game.IsInitialized)
+                HookHistoryEvents();
+            else
+                Game.Initialized += (s, e) => { HookHistoryEvents(); };
+        }
 
-		private void HookHistoryEvents()
-		{
-			HistoryService.Service.Undone.Event += w => UpdateCanExecute();
-			HistoryService.Service.Redone.Event += w => UpdateCanExecute();
-			HistoryService.Service.WaypointSet.Event += a => UpdateCanExecute();
-		}
-	}
+        private void HookHistoryEvents()
+        {
+            HistoryService.Service.Undone.Event += w => UpdateCanExecute();
+            HistoryService.Service.Redone.Event += w => UpdateCanExecute();
+            HistoryService.Service.WaypointSet.Event += a => UpdateCanExecute();
+        }
+    }
 
-	public class UndoCommand : UndoRedoCommand
-	{
-		public override string Name => "Undo";
-		public override string Text => "Undoes the last action.";
-		public override KeyGesture KeyGesture => new KeyGesture(Key.Z, ModifierKeys.Control);
+    public class UndoCommand : UndoRedoCommand
+    {
+        public override string Name => "Undo";
+        public override string Text => "Undoes the last action.";
+        public override KeyGesture KeyGesture => new KeyGesture(Key.Z, ModifierKeys.Control);
 
-		public override bool CanExecute(object parameter)
-		{
-			return HistoryService.CanUndoInternal().Item1;
-		}
+        public override bool CanExecute(object parameter)
+        {
+            return HistoryService.CanUndoInternal().Item1;
+        }
 
-		public override void Execute(object parameter)
-		{
-			HistoryService.Service.Undo();
-		}
-	}
+        public override void Execute(object parameter)
+        {
+            HistoryService.Service.Undo();
+        }
+    }
 
-	public class RedoCommand : UndoRedoCommand
-	{
-		public override string Name => "Redo";
-		public override string Text => "Redoes the last undone action.";
-		public override KeyGesture KeyGesture => new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift);
+    public class RedoCommand : UndoRedoCommand
+    {
+        public override string Name => "Redo";
+        public override string Text => "Redoes the last undone action.";
+        public override KeyGesture KeyGesture => new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift);
 
-		public override bool CanExecute(object parameter)
-		{
-			return HistoryService.CanRedoInternal().Item1;
-		}
+        public override bool CanExecute(object parameter)
+        {
+            return HistoryService.CanRedoInternal().Item1;
+        }
 
-		public override void Execute(object parameter)
-		{
-			HistoryService.Service.Redo();
-		}
-	}
+        public override void Execute(object parameter)
+        {
+            HistoryService.Service.Redo();
+        }
+    }
 }

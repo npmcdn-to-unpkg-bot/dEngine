@@ -25,7 +25,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The amount of force applied on each axis.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public Vector3 Force
         {
             get { return (Vector3)_force; }
@@ -39,7 +40,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The offset from the center of the part where force is applied.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public Vector3 Location
         {
             get { return (Vector3)_location; }

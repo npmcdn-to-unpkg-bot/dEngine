@@ -17,17 +17,19 @@ namespace dEngine.Instances
     /// <summary>
     /// Fills the entire screen with a semi-transparent grey background, and centered text in the middle of the screen.
     /// </summary>
-    [TypeId(61), ExplorerOrder(1), Obsolete]
+    [TypeId(61)]
+    [ExplorerOrder(1)]
+    [Obsolete]
     public class Message : Instance
     {
         private static ScreenGui _messageScreen;
         protected readonly TextLabel _label;
 
-        /// <summary/>
+        /// <summary />
         public Message()
         {
             if (_messageScreen == null)
-                _messageScreen = new ScreenGui { Name = "MessageContainer", Parent = Game.CoreGui };
+                _messageScreen = new ScreenGui {Name = "MessageContainer", Parent = Game.CoreGui};
 
             _label = new TextLabel
             {
@@ -40,28 +42,15 @@ namespace dEngine.Instances
                 TextStrokeColour = Colour.Black,
                 Text = "",
                 Visible = false,
-                Tag = this,
+                Tag = this
             };
-        }
-
-        /// <summary/>
-        protected override void OnWorldChanged(IWorld newWorld, IWorld oldWorld)
-        {
-            base.OnWorldChanged(newWorld, oldWorld);
-            if (newWorld == null)
-            {
-                _label.Parent = null;
-            }
-            else
-            {
-                _label.Parent = _messageScreen;
-            }
         }
 
         /// <summary>
         /// The text to display.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public string Text
         {
             get { return _label.Text; }
@@ -74,6 +63,16 @@ namespace dEngine.Instances
                 _label.Visible = !string.IsNullOrEmpty(value);
                 NotifyChanged();
             }
+        }
+
+        /// <summary />
+        protected override void OnWorldChanged(IWorld newWorld, IWorld oldWorld)
+        {
+            base.OnWorldChanged(newWorld, oldWorld);
+            if (newWorld == null)
+                _label.Parent = null;
+            else
+                _label.Parent = _messageScreen;
         }
 
         public override void Destroy()

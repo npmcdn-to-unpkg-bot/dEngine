@@ -11,14 +11,14 @@
 
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Instances
 {
-	/// <summary>
-	/// A mesh which can be animated with a skeleton.
-	/// </summary>
-	[TypeId(29), ExplorerOrder(3)]
-	public sealed class SkeletalMesh : FileMesh
-	{
-	}
+    /// <summary>
+    /// A mesh which can be animated with a skeleton.
+    /// </summary>
+    [TypeId(29)]
+    [ExplorerOrder(3)]
+    public sealed class SkeletalMesh : FileMesh
+    {
+    }
 }

@@ -56,7 +56,8 @@ namespace dEngine.Instances
         /// <summary>
         /// When set, will download and overwrite source code.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public Content<TextSource> LinkedSource
         {
             get { return _linkedSource.ContentId; }

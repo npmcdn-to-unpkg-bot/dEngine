@@ -15,14 +15,14 @@ using System;
 
 namespace dEngine.Enums
 {
-	/// <summary>
-	/// Enum for mouse buttons.
-	/// </summary>
-	[Flags]
-	public enum MouseButton
-	{
-		Left,
-		Middle,
-		Right
-	}
+    /// <summary>
+    /// Enum for mouse buttons.
+    /// </summary>
+    [Flags]
+    public enum MouseButton
+    {
+        Left,
+        Middle,
+        Right
+    }
 }

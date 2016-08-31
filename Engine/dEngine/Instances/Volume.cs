@@ -17,7 +17,6 @@ using dEngine.Instances.Attributes;
 using dEngine.Utility;
 using Neo.IronLua;
 
-
 namespace dEngine.Instances
 {
     /// <summary>
@@ -30,30 +29,14 @@ namespace dEngine.Instances
         private CFrame _cframe;
         private Vector3 _size;
 
-        /// <summary/>
+        private Shape _shape;
+
+        /// <summary />
         public Volume()
         {
-            _ghostObject = new PairCachingGhostObject { CollisionFlags = CollisionFlags.NoContactResponse};
+            _ghostObject = new PairCachingGhostObject {CollisionFlags = CollisionFlags.NoContactResponse};
         }
 
-        /// <inheritdoc/>
-        public override void Destroy()
-        {
-            base.Destroy();
-            _ghostObject?.Dispose();
-        }
-
-        /// <summary/>
-        protected override void OnWorldChanged(IWorld newWorld, IWorld oldWorld)
-        {
-            base.OnWorldChanged(newWorld, oldWorld);
-            lock (PhysicsSimulation.Locker)
-            {
-                oldWorld?.Physics?.World.RemoveCollisionObject(_ghostObject);
-                newWorld?.Physics?.World.AddCollisionObject(_ghostObject);
-            }
-        }
-        
         /// <summary>
         /// The position/orientation of the volume.
         /// </summary>
@@ -69,10 +52,11 @@ namespace dEngine.Instances
                 NotifyChanged();
             }
         }
+
         /// <summary>
-		/// The position of <see cref="CFrame" />.
-		/// </summary>
-		[EditorVisible]
+        /// The position of <see cref="CFrame" />.
+        /// </summary>
+        [EditorVisible]
         public Vector3 Position
         {
             get { return _cframe.p; }
@@ -80,7 +64,7 @@ namespace dEngine.Instances
             {
                 if (value == _cframe.p) return;
                 var rotation = _cframe - _cframe.p;
-                CFrame = new CFrame(value) * rotation;
+                CFrame = new CFrame(value)*rotation;
             }
         }
 
@@ -90,20 +74,21 @@ namespace dEngine.Instances
         [EditorVisible]
         public Vector3 Rotation
         {
-            get { return _cframe.getEulerAngles() * Mathf.Rad2Deg; }
+            get { return _cframe.getEulerAngles()*Mathf.Rad2Deg; }
             set
             {
                 if (value == Rotation) return;
-                var v3 = value * Mathf.Deg2Rad;
+                var v3 = value*Mathf.Deg2Rad;
                 var rotation = CFrame.Angles(v3.x, v3.y, v3.z);
-                CFrame = new CFrame(_cframe.p) * rotation;
+                CFrame = new CFrame(_cframe.p)*rotation;
             }
         }
 
         /// <summary>
         /// The size of the volume.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public override Vector3 Size
         {
             get { return _size; }
@@ -116,12 +101,11 @@ namespace dEngine.Instances
             }
         }
 
-        private Shape _shape;
-
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(3), EditorVisible]
+        [InstMember(3)]
+        [EditorVisible]
         public Shape Shape
         {
             get { return _shape; }
@@ -133,6 +117,24 @@ namespace dEngine.Instances
             }
         }
 
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            base.Destroy();
+            _ghostObject?.Dispose();
+        }
+
+        /// <summary />
+        protected override void OnWorldChanged(IWorld newWorld, IWorld oldWorld)
+        {
+            base.OnWorldChanged(newWorld, oldWorld);
+            lock (PhysicsSimulation.Locker)
+            {
+                oldWorld?.Physics?.World.RemoveCollisionObject(_ghostObject);
+                newWorld?.Physics?.World.AddCollisionObject(_ghostObject);
+            }
+        }
+
         public LuaTable GetOverlappingParts()
         {
             var table = new LuaTable();
@@ -140,10 +142,6 @@ namespace dEngine.Instances
 
             return pairs.Select(pair => pair.UserObject).ToLuaTable();
         }
-
-        public static readonly Signal<Part> Entered;
-
-        public static readonly Signal<Part> Left;
 
         private void Update()
         {
@@ -159,11 +157,11 @@ namespace dEngine.Instances
                     collisionShape = new BoxShape(_size.x/2, _size.y/2, _size.z/2);
                     break;
                 case Shape.Sphere:
-                    var radius = Math.Min(_size.Y, Math.Min(_size.X, _size.Z)) / 2;
+                    var radius = Math.Min(_size.Y, Math.Min(_size.X, _size.Z))/2;
                     collisionShape = new SphereShape(radius);
                     break;
                 case Shape.Cylinder:
-                    var radiusCyl = Math.Min(_size.X, _size.Z) / 2;
+                    var radiusCyl = Math.Min(_size.X, _size.Z)/2;
                     collisionShape = new CylinderShape(radiusCyl, _size.Y, radiusCyl);
                     break;
                 case Shape.Wedge:
@@ -177,5 +175,9 @@ namespace dEngine.Instances
 
             OnWorldChanged(World, null);
         }
+
+        public static readonly Signal<Part> Entered;
+
+        public static readonly Signal<Part> Left;
     }
 }

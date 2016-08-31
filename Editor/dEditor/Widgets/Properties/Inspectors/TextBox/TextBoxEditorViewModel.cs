@@ -9,16 +9,15 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System.Reflection;
 using dEngine.Serializer.V1;
 
 namespace dEditor.Widgets.Properties.Inspectors.TextBox
 {
-	public class TextBoxEditorViewModel : EditorBase<string>, ILabelled
-	{
-		public TextBoxEditorViewModel(object obj, Inst.CachedProperty desc) : base(obj, desc)
-		{
-		    EnableHistory = false;
-		}
-	}
+    public class TextBoxEditorViewModel : EditorBase<string>, ILabelled
+    {
+        public TextBoxEditorViewModel(object obj, Inst.CachedProperty desc) : base(obj, desc)
+        {
+            EnableHistory = false;
+        }
+    }
 }

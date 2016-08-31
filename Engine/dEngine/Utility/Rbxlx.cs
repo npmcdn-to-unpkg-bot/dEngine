@@ -21,6 +21,7 @@ using dEngine.Instances;
 using dEngine.Instances.Materials;
 using dEngine.Serializer.V1;
 using dEngine.Services;
+using Dynamitey;
 
 namespace dEngine.Utility
 {
@@ -70,188 +71,181 @@ namespace dEngine.Utility
             workspace.ClearChildren();
 
             using (var r = new StreamReader(stream, new ASCIIEncoding()))
-            using (var xr = XmlReader.Create(r))
             {
-                xr.Read();
-                var root = XNode.ReadFrom(xr) as XElement;
-
-                Action<XElement, Instance> rec = null;
-
-                var refs = new List<RbxlRef>();
-
-                var loadedInstances = new List<Instance>();
-
-                rec = (parentNode, parentInst) =>
+                using (var xr = XmlReader.Create(r))
                 {
-                    foreach (var item in parentNode.Elements())
+                    xr.Read();
+                    var root = XNode.ReadFrom(xr) as XElement;
+
+                    Action<XElement, Instance> rec = null;
+
+                    var refs = new List<RbxlRef>();
+
+                    var loadedInstances = new List<Instance>();
+
+                    rec = (parentNode, parentInst) =>
                     {
-                        if (item.Name.LocalName == "Item")
-                        {
-                            var className = FilterRbxClassName(item.Attribute("class").Value);
-
-                            if (className == "FileMesh")
-                                className = "StaticMesh";
-
-                            Instance instance = null;
-                            Inst.CachedType cachedType;
-                            if (!Inst.TypeDictionary.TryGetValue(className, out cachedType))
+                        foreach (var item in parentNode.Elements())
+                            if (item.Name.LocalName == "Item")
                             {
-                                //Logger.Warn($"Unknown type: \"{className}\"");
-                            }
-                            else
-                            {
-                                var type = cachedType.Type;
+                                var className = FilterRbxClassName(item.Attribute("class").Value);
 
-                                if (typeof(Service).IsAssignableFrom(type))
+                                if (className == "FileMesh")
+                                    className = "StaticMesh";
+
+                                Instance instance = null;
+                                Inst.CachedType cachedType;
+                                if (!Inst.TypeDictionary.TryGetValue(className, out cachedType))
                                 {
-                                    instance = Game.DataModel.GetService(type.Name);
-                                }
-                                else if (type == typeof(Terrain))
-                                {
-                                    instance = workspace.Terrain;
+                                    //Logger.Warn($"Unknown type: \"{className}\"");
                                 }
                                 else
                                 {
-                                    instance = Game.CreateInstance(type);
-                                    instance.Tag = item.Attribute("referent").Value;
-                                    loadedInstances.Add(instance);
+                                    var type = cachedType.Type;
 
-                                    if (parentInst != null)
-                                        instance.Parent = parentInst;
-                                }
-                            }
-
-                            rec(item, instance);
-                        }
-                        else if (item.Name.LocalName == "Properties" && parentInst != null)
-                        {
-                            foreach (var prop in item.Elements())
-                            {
-                                var propertyName = prop.Attribute("name").Value;
-
-                                if (propertyName == "ModelInPrimary")
-                                    ;
-
-                                if (propertyName == "CoordinateFrame") propertyName = "CFrame";
-                                if (propertyName == "size") propertyName = "Size";
-                                if (propertyName == "BrickColor") propertyName = "BrickColour";
-                                if (propertyName == "Anchored") propertyName = "Anchored";
-
-                                var propInfo = parentInst.GetType()
-                                    .GetProperty(propertyName,
-                                        BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public);
-
-                                if (propertyName == "Source")
-                                {
-                                    (parentInst as LuaSourceContainer).Source = prop.Value;
-                                    continue;
-                                }
-
-                                if (propertyName == "Name" && parentInst is Workspace)
-                                {
-                                    continue; // do not rename workspace
-                                }
-
-                                if (propertyName == "TimeOfDay")
-                                {
-                                    (parentInst as Lighting).TimeOfDay = new TimeSpan(prop.Value);
-                                    continue;
-                                }
-
-                                if (propInfo != null)
-                                {
-                                    switch (prop.Name.LocalName)
+                                    if (typeof(Service).IsAssignableFrom(type))
                                     {
-                                        case "Ref":
-                                            var refId = prop.Value;
-                                            refs.Add(new RbxlRef(refId, propInfo, parentInst));
-                                            break;
-                                        case "double":
-                                        case "float":
-                                        case "int":
-                                            var num = float.Parse(prop.Value);
-                                            if (propInfo.PropertyType == typeof(Vector3))
-                                                propInfo.SetValue(parentInst, new Vector3(0, -num, 0));
-                                            else if (propInfo.PropertyType == typeof(Colour))
-                                                propInfo.SetValue(parentInst, Colour.fromBrickColorCode((uint)num));
-                                            else if (propInfo.PropertyType == typeof(int))
-                                                propInfo.SetValue(parentInst, (int)num);
-                                            else if (propInfo.SetMethod?.IsPublic == true)
-                                                propInfo.SetValue(parentInst, num);
-                                            break;
-                                        case "token":
-                                            var enumIndex = int.Parse(prop.Value);
-                                            if (propInfo.PropertyType == typeof(Material))
-                                                propInfo.SetValue(parentInst, RobloxMaterialDictionary[enumIndex]);
-                                            else if (!propInfo.PropertyType.IsEnum)
-                                                //Logger.Warn(
-                                                //	$"Roblox Enum \"{propInfo.PropertyType.Name}\" is not an enum in dEngine.");
-                                                ;
-                                            else
-                                                propInfo.SetValue(parentInst,
-                                                    Enum.ToObject(propInfo.PropertyType, enumIndex));
-                                            break;
-                                        case "string":
-                                            var str = prop.Value;
-                                            propInfo.SetValue(parentInst, str);
-                                            break;
-                                        case "bool":
-                                            var bol = bool.Parse(prop.Value);
-                                            propInfo.SetValue(parentInst, bol);
-                                            break;
-                                        case "Vector3":
-                                            var vx = float.Parse(prop.Element("X").Value);
-                                            var vy = float.Parse(prop.Element("Y").Value);
-                                            var vz = float.Parse(prop.Element("Z").Value);
-                                            var v3 = new Vector3(vx, vy, vz);
-                                            propInfo.SetValue(parentInst, v3);
-                                            break;
-                                        case "CoordinateFrame":
-                                        case "CFrame":
-                                            var cx = float.Parse(prop.Element("X").Value);
-                                            var cy = float.Parse(prop.Element("Y").Value);
-                                            var cz = float.Parse(prop.Element("Z").Value);
-                                            var cr00 = float.Parse(prop.Element("R00").Value);
-                                            var cr01 = float.Parse(prop.Element("R01").Value);
-                                            var cr02 = float.Parse(prop.Element("R02").Value);
-                                            var cr10 = float.Parse(prop.Element("R10").Value);
-                                            var cr11 = float.Parse(prop.Element("R11").Value);
-                                            var cr12 = float.Parse(prop.Element("R12").Value);
-                                            var cr20 = float.Parse(prop.Element("R20").Value);
-                                            var cr21 = float.Parse(prop.Element("R21").Value);
-                                            var cr22 = float.Parse(prop.Element("R22").Value);
+                                        instance = Game.DataModel.GetService(type.Name);
+                                    }
+                                    else if (type == typeof(Terrain))
+                                    {
+                                        instance = workspace.Terrain;
+                                    }
+                                    else
+                                    {
+                                        instance = Game.CreateInstance(type);
+                                        instance.Tag = item.Attribute("referent").Value;
+                                        loadedInstances.Add(instance);
 
-                                            var cf = new CFrame(cx, cy, cz, cr00, cr01, cr02, cr10, cr11, cr12, cr20,
-                                                cr21, cr22);
-                                            propInfo.SetValue(parentInst, cf);
-                                            break;
-                                        case "Content":
-                                            var url = prop.Element("url")?.Value ?? "";
-                                            var contentType = propInfo.GetValue(parentInst).GetType();
-                                            propInfo.SetValue(parentInst, Dynamitey.Dynamic.InvokeConstructor(contentType, url));
-                                            break;
+                                        if (parentInst != null)
+                                            instance.Parent = parentInst;
                                     }
                                 }
+
+                                rec(item, instance);
                             }
-                        }
-                    }
-                };
+                            else if ((item.Name.LocalName == "Properties") && (parentInst != null))
+                            {
+                                foreach (var prop in item.Elements())
+                                {
+                                    var propertyName = prop.Attribute("name").Value;
 
-                rec(root, Game.DataModel);
+                                    if (propertyName == "ModelInPrimary")
+                                    ;
 
-                foreach (var tuple in refs)
-                {
-                    var inst = loadedInstances.FirstOrDefault(x => (x.Tag as string) == tuple.Id);
+                                    if (propertyName == "CoordinateFrame") propertyName = "CFrame";
+                                    if (propertyName == "size") propertyName = "Size";
+                                    if (propertyName == "BrickColor") propertyName = "BrickColour";
+                                    if (propertyName == "Anchored") propertyName = "Anchored";
 
-                    if (inst is Workspace)
+                                    var propInfo = parentInst.GetType()
+                                        .GetProperty(propertyName,
+                                            BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public);
+
+                                    if (propertyName == "Source")
+                                    {
+                                        (parentInst as LuaSourceContainer).Source = prop.Value;
+                                        continue;
+                                    }
+
+                                    if ((propertyName == "Name") && parentInst is Workspace)
+                                        continue; // do not rename workspace
+
+                                    if (propertyName == "TimeOfDay")
+                                    {
+                                        (parentInst as Lighting).TimeOfDay = new TimeSpan(prop.Value);
+                                        continue;
+                                    }
+
+                                    if (propInfo != null)
+                                        switch (prop.Name.LocalName)
+                                        {
+                                            case "Ref":
+                                                var refId = prop.Value;
+                                                refs.Add(new RbxlRef(refId, propInfo, parentInst));
+                                                break;
+                                            case "double":
+                                            case "float":
+                                            case "int":
+                                                var num = float.Parse(prop.Value);
+                                                if (propInfo.PropertyType == typeof(Vector3))
+                                                    propInfo.SetValue(parentInst, new Vector3(0, -num, 0));
+                                                else if (propInfo.PropertyType == typeof(Colour))
+                                                    propInfo.SetValue(parentInst, Colour.fromBrickColorCode((uint)num));
+                                                else if (propInfo.PropertyType == typeof(int))
+                                                    propInfo.SetValue(parentInst, (int)num);
+                                                else if (propInfo.SetMethod?.IsPublic == true)
+                                                    propInfo.SetValue(parentInst, num);
+                                                break;
+                                            case "token":
+                                                var enumIndex = int.Parse(prop.Value);
+                                                if (propInfo.PropertyType == typeof(Material))
+                                                    propInfo.SetValue(parentInst, RobloxMaterialDictionary[enumIndex]);
+                                                else if (!propInfo.PropertyType.IsEnum)
+                                                    //Logger.Warn(
+                                                    //	$"Roblox Enum \"{propInfo.PropertyType.Name}\" is not an enum in dEngine.");
+                                                ;
+                                                else
+                                                    propInfo.SetValue(parentInst,
+                                                        Enum.ToObject(propInfo.PropertyType, enumIndex));
+                                                break;
+                                            case "string":
+                                                var str = prop.Value;
+                                                propInfo.SetValue(parentInst, str);
+                                                break;
+                                            case "bool":
+                                                var bol = bool.Parse(prop.Value);
+                                                propInfo.SetValue(parentInst, bol);
+                                                break;
+                                            case "Vector3":
+                                                var vx = float.Parse(prop.Element("X").Value);
+                                                var vy = float.Parse(prop.Element("Y").Value);
+                                                var vz = float.Parse(prop.Element("Z").Value);
+                                                var v3 = new Vector3(vx, vy, vz);
+                                                propInfo.SetValue(parentInst, v3);
+                                                break;
+                                            case "CoordinateFrame":
+                                            case "CFrame":
+                                                var cx = float.Parse(prop.Element("X").Value);
+                                                var cy = float.Parse(prop.Element("Y").Value);
+                                                var cz = float.Parse(prop.Element("Z").Value);
+                                                var cr00 = float.Parse(prop.Element("R00").Value);
+                                                var cr01 = float.Parse(prop.Element("R01").Value);
+                                                var cr02 = float.Parse(prop.Element("R02").Value);
+                                                var cr10 = float.Parse(prop.Element("R10").Value);
+                                                var cr11 = float.Parse(prop.Element("R11").Value);
+                                                var cr12 = float.Parse(prop.Element("R12").Value);
+                                                var cr20 = float.Parse(prop.Element("R20").Value);
+                                                var cr21 = float.Parse(prop.Element("R21").Value);
+                                                var cr22 = float.Parse(prop.Element("R22").Value);
+
+                                                var cf = new CFrame(cx, cy, cz, cr00, cr01, cr02, cr10, cr11, cr12, cr20,
+                                                    cr21, cr22);
+                                                propInfo.SetValue(parentInst, cf);
+                                                break;
+                                            case "Content":
+                                                var url = prop.Element("url")?.Value ?? "";
+                                                var contentType = propInfo.GetValue(parentInst).GetType();
+                                                propInfo.SetValue(parentInst,
+                                                    Dynamic.InvokeConstructor(contentType, url));
+                                                break;
+                                        }
+                                }
+                            }
+                    };
+
+                    rec(root, Game.DataModel);
+
+                    foreach (var tuple in refs)
                     {
-                        inst = workspace;
-                    }
+                        var inst = loadedInstances.FirstOrDefault(x => x.Tag as string == tuple.Id);
+
+                        if (inst is Workspace)
+                            inst = workspace;
 
 
-                    if (inst != null)
-                    {
-                        tuple.Property.SetValue(tuple.Parent, inst);
+                        if (inst != null)
+                            tuple.Property.SetValue(tuple.Parent, inst);
                     }
                 }
             }
@@ -265,16 +259,16 @@ namespace dEngine.Utility
 
         private class RbxlRef
         {
-            public readonly string Id;
-            public readonly Instance Parent;
-            public readonly PropertyInfo Property;
-
             public RbxlRef(string refId, PropertyInfo propInfo, Instance parentInst)
             {
                 Id = refId;
                 Property = propInfo;
                 Parent = parentInst;
             }
+
+            public readonly string Id;
+            public readonly Instance Parent;
+            public readonly PropertyInfo Property;
         }
     }
 }

@@ -24,10 +24,9 @@ using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
 using dEngine.Services;
 using SharpDX;
-using SharpDX.Direct3D;
+using AssimpMaterial = Assimp.Material;
 using Bone = dEngine.Instances.Bone;
 using Material = dEngine.Instances.Materials.Material;
-using AssimpMaterial = Assimp.Material;
 
 #pragma warning disable 1591
 
@@ -38,32 +37,6 @@ namespace dEngine.Utility.FileFormats.Model
     /// </summary>
     public static class FBX
     {
-        /// <summary>
-        /// Enum for normal import methods.
-        /// </summary>
-        public enum NormalImportMethod
-        {
-            /// <summary>
-            /// The importer will compute normals and tangents.
-            /// </summary>
-            ComputeNormals,
-
-            /// <summary>
-            /// The importer will compute smooth normals and tangents.
-            /// </summary>
-            ComputeNormalsSmooth,
-
-            /// <summary>
-            /// The importer will import normals but compute tangents.
-            /// </summary>
-            ImportNormals,
-
-            /// <summary>
-            /// The importer will import normals and tangents.
-            /// </summary>
-            ImportNormalsAndTangents
-        }
-
         public static ImportResult Import(string filePath, ImportSettings settings)
         {
             using (var stream = File.OpenRead(filePath))
@@ -132,7 +105,6 @@ namespace dEngine.Utility.FileFormats.Model
             var textures = new Data.Texture[scene.TextureCount];
 
             if (settings.ImportAsSkeletal)
-            {
                 if (settings.Skeleton == null)
                 {
                     SkeletonNodeData nodeData;
@@ -147,7 +119,6 @@ namespace dEngine.Utility.FileFormats.Model
                 {
                     skeleton = settings.Skeleton;
                 }
-            }
 
             if (scene.HasMaterials)
             {
@@ -161,7 +132,6 @@ namespace dEngine.Utility.FileFormats.Model
                         var mat = scene.Materials[i];
 
                         var material = new Material();
-
 
 
                         materials[i] = material;
@@ -207,7 +177,7 @@ namespace dEngine.Utility.FileFormats.Model
 
                 importedMesh = true;
                 geometries[mesh.Name] = new Geometry(meshName, vertices.ToArray(), mesh.GetIndices(), weights?.ToArray())
-                { MaterialIndex = mesh.MaterialIndex };
+                    {MaterialIndex = mesh.MaterialIndex};
             }
 
             if (settings.MergeMeshes && !settings.ImportAsSkeletal)
@@ -289,12 +259,10 @@ namespace dEngine.Utility.FileFormats.Model
             {
                 var skeletonPath = GetFilePath(sceneName, path, settings);
                 if (skeletonPath != null)
-                {
                     using (var file = File.Create(skeletonPath))
                     {
                         Inst.Serialize(skeleton, file);
                     }
-                }
             }
 
             foreach (var animation in animations)
@@ -310,12 +278,8 @@ namespace dEngine.Utility.FileFormats.Model
             #endregion
 
             if (settings.ContentPath != null)
-            {
                 foreach (var file in Directory.GetFiles(path))
-                {
                     File.Move(file, Path.Combine(settings.ContentPath, Path.GetFileName(file)));
-                }
-            }
 
             return new ImportResult(geometries, animations, materials, skeleton, importedSkeleton, importedAnimation,
                 importedMesh, importedMaterials);
@@ -395,17 +359,11 @@ namespace dEngine.Utility.FileFormats.Model
                     var isParentOffsetMatrixValid = nodeData.DeformationBones.TryGetValue(aiParent.Name,
                         out parentOffsetMatrix);
                     if (isOffsetMatrixValid && isParentOffsetMatrixValid)
-                    {
-                        bone.CFrame = (CFrame)(Matrix.Invert(offsetMatrix) * parentOffsetMatrix);
-                    }
-                    else if (isOffsetMatrixValid && (aiNode == nodeData.RootNode || aiParent == nodeData.RootNode))
-                    {
-                        bone.CFrame = (CFrame)(Matrix.Invert(offsetMatrix));
-                    }
+                        bone.CFrame = (CFrame)(Matrix.Invert(offsetMatrix)*parentOffsetMatrix);
+                    else if (isOffsetMatrixValid && ((aiNode == nodeData.RootNode) || (aiParent == nodeData.RootNode)))
+                        bone.CFrame = (CFrame)Matrix.Invert(offsetMatrix);
                     else
-                    {
                         bone.CFrame = (CFrame)ToSharpDX(GetRelativeTransform(aiNode, aiParent));
-                    }
                 }
             }
 
@@ -430,13 +388,13 @@ namespace dEngine.Utility.FileFormats.Model
             // Get transform of node relative to ancestor.
             var transform = node.Transform;
             var parent = node.Parent;
-            while (parent != null && parent != ancestor)
+            while ((parent != null) && (parent != ancestor))
             {
                 transform *= parent.Transform;
                 parent = parent.Parent;
             }
 
-            if (parent == null && ancestor != null)
+            if ((parent == null) && (ancestor != null))
                 throw new ArgumentException($"Node \"{ancestor.Name}\" is not an ancestor of \"{node.Name}\".");
 
             return transform;
@@ -490,7 +448,7 @@ namespace dEngine.Utility.FileFormats.Model
             Debug.Assert(node != null, "Node referenced by mesh not found in model.");
 
             var rootBone = node;
-            while (node != scene.RootNode && !node.HasMeshes)
+            while ((node != scene.RootNode) && !node.HasMeshes)
             {
                 if (!node.Name.Contains("$AssimpFbx$"))
                     rootBone = node;
@@ -575,10 +533,10 @@ namespace dEngine.Utility.FileFormats.Model
                 WasCancelled = false;
             }
 
-            public static ImportResult Cancelled => new ImportResult { WasCancelled = true };
+            public static ImportResult Cancelled => new ImportResult {WasCancelled = true};
         }
 
-        class SkeletonNodeData
+        private class SkeletonNodeData
         {
             public Node RootNode { get; set; }
             public List<Node> Nodes { get; set; }
@@ -602,7 +560,8 @@ namespace dEngine.Utility.FileFormats.Model
             /// <summary>
             /// Determines if the mesh should be treated a a Sketal or Static mesh.
             /// </summary>
-            [DisplayName("Import as Skeletal"), EditorVisible("Mesh")]
+            [DisplayName("Import as Skeletal")]
+            [EditorVisible("Mesh")]
             public bool ImportAsSkeletal
             {
                 get { return _importAsSkeletal; }
@@ -616,19 +575,22 @@ namespace dEngine.Utility.FileFormats.Model
             /// <summary>
             /// Determines whether or not duplicate vertices will be removed.
             /// </summary>
-            [DisplayName("Keep Overlapping Vertices"), EditorVisible("Mesh")]
+            [DisplayName("Keep Overlapping Vertices")]
+            [EditorVisible("Mesh")]
             public bool KeepOverlappingVertices { get; set; } = false;
 
             /// <summary>
             /// Determines whether or not duplicate vertices will be removed.
             /// </summary>
-            [DisplayName("Normal Import Method"), EditorVisible("Mesh")]
+            [DisplayName("Normal Import Method")]
+            [EditorVisible("Mesh")]
             public NormalImportMethod NormalImportMethod { get; set; } = NormalImportMethod.ImportNormals;
 
             /// <summary>
             /// Determines if meshes should be merged.
             /// </summary>
-            [DisplayName("Merge Meshes"), EditorVisible("Static")]
+            [DisplayName("Merge Meshes")]
+            [EditorVisible("Static")]
             public bool MergeMeshes { get; set; } = true;
 
             public event Action<bool> ImportAsSkeletalChanged;
@@ -638,25 +600,29 @@ namespace dEngine.Utility.FileFormats.Model
             /// <summary>
             /// The existing skeleton to use for this mesh. If none is provided, the skeleton will be imported from the file.
             /// </summary>
-            [DisplayName("Skeleton"), EditorVisible("Skeletal")]
+            [DisplayName("Skeleton")]
+            [EditorVisible("Skeletal")]
             public Skeleton Skeleton { get; set; }
 
             /// <summary>
             /// Determines if the skeleton reference pose should be updated.
             /// </summary>
-            [DisplayName("Update Reference Pose"), EditorVisible("Skeletal")]
+            [DisplayName("Update Reference Pose")]
+            [EditorVisible("Skeletal")]
             public bool UpdateReferencePose { get; set; }
 
             /// <summary>
             /// Determines if the first frame should be used as the reference pose.
             /// </summary>
-            [DisplayName("Use First Frame As Reference Pose"), EditorVisible("Skeletal")]
+            [DisplayName("Use First Frame As Reference Pose")]
+            [EditorVisible("Skeletal")]
             public bool UseFirstFrameAsReferencePose { get; set; }
 
             /// <summary>
             /// If enabled, morph target swill be imported from the FBX file.
             /// </summary>
-            [DisplayName("Import Morph Targets"), EditorVisible("Skeletal")]
+            [DisplayName("Import Morph Targets")]
+            [EditorVisible("Skeletal")]
             public bool ImportMorphTargets { get; set; }
 
             #endregion
@@ -664,6 +630,32 @@ namespace dEngine.Utility.FileFormats.Model
             #region Static
 
             #endregion
+        }
+
+        /// <summary>
+        /// Enum for normal import methods.
+        /// </summary>
+        public enum NormalImportMethod
+        {
+            /// <summary>
+            /// The importer will compute normals and tangents.
+            /// </summary>
+            ComputeNormals,
+
+            /// <summary>
+            /// The importer will compute smooth normals and tangents.
+            /// </summary>
+            ComputeNormalsSmooth,
+
+            /// <summary>
+            /// The importer will import normals but compute tangents.
+            /// </summary>
+            ImportNormals,
+
+            /// <summary>
+            /// The importer will import normals and tangents.
+            /// </summary>
+            ImportNormalsAndTangents
         }
     }
 }

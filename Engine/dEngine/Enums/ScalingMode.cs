@@ -10,20 +10,21 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+
 #pragma warning disable 1591
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for image scaling algorithms.
-	/// </summary>
-	public enum ScalingMode
-	{
-		NearestNeighbor,
-		Linear,
-		Cubic,
-		MultiSampleLinear,
-		Anisotropic,
-		HighQualityCubic
-	}
+    /// <summary>
+    /// Enum for image scaling algorithms.
+    /// </summary>
+    public enum ScalingMode
+    {
+        NearestNeighbor,
+        Linear,
+        Cubic,
+        MultiSampleLinear,
+        Anisotropic,
+        HighQualityCubic
+    }
 }

@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Widgets.Assets
 {
-	/// <summary>
-	/// Interaction logic for FBXImportView.xaml
-	/// </summary>
-	public partial class FBXImportView : UserControl
-	{
-		public FBXImportView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for FBXImportView.xaml
+    /// </summary>
+    public partial class FBXImportView : UserControl
+    {
+        public FBXImportView()
+        {
+            InitializeComponent();
+        }
+    }
 }

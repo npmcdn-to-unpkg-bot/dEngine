@@ -11,8 +11,8 @@
 
 namespace dEngine.Instances
 {
-	public interface IAnchorable
-	{
-		bool Anchored { get; set; }
-	}
+    public interface IAnchorable
+    {
+        bool Anchored { get; set; }
+    }
 }

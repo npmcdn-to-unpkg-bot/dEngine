@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using dEngine.Settings.Global;
@@ -29,7 +30,8 @@ namespace dEngine.Services
     /// <summary>
     /// Service for handling analytics.
     /// </summary>
-    [TypeId(205), ExplorerOrder(-1)]
+    [TypeId(205)]
+    [ExplorerOrder(-1)]
     public class AnalyticsService : Service
     {
         private static readonly ConcurrentQueue<Event> _eventQueue = new ConcurrentQueue<Event>();
@@ -45,19 +47,6 @@ namespace dEngine.Services
         public AnalyticsService()
         {
             Service = this;
-        }
-
-        internal static void ReportEventQueue()
-        {
-            var defaultAnnotations = GetDefaultAnnotations();
-            while (!_eventQueue.IsEmpty)
-            {
-                Event e;
-                if (_eventQueue.TryDequeue(out e))
-                {
-                    e.Send(defaultAnnotations);
-                }
-            }
         }
 
         internal static string SessionId { get; private set; }
@@ -94,6 +83,17 @@ namespace dEngine.Services
         private static string EventsRoute { get; set; }
 
         internal static bool Initialized { get; set; }
+
+        internal static void ReportEventQueue()
+        {
+            var defaultAnnotations = GetDefaultAnnotations();
+            while (!_eventQueue.IsEmpty)
+            {
+                Event e;
+                if (_eventQueue.TryDequeue(out e))
+                    e.Send(defaultAnnotations);
+            }
+        }
 
         /// <summary>
         /// Sets the analytics game key to use for production.
@@ -144,14 +144,14 @@ namespace dEngine.Services
 
         private static string GenerateHmac(string json, string secretKey)
         {
-            var encoding = new System.Text.UTF8Encoding();
+            var encoding = new UTF8Encoding();
 
             var messageBytes = encoding.GetBytes(json);
             var keyByte = encoding.GetBytes(secretKey);
 
             using (var hmacsha256 = new HMACSHA256(keyByte))
             {
-                byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
+                var hashmessage = hmacsha256.ComputeHash(messageBytes);
                 return Convert.ToBase64String(hashmessage);
             }
         }
@@ -250,14 +250,11 @@ namespace dEngine.Services
         {
 #pragma warning disable 649
 #pragma warning disable 169
-            [JsonProperty("enabled")]
-            public bool Enabled;
+            [JsonProperty("enabled")] public bool Enabled;
 
-            [JsonProperty("flags")]
-            public string[] Flags;
+            [JsonProperty("flags")] public string[] Flags;
 
-            [JsonProperty("server_ts")]
-            public int ServerTimestamp;
+            [JsonProperty("server_ts")] public int ServerTimestamp;
 #pragma warning restore 649
 #pragma warning restore 169
         }
@@ -274,7 +271,7 @@ namespace dEngine.Services
                 obj.Merge(defaultAnnos);
 #pragma warning disable 4014
                 HttpService.Post(EventsRoute, obj.ToString(), "application/json", true,
-                    new Dictionary<string, object> { { "Authorization", _authHash } });
+                    new Dictionary<string, object> {{"Authorization", _authHash}});
 #pragma warning restore 4014
             }
 

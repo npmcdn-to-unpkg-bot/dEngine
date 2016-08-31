@@ -21,6 +21,7 @@ namespace dEngine.Data
     /// </summary>
     public abstract class AssetBase : IDisposable
     {
+        private static readonly char[] _assetHeader = "ASSETBIN".ToCharArray();
         protected bool _disposed;
 
         /// <summary>
@@ -47,8 +48,6 @@ namespace dEngine.Data
         /// Determines if data was successfuly loaded into the asset.
         /// </summary>
         public bool IsLoaded { get; protected set; }
-
-        public static readonly byte[] Magic = new [] {(byte)'A', (byte)'S' , (byte)'S' , (byte)'E' , (byte)'t' };
 
         /// <summary>
         /// Disposes of the asset.
@@ -85,16 +84,14 @@ namespace dEngine.Data
             }
         }
 
-        private static char[] _assetHeader = "ASSETBIN".ToCharArray();
-
-        /// <summary/>
-	    protected virtual void OnSave(BinaryWriter writer)
+        /// <summary />
+        protected virtual void OnSave(BinaryWriter writer)
         {
             writer.Write(_assetHeader);
             writer.Write((byte)ContentType);
         }
 
-        /// <summary/>
+        /// <summary />
         protected virtual void OnLoad(BinaryReader reader)
         {
             var header = reader.ReadChars(_assetHeader.Length);
@@ -102,7 +99,7 @@ namespace dEngine.Data
                 throw new InvalidDataException("Could not load asset with invalid header.");
         }
 
-        /// <summary/>
+        /// <summary />
         ~AssetBase()
         {
             Dispose(false);
@@ -113,6 +110,8 @@ namespace dEngine.Data
         /// </summary>
         /// <param name="disposing">Determines whether object was disposed or deconstructed.</param>
         protected abstract void Dispose(bool disposing);
+
+        public static readonly byte[] Magic = {(byte)'A', (byte)'S', (byte)'S', (byte)'E', (byte)'t'};
 
 #pragma warning disable 1591
         [InstBeforeSerialization]

@@ -11,38 +11,38 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for types of camera movement.
-	/// </summary>
-	public enum CameraType
-	{
-		/// <summary>
-		/// </summary>
-		Fixed,
+    /// <summary>
+    /// Enum for types of camera movement.
+    /// </summary>
+    public enum CameraType
+    {
+        /// <summary>
+        /// </summary>
+        Fixed,
 
-		/// <summary>
-		/// </summary>
-		Attach,
+        /// <summary>
+        /// </summary>
+        Attach,
 
-		/// <summary>
-		/// </summary>
-		Watch,
+        /// <summary>
+        /// </summary>
+        Watch,
 
-		/// <summary>
-		/// </summary>
-		Track,
+        /// <summary>
+        /// </summary>
+        Track,
 
-		/// <summary>
-		/// </summary>
-		Follow,
+        /// <summary>
+        /// </summary>
+        Follow,
 
-		/// <summary>
-		/// </summary>
-		Custom,
+        /// <summary>
+        /// </summary>
+        Custom,
 
-		/// <summary>
-		/// Uses the raw CFrame of the camera.
-		/// </summary>
-		Scriptable
-	}
+        /// <summary>
+        /// Uses the raw CFrame of the camera.
+        /// </summary>
+        Scriptable
+    }
 }

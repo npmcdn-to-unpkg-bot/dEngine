@@ -9,23 +9,25 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using dEngine.Instances.Attributes;
 using SharpDX.Direct3D11;
 
 namespace dEngine.Instances
 {
-	[TypeId(178), ExplorerOrder(0)]
-	public sealed class MotionBlurEffect : PostEffect
+    [TypeId(178)]
+    [ExplorerOrder(0)]
+    public sealed class MotionBlurEffect : PostEffect
     {
-        /// <summary/>
-	    public MotionBlurEffect()
+        /// <summary />
+        public MotionBlurEffect()
         {
             _effectOrder = (int)EffectPrority.MotionBlur;
         }
 
         internal override void Render(ref DeviceContext context)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

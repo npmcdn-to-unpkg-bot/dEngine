@@ -18,46 +18,43 @@ namespace dEngine.Instances
     /// <summary>
     /// A storyboard allows the organization of multiple GUI animations.
     /// </summary>
-    [TypeId(147), ToolboxGroup("GUI")]
+    [TypeId(147)]
+    [ToolboxGroup("GUI")]
     public class Storyboard : Instance
     {
         private readonly object _storyboardLocker = new object();
         private readonly List<GuiAnimation> _animations;
         private bool _playing;
 
-        /// <summary/>
+        /// <summary />
         public Storyboard()
         {
             _animations = new List<GuiAnimation>();
             Ended = new Signal(this);
         }
 
-        /// <summary/>
+        /// <summary />
         protected override void OnChildAdded(Instance child)
         {
             base.OnChildAdded(child);
             GuiAnimation animation;
             if ((animation = child as GuiAnimation) != null)
-            {
                 lock (_storyboardLocker)
                 {
                     _animations.Add(animation);
                 }
-            }
         }
 
-        /// <summary/>
+        /// <summary />
         protected override void OnChildRemoved(Instance child)
         {
             base.OnChildRemoved(child);
             GuiAnimation animation;
             if ((animation = child as GuiAnimation) != null)
-            {
                 lock (_storyboardLocker)
                 {
                     _animations.Remove(animation);
                 }
-            }
         }
 
         /// <summary>
@@ -88,7 +85,7 @@ namespace dEngine.Instances
                 for (var i = 0; i < count; i++)
                 {
                     var anim = _animations[i];
-                    anim.CurrentTime+=t;
+                    anim.CurrentTime += t;
                     if (!anim.Update())
                         finished++;
                 }

@@ -28,7 +28,7 @@ using SharpDX.Direct2D1;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using AlphaMode = SharpDX.Direct2D1.AlphaMode;
+using AlphaMode = SharpDX.DXGI.AlphaMode;
 using Device = SharpDX.Direct3D11.Device;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext;
 using Resource = SharpDX.Direct3D11.Resource;
@@ -40,8 +40,10 @@ namespace dEngine.Instances
     /// </summary>
     /// <remarks>
     /// In a game, each client has its own Camera object.
-    /// Cameras exist only on the viewer's client, within in a user's local <see cref="Workspace"/>. This means it can't be edited from the server.
-    /// When code is [running on a client](index.html?title=LocalScript) it can access the Camera through the <see cref="Workspace.CurrentCamera"/> property.
+    /// Cameras exist only on the viewer's client, within in a user's local <see cref="Workspace" />. This means it can't be
+    /// edited from the server.
+    /// When code is [running on a client](index.html?title=LocalScript) it can access the Camera through the
+    /// <see cref="Workspace.CurrentCamera" /> property.
     /// ## State
     /// A camera's state is defined in the following way:
     /// * The <see cref="CFrame" /> property represents the position and orientation of the camera.
@@ -51,7 +53,9 @@ namespace dEngine.Instances
     /// * The <see cref="CameraType" /> property represents the behaviour of the camera every frame.
     /// * The <see cref="FieldOfView" /> property represents the angle the user can see out of the sides of the Camera.
     /// </remarks>
-    [TypeId(31), ToolboxGroup("Gameplay"), ExplorerOrder(1)]
+    [TypeId(31)]
+    [ToolboxGroup("Gameplay")]
+    [ExplorerOrder(1)]
     public partial class Camera : Instance, IWorld, IListenable
     {
         private readonly AmbientOcclusionEffect _ambientOcclusion;
@@ -66,10 +70,6 @@ namespace dEngine.Instances
         private readonly ScriptableBehaviour _scriptableBehaviour;
         private readonly TrackBehaviour _trackBehaviour;
         private readonly WatchBehaviour _watchBehaviour;
-
-        internal readonly object CFrameLocker = new object();
-
-        internal readonly object PostEffectsLocker = new object();
 
         private ICameraSubject _cameraSubject;
         private CameraType _cameraType;
@@ -101,6 +101,8 @@ namespace dEngine.Instances
         internal SwapChain1 SwapChain;
         internal VehicleSeat VehicleSubject;
         internal ViewportF Viewport;
+
+        internal bool CanRender;
 
         /// <inheritdoc />
         public Camera()
@@ -169,7 +171,7 @@ namespace dEngine.Instances
                     SwapChain?.Dispose();
 
                     if (value == IntPtr.Zero) return;
-                    
+
                     if ((_control = Control.FromHandle(value)) != null)
                     {
                         _control.Resize += OnControlResize;
@@ -215,7 +217,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The vertical field of view in degrees.
         /// </summary>
-        [InstMember(1), EditorVisible("Camera")]
+        [InstMember(1)]
+        [EditorVisible("Camera")]
         public float FieldOfView
         {
             get { return _fovY; }
@@ -231,7 +234,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The minimum draw distance.
         /// </summary>
-        [InstMember(2), EditorVisible("Camera")]
+        [InstMember(2)]
+        [EditorVisible("Camera")]
         public float ClipNear
         {
             get { return _clipNear; }
@@ -248,7 +252,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The maximum draw distance.
         /// </summary>
-        [InstMember(3), EditorVisible("Camera")]
+        [InstMember(3)]
+        [EditorVisible("Camera")]
         public float ClipFar
         {
             get { return _clipFar; }
@@ -265,7 +270,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The position/rotation of the camera.
         /// </summary>
-        [InstMember(4), EditorVisible]
+        [InstMember(4)]
+        [EditorVisible]
         public CFrame CFrame
         {
             get { return _cframe; }
@@ -281,7 +287,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The type of projection this camera uses.
         /// </summary>
-        [InstMember(5), EditorVisible("Camera")]
+        [InstMember(5)]
+        [EditorVisible("Camera")]
         public Projection Projection
         {
             get { return _projection; }
@@ -298,7 +305,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The type of camera movement.
         /// </summary>
-        [InstMember(6), EditorVisible("Camera")]
+        [InstMember(6)]
+        [EditorVisible("Camera")]
         public CameraType CameraType
         {
             get { return _cameraType; }
@@ -356,7 +364,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The focus position of the camera.
         /// </summary>
-        [InstMember(8), EditorVisible]
+        [InstMember(8)]
+        [EditorVisible]
         public CFrame Focus
         {
             get { return _focus; }
@@ -406,7 +415,7 @@ namespace dEngine.Instances
                 lock (Renderer.Locker) // must be locked incase size changes while resizing
                 {
                     _viewportSize = value;
-                    AspectRatio = value.x / value.y;
+                    AspectRatio = value.x/value.y;
                     NeedsResize = true;
                     ViewportSizeChanged.Fire(value);
                     NotifyChanged();
@@ -424,8 +433,6 @@ namespace dEngine.Instances
         internal ArrayList<GuiBase3D> Gui3Ds { get; set; }
         internal SortedArray<LayerCollector> LayerCollectors { get; set; }
         internal SortedArray<PostEffect> PostEffects { get; }
-
-        internal bool CanRender;
 
         internal Behaviour CurrentBehaviour
         {
@@ -468,7 +475,8 @@ namespace dEngine.Instances
         }
 
         [Obsolete]
-        LuaTuple<Part, Vector3, Vector3> IWorld.FindPartOnRay(Ray ray, Func<dynamic, dynamic> filterFunc, float maxLength)
+        LuaTuple<Part, Vector3, Vector3> IWorld.FindPartOnRay(Ray ray, Func<dynamic, dynamic> filterFunc,
+            float maxLength)
         {
             throw new NotSupportedException();
         }
@@ -505,9 +513,7 @@ namespace dEngine.Instances
             lock (Locker)
             {
                 if (InputService.CurrentControl == _control)
-                {
                     InputService.CurrentControl = null;
-                }
             }
         }
 
@@ -524,7 +530,6 @@ namespace dEngine.Instances
             ICameraUser cameraUser;
 
             if ((effect = child as PostEffect) != null)
-            {
                 lock (PostEffectsLocker)
                 {
                     PostEffects.Add(effect);
@@ -536,11 +541,8 @@ namespace dEngine.Instances
                     else if (effect is ColourCorrectionEffect)
                         PostEffects.Remove(_colourCorrection);
                 }
-            }
             else if ((cameraUser = child as ICameraUser) != null)
-            {
                 cameraUser.Camera = this;
-            }
         }
 
         /// <inheritdoc />
@@ -551,7 +553,6 @@ namespace dEngine.Instances
             ICameraUser cameraUser;
 
             if ((effect = child as PostEffect) != null)
-            {
                 lock (PostEffectsLocker)
                 {
                     PostEffects.Remove(effect);
@@ -563,11 +564,8 @@ namespace dEngine.Instances
                     else if (effect is ColourCorrectionEffect)
                         PostEffects.Add(_colourCorrection);
                 }
-            }
             else if ((cameraUser = child as ICameraUser) != null)
-            {
                 cameraUser.Camera = null;
-            }
         }
 
         internal void UpdateCamera(double step)
@@ -583,7 +581,7 @@ namespace dEngine.Instances
                 Format = RenderConstants.BackBufferFormat,
                 BufferCount = RenderConstants.FrameCount,
                 Flags = SwapChainFlags.None,
-                AlphaMode = SharpDX.DXGI.AlphaMode.Ignore,
+                AlphaMode = AlphaMode.Ignore,
                 Width = 1,
                 Height = 1,
                 SampleDescription = new SampleDescription(1, 0),
@@ -646,10 +644,10 @@ namespace dEngine.Instances
             Buffer1 = CreateCameraBuffer("Buffer1", 1f, Format.R8G8B8A8_UNorm);
             Buffer2 = CreateCameraBuffer("Buffer2", 1f, Format.R16G16B16A16_Float);
             Buffer3 = CreateCameraBuffer("Buffer3", 1f, Format.R8G8B8A8_UNorm);
-            BufferDownscaleHalf0 = CreateCameraBuffer("BufferDownsampleHalf0", 1 / 2f, Format.R8G8B8A8_UNorm);
-            BufferDownscaleHalf1 = CreateCameraBuffer("BufferDownsampleHalf1", 1 / 2f, Format.R8G8B8A8_UNorm);
-            BufferDownscaleQuarter0 = CreateCameraBuffer("BufferDownsampleQuarter0", 1 / 4f, Format.R8G8B8A8_UNorm);
-            BufferDownscaleQuarter1 = CreateCameraBuffer("BufferDownsampleQuarter1", 1 / 4f, Format.R8G8B8A8_UNorm);
+            BufferDownscaleHalf0 = CreateCameraBuffer("BufferDownsampleHalf0", 1/2f, Format.R8G8B8A8_UNorm);
+            BufferDownscaleHalf1 = CreateCameraBuffer("BufferDownsampleHalf1", 1/2f, Format.R8G8B8A8_UNorm);
+            BufferDownscaleQuarter0 = CreateCameraBuffer("BufferDownsampleQuarter0", 1/4f, Format.R8G8B8A8_UNorm);
+            BufferDownscaleQuarter1 = CreateCameraBuffer("BufferDownsampleQuarter1", 1/4f, Format.R8G8B8A8_UNorm);
 
             var depthStencilBuffer = new Texture2D(Renderer.Device, new Texture2DDescription
             {
@@ -682,11 +680,12 @@ namespace dEngine.Instances
 
             _surface = BackBuffer.QueryInterface<Surface>();
             _surface.DebugName = "BackBufferSurface";
-            
+
             try
             {
                 RenderTarget2D = new Bitmap1(Renderer.Context2D, _surface,
-                    new BitmapProperties1(new PixelFormat(_surface.Description.Format, AlphaMode.Premultiplied), 96,
+                    new BitmapProperties1(
+                        new PixelFormat(_surface.Description.Format, SharpDX.Direct2D1.AlphaMode.Premultiplied), 96,
                         96, BitmapOptions.Target | BitmapOptions.CannotDraw));
             }
             catch (Exception)
@@ -700,24 +699,20 @@ namespace dEngine.Instances
             lock (Locker)
             {
                 foreach (var collector in LayerCollectors)
-                {
                     collector.Target = RenderTarget2D;
-                }
             }
 
             lock (PostEffectsLocker)
             {
                 foreach (var effect in PostEffects)
-                {
                     effect.UpdateSize(this);
-                }
             }
 
             var cb = Constants;
             cb.Data.ScreenParams.X = newWidth;
             cb.Data.ScreenParams.Y = newHeight;
             cb.Data.ScreenParams.Z = AspectRatio;
-            cb.Data.ScreenParams.W = FieldOfView * 0.5f / newHeight;
+            cb.Data.ScreenParams.W = FieldOfView*0.5f/newHeight;
 
             NeedsResize = false;
             CanRender = true;
@@ -733,8 +728,8 @@ namespace dEngine.Instances
                 SampleDescription = new SampleDescription(1, 0),
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
                 Format = format,
-                Width = Math.Max(1, (int)(_viewportSize.x * scale)),
-                Height = Math.Max(1, (int)(_viewportSize.y * scale)),
+                Width = Math.Max(1, (int)(_viewportSize.x*scale)),
+                Height = Math.Max(1, (int)(_viewportSize.y*scale)),
                 MipLevels = 1,
                 Usage = ResourceUsage.Default,
                 OptionFlags = ResourceOptionFlags.None,
@@ -746,7 +741,7 @@ namespace dEngine.Instances
 
         internal void UpdateProjectionMatrix()
         {
-            _projectionMatrix = Matrix.PerspectiveFovRH(FieldOfView * Mathf.Deg2Rad, AspectRatio,
+            _projectionMatrix = Matrix.PerspectiveFovRH(FieldOfView*Mathf.Deg2Rad, AspectRatio,
                 _clipNear, _clipFar);
         }
 
@@ -860,6 +855,10 @@ namespace dEngine.Instances
 
             Constants.Update(ref context);
         }
+
+        internal readonly object CFrameLocker = new object();
+
+        internal readonly object PostEffectsLocker = new object();
 
         /// <summary>
         /// Fired when the camera's CFrame is changed.

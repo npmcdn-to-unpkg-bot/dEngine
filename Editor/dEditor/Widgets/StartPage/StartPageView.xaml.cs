@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Widgets.StartPage
 {
-	/// <summary>
-	/// Interaction logic for StagePageView.xaml
-	/// </summary>
-	public partial class StartPageView : UserControl
-	{
-		public StartPageView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for StagePageView.xaml
+    /// </summary>
+    public partial class StartPageView : UserControl
+    {
+        public StartPageView()
+        {
+            InitializeComponent();
+        }
+    }
 }

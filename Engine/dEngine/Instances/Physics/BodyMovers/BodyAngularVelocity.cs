@@ -9,7 +9,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using dEngine.Instances.Attributes;
 
 namespace dEngine.Instances
@@ -28,7 +27,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public Vector3 AngularVelocity
         {
             get { return _angularVelocity; }
@@ -43,7 +43,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public Vector3 MaxTorque
         {
             get { return _maxTorque; }
@@ -58,7 +59,8 @@ namespace dEngine.Instances
         /// <summary>
         /// How aggressively the object tries to reach its goal.
         /// </summary>
-        [InstMember(3), EditorVisible]
+        [InstMember(3)]
+        [EditorVisible]
         public float Power
         {
             get { return _power; }
@@ -74,7 +76,7 @@ namespace dEngine.Instances
         /// <inheritdoc />
         protected override void OnStep(Part part)
         {
-            var radius = part.Size.magnitude / 2;
+            var radius = part.Size.magnitude/2;
         }
     }
 }

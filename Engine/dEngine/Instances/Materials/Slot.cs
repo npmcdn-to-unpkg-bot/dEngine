@@ -13,6 +13,7 @@ using System;
 using JetBrains.Annotations;
 
 #pragma warning disable 1591
+
 namespace dEngine.Instances.Materials
 {
     public class Slot
@@ -40,6 +41,11 @@ namespace dEngine.Instances.Materials
         internal Slot Input { get; set; }
         internal Slot Output { get; set; }
 
+        public string Name { get; }
+        public Colour Colour { get; }
+        public SlotType Type { get; }
+        public InOut Mode { get; }
+
         public bool ConnectTo([CanBeNull] Slot output)
         {
             if (Mode != InOut.Out)
@@ -58,10 +64,5 @@ namespace dEngine.Instances.Materials
 
             return true;
         }
-
-        public string Name { get; }
-        public Colour Colour { get;}
-        public SlotType Type { get; }
-        public InOut Mode { get; }
     }
 }

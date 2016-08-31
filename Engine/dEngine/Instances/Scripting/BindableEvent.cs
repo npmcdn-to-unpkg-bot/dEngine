@@ -15,20 +15,23 @@ using Neo.IronLua;
 namespace dEngine.Instances
 {
     /// <summary>
-    /// Acts as a custom event to allow communication between scripts. 
+    /// Acts as a custom event to allow communication between scripts.
     /// </summary>
-    [TypeId(55), ToolboxGroup("Scripting")]
-    [Warning("BindableEvents do not allows for communication between the server and client. If you are looking for this functionality use [RemoteEvents](index?.htmltitle=RemoteEvent).")]
+    [TypeId(55)]
+    [ToolboxGroup("Scripting")]
+    [Warning(
+         "BindableEvents do not allows for communication between the server and client. If you are looking for this functionality use [RemoteEvents](index?.htmltitle=RemoteEvent)."
+     )]
     public class BindableEvent : Instance
     {
-        /// <summary/>
+        /// <summary />
         public BindableEvent()
         {
             Event = new Signal<LuaResult>(this);
         }
 
         /// <summary>
-        /// Fires the <see cref="Event"/>.
+        /// Fires the <see cref="Event" />.
         /// </summary>
         /// <param name="arguments">The arguments to pass to the event.</param>
         public void Fire(params object[] arguments)
@@ -37,9 +40,9 @@ namespace dEngine.Instances
         }
 
         /// <summary>
-        /// An event which is fired by <see cref="Fire"/>.
+        /// An event which is fired by <see cref="Fire" />.
         /// </summary>
-        /// <eventParam name="arguments"/>
+        /// <eventParam name="arguments" />
         public readonly Signal<LuaResult> Event;
     }
 }

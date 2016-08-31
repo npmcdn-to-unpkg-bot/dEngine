@@ -13,26 +13,26 @@ using SharpDX.Direct3D11;
 
 namespace dEngine.Graphics.States
 {
-	internal static class BlendStates
-	{
-		public static BlendState Default;
+    internal static class BlendStates
+    {
+        public static BlendState Default;
         public static BlendState Standard;
         public static BlendState Disabled;
-	    public static BlendState ColourWriteDisabled;
+        public static BlendState ColourWriteDisabled;
 
-	    internal static void Load()
-		{
-			Default = new BlendState(Renderer.Device, BlendStateDescription.Default());
-
-	        SetStandardDisabled();
-            SetBlendDisabled();
-	        SetColourWriteDisabled();
-		}
-
-	    private static void SetColourWriteDisabled()
+        internal static void Load()
         {
-            var blendDesc = new BlendStateDescription { IndependentBlendEnable = false, AlphaToCoverageEnable = false };
-            for (int i = 0; i < 8; ++i)
+            Default = new BlendState(Renderer.Device, BlendStateDescription.Default());
+
+            SetStandardDisabled();
+            SetBlendDisabled();
+            SetColourWriteDisabled();
+        }
+
+        private static void SetColourWriteDisabled()
+        {
+            var blendDesc = new BlendStateDescription {IndependentBlendEnable = false, AlphaToCoverageEnable = false};
+            for (var i = 0; i < 8; ++i)
             {
                 blendDesc.RenderTarget[i].IsBlendEnabled = false;
                 blendDesc.RenderTarget[i].BlendOperation = BlendOperation.Add;
@@ -46,9 +46,9 @@ namespace dEngine.Graphics.States
             ColourWriteDisabled = new BlendState(Renderer.Device, blendDesc);
         }
 
-	    private static void SetStandardDisabled()
+        private static void SetStandardDisabled()
         {
-            var blendDesc = new BlendStateDescription { IndependentBlendEnable = true };
+            var blendDesc = new BlendStateDescription {IndependentBlendEnable = true};
 
             blendDesc.RenderTarget[0].IsBlendEnabled = true;
             blendDesc.RenderTarget[0].SourceBlend = BlendOption.SourceAlpha; // Colour Src
@@ -59,7 +59,7 @@ namespace dEngine.Graphics.States
             blendDesc.RenderTarget[0].AlphaBlendOperation = BlendOperation.Add; // Alpha Op
             blendDesc.RenderTarget[0].RenderTargetWriteMask = ColorWriteMaskFlags.All;
 
-            for (int i = 1; i < blendDesc.RenderTarget.Length; i++)
+            for (var i = 1; i < blendDesc.RenderTarget.Length; i++)
             {
                 blendDesc.RenderTarget[i].IsBlendEnabled = false;
                 blendDesc.RenderTarget[i].RenderTargetWriteMask = ColorWriteMaskFlags.All;
@@ -69,10 +69,10 @@ namespace dEngine.Graphics.States
         }
 
 
-	    private static void SetBlendDisabled()
-	    {
-            var blendDesc = new BlendStateDescription { IndependentBlendEnable = false, AlphaToCoverageEnable = true};
-	        blendDesc.RenderTarget[0].IsBlendEnabled = false;
+        private static void SetBlendDisabled()
+        {
+            var blendDesc = new BlendStateDescription {IndependentBlendEnable = false, AlphaToCoverageEnable = true};
+            blendDesc.RenderTarget[0].IsBlendEnabled = false;
             blendDesc.RenderTarget[0].BlendOperation = BlendOperation.Add;
             blendDesc.RenderTarget[0].AlphaBlendOperation = BlendOperation.Add;
             blendDesc.RenderTarget[0].DestinationBlend = BlendOption.InverseSourceAlpha;
@@ -82,5 +82,5 @@ namespace dEngine.Graphics.States
             blendDesc.RenderTarget[0].SourceAlphaBlend = BlendOption.One;
             Disabled = new BlendState(Renderer.Device, blendDesc);
         }
-	}
+    }
 }

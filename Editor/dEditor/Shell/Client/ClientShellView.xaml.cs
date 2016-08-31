@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Shell.Client
 {
-	/// <summary>
-	/// Interaction logic for ClientShellView.xaml
-	/// </summary>
-	public partial class ClientShellView : UserControl
-	{
-		public ClientShellView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for ClientShellView.xaml
+    /// </summary>
+    public partial class ClientShellView : UserControl
+    {
+        public ClientShellView()
+        {
+            InitializeComponent();
+        }
+    }
 }

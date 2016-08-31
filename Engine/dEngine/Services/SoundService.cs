@@ -29,13 +29,13 @@ using dEngine.Utility.Extensions;
 using dEngine.Utility.Native;
 using Neo.IronLua;
 
-
 namespace dEngine.Services
 {
     /// <summary>
     /// SoundService manages global sound properties.
     /// </summary>
-    [TypeId(60), ExplorerOrder(50)]
+    [TypeId(60)]
+    [ExplorerOrder(50)]
     public partial class SoundService : Service
     {
         internal static SoundService Service;
@@ -56,17 +56,86 @@ namespace dEngine.Services
             _rolloffScale = 1.0f;
         }
 
+        /// <summary>
+        /// The global environment reverb type.
+        /// </summary>
+        [InstMember(1)]
+        [EditorVisible]
+        public ReverbType AmbientReverb
+        {
+            get { return _ambientReverb; }
+            set
+            {
+                if (value == _ambientReverb) return;
+                _ambientReverb = value;
+                NotifyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Modifies the distance for every sound.
+        /// </summary>
+        [InstMember(2)]
+        [EditorVisible]
+        public float DistanceFactor
+        {
+            get { return _distanceFactor; }
+            set
+            {
+                if (value == _distanceFactor) return;
+                _distanceFactor = value;
+                StaticDistanceFactor = value;
+                NotifyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Scales the doppler effect.
+        /// </summary>
+        [InstMember(3)]
+        [EditorVisible]
+        public float DopplerScale
+        {
+            get { return _dopplerScale; }
+            set
+            {
+                if (value == _dopplerScale) return;
+                _dopplerScale = value;
+                StaticDopplerFactor = value;
+                NotifyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Determines how fast sounds will drop off.
+        /// </summary>
+        [InstMember(4)]
+        [EditorVisible]
+        public float RolloffScale
+        {
+            get { return _rolloffScale; }
+            set
+            {
+                if (value == _rolloffScale) return;
+                _rolloffScale = value;
+                StaticRolloffScale = value;
+                NotifyChanged();
+            }
+        }
+
         private LuaTable GetDevices(DataFlow dataFlow)
         {
             var table = new LuaTable();
             var thread = ScriptService.CurrentThread;
 
-            int i = 0;
+            var i = 0;
             Task.Run(() =>
             {
                 using (var enumerator = new MMDeviceEnumerator())
+                {
                     foreach (var device in enumerator.EnumAudioEndpoints(dataFlow, DeviceState.Active))
                         table[i++] = device.FriendlyName;
+                }
             }).ContinueWith(x => ScriptService.ResumeThread(thread));
 
             ScriptService.YieldThread();
@@ -110,69 +179,6 @@ namespace dEngine.Services
         }
 
         /// <summary>
-        /// The global environment reverb type.
-        /// </summary>
-        [InstMember(1), EditorVisible]
-        public ReverbType AmbientReverb
-        {
-            get { return _ambientReverb; }
-            set
-            {
-                if (value == _ambientReverb) return;
-                _ambientReverb = value;
-                NotifyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Modifies the distance for every sound.
-        /// </summary>
-        [InstMember(2), EditorVisible]
-        public float DistanceFactor
-        {
-            get { return _distanceFactor; }
-            set
-            {
-                if (value == _distanceFactor) return;
-                _distanceFactor = value;
-                StaticDistanceFactor = value;
-                NotifyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Scales the doppler effect.
-        /// </summary>
-        [InstMember(3), EditorVisible]
-        public float DopplerScale
-        {
-            get { return _dopplerScale; }
-            set
-            {
-                if (value == _dopplerScale) return;
-                _dopplerScale = value;
-                StaticDopplerFactor = value;
-                NotifyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Determines how fast sounds will drop off.
-        /// </summary>
-        [InstMember(4), EditorVisible]
-        public float RolloffScale
-        {
-            get { return _rolloffScale; }
-            set
-            {
-                if (value == _rolloffScale) return;
-                _rolloffScale = value;
-                StaticRolloffScale = value;
-                NotifyChanged();
-            }
-        }
-
-        /// <summary>
         /// Sets the object that the users hears from.
         /// </summary>
         public void SetListener(IListenable listenable)
@@ -184,6 +190,7 @@ namespace dEngine.Services
 
     public partial class SoundService // Static definitions
     {
+        internal const float StatsUpdateRate = 1;
         internal static Listener Listener;
 
         internal static object SoundLocker = new object();
@@ -195,12 +202,6 @@ namespace dEngine.Services
         private static ArrayList<Sound> _sounds3D;
         private static HashedLinkedList<Sound> _sounds;
         private static TreeSet<Sound> _activeSounds;
-
-        internal static XAudio2_7 XAudio2 { get; private set; }
-        internal static X3DAudioCore X3DAudio { get; private set; }
-        internal static XAudio2MasteringVoice MasteringVoice { get; private set; }
-
-        internal static bool IsCriticalError { get; private set; }
 
         internal static float StaticDopplerFactor;
         internal static float StaticRolloffScale;
@@ -220,6 +221,16 @@ namespace dEngine.Services
         internal static StatsItem SoundsTotalStats;
 
         internal static StatsItem GlitchesStats;
+
+        private static readonly Stopwatch _stopwatch = Stopwatch.StartNew();
+        private static int _playbackDeviceIndex;
+        private static int _recordingDeviceIndex;
+
+        internal static XAudio2_7 XAudio2 { get; private set; }
+        internal static X3DAudioCore X3DAudio { get; private set; }
+        internal static XAudio2MasteringVoice MasteringVoice { get; private set; }
+
+        internal static bool IsCriticalError { get; private set; }
 
         internal static void Init()
         {
@@ -250,17 +261,17 @@ namespace dEngine.Services
             Reset();
 
             if (Game.IsInitialized)
-            {
                 Game.Workspace.CameraChanged.Connect(WorkspaceCameraChanged);
-            }
             else
-            {
                 Game.Initialized += (s, e) => { Game.Workspace.CameraChanged.Connect(WorkspaceCameraChanged); };
-            }
 
             Listener = new Listener();
-            
-            Stats = new StatsItem("Sound", Game.Stats) { Value = (int)XAudio2.Version, ValueString = XAudio2.Version.ToString() };
+
+            Stats = new StatsItem("Sound", Game.Stats)
+            {
+                Value = (int)XAudio2.Version,
+                ValueString = XAudio2.Version.ToString()
+            };
             CpuStats = new StatsItem("CPU", Stats);
 
             VoiceStats = new StatsItem("Voices", Stats);
@@ -276,22 +287,15 @@ namespace dEngine.Services
             GlitchesStats = new StatsItem("Glitches", Stats);
         }
 
-        private static readonly Stopwatch _stopwatch = Stopwatch.StartNew();
-        private static int _playbackDeviceIndex;
-        private static int _recordingDeviceIndex;
-
-        internal const float StatsUpdateRate = 1;
-
         internal static bool Update()
         {
-            if (_silent || IsCriticalError || _sounds.Count == 0)
+            if (_silent || IsCriticalError || (_sounds.Count == 0))
             {
                 Thread.Sleep(16);
                 return false;
             }
 
             if (DebugSettings.ProfilingEnabled)
-            {
                 if (_stopwatch.Elapsed.TotalSeconds > StatsUpdateRate)
                 {
                     if (DebugSettings.XAudio2ProfilingEnabled)
@@ -304,7 +308,7 @@ namespace dEngine.Services
                         var audioCycles = perfData.TotalCyclesSinceLastQuery;
 
                         CpuStats.Value = audioCycles;
-                        CpuStats.ValueString = (audioCycles / (long)totalCycles).ToString("P");
+                        CpuStats.ValueString = (audioCycles/(long)totalCycles).ToString("P");
 
                         VoiceStats.Value = perfData.TotalSourceVoiceCount;
                         VoiceActiveStats.Value = perfData.ActiveSourceVoiceCount;
@@ -316,7 +320,6 @@ namespace dEngine.Services
 
                     _stopwatch.Restart();
                 }
-            }
 
             /*
             XAudio2Voice voice;
@@ -335,10 +338,8 @@ namespace dEngine.Services
             lock (SoundLocker)
             {
                 var count = _sounds3D.Count;
-                for (int i = 0; i < count; i++)
-                {
+                for (var i = 0; i < count; i++)
                     _sounds3D[i].Update();
-                }
             }
 
             return true;
@@ -380,7 +381,6 @@ namespace dEngine.Services
             }
             catch (Exception e)
             {
-                
             }
             X3DAudio = new X3DAudioCore(deviceDetails.OutputFormat.ChannelMask);
             UpdateMix();
@@ -395,9 +395,7 @@ namespace dEngine.Services
             lock (SoundLocker)
             {
                 if (_activeSounds.Count >= SoundSettings.MaxActiveSoundCount)
-                {
                     return false;
-                }
 
                 var result = _activeSounds.Add(sound);
                 sound.IsActive = true;
@@ -445,9 +443,7 @@ namespace dEngine.Services
             lock (SoundLocker)
             {
                 foreach (var sound in _sounds)
-                {
                     sound.Stop();
-                }
             }
         }
 
@@ -494,32 +490,22 @@ namespace dEngine.Services
         private static void OnCameraMoved()
         {
             if (_listenable == _camera)
-            {
                 _listenable.UpdateListener(ref Listener);
-            }
         }
 
         internal static float SemitonesToFrequencyRatio(float semitones)
         {
-            return Mathf.Pow(2, semitones / 12);
+            return Mathf.Pow(2, semitones/12);
         }
 
         internal static float FrequencyRatioToSemitones(float frequencyRatio)
         {
-            return (float)(Math.Log10(frequencyRatio) * 12 * Math.PI);
+            return (float)(Math.Log10(frequencyRatio)*12*Math.PI);
         }
 
         internal static float DecibelsToAmplitudeRatio(float decibels)
         {
-            return Mathf.Pow(10, decibels / 20);
-        }
-
-        private class SoundPriorityComparer : IComparer<Sound>
-        {
-            public int Compare(Sound x, Sound y)
-            {
-                return x.Volume.CompareTo(y.Volume);
-            }
+            return Mathf.Pow(10, decibels/20);
         }
 
         internal static void SetSound3D(Sound sound, bool is3D)
@@ -527,13 +513,9 @@ namespace dEngine.Services
             lock (SoundLocker)
             {
                 if (is3D)
-                {
                     _sounds3D.Add(sound);
-                }
                 else
-                {
                     _sounds3D.Remove(sound);
-                }
             }
         }
 
@@ -549,6 +531,14 @@ namespace dEngine.Services
             var track = HttpService.Get(url, true, new Dictionary<string, object>()).Result.ReadString();
             var table = HttpService.Service.JsonDecode(track);
             return table;
+        }
+
+        private class SoundPriorityComparer : IComparer<Sound>
+        {
+            public int Compare(Sound x, Sound y)
+            {
+                return x.Volume.CompareTo(y.Volume);
+            }
         }
     }
 }

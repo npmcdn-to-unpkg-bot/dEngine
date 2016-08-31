@@ -15,110 +15,28 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using C5;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
 using dEngine.Services.Networking;
 using dEngine.Utility;
 using NLog;
-
 using SharpDX;
-using Logger = NLog.Logger;
 
 namespace dEngine.Services
 {
     /// <summary>
     /// A service that handles the game logic loop.
     /// </summary>
-    [TypeId(153), ExplorerOrder(-1)]
+    [TypeId(153)]
+    [ExplorerOrder(-1)]
     public partial class RunService : Service
     {
         private static readonly ConcurrentQueue<TaskCompletionSource<PhysicsSimulation>> _simulationCreationQueue =
             new ConcurrentQueue<TaskCompletionSource<PhysicsSimulation>>();
 
-        private class RenderStepBinding : IEquatable<RenderStepBinding>, IComparable<RenderStepBinding>
-        {
-            public string Name { get; }
-            public Action Action { get; }
-            public int Priority { get; }
-
-            public RenderStepBinding(string name, Action action, int priority)
-            {
-                Name = name;
-                Action = action;
-                Priority = priority;
-            }
-
-            protected bool Equals(RenderStepBinding other)
-            {
-                return string.Equals(Name, other.Name);
-            }
-
-            public int CompareTo(RenderStepBinding other)
-            {
-                return Priority.CompareTo(other.Priority);
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
-                return Equals((RenderStepBinding)obj);
-            }
-
-            public override int GetHashCode()
-            {
-                return Name?.GetHashCode() ?? 0;
-            }
-
-            bool IEquatable<RenderStepBinding>.Equals(RenderStepBinding other)
-            {
-                return Name.Equals(other.Name);
-            }
-        }
-
         private readonly OrderedSet<RenderStepBinding> _bindings;
         private readonly Dictionary<string, RenderStepBinding> _dictionary;
-
-        /// <summary>
-        /// Fired when simulation ends.
-        /// </summary>
-        public readonly Signal SimulationEnded;
-
-        /// <summary>
-        /// Fired when simulation is paused.
-        /// </summary>
-        public readonly Signal SimulationPaused;
-
-        /// <summary>
-        /// Fired when simulation is resumed.
-        /// </summary>
-        public readonly Signal SimulationResumed;
-
-        /// <summary>
-        /// Fired when simulation starts.
-        /// </summary>
-        public readonly Signal SimulationStarted;
-
-        /// <summary>
-        /// Fired after every game thread frame.
-        /// </summary>
-        /// <eventParam name="step"/>
-        public readonly Signal<double> Heartbeat;
-
-        /// <summary>
-        /// Fired after every render thread frame.
-        /// </summary>
-        /// <eventParam name="step"/>
-        public readonly Signal<double> RenderStepped;
-
-        /// <summary>
-        /// Fired when the RunService is stepped, which is approximately every 1/30th of a second.
-        /// </summary>
-        /// <eventParam name="step"/>
-        public readonly Signal<double> Stepped;
 
         /// <inheritdoc />
         public RunService()
@@ -253,7 +171,7 @@ namespace dEngine.Services
         /// </summary>
         public bool IsRunMode()
         {
-            return SimulationType == SimulationType.Run && SimulationState != SimulationState.Stopped;
+            return (SimulationType == SimulationType.Run) && (SimulationState != SimulationState.Stopped);
         }
 
         /// <summary>
@@ -261,7 +179,7 @@ namespace dEngine.Services
         /// </summary>
         public bool IsPlayMode()
         {
-            return SimulationType == SimulationType.Play && SimulationState != SimulationState.Stopped;
+            return (SimulationType == SimulationType.Play) && (SimulationState != SimulationState.Stopped);
         }
 
         /// <summary>
@@ -296,6 +214,86 @@ namespace dEngine.Services
         {
             return Engine.Mode == EngineMode.LevelEditor;
         }
+
+        /// <summary>
+        /// Fired when simulation ends.
+        /// </summary>
+        public readonly Signal SimulationEnded;
+
+        /// <summary>
+        /// Fired when simulation is paused.
+        /// </summary>
+        public readonly Signal SimulationPaused;
+
+        /// <summary>
+        /// Fired when simulation is resumed.
+        /// </summary>
+        public readonly Signal SimulationResumed;
+
+        /// <summary>
+        /// Fired when simulation starts.
+        /// </summary>
+        public readonly Signal SimulationStarted;
+
+        /// <summary>
+        /// Fired after every game thread frame.
+        /// </summary>
+        /// <eventParam name="step" />
+        public readonly Signal<double> Heartbeat;
+
+        /// <summary>
+        /// Fired after every render thread frame.
+        /// </summary>
+        /// <eventParam name="step" />
+        public readonly Signal<double> RenderStepped;
+
+        /// <summary>
+        /// Fired when the RunService is stepped, which is approximately every 1/30th of a second.
+        /// </summary>
+        /// <eventParam name="step" />
+        public readonly Signal<double> Stepped;
+
+        private class RenderStepBinding : IEquatable<RenderStepBinding>, IComparable<RenderStepBinding>
+        {
+            public RenderStepBinding(string name, Action action, int priority)
+            {
+                Name = name;
+                Action = action;
+                Priority = priority;
+            }
+
+            public string Name { get; }
+            public Action Action { get; }
+            public int Priority { get; }
+
+            public int CompareTo(RenderStepBinding other)
+            {
+                return Priority.CompareTo(other.Priority);
+            }
+
+            bool IEquatable<RenderStepBinding>.Equals(RenderStepBinding other)
+            {
+                return Name.Equals(other.Name);
+            }
+
+            protected bool Equals(RenderStepBinding other)
+            {
+                return string.Equals(Name, other.Name);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != GetType()) return false;
+                return Equals((RenderStepBinding)obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return Name?.GetHashCode() ?? 0;
+            }
+        }
     }
 
     public partial class RunService
@@ -313,6 +311,8 @@ namespace dEngine.Services
         /// </summary>
         public static RunService Service;
 
+        internal static Stopwatch SimulationStopwatch;
+
         /// <summary>
         /// The session state.
         /// </summary>
@@ -322,8 +322,6 @@ namespace dEngine.Services
         /// The type of simulation that is running.
         /// </summary>
         internal static SimulationType SimulationType { get; set; }
-
-        internal static Stopwatch SimulationStopwatch;
 
         internal static void Init()
         {
@@ -360,9 +358,7 @@ namespace dEngine.Services
             var isClient = NetworkPeer.IsClient();
 
             if (isServer)
-            {
                 InternalLogger.Info("Server session starting.");
-            }
 
             ScriptService.ExecuteAllScripts(isClient, isServer);
 
@@ -403,9 +399,7 @@ namespace dEngine.Services
                 Players.Service.LocalPlayer = null;
             }
             if (Service.IsServer())
-            {
                 Game.NetworkServer.Stop();
-            }
 
             Game.DataModel.ClearContent(true);
             Inst.Deserialize(_dataModelStream, Game.DataModel);

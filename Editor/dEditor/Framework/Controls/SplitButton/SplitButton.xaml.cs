@@ -16,34 +16,35 @@ using Xceed.Wpf.Toolkit;
 
 namespace dEditor.Framework.Controls.SplitButton
 {
-	/// <summary>
-	/// Interaction logic for SplitButton.xaml
-	/// </summary>
-	[ContentProperty("CustomContent")]
-	public partial class SplitButton : UserControl
-	{
-		public static readonly DependencyProperty CustomContentProperty = DependencyProperty.Register("CustomContent",
-			typeof(object), typeof(DropDownButton), null);
+    /// <summary>
+    /// Interaction logic for SplitButton.xaml
+    /// </summary>
+    [ContentProperty("CustomContent")]
+    public partial class SplitButton : UserControl
+    {
+        public SplitButton()
+        {
+            InitializeComponent();
+            DataContext = this;
+        }
 
-		public static readonly DependencyProperty DropDownContentProperty = DependencyProperty.Register("DropDownContent",
-			typeof(object), typeof(DropDownButton), null);
+        public object CustomContent
+        {
+            get { return GetValue(CustomContentProperty); }
+            set { SetValue(CustomContentProperty, value); }
+        }
 
-		public SplitButton()
-		{
-			InitializeComponent();
-			DataContext = this;
-		}
+        public object DropDownContent
+        {
+            get { return GetValue(DropDownContentProperty); }
+            set { SetValue(DropDownContentProperty, value); }
+        }
 
-		public object CustomContent
-		{
-			get { return GetValue(CustomContentProperty); }
-			set { SetValue(CustomContentProperty, value); }
-		}
+        public static readonly DependencyProperty CustomContentProperty = DependencyProperty.Register("CustomContent",
+            typeof(object), typeof(DropDownButton), null);
 
-		public object DropDownContent
-		{
-			get { return GetValue(DropDownContentProperty); }
-			set { SetValue(DropDownContentProperty, value); }
-		}
-	}
+        public static readonly DependencyProperty DropDownContentProperty =
+            DependencyProperty.Register("DropDownContent",
+                typeof(object), typeof(DropDownButton), null);
+    }
 }

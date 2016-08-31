@@ -13,8 +13,8 @@ using SharpDX.Direct3D11;
 
 namespace dEngine.Utility.Texture
 {
-	internal interface ITextureFormat
-	{
-		Texture2D Texture2D { get; }
-	}
+    internal interface ITextureFormat
+    {
+        Texture2D Texture2D { get; }
+    }
 }

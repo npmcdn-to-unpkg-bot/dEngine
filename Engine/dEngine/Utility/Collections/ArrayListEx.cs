@@ -10,6 +10,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using C5;
+
 #pragma warning disable 1591
 
 namespace dEngine.Utility

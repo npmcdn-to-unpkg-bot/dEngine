@@ -12,7 +12,6 @@
 using System;
 using System.IO;
 
-
 namespace dEngine
 {
     /// <summary>
@@ -23,14 +22,12 @@ namespace dEngine
         /// <summary>
         /// The minimum value of the range.
         /// </summary>
-        [InstMember(1)]
-        public float Min;
+        [InstMember(1)] public float Min;
 
         /// <summary>
         /// The maximum value of the range.
         /// </summary>
-        [InstMember(2)]
-        public float Max;
+        [InstMember(2)] public float Max;
 
         /// <summary>
         /// Creates a new range with min and max both set to the given value.
@@ -54,57 +51,57 @@ namespace dEngine
         }
 
         /// <summary>
-        /// Determines if the min and max are equal for two <see cref="NumberRange"/>s.
+        /// Determines if the min and max are equal for two <see cref="NumberRange" />s.
         /// </summary>
         public static bool operator ==(NumberRange a, NumberRange b)
         {
-            return a.Min == b.Min && a.Max == b.Max;
+            return (a.Min == b.Min) && (a.Max == b.Max);
         }
 
         /// <summary>
-        /// Determines if the min and max are not equal for two <see cref="NumberRange"/>s.
+        /// Determines if the min and max are not equal for two <see cref="NumberRange" />s.
         /// </summary>
         public static bool operator !=(NumberRange a, NumberRange b)
         {
-            return a.Min != b.Min || a.Max != b.Max;
+            return (a.Min != b.Min) || (a.Max != b.Max);
         }
 
-        /// <summary/>
+        /// <summary />
         public bool Equals(NumberRange other)
         {
             return Min.Equals(other.Min) && Max.Equals(other.Max);
         }
 
-        /// <summary/>
+        /// <summary />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return obj is NumberRange && Equals((NumberRange)obj);
         }
 
-        /// <summary/>
+        /// <summary />
         public override int GetHashCode()
         {
             unchecked
             {
-                return (Min.GetHashCode() * 397) ^ Max.GetHashCode();
+                return (Min.GetHashCode()*397) ^ Max.GetHashCode();
             }
         }
 
-        /// <summary/>
+        /// <summary />
         public override string ToString()
         {
             return $"{Min}, {Max}";
         }
 
-        /// <summary/>
+        /// <summary />
         public void Load(BinaryReader reader)
         {
             Min = reader.ReadSingle();
             Max = reader.ReadSingle();
         }
 
-        /// <summary/>
+        /// <summary />
         public void Save(BinaryWriter writer)
         {
             writer.Write(Min);

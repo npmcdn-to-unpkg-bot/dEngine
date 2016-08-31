@@ -17,10 +17,12 @@ namespace dEngine.Instances
     /// <summary>
     /// Displays a black text bar at the top of the screen.
     /// </summary>
-    [TypeId(228), ExplorerOrder(1), Obsolete]
+    [TypeId(228)]
+    [ExplorerOrder(1)]
+    [Obsolete]
     public sealed class Hint : Message
     {
-        /// <summary/>
+        /// <summary />
         public Hint()
         {
             _label.BackgroundColour = Colour.Black;

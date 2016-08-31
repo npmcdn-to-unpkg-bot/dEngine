@@ -18,6 +18,7 @@ using Assimp;
 using dEngine.Utility;
 using SharpDX;
 using SharpDX.Mathematics.Interop;
+
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace dEngine
@@ -44,26 +45,22 @@ namespace dEngine
         /// <summary>
         /// The red component.
         /// </summary>
-        [InstMember(1)]
-        public float r;
+        [InstMember(1)] public float r;
 
         /// <summary>
         /// The green component.
         /// </summary>
-        [InstMember(2)]
-        public float g;
+        [InstMember(2)] public float g;
 
         /// <summary>
         /// The blue component.
         /// </summary>
-        [InstMember(3)]
-        public float b;
+        [InstMember(3)] public float b;
 
         /// <summary>
         /// The alpha component.
         /// </summary>
-        [InstMember(4)]
-        public float a;
+        [InstMember(4)] public float a;
 
         /// <summary>Gets the computed hue.</summary>
         public float hue => GetHue();
@@ -104,7 +101,7 @@ namespace dEngine
         /// </summary>
         public static Colour fromRGB(int r, int g, int b)
         {
-            return new Colour(r / 255f, g / 255f, b / 255f);
+            return new Colour(r/255f, g/255f, b/255f);
         }
 
         /// <summary>
@@ -112,7 +109,7 @@ namespace dEngine
         /// </summary>
         public static Colour fromRGBA(int r, int g, int b, float a)
         {
-            return new Colour(r / 255f, g / 255f, b / 255f, a);
+            return new Colour(r/255f, g/255f, b/255f, a);
         }
 
         /// <summary>
@@ -126,40 +123,40 @@ namespace dEngine
         {
             double r, g, b;
 
-            h = h * 360;
-            s = s * 100;
-            l = l * 100;
+            h = h*360;
+            s = s*100;
+            l = l*100;
 
             h = Mathf.Clamp(h, 0, 359);
             s = Mathf.Clamp(s, 0, 100);
             l = Mathf.Clamp(s, 0, 100);
             s /= 100;
             l /= 100;
-            var C = (1 - Math.Abs(2 * l - 1)) * s;
-            var hh = h / 60;
-            var X = C * (1 - Math.Abs(hh % 2 - 1));
+            var C = (1 - Math.Abs(2*l - 1))*s;
+            var hh = h/60;
+            var X = C*(1 - Math.Abs(hh%2 - 1));
             r = g = b = 0;
-            if (hh >= 0 && hh < 1)
+            if ((hh >= 0) && (hh < 1))
             {
                 r = C;
                 g = X;
             }
-            else if (hh >= 1 && hh < 2)
+            else if ((hh >= 1) && (hh < 2))
             {
                 r = X;
                 g = C;
             }
-            else if (hh >= 2 && hh < 3)
+            else if ((hh >= 2) && (hh < 3))
             {
                 g = C;
                 b = X;
             }
-            else if (hh >= 3 && hh < 4)
+            else if ((hh >= 3) && (hh < 4))
             {
                 g = X;
                 b = C;
             }
-            else if (hh >= 4 && hh < 5)
+            else if ((hh >= 4) && (hh < 5))
             {
                 r = X;
                 b = C;
@@ -169,7 +166,7 @@ namespace dEngine
                 r = C;
                 b = X;
             }
-            var m = l - C / 2;
+            var m = l - C/2;
             r += m;
             g += m;
             b += m;
@@ -214,7 +211,7 @@ namespace dEngine
         /// <param name="a">Alpha</param>
         public static Colour fromHSVA(float h, float s, float v, float a)
         {
-            h = h * 360;
+            h = h*360;
 
             if (s <= 0.0)
                 return new Colour(v, v, v);
@@ -224,9 +221,9 @@ namespace dEngine
             hh /= 60.0f;
             var i = (long)hh;
             var ff = hh - i;
-            var p = v * (1.0f - s);
-            var q = v * (1.0f - (s * ff));
-            var t = v * (1.0f - (s * (1.0f - ff)));
+            var p = v*(1.0f - s);
+            var q = v*(1.0f - s*ff);
+            var t = v*(1.0f - s*(1.0f - ff));
 
             switch (i)
             {
@@ -270,22 +267,22 @@ namespace dEngine
 
         internal float GetHue()
         {
-            var red = (int)r * 255;
-            var green = (int)g * 255;
-            var blue = (int)b * 255;
+            var red = (int)r*255;
+            var green = (int)g*255;
+            var blue = (int)b*255;
 
             var min = Math.Min(Math.Min(red, green), blue);
             var max = Math.Max(Math.Max(red, green), blue);
 
             float h;
             if (max == red)
-                h = ((float)green - blue) / (max - min);
+                h = ((float)green - blue)/(max - min);
             else if (max == green)
-                h = 2f + ((float)blue - red) / (max - min);
+                h = 2f + ((float)blue - red)/(max - min);
             else
-                h = 4f + ((float)red - green) / (max - min);
+                h = 4f + ((float)red - green)/(max - min);
 
-            h = h * 60;
+            h = h*60;
             if (h < 0) h = h + 360;
 
             return Mathf.Round(h)/360.0f;
@@ -299,9 +296,9 @@ namespace dEngine
             unchecked
             {
                 var hashCode = r.GetHashCode();
-                hashCode = (hashCode * 397) ^ g.GetHashCode();
-                hashCode = (hashCode * 397) ^ b.GetHashCode();
-                hashCode = (hashCode * 397) ^ a.GetHashCode();
+                hashCode = (hashCode*397) ^ g.GetHashCode();
+                hashCode = (hashCode*397) ^ b.GetHashCode();
+                hashCode = (hashCode*397) ^ a.GetHashCode();
                 return hashCode;
             }
         }
@@ -378,7 +375,8 @@ namespace dEngine
         /// </summary>
         public Colour lerp(Colour other, float delta)
         {
-            return new Colour(Mathf.Lerp(r, other.r, delta), Mathf.Lerp(g, other.g, delta), Mathf.Lerp(b, other.b, delta), Mathf.Lerp(r, other.a, delta));
+            return new Colour(Mathf.Lerp(r, other.r, delta), Mathf.Lerp(g, other.g, delta),
+                Mathf.Lerp(b, other.b, delta), Mathf.Lerp(r, other.a, delta));
         }
 
         /// <summary>
@@ -386,11 +384,11 @@ namespace dEngine
         /// </summary>
         public string ToHexString()
         {
-            var num = (byte)(255 * r);
+            var num = (byte)(255*r);
             var string1 = num.ToString("X2");
-            num = (byte)(255 * g);
+            num = (byte)(255*g);
             var string2 = num.ToString("X2");
-            num = (byte)(255 * b);
+            num = (byte)(255*b);
             var string3 = num.ToString("X2");
             return "#" + string1 + string2 + string3;
         }
@@ -418,7 +416,7 @@ namespace dEngine
             var max = Math.Max(r, Math.Max(g, b));
             var min = Math.Min(r, Math.Min(g, b));
 
-            var saturation = (max == 0) ? 0 : 1f - (1f * min / max);
+            var saturation = max == 0 ? 0 : 1f - 1f*min/max;
             var value = max;
 
             return new Tuple<float, float, float>(hue, saturation, value);
@@ -433,7 +431,7 @@ namespace dEngine
             var min = Math.Min(r, Math.Max(g, b));
 
             float h, s, l;
-            h = l = (max + min) / 2.0f;
+            h = l = (max + min)/2.0f;
 
             if (max == min)
             {
@@ -442,13 +440,13 @@ namespace dEngine
             else
             {
                 var d = max - min;
-                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                s = l > 0.5 ? d/(2 - max - min) : d/(max + min);
                 if (max == r)
-                    h = (g - b) / d + (g < b ? 6 : 0);
+                    h = (g - b)/d + (g < b ? 6 : 0);
                 else if (max == g)
-                    h = (b - r) / d + 2;
+                    h = (b - r)/d + 2;
                 else if (max == b)
-                    h = (r - g) / d + 4;
+                    h = (r - g)/d + 4;
             }
             h /= 6;
 
@@ -462,7 +460,7 @@ namespace dEngine
         public Colour Lighten(float v)
         {
             Tuple<float, float, float> hsl = toHSL();
-            return fromHSLA((int)(360 * hsl.Item1), (int)(100 * hsl.Item2), (int)(100 * hsl.Item3 + v), a);
+            return fromHSLA((int)(360*hsl.Item1), (int)(100*hsl.Item2), (int)(100*hsl.Item3 + v), a);
         }
 
         /// <summary>
@@ -479,11 +477,12 @@ namespace dEngine
         /// </summary>
         public static Colour parseRGBA(string value)
         {
-            var split = value.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            return fromRGBA(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2]), split.Length >= 4 ? float.Parse(split[3]) : 1);
+            var split = value.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
+            return fromRGBA(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2]),
+                split.Length >= 4 ? float.Parse(split[3]) : 1);
         }
 
-        /// <summary/>
+        /// <summary />
         public void Load(BinaryReader reader)
         {
             r = reader.ReadSingle();
@@ -492,7 +491,7 @@ namespace dEngine
             a = reader.ReadSingle();
         }
 
-        /// <summary/>
+        /// <summary />
         public void Save(BinaryWriter writer)
         {
             writer.Write(r);
@@ -511,7 +510,7 @@ namespace dEngine
             var r = int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
             var g = int.Parse(hex.Substring(2, 4), NumberStyles.HexNumber);
             var b = int.Parse(hex.Substring(4, 6), NumberStyles.HexNumber);
-            return new Colour(r / 255.0f, g / 255.0f, b / 255.0f);
+            return new Colour(r/255.0f, g/255.0f, b/255.0f);
         }
     }
 }

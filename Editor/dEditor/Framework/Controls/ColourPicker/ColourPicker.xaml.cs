@@ -39,7 +39,7 @@ namespace dEditor.Framework.Controls.ColourPicker
 
         public ColourEditorViewModel Editor { get; private set; }
 
-        public Colour ColourOnlyHue => new Colour(Value.hue * 255, 1, 1);
+        public Colour ColourOnlyHue => new Colour(Value.hue*255, 1, 1);
 
         public string Hex
         {
@@ -67,56 +67,56 @@ namespace dEditor.Framework.Controls.ColourPicker
                 NotifyPropertyChanged();
             }
         }
-        
+
         public double Hue
         {
             get { return Value.hue; }
             set
             {
                 Tuple<float, float, float> hsl = Value.toHSV();
-                Value = Colour.fromHSV((float)(value / 360), hsl.Item2, hsl.Item3);
+                Value = Colour.fromHSV((float)(value/360), hsl.Item2, hsl.Item3);
             }
         }
 
         public double Red
         {
-            get { return Value.r * 255; }
+            get { return Value.r*255; }
             set
             {
                 if (value == Red) return;
-                Editor.Value = new Colour((float)value / 255, Value.g, Value.b, Value.a);
+                Editor.Value = new Colour((float)value/255, Value.g, Value.b, Value.a);
                 NotifyPropertyChanged();
             }
         }
 
         public double Green
         {
-            get { return Math.Round(Value.g * 255); }
+            get { return Math.Round(Value.g*255); }
             set
             {
                 if (value == Green) return;
-                Editor.Value = new Colour(Value.r, (float)value / 255, Value.b, Value.a);
+                Editor.Value = new Colour(Value.r, (float)value/255, Value.b, Value.a);
                 NotifyPropertyChanged();
             }
         }
 
         public double Blue
         {
-            get { return Math.Round(Value.b * 255); }
+            get { return Math.Round(Value.b*255); }
             set
             {
                 if (value == Blue) return;
-                Editor.Value = new Colour(Value.r, Value.g, (float)value / 255, Value.a);
+                Editor.Value = new Colour(Value.r, Value.g, (float)value/255, Value.a);
                 NotifyPropertyChanged();
             }
         }
 
         public double Alpha
         {
-            get { return Math.Round(Value.a * 255); }
+            get { return Math.Round(Value.a*255); }
             set
             {
-                Editor.Value = new Colour(Value.r, Value.g, Value.b, (float)value / 255);
+                Editor.Value = new Colour(Value.r, Value.g, Value.b, (float)value/255);
                 NotifyPropertyChanged();
             }
         }
@@ -142,9 +142,7 @@ namespace dEditor.Framework.Controls.ColourPicker
                 return;
 
             if (!_updating)
-            {
                 SetPositionToColour(Editor.Value);
-            }
 
             NotifyPropertyChanged(nameof(Hex));
             NotifyPropertyChanged(nameof(ColourOnlyHue));
@@ -161,8 +159,8 @@ namespace dEditor.Framework.Controls.ColourPicker
         private void SetColourToPosition(Point point)
         {
             _updating = true;
-            var s = (float)(point.X / GradientCanvas.ActualWidth);
-            var v = (float)(1 - point.Y / GradientCanvas.ActualHeight);
+            var s = (float)(point.X/GradientCanvas.ActualWidth);
+            var v = (float)(1 - point.Y/GradientCanvas.ActualHeight);
             Editor.Value = Colour.fromHSVA(Value.hue, s, v, Value.a);
             Left = point.X - 5;
             Top = point.Y - 5;
@@ -173,8 +171,8 @@ namespace dEditor.Framework.Controls.ColourPicker
             Tuple<float, float, float> hsv = colour.toHSV();
             var s = hsv.Item2;
             var v = hsv.Item3;
-            Left = s * GradientCanvas.ActualWidth;
-            Top = Math.Abs(v - 1) * GradientCanvas.ActualHeight;
+            Left = s*GradientCanvas.ActualWidth;
+            Top = Math.Abs(v - 1)*GradientCanvas.ActualHeight;
         }
 
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)

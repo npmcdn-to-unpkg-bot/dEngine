@@ -21,30 +21,29 @@ namespace dEngine
     {
         internal ColourSequence()
         {
-            
         }
 
-        /// <summary/>
+        /// <summary />
         public ColourSequence(Colour value) : base(value)
         {
         }
 
-        /// <summary/>
+        /// <summary />
         public ColourSequence(Keypoint[] values) : base(values)
         {
         }
 
-        /// <summary/>
+        /// <summary />
         public ColourSequence(IEnumerable<Keypoint> values) : base(values)
         {
         }
 
-        /// <summary/>
+        /// <summary />
         public void Load(BinaryReader reader)
         {
             var keyCount = reader.ReadInt32();
             _keypoints = new Keypoint[keyCount];
-            for (int i = 0; i < keyCount; i++)
+            for (var i = 0; i < keyCount; i++)
             {
                 var time = reader.ReadSingle();
                 var value = new Colour();
@@ -53,7 +52,7 @@ namespace dEngine
             }
         }
 
-        /// <summary/>
+        /// <summary />
         public void Save(BinaryWriter writer)
         {
             var keyCount = _keypoints.Length;

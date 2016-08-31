@@ -14,20 +14,29 @@ var pageData;
 var mdPages = {};
 
 var groups = {
-    "Bricks": "As the essential building blocks of dEngine, these objects interact with each other physically. All classes here inherit from [Part](index.html?index=Part). These parts are all rendered in 3D if placed in the [Workspace](index.html?title=Workspace)",
-    "Brick equipment": "These objects, when [parented](index.html?title=Instance/Parent) to a brick, will change the appearance or behavior of the brick.",
-    "Body movers": "Similar to brick equipment, these objects work on the brick they are parented to. These objects alter the position, orientation, or movement of a brick. All classes here inherit from the [BodyMover](index.html=BodyMover) abstract class.",
+    "Bricks":
+        "As the essential building blocks of dEngine, these objects interact with each other physically. All classes here inherit from [Part](index.html?index=Part). These parts are all rendered in 3D if placed in the [Workspace](index.html?title=Workspace)",
+    "Brick equipment":
+        "These objects, when [parented](index.html?title=Instance/Parent) to a brick, will change the appearance or behavior of the brick.",
+    "Body movers":
+        "Similar to brick equipment, these objects work on the brick they are parented to. These objects alter the position, orientation, or movement of a brick. All classes here inherit from the [BodyMover](index.html=BodyMover) abstract class.",
     "Gameplay": "These objects are used in general gameplay of a place.",
-    "GUI": "These objects display graphical elements in 2-dimensional space on the player's screen, in front of the 3D world.",
-    "3D GUI": "These objects display graphical elements in 3-dimensional space. While they don't interact physically with bricks, they are usually attached to bricks in some way.",
+    "GUI":
+        "These objects display graphical elements in 2-dimensional space on the player's screen, in front of the 3D world.",
+    "3D GUI":
+        "These objects display graphical elements in 3-dimensional space. While they don't interact physically with bricks, they are usually attached to bricks in some way.",
     "Scripting": "These objects are involved in adding scripted functionality to a game.",
-    "Values": "These objects exist to hold specific value types. They are essential for communicating data between [Scripts](index.html?index=Script).",
-    "Constraints": "These objects add physical constraints to bricks, depending on the type of constraint in use. They are held together with [Attachments](index.html?index=Attachment).",
-    "Joints": "These objects bind bricks together, sometimes with an extra effect such as a hinge or motor. All classes here inherit from the [JointInstance](index.html?index=JointInstance) abstract class.",
-    "Containers": "These objects are designed to contain other objects as children. For example, the [Workspace](index.html?index=Workspace) holds objects that are simulated as the game runs.",
-    "Services": "These objects generally operate in the background, and may be helpful with place development. They're unique in that they may only have one instance of themselves, and can be acquired with the [GetService](index.html?title=DataModel/GetService) method.",
-}
-
+    "Values":
+        "These objects exist to hold specific value types. They are essential for communicating data between [Scripts](index.html?index=Script).",
+    "Constraints":
+        "These objects add physical constraints to bricks, depending on the type of constraint in use. They are held together with [Attachments](index.html?index=Attachment).",
+    "Joints":
+        "These objects bind bricks together, sometimes with an extra effect such as a hinge or motor. All classes here inherit from the [JointInstance](index.html?index=JointInstance) abstract class.",
+    "Containers":
+        "These objects are designed to contain other objects as children. For example, the [Workspace](index.html?index=Workspace) holds objects that are simulated as the game runs.",
+    "Services":
+        "These objects generally operate in the background, and may be helpful with place development. They're unique in that they may only have one instance of themselves, and can be acquired with the [GetService](index.html?title=DataModel/GetService) method.",
+};
 var friendlyTypeDictionary = {
     "System.Void": "void",
     "System.Single": "float",
@@ -40,17 +49,16 @@ var friendlyTypeDictionary = {
     "System.Byte": "byte",
     "Neo.IronLua.LuaTable": "table",
     "Neo.IronLua.LuaResult": "Variant"
-}
-
+};
 marked.setOptions({
-    highlight: function (code) {
+    highlight: function(code) {
         return hljs.highlightAuto(code).value;
     },
     tables: true,
 });
 
 var PageNav = React.createClass({
-    render: function () {
+    render: function() {
 
         var memberElement = null;
         var subItems = [];
@@ -92,10 +100,9 @@ var PageNav = React.createClass({
             subItems
         );
     }
-})
-
+});
 var Title = React.createClass({
-    render: function () {
+    render: function() {
         return React.createElement(
             "h1",
             { "className": "title" },
@@ -116,11 +123,9 @@ var Title = React.createClass({
             )
         );
     }
-})
-
+});
 var ClassBox = React.createClass({
-
-    render: function () {
+    render: function() {
         var obj = pageData.targetClass;
         var elements = [];
 
@@ -152,7 +157,7 @@ var ClassBox = React.createClass({
 });
 
 var SubNav = React.createClass({
-    render: function () {
+    render: function() {
         if (pageData.pageType == "class") {
             return React.createElement(
                 "ul",
@@ -185,8 +190,7 @@ var SubNav = React.createClass({
                     )
                 )
             );
-        }
-        else if (pageData.pageType == "datatype") {
+        } else if (pageData.pageType == "datatype") {
             return React.createElement(
                 "ul",
                 { className: "subnav" },
@@ -227,8 +231,7 @@ var SubNav = React.createClass({
                     )
                 )
             );
-        }
-        else if (pageData.pageType == "root" || pageData.pageType == "page") {
+        } else if (pageData.pageType == "root" || pageData.pageType == "page") {
             return React.createElement(
                 "ul",
                 { className: "subnav" });
@@ -241,9 +244,12 @@ var Description = React.createClass({
         var obj = pageData.targetClass;
         return React.createElement(
             "span",
-            { className: "comment", dangerouslySetInnerHTML: { __html: marked(obj.Summary) + "<p>" + marked(obj.Remarks) + "</p>" } },
+            {
+                className: "comment",
+                dangerouslySetInnerHTML: { __html: marked(obj.Summary) + "<p>" + marked(obj.Remarks) + "</p>" }
+            },
             null
-        )
+        );
     }
 });
 
@@ -258,15 +264,16 @@ var Relationships = React.createClass({
         current = obj;
         while (current != null) {
             inheritants.unshift(React.createElement(
-                "li",
-                null,
-                i == 0 ? current.Name :
-                    React.createElement(
+                    "li",
+                    null,
+                    i == 0
+                    ? current.Name
+                    : React.createElement(
                         "a",
                         { href: "index.html?title=" + current.Name },
                         current.Name
                     ))
-            )
+            );
             current = namespaces[current.BaseClass];
             i++;
         }
@@ -307,11 +314,9 @@ function renderType(fullName, outputType) {
     if (outputType == "method_parameters") {
         content += "[" + parameterType.name + "]" + "(" + "index.html?title=" + parameterType.url + ") ";
         content += param.Name;
-    }
-    else if (outputType == "property") {
+    } else if (outputType == "property") {
 
-    }
-    else if (outputType == "method_return") {
+    } else if (outputType == "method_return") {
         React.createElement(
             "span",
             { "className": "signature" },
@@ -320,7 +325,7 @@ function renderType(fullName, outputType) {
                 { href: "index.html?title=" + friendlyReturnType.url },
                 friendlyReturnType.name
             )
-        )
+        );
     }
 }
 
@@ -341,8 +346,7 @@ var Properties = React.createClass({
 
             var scriptSecurity = prop.Attributes["ScriptSecurityAttribute"];
             if (scriptSecurity != null)
-                features.push(("ScriptSecurity (" + scriptSecurity.Value + ")").toLowerCase())
-
+                features.push(("ScriptSecurity (" + scriptSecurity.Value + ")").toLowerCase());
             var el = React.createElement(
                 "dl",
                 { "className": "property-summary-list" },
@@ -387,7 +391,7 @@ var Properties = React.createClass({
 
         let cur = pageData.targetClass;
         var inherited = false;
-        for (; ;) {
+        for (;;) {
             for (var i in cur.Properties) {
                 var prop = cur.Properties[i];
                 addProperty(prop, inherited);
@@ -398,11 +402,11 @@ var Properties = React.createClass({
                 break;
         }
 
-        return React.createElement("section", { "className": "summary offset-anchor", "id": "instance-properties" },
+        return React.createElement("section",
+            { "className": "summary offset-anchor", "id": "instance-properties" },
             propertyElements);
     }
-})
-
+});
 var Methods = React.createClass({
     render: function render() {
         let methodElements = [React.createElement("h2", { id: "functions" }, "Functions"),];
@@ -422,7 +426,7 @@ var Methods = React.createClass({
                     }
 
                     return React.createElement("span",
-                        { className: "params-inner", dangerouslySetInnerHTML: { __html: marked(content) } })
+                        { className: "params-inner", dangerouslySetInnerHTML: { __html: marked(content) } });
                 }
             });
 
@@ -431,8 +435,7 @@ var Methods = React.createClass({
 
             var scriptSecurity = method.Attributes["ScriptSecurityAttribute"];
             if (scriptSecurity != null)
-                features.push(("ScriptSecurity (" + scriptSecurity.Value + ")").toLowerCase())
-
+                features.push(("ScriptSecurity (" + scriptSecurity.Value + ")").toLowerCase());
             var el = React.createElement(
                 "dl",
                 { "className": "property-summary-list" },
@@ -445,17 +448,37 @@ var Methods = React.createClass({
                         { "className": "name" },
                         React.createElement(
                             "a",
-                            { href: "index.html?title=" + getFriendlyTypeName(method.DeclaringType != null ? method.DeclaringType : "object") + "/" + method.Name },
+                            {
+                                href: "index.html?title=" +
+                                    getFriendlyTypeName(method
+                                        .DeclaringType !=
+                                        null
+                                        ? method.DeclaringType
+                                        : "object") +
+                                    "/" +
+                                    method.Name
+                            },
                             method.Name
                         ),
-                        React.createElement("span", { className: "params" }, "(", React.createElement(functionParamaters), ")")
+                        React.createElement("span",
+                            { className: "params" },
+                            "(",
+                            React.createElement(functionParamaters),
+                            ")")
                     ),
                     React.createElement(
                         "dd",
                         { "className": "inherited" },
                         React.createElement(
                             "p",
-                            { dangerouslySetInnerHTML: { __html: marked(linkifySeeTags(method.Summary === null ? "No summary available" : method.Summary)) } }
+                            {
+                                dangerouslySetInnerHTML: {
+                                    __html:
+                                        marked(linkifySeeTags(method.Summary === null
+                                            ? "No summary available"
+                                            : method.Summary))
+                                }
+                            }
                         ),
                         React.createElement(
                             "div",
@@ -470,7 +493,7 @@ var Methods = React.createClass({
 
         let cur = pageData.targetClass;
         var inherited = false;
-        for (; ;) {
+        for (;;) {
             for (var i in cur.Functions) {
                 var func = cur.Functions[i];
                 addMethod(func, inherited);
@@ -481,11 +504,11 @@ var Methods = React.createClass({
                 break;
         }
 
-        return React.createElement("section", { "className": "summary offset-anchor", "id": "instance-methods" },
+        return React.createElement("section",
+            { "className": "summary offset-anchor", "id": "instance-methods" },
             methodElements);
     }
-})
-
+});
 var Events = React.createClass({
     render: function render() {
         let eventElements = [React.createElement("h2", { id: "events" }, "Events"),];
@@ -505,7 +528,7 @@ var Events = React.createClass({
                     }
 
                     return React.createElement("span",
-                        { className: "params-inner", dangerouslySetInnerHTML: { __html: marked(content) } })
+                        { className: "params-inner", dangerouslySetInnerHTML: { __html: marked(content) } });
                 }
             });
 
@@ -523,17 +546,33 @@ var Events = React.createClass({
                         { "className": "name" },
                         React.createElement(
                             "a",
-                            { href: "index.html?title=" + getFriendlyTypeName(event.DeclaringType != null ? event.DeclaringType : "object") + "/" + event.Name },
+                            {
+                                href: "index.html?title=" +
+                                    getFriendlyTypeName(event.DeclaringType != null ? event.DeclaringType : "object") +
+                                    "/" +
+                                    event.Name
+                            },
                             event.Name
                         ),
-                        React.createElement("span", { className: "params" }, "(", React.createElement(eventParameters), ")")
+                        React.createElement("span",
+                            { className: "params" },
+                            "(",
+                            React.createElement(eventParameters),
+                            ")")
                     ),
                     React.createElement(
                         "dd",
                         { "className": "inherited" },
                         React.createElement(
                             "p",
-                            { dangerouslySetInnerHTML: { __html: marked(linkifySeeTags(event.Summary === null ? "No summary available" : event.Summary)) } }
+                            {
+                                dangerouslySetInnerHTML: {
+                                    __html:
+                                        marked(linkifySeeTags(event.Summary === null
+                                            ? "No summary available"
+                                            : event.Summary))
+                                }
+                            }
                         ),
                         React.createElement(
                             "div",
@@ -548,7 +587,7 @@ var Events = React.createClass({
 
         let cur = pageData.targetClass;
         var inherited = false;
-        for (; ;) {
+        for (;;) {
             for (var i in cur.Signals) {
                 var event = cur.Signals[i];
                 addEvent(event, inherited);
@@ -559,11 +598,11 @@ var Events = React.createClass({
                 break;
         }
 
-        return React.createElement("section", { "className": "summary offset-anchor", "id": "instance-events" },
+        return React.createElement("section",
+            { "className": "summary offset-anchor", "id": "instance-events" },
             eventElements);
     }
-})
-
+});
 var Members = React.createClass({
     render: function render() {
         var properties = React.createElement(Properties);
@@ -577,11 +616,11 @@ var Members = React.createClass({
 function getIconForClass(obj) {
     var icon = icons[obj.Name];
     if (icon == null) {
-        var baseClass = namespaces[obj.BaseClass]
+        var baseClass = namespaces[obj.BaseClass];
         if (baseClass != null) {
             return getIconForClass(baseClass);
         } else {
-            return "default"
+            return "default";
         }
     } else {
         return icon;
@@ -594,7 +633,7 @@ function getMarkdown(file) {
         async: false,
         type: 'GET',
         url: "md/" + file + '.md',
-        success: function (md) {
+        success: function(md) {
             output = md;
         },
     });
@@ -677,7 +716,7 @@ function addSystemTypes() {
         "Name": "double",
         "BaseClass": "",
         "Summary":
-        "A Number in Lua is a double precision floating point number (or just 'double'). Every Lua variable that is simply a number (not a Vector3, just a number) with or without decimal places, negative or positive, is a double.",
+            "A Number in Lua is a double precision floating point number (or just 'double'). Every Lua variable that is simply a number (not a Vector3, just a number) with or without decimal places, negative or positive, is a double.",
         "Remarks": getMarkdown("double"),
         "FullName": "System.Double",
         "Attributes": {},
@@ -697,14 +736,24 @@ function loadClasses() {
         allClasses[obj.Name] = obj;
         namespaces[obj.FullName] = obj;
         obj.Icon = getIconForClass(obj);
-        var iconUrl = "icons/" + obj.Icon + ".png"
-
-        var deprecated = $(obj.Attributes).filter(function (i, o) { return o.Name == "ObsoleteAttribute" }).length != 0;
+        var iconUrl = "icons/" + obj.Icon + ".png";
+        var deprecated = $(obj.Attributes).filter(function(i, o) { return o.Name == "ObsoleteAttribute" }).length != 0;
         var decoration = deprecated ? 'line-through' : 'none';
 
-        classList.append($("<li style='text-decoration:" + decoration + "; margin-left: " + (depth * DEPTH_MARGIN).toString() + "px'><img src='" + iconUrl + "'  width='16' height='16' style='background:transparent; margin-right: 4px;'/><a href='" + "index.html?title=" + obj.Name + "'>" + obj.Name + "</a></li>"));
+        classList.append($("<li style='text-decoration:" +
+            decoration +
+            "; margin-left: " +
+            (depth * DEPTH_MARGIN).toString() +
+            "px'><img src='" +
+            iconUrl +
+            "'  width='16' height='16' style='background:transparent; margin-right: 4px;'/><a href='" +
+            "index.html?title=" +
+            obj.Name +
+            "'>" +
+            obj.Name +
+            "</a></li>"));
         depth += 1;
-        obj.SubClasses.forEach(function (obj) {
+        obj.SubClasses.forEach(function(obj) {
             appendInstance(obj);
         });
         depth -= 1;
@@ -769,7 +818,7 @@ function getIndicesOf(searchStr, str, caseSensitive) {
 
 function linkifySeeTags(comment) {
     let output = comment != null ? comment : "";
-    for (; ;) {
+    for (;;) {
         var seeTag = output.indexOf("<see");
 
         if (seeTag == -1)
@@ -780,7 +829,13 @@ function linkifySeeTags(comment) {
         var closeTag = output.indexOf("\>", closeQuote);
         var fullName = output.substring(openQuote + 3, closeQuote);
         var className = fullName.substring(fullName.lastIndexOf(".") + 1);
-        output = output.substring(0, seeTag) + "[" + className + "](index.html?title=" + className + ")" + output.substring(closeTag + 1);
+        output = output.substring(0, seeTag) +
+            "[" +
+            className +
+            "](index.html?title=" +
+            className +
+            ")" +
+            output.substring(closeTag + 1);
     }
     return output;
 }
@@ -797,25 +852,28 @@ function parseIcons(json) {
 
 $(".container.body").attr("style", "visibility: visible");
 
-$("#sidenav-left-toggle").click(function () {
-    $("#overlay-under-drawer").addClass("active");
-    $(".sidebar-offcanvas-left").each(function (o, v) {
-        $(v).addClass("active");
+$("#sidenav-left-toggle")
+    .click(function() {
+        $("#overlay-under-drawer").addClass("active");
+        $(".sidebar-offcanvas-left")
+            .each(function(o, v) {
+                $(v).addClass("active");
+            });
     });
-})
-
-$("#overlay-under-drawer").click(function () {
-    $("#overlay-under-drawer").removeClass("active");
-    $(".sidebar-offcanvas-left").each(function (o, v) {
-        $(v).removeClass("active");
+$("#overlay-under-drawer")
+    .click(function() {
+        $("#overlay-under-drawer").removeClass("active");
+        $(".sidebar-offcanvas-left")
+            .each(function(o, v) {
+                $(v).removeClass("active");
+            });
     });
-})
 
 function GetToolboxMarkdown() {
     var groupMd = "";
     for (var groupName in groups) {
         var groupDesc = groups[groupName];
-        groupMd += "\n"
+        groupMd += "\n";
         groupMd += "# " + groupName + "\n";
         groupMd += groupDesc + "  \n\n";
         groupMd += "|   |   |   |\n|---|---|---|";
@@ -830,8 +888,14 @@ function GetToolboxMarkdown() {
                 if (k % 3 == 0) {
                     groupMd += "  \n | ";
                 };
-                var iconUrl = "icons/" + getIconForClass(c) + ".png"
-                groupMd += "<img src='" + iconUrl + "' width='16' height='16' style='background:transparent; margin-right: 4px;'/> [" + c.Name + "](index.html?title=" + c.Name + ") | ";
+                var iconUrl = "icons/" + getIconForClass(c) + ".png";
+                groupMd += "<img src='" +
+                    iconUrl +
+                    "' width='16' height='16' style='background:transparent; margin-right: 4px;'/> [" +
+                    c.Name +
+                    "](index.html?title=" +
+                    c.Name +
+                    ") | ";
                 k++;
             }
         }
@@ -849,8 +913,7 @@ function DisplayRootPage() {
         fullName: "",
         kind: "",
         targetClass: { Summary: getMarkdown("root") + groupMd, Remarks: "" }
-    }
-
+    };
     $("header").css("height", "105px");
     document.title = "dEngine API";
     document.description = "This page covers the API of dEngine.";
@@ -867,9 +930,12 @@ function DisplayErrorPage(className) {
         pageName: className,
         fullName: "",
         kind: "",
-        targetClass: { Summary: "There is currently no text in this page. Click [here](index.html) to return to the API reference page.", Remarks: "" }
-    }
-
+        targetClass: {
+            Summary:
+                "There is currently no text in this page. Click [here](index.html) to return to the API reference page.",
+            Remarks: ""
+        }
+    };
     document.title = className;
     document.description = "This page covers the API of dEngine.";
 }
@@ -891,8 +957,7 @@ function DisplayMarkdownPage(names, page) {
         fullName: "",
         kind: isRoot ? "" : name,
         targetClass: { Summary: page, Remarks: groupMd }
-    }
-
+    };
     document.title = name + " - dEngine API",
         document.description = page;
 }
@@ -902,7 +967,7 @@ $.ajax({
     async: true,
     type: 'GET',
     url: 'dump.json',
-    success: function (obj) {
+    success: function(obj) {
 
         $.ajax({
             async: false,
@@ -918,7 +983,7 @@ $.ajax({
                 async: false,
                 type: 'GET',
                 url: "pages/" + file + '/index.md',
-                success: function (md) {
+                success: function(md) {
                     output = md;
                 },
             });
@@ -942,15 +1007,18 @@ $.ajax({
             } else {
                 DisplayErrorPage(className);
             }
-        }
-        else if (page != null) {
+        } else if (page != null) {
             DisplayMarkdownPage(names, page);
-        }
-        else if (obj != null) {
+        } else if (obj != null) {
             obj.Summary = obj.Summary != null ? linkifySeeTags(obj.Summary) : "No summary is available for this class.";
             obj.Remarks = obj.Remarks != null ? linkifySeeTags(obj.Remarks) : "";
-            pageData = { pageType: obj.Kind, pageName: className, fullName: obj.FullName, kind: obj.Kind, targetClass: obj }
-
+            pageData = {
+                pageType: obj.Kind,
+                pageName: className,
+                fullName: obj.FullName,
+                kind: obj.Kind,
+                targetClass: obj
+            };
             document.title = className + " - dEngine API";
             document.description = obj.Summary;
             icon = "icons/" + obj.Icon + ".png";

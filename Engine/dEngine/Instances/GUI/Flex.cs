@@ -14,9 +14,11 @@ using dEngine.Instances.Attributes;
 
 namespace dEngine.Instances
 {
-    /// <summary/>
-	[TypeId(152), ToolboxGroup("GUI"), Obsolete("This class is not implemented.")]
-	public class Flex : Frame
-	{
-	}
+    /// <summary />
+    [TypeId(152)]
+    [ToolboxGroup("GUI")]
+    [Obsolete("This class is not implemented.")]
+    public class Flex : Frame
+    {
+    }
 }

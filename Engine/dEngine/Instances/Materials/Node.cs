@@ -18,7 +18,8 @@ namespace dEngine.Instances.Materials
     /// <summary>
     /// Base class for material nodes.
     /// </summary>
-    [Uncreatable, TypeId(211)]
+    [Uncreatable]
+    [TypeId(211)]
     public abstract class Node : Instance
     {
         private readonly List<Slot> _inputSlots;
@@ -31,12 +32,7 @@ namespace dEngine.Instances.Materials
         internal int InSlotCount;
         internal int OutSlotCount;
 
-        /// <summary>
-        /// Fired when a slot is connected.
-        /// </summary>
-        public readonly Signal<Slot> SlotConnected;
-
-        /// <summary/>
+        /// <summary />
         protected Node()
         {
             _inputSlots = new List<Slot>();
@@ -59,14 +55,6 @@ namespace dEngine.Instances.Materials
                         _outputSlots.Add(slot);
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the slots of the given mode.
-        /// </summary>
-        public IEnumerable<Slot> GetSlots(InOut mode)
-        {
-            return mode == InOut.In ? _inputSlots : _outputSlots;
         }
 
         /// <summary>
@@ -113,5 +101,18 @@ namespace dEngine.Instances.Materials
                 NotifyChanged();
             }
         }
+
+        /// <summary>
+        /// Gets the slots of the given mode.
+        /// </summary>
+        public IEnumerable<Slot> GetSlots(InOut mode)
+        {
+            return mode == InOut.In ? _inputSlots : _outputSlots;
+        }
+
+        /// <summary>
+        /// Fired when a slot is connected.
+        /// </summary>
+        public readonly Signal<Slot> SlotConnected;
     }
 }

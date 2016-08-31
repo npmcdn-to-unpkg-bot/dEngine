@@ -87,55 +87,55 @@ namespace dEngine
 
         public static Matrix3 FromQuaternion(float qx, float qy, float qz, float qw)
         {
-            float num1 = qx * qx;
-            float num2 = qy * qy;
-            float num3 = qz * qz;
-            float num4 = qx * qy;
-            float num5 = qz * qw;
-            float num6 = qz * qx;
-            float num7 = qy * qw;
-            float num8 = qy * qz;
-            float num9 = qx * qw;
+            var num1 = qx*qx;
+            var num2 = qy*qy;
+            var num3 = qz*qz;
+            var num4 = qx*qy;
+            var num5 = qz*qw;
+            var num6 = qz*qx;
+            var num7 = qy*qw;
+            var num8 = qy*qz;
+            var num9 = qx*qw;
 
-            return Matrix3.Transposed((float)(1.0 - 2.0 * (num2 + (double)num3)),
-                (float)(2.0 * (num4 + (double)num5)),
-                (float)(2.0 * (num6 - (double)num7)),
-                (float)(2.0 * (num4 - (double)num5)),
-                (float)(1.0 - 2.0 * (num3 + (double)num1)),
-                (float)(2.0 * (num8 + (double)num9)),
-                (float)(2.0 * (num6 + (double)num7)),
-                (float)(2.0 * (num8 - (double)num9)),
-                (float)(1.0 - 2.0 * (num2 + (double)num1)));
+            return Transposed((float)(1.0 - 2.0*(num2 + (double)num3)),
+                (float)(2.0*(num4 + (double)num5)),
+                (float)(2.0*(num6 - (double)num7)),
+                (float)(2.0*(num4 - (double)num5)),
+                (float)(1.0 - 2.0*(num3 + (double)num1)),
+                (float)(2.0*(num8 + (double)num9)),
+                (float)(2.0*(num6 + (double)num7)),
+                (float)(2.0*(num8 - (double)num9)),
+                (float)(1.0 - 2.0*(num2 + (double)num1)));
         }
 
         public static void Inverse(ref Matrix3 value, out Matrix3 result)
         {
-            float num1 = (float)(value.M22 * (double)value.M33 + value.M23 * -(double)value.M32);
-            float num2 = (float)(value.M21 * (double)value.M33 + value.M23 * -(double)value.M31);
-            float num3 = (float)(value.M21 * (double)value.M32 + value.M22 * -(double)value.M31);
-            float num4 = (float)(value.M11 * (double)num1 - value.M12 * (double)num2 + value.M13 * (double)num3);
+            var num1 = (float)(value.M22*(double)value.M33 + value.M23*-(double)value.M32);
+            var num2 = (float)(value.M21*(double)value.M33 + value.M23*-(double)value.M31);
+            var num3 = (float)(value.M21*(double)value.M32 + value.M22*-(double)value.M31);
+            var num4 = (float)(value.M11*(double)num1 - value.M12*(double)num2 + value.M13*(double)num3);
             if (Math.Abs(num4) == 0.0)
             {
-                result = Matrix3.Zero;
+                result = Zero;
             }
             else
             {
-                float num5 = 1f / num4;
-                float num6 = (float)(value.M12 * (double)value.M33 + value.M13 * -(double)value.M32);
-                float num7 = (float)(value.M11 * (double)value.M33 + value.M13 * -(double)value.M31);
-                float num8 = (float)(value.M11 * (double)value.M32 + value.M12 * -(double)value.M31);
-                float num9 = (float)(value.M12 * (double)value.M23 - value.M13 * (double)value.M22);
-                float num10 = (float)(value.M11 * (double)value.M23 - value.M13 * (double)value.M21);
-                float num11 = (float)(value.M11 * (double)value.M22 - value.M12 * (double)value.M21);
-                result = new Matrix3(num1 * num5,
-                    -num6 * num5,
-                    num9 * num5,
-                    -num2 * num5,
-                    num7 * num5,
-                    -num10 * num5,
-                    num3 * num5,
-                    -num8 * num5,
-                    num11 * num5);
+                var num5 = 1f/num4;
+                var num6 = (float)(value.M12*(double)value.M33 + value.M13*-(double)value.M32);
+                var num7 = (float)(value.M11*(double)value.M33 + value.M13*-(double)value.M31);
+                var num8 = (float)(value.M11*(double)value.M32 + value.M12*-(double)value.M31);
+                var num9 = (float)(value.M12*(double)value.M23 - value.M13*(double)value.M22);
+                var num10 = (float)(value.M11*(double)value.M23 - value.M13*(double)value.M21);
+                var num11 = (float)(value.M11*(double)value.M22 - value.M12*(double)value.M21);
+                result = new Matrix3(num1*num5,
+                    -num6*num5,
+                    num9*num5,
+                    -num2*num5,
+                    num7*num5,
+                    -num10*num5,
+                    num3*num5,
+                    -num8*num5,
+                    num11*num5);
             }
         }
 
@@ -143,7 +143,7 @@ namespace dEngine
         {
             float X, Y, Z;
 
-            if (matrix.M13 > -1 && matrix.M13 < 1)
+            if ((matrix.M13 > -1) && (matrix.M13 < 1))
             {
                 X = Mathf.Atan2(-matrix.M23, matrix.M33);
                 Y = Mathf.Asin(matrix.M13);
@@ -151,7 +151,7 @@ namespace dEngine
             }
             else
             {
-                Y = Mathf.Pi / 2;
+                Y = Mathf.Pi/2;
 
                 if (matrix.M13 <= -1)
                     Y = -Y;
@@ -200,29 +200,29 @@ namespace dEngine
         public static void Multiply(ref Matrix3 left, ref Matrix3 right, out Matrix3 result)
         {
             result = new Matrix3(
-                (float)(left.M11 * (double)right.M11 + left.M12 * (double)right.M21 + left.M13 * (double)right.M31),
-                (float)(left.M11 * (double)right.M12 + left.M12 * (double)right.M22 + left.M13 * (double)right.M32),
-                (float)(left.M11 * (double)right.M13 + left.M12 * (double)right.M23 + left.M13 * (double)right.M33),
-                (float)(left.M21 * (double)right.M11 + left.M22 * (double)right.M21 + left.M23 * (double)right.M31),
-                (float)(left.M21 * (double)right.M12 + left.M22 * (double)right.M22 + left.M23 * (double)right.M32),
-                (float)(left.M21 * (double)right.M13 + left.M22 * (double)right.M23 + left.M23 * (double)right.M33),
-                (float)(left.M31 * (double)right.M11 + left.M32 * (double)right.M21 + left.M33 * (double)right.M31),
-                (float)(left.M31 * (double)right.M12 + left.M32 * (double)right.M22 + left.M33 * (double)right.M32),
-                (float)(left.M31 * (double)right.M13 + left.M32 * (double)right.M23 + left.M33 * (double)right.M33)
-                );
+                (float)(left.M11*(double)right.M11 + left.M12*(double)right.M21 + left.M13*(double)right.M31),
+                (float)(left.M11*(double)right.M12 + left.M12*(double)right.M22 + left.M13*(double)right.M32),
+                (float)(left.M11*(double)right.M13 + left.M12*(double)right.M23 + left.M13*(double)right.M33),
+                (float)(left.M21*(double)right.M11 + left.M22*(double)right.M21 + left.M23*(double)right.M31),
+                (float)(left.M21*(double)right.M12 + left.M22*(double)right.M22 + left.M23*(double)right.M32),
+                (float)(left.M21*(double)right.M13 + left.M22*(double)right.M23 + left.M23*(double)right.M33),
+                (float)(left.M31*(double)right.M11 + left.M32*(double)right.M21 + left.M33*(double)right.M31),
+                (float)(left.M31*(double)right.M12 + left.M32*(double)right.M22 + left.M33*(double)right.M32),
+                (float)(left.M31*(double)right.M13 + left.M32*(double)right.M23 + left.M33*(double)right.M33)
+            );
         }
 
         public static void Multiply(ref Matrix3 left, float right, out Matrix3 result)
         {
-            result = new Matrix3(left.M11 * right,
-                left.M12 * right,
-                left.M13 * right,
-                left.M21 * right,
-                left.M22 * right,
-                left.M23 * right,
-                left.M31 * right,
-                left.M32 * right,
-                left.M33 * right);
+            result = new Matrix3(left.M11*right,
+                left.M12*right,
+                left.M13*right,
+                left.M21*right,
+                left.M22*right,
+                left.M23*right,
+                left.M31*right,
+                left.M32*right,
+                left.M33*right);
         }
 
         public float this[int index]
@@ -260,40 +260,40 @@ namespace dEngine
         {
             get
             {
-                if (row < 0 || row > 2)
+                if ((row < 0) || (row > 2))
                     throw new ArgumentOutOfRangeException(nameof(row),
                         "Rows and columns for matrices run from 0 to 2, inclusive.");
-                if (column < 0 || column > 2)
+                if ((column < 0) || (column > 2))
                     throw new ArgumentOutOfRangeException(nameof(column),
                         "Rows and columns for matrices run from 0 to 2, inclusive.");
-                return this[row * 3 + column];
+                return this[row*3 + column];
             }
         }
 
         public static void RotationAxis(ref Vector3 axis, ref float angle, out Matrix3 result)
         {
-            float num1 = axis.X;
-            float num2 = axis.Y;
-            float num3 = axis.Z;
-            float num4 = (float)Math.Cos(angle);
-            float num5 = (float)Math.Sin(angle);
-            float num6 = num1 * num1;
-            float num7 = num2 * num2;
-            float num8 = num3 * num3;
-            float num9 = num1 * num2;
-            float num10 = num1 * num3;
-            float num11 = num2 * num3;
+            var num1 = axis.X;
+            var num2 = axis.Y;
+            var num3 = axis.Z;
+            var num4 = (float)Math.Cos(angle);
+            var num5 = (float)Math.Sin(angle);
+            var num6 = num1*num1;
+            var num7 = num2*num2;
+            var num8 = num3*num3;
+            var num9 = num1*num2;
+            var num10 = num1*num3;
+            var num11 = num2*num3;
 
-            result = Matrix3.Transposed(
-                num6 + num4 * (1f - num6),
-                (float)(num9 - num4 * (double)num9 + num5 * (double)num3),
-                (float)(num10 - num4 * (double)num10 - num5 * (double)num2),
-                (float)(num9 - num4 * (double)num9 - num5 * (double)num3),
-                num7 + num4 * (1f - num7),
-                (float)(num11 - num4 * (double)num11 + num5 * (double)num1),
-                (float)(num10 - num4 * (double)num10 + num5 * (double)num2),
-                (float)(num11 - num4 * (double)num11 - num5 * (double)num1),
-                num8 + num4 * (1f - num8));
+            result = Transposed(
+                num6 + num4*(1f - num6),
+                (float)(num9 - num4*(double)num9 + num5*(double)num3),
+                (float)(num10 - num4*(double)num10 - num5*(double)num2),
+                (float)(num9 - num4*(double)num9 - num5*(double)num3),
+                num7 + num4*(1f - num7),
+                (float)(num11 - num4*(double)num11 + num5*(double)num1),
+                (float)(num10 - num4*(double)num10 + num5*(double)num2),
+                (float)(num11 - num4*(double)num11 - num5*(double)num1),
+                num8 + num4*(1f - num8));
         }
 
         private static Matrix3 Transposed(float m11, float m12, float m13, float m21, float m22, float m23, float m31,
@@ -321,7 +321,7 @@ namespace dEngine
 
         public void Save(BinaryWriter writer)
         {
-            for (int i = 0; i < 9; i++)
+            for (var i = 0; i < 9; i++)
                 writer.Write(this[i]);
         }
 
@@ -341,8 +341,8 @@ namespace dEngine
             fSin = Mathf.Sin(roll);
             var zMat = new Matrix3(fCos, -fSin, 0.0f, fSin, fCos, 0.0f, 0.0f, 0.0f, 1.0f);
 
-            Matrix3.Multiply(ref xMat, ref zMat, out output);
-            Matrix3.Multiply(ref yMat, ref output, out output);
+            Multiply(ref xMat, ref zMat, out output);
+            Multiply(ref yMat, ref output, out output);
         }
     }
 }

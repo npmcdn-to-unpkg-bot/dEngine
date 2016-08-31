@@ -13,7 +13,6 @@ using System;
 using System.Reflection;
 using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
-using Neo.IronLua;
 
 namespace dEngine.Instances
 {
@@ -27,19 +26,21 @@ namespace dEngine.Instances
 
         internal double CurrentTime;
 
+        internal GuiElement TargetElement;
+
         /// <summary>
         /// Determines if the animation is being played.
         /// </summary>
         public bool IsAnimating { get; internal set; }
 
-        internal GuiElement TargetElement;
         internal Inst.CachedProperty TargetProperty { get; set; }
         internal abstract Type TargetType { get; }
 
         /// <summary>
         /// The duration of the animation.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public TimeSpan Duration
         {
             get { return _duration; }
@@ -55,7 +56,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Gets/Sets the playback position of the animation.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public TimeSpan PlaybackPosition
         {
             get { return TimeSpan.FromSeconds(CurrentTime); }

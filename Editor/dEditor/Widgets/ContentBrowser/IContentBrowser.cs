@@ -11,10 +11,10 @@
 
 namespace dEditor.Widgets.ContentBrowser
 {
-	public interface IContentBrowser
-	{
-		bool IsDirectoryTreeVisible { get; set; }
-		bool ShowFolders { get; set; }
-		bool ShowNonContent { get; set; }
-	}
+    public interface IContentBrowser
+    {
+        bool IsDirectoryTreeVisible { get; set; }
+        bool ShowFolders { get; set; }
+        bool ShowNonContent { get; set; }
+    }
 }

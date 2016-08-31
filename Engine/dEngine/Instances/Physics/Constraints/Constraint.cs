@@ -9,7 +9,6 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using BulletSharp;
 using dEngine.Instances.Attributes;
 
@@ -18,7 +17,8 @@ namespace dEngine.Instances
     /// <summary>
     /// Base class for constraints.
     /// </summary>
-    [TypeId(103), ToolboxGroup("Constraints")]
+    [TypeId(103)]
+    [ToolboxGroup("Constraints")]
     public abstract class Constraint : Instance
     {
         protected Attachment _attachment0;
@@ -26,16 +26,11 @@ namespace dEngine.Instances
         protected TypedConstraint _constraint;
         private bool _enabled;
 
-        /// <summary/>
-        public static implicit operator TypedConstraint(Constraint constraint)
-        {
-            return constraint._constraint;
-        }
-
         /// <summary>
         /// The <see cref="Attachment" /> which is connected to <see cref="Attachment1" />.
         /// </summary>
-        [InstMember(1), EditorVisible("Attachments")]
+        [InstMember(1)]
+        [EditorVisible("Attachments")]
         public Attachment Attachment0
         {
             get { return _attachment0; }
@@ -59,7 +54,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The <see cref="Attachment" /> which is connected to <see cref="Attachment0" />.
         /// </summary>
-        [InstMember(2), EditorVisible("Attachments")]
+        [InstMember(2)]
+        [EditorVisible("Attachments")]
         public Attachment Attachment1
         {
             get { return _attachment1; }
@@ -84,7 +80,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Toggles whether or not the constraint is enabled.
         /// </summary>
-        [InstMember(3), EditorVisible("Behaviour")]
+        [InstMember(3)]
+        [EditorVisible("Behaviour")]
         public bool Enabled
         {
             get { return _enabled; }
@@ -98,15 +95,22 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary />
+        public static implicit operator TypedConstraint(Constraint constraint)
+        {
+            return constraint._constraint;
+        }
+
         /// <summary>
-        /// Determines if both attachments have a valid <see cref="Part"/>.
+        /// Determines if both attachments have a valid <see cref="Part" />.
         /// </summary>
         protected bool Validate()
         {
             var part0 = _attachment0?.Part;
             var part1 = _attachment1?.Part;
             var hisWorld = World;
-            return hisWorld != null && hisWorld.Physics != null && part0 != null && part1 != null && part0.World == hisWorld && part1.World == hisWorld;
+            return (hisWorld != null) && (hisWorld.Physics != null) && (part0 != null) && (part1 != null) &&
+                   (part0.World == hisWorld) && (part1.World == hisWorld);
         }
 
         /// <summary>

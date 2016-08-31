@@ -11,19 +11,19 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// The direction to flow content.
-	/// </summary>
-	public enum FlowDirection
-	{
-		/// <summary>
-		/// Flows horizontally.
-		/// </summary>
-		Horizontal,
+    /// <summary>
+    /// The direction to flow content.
+    /// </summary>
+    public enum FlowDirection
+    {
+        /// <summary>
+        /// Flows horizontally.
+        /// </summary>
+        Horizontal,
 
-		/// <summary>
-		/// Flows vertically.
-		/// </summary>
-		Vertical
-	}
+        /// <summary>
+        /// Flows vertically.
+        /// </summary>
+        Vertical
+    }
 }

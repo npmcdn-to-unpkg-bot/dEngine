@@ -8,6 +8,7 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 namespace dEngine
 {
     public enum TeamBalanceMethod
@@ -16,9 +17,10 @@ namespace dEngine
         /// Randomize teams.
         /// </summary>
         Random,
+
         /// <summary>
         /// Attempt to fairly balance teams using the TrueSkill algorithm.
         /// </summary>
-        TrueSkill,
+        TrueSkill
     }
 }

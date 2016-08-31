@@ -13,7 +13,6 @@ using System.Runtime.CompilerServices;
 using BulletSharp;
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Settings.Global
 {
     /// <summary>
@@ -30,6 +29,8 @@ namespace dEngine.Settings.Global
         private static bool _showWireframe;
         private static float _linearSleepingThreshold;
         private static float _angularSleepingThreshold;
+
+        private static bool _showDecompositionGeometry;
 
         /// <summary>
         /// The linear sleeping threshold for physics objects.
@@ -60,8 +61,6 @@ namespace dEngine.Settings.Global
                 NotifyChangedStatic();
             }
         }
-
-        private static bool _showDecompositionGeometry;
 
         /// <summary>
         /// Summary
@@ -168,16 +167,16 @@ namespace dEngine.Settings.Global
             }
         }
 
+        internal static DebugDrawModes DebugDrawModes { get; private set; }
+
         private static void NotifyChangedStatic([CallerMemberName] string propertyName = null)
         {
             Engine.Settings?.PhysicsSettings?.NotifyChanged(propertyName);
         }
 
-        internal static DebugDrawModes DebugDrawModes { get; private set; }
-
         private static void UpdateDisplay()
         {
-            DebugDrawModes drawModes = DebugDrawModes.None;
+            var drawModes = DebugDrawModes.None;
 
             if (_areAabbsShown) drawModes |= DebugDrawModes.DrawAabb;
             if (_areConstraintLimitsShown) drawModes |= DebugDrawModes.DrawConstraintLimits;
@@ -191,15 +190,10 @@ namespace dEngine.Settings.Global
             if (Game.IsInitialized)
                 Game.Workspace.Physics.UpdateDebugDrawModes();
             else
-            {
-                Game.Initialized += (sender, args) =>
-                {
-                    Game.Workspace.Physics.UpdateDebugDrawModes();
-                };
-            }
+                Game.Initialized += (sender, args) => { Game.Workspace.Physics.UpdateDebugDrawModes(); };
         }
 
-        /// <summary/>
+        /// <summary />
         public override void RestoreDefaults()
         {
             LinearSleepingThreshold = 0.8f;

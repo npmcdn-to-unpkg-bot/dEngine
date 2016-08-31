@@ -9,12 +9,11 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System.Reflection;
 using dEngine.Serializer.V1;
 
 namespace dEditor.Widgets.Properties.Inspectors.Content
 {
-    public class ContentEditorViewModel: EditorBase<string>, ILabelled
+    public class ContentEditorViewModel : EditorBase<string>, ILabelled
     {
         public ContentEditorViewModel(object obj, Inst.CachedProperty propDesc) : base(obj, propDesc)
         {

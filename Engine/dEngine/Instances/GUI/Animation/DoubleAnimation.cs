@@ -27,7 +27,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The starting number.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public double From
         {
             get { return _from; }
@@ -43,7 +44,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The ending number.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public double To
         {
             get { return _to; }
@@ -63,7 +65,7 @@ namespace dEngine.Instances
             lock (Locker)
             {
                 var delta = (float)GetDelta();
-                
+
                 TargetProperty.Set(TargetElement, Mathf.Lerp(_from, _to, delta));
 
                 return delta < 1;

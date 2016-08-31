@@ -16,7 +16,8 @@ namespace dEngine.Instances
     /// <summary>
     /// A <see cref="ValueContainer" /> that holds a <see cref="Ray" />.
     /// </summary>
-    [ExplorerOrder(3), TypeId(223)]
+    [ExplorerOrder(3)]
+    [TypeId(223)]
     public class RayValue : ValueContainer
     {
         private Ray _value;
@@ -30,7 +31,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The value that this container holds.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public Ray Value
         {
             get { return _value; }

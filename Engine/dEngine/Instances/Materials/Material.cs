@@ -9,25 +9,20 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
 using dEngine.Graphics;
 using dEngine.Instances.Attributes;
 using dEngine.Instances.Materials.Nodes;
-using dEngine.Services;
+
 #pragma warning disable 1591
 
 namespace dEngine.Instances.Materials
 {
     /// <summary>
-    /// 
     /// </summary>
     [TypeId(35)]
     public class Material : MaterialBase
     {
-        private MaterialNodeCollection _nodes;
-
-        /// <summary/>
+        /// <summary />
         public Material()
         {
             Nodes = new MaterialNodeCollection();
@@ -39,27 +34,23 @@ namespace dEngine.Instances.Materials
         /// <summary>
         /// The material domain.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public override MaterialDomain Domain { get; set; }
 
         /// <summary>
         /// The shading model.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public override ShadingModel ShadingModel { get; set; }
 
         /// <summary>
         /// The nodes that this material contains.
         /// </summary>
-        [InstMember(3), EditorVisible]
-        internal MaterialNodeCollection Nodes
-        {
-            get { return _nodes; }
-            set
-            {
-                _nodes = value;
-            }
-        }
+        [InstMember(3)]
+        [EditorVisible]
+        internal MaterialNodeCollection Nodes { get; set; }
 
         internal FinalNode FinalNode { get; }
         public static Material Smooth { get; private set; }
@@ -100,7 +91,7 @@ namespace dEngine.Instances.Materials
         }
 
         /// <summary>
-        /// Returns a <see cref="MaterialInstance"/> of this material.
+        /// Returns a <see cref="MaterialInstance" /> of this material.
         /// </summary>
         public MaterialInstance CreateInstance()
         {

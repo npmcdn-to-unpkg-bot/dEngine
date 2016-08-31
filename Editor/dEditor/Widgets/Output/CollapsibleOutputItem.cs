@@ -9,7 +9,6 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using dEngine;
 
@@ -17,7 +16,8 @@ namespace dEditor.Widgets.Output
 {
     public class CollapsibleOutputItem : OutputItem
     {
-        public CollapsibleOutputItem(ref string msg, ref LogLevel level, ref string logger) : base(ref msg, ref level, ref logger)
+        public CollapsibleOutputItem(ref string msg, ref LogLevel level, ref string logger)
+            : base(ref msg, ref level, ref logger)
         {
             Contents = new ObservableCollection<OutputItem>();
         }

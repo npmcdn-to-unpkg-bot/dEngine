@@ -12,6 +12,7 @@
 using dEngine.Instances.Attributes;
 
 #pragma warning disable 1591
+
 namespace dEngine.Instances.Materials
 {
     [TypeId(219)]

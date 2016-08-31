@@ -20,11 +20,9 @@ using dEngine.Data;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
-using dEngine.Utility;
 using dEngine.Utility.Extensions;
 using Dynamitey;
 using Neo.IronLua;
-
 using Steamworks;
 
 namespace dEngine.Services
@@ -32,7 +30,8 @@ namespace dEngine.Services
     /// <summary>
     /// A service for managing content.
     /// </summary>
-    [TypeId(8), ExplorerOrder(-1)]
+    [TypeId(8)]
+    [ExplorerOrder(-1)]
     public partial class ContentProvider : Service
     {
         /// <summary />
@@ -74,7 +73,7 @@ namespace dEngine.Services
             var count = contentUrls.Length;
             var tasks = new Task[count];
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var contentUrl = (string)contentUrls[count];
                 tasks[i] = DownloadStream(contentUrl).ContinueWith(t => Cache(contentUrl, t));
@@ -96,7 +95,7 @@ namespace dEngine.Services
 
     public partial class ContentProvider
     {
-        internal const int TimeoutMiliseconds = 30 * 1000;
+        internal const int TimeoutMiliseconds = 30*1000;
 
         /// <summary>Image Format string for file dialogs.</summary>
         public const string SupportedImageFormats =
@@ -134,10 +133,8 @@ namespace dEngine.Services
 
         internal static void DeleteDirectory(string path)
         {
-            foreach (string directory in Directory.GetDirectories(path))
-            {
+            foreach (var directory in Directory.GetDirectories(path))
                 DeleteDirectory(directory);
-            }
 
             try
             {
@@ -179,7 +176,7 @@ namespace dEngine.Services
                     break;
             }
         }
-        
+
         /// <summary>
         /// Returns a stream of data from the given content id.
         /// </summary>
@@ -315,9 +312,7 @@ namespace dEngine.Services
                 select type.GetMethod("RefreshResource")
                 into method
                 select method.CreateDelegate(typeof(Action<string>)))
-            {
                 del.FastDynamicInvoke(resourceName);
-            }
         }
 
         /// <summary>

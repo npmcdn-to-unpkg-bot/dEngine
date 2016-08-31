@@ -11,28 +11,24 @@
 
 using System;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace dEditor.Framework
 {
-	public abstract class Command : ICommand
-	{
-		public abstract string Name { get; }
-		public abstract string Text { get; }
-		public virtual Uri IconSource => null;
-		public abstract KeyGesture KeyGesture { get; }
+    public abstract class Command : ICommand
+    {
+        public abstract string Name { get; }
+        public abstract string Text { get; }
+        public virtual Uri IconSource => null;
+        public abstract KeyGesture KeyGesture { get; }
 
-		public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
 
-		public abstract bool CanExecute(object parameter);
-		public abstract void Execute(object parameter);
+        public abstract bool CanExecute(object parameter);
+        public abstract void Execute(object parameter);
 
-		public void UpdateCanExecute()
-		{
-		    Editor.Current.Dispatcher.InvokeAsync(() =>
-            {
-                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-            });
-		}
-	}
+        public void UpdateCanExecute()
+        {
+            Editor.Current.Dispatcher.InvokeAsync(() => { CanExecuteChanged?.Invoke(this, EventArgs.Empty); });
+        }
+    }
 }

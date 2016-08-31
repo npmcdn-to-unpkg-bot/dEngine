@@ -9,12 +9,9 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using dEditor.Framework;
-using dEditor.Framework.Controls.TreeListView;
 using dEditor.Widgets.Diagnostics.SharpTreeView;
 using dEngine;
 using dEngine.Instances.Diagnostics;
@@ -25,6 +22,13 @@ namespace dEditor.Widgets.Diagnostics
     public class DiagnosticsViewModel : Widget, IDiagnostics
     {
         private DiagnosticsRootNode _rootNode;
+
+        public DiagnosticsViewModel()
+        {
+            DisplayName = "Diagnostics";
+
+            Game.RegisterInitializeCallback(OnGameInitialize);
+        }
 
         public DiagnosticsRootNode RootNode
         {
@@ -37,12 +41,7 @@ namespace dEditor.Widgets.Diagnostics
             }
         }
 
-        public DiagnosticsViewModel()
-        {
-            DisplayName = "Diagnostics";
-
-            Game.RegisterInitializeCallback(OnGameInitialize);
-        }
+        public override PaneLocation PreferredLocation => PaneLocation.Left;
 
         private void OnGameInitialize()
         {
@@ -65,7 +64,5 @@ namespace dEditor.Widgets.Diagnostics
                 Children.AddRange(Game.Stats.Children.OfType<StatsItem>().Select(item => new StatsItemTreeNode(item)));
             }
         }
-
-        public override PaneLocation PreferredLocation => PaneLocation.Left;
     }
 }

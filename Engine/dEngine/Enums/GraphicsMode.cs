@@ -11,19 +11,19 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enumeration for graphics modes.
-	/// </summary>
-	public enum GraphicsMode
-	{
-		/// <summary>
-		/// DirectX11.
-		/// </summary>
-		Direct3D11,
+    /// <summary>
+    /// Enumeration for graphics modes.
+    /// </summary>
+    public enum GraphicsMode
+    {
+        /// <summary>
+        /// DirectX11.
+        /// </summary>
+        Direct3D11,
 
-		/// <summary>
-		/// No graphics.
-		/// </summary>
-		NoGraphics
-	}
+        /// <summary>
+        /// No graphics.
+        /// </summary>
+        NoGraphics
+    }
 }

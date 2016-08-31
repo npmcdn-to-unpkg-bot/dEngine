@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Dialogs.NewPlace
 {
-	/// <summary>
-	/// Interaction logic for NewPlaceView.xaml
-	/// </summary>
-	public partial class NewPlaceView : UserControl
-	{
-		public NewPlaceView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for NewPlaceView.xaml
+    /// </summary>
+    public partial class NewPlaceView : UserControl
+    {
+        public NewPlaceView()
+        {
+            InitializeComponent();
+        }
+    }
 }

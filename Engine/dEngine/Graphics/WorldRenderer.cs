@@ -38,8 +38,6 @@ namespace dEngine.Graphics
         private readonly PartDistanceComparer _partDistanceComparer;
         private readonly TreeDictionary<GeoMatPair, RenderObject> _renderObjects;
         private readonly List<RenderObject> _renderObjects2;
-
-        internal readonly RenderObject SkyboxRO;
         private TreeSet<Part> _transparentSet;
 
         internal WorldRenderer()
@@ -125,9 +123,7 @@ namespace dEngine.Graphics
             lock (_locker)
             {
                 foreach (var ro in _renderObjects)
-                {
                     ro.Value.Dispose();
-                }
             }
         }
 
@@ -155,7 +151,7 @@ namespace dEngine.Graphics
             if (dsv != null)
                 Context.ClearDepthStencilView(dsv, DepthStencilClearFlags.Depth, 1, 0);
         }
-        
+
         internal void Draw(ref DeviceContext context, ref Camera camera, bool isShadowPass)
         {
             if (!isShadowPass)
@@ -168,7 +164,8 @@ namespace dEngine.Graphics
 
                 MainPass.Use(ref context);
                 Context.VertexShader.SetConstantBuffers(0, camera.Constants, Lighting.LightingConstantBuffer);
-                Context.PixelShader.SetConstantBuffers(0, camera.Constants, Lighting.LightingConstantBuffer, Shadows.ReceiverConstants);
+                Context.PixelShader.SetConstantBuffers(0, camera.Constants, Lighting.LightingConstantBuffer,
+                    Shadows.ReceiverConstants);
                 Context.PixelShader.SetShaderResources(0, Shadows.ShadowMap);
             }
 
@@ -180,21 +177,16 @@ namespace dEngine.Graphics
             lock (_locker)
             {
                 for (var i = 0; i < _renderObjects2.Count; i++)
-                {
                     _renderObjects2[i].Draw(ref context, ref camera);
-                }
 
                 _partDistanceComparer.CameraPosition = camera.CFrame.p;
             }
         }
 
+        internal readonly RenderObject SkyboxRO;
+
         private class GeoMatPair : IEquatable<GeoMatPair>, IComparable<GeoMatPair>
         {
-            // ReSharper disable once MemberCanBePrivate.Local
-            public readonly Geometry Geometry;
-            // ReSharper disable once MemberCanBePrivate.Local
-            public readonly Material Material;
-
             public GeoMatPair(Geometry geometry, Material material)
             {
                 Geometry = geometry;
@@ -215,9 +207,14 @@ namespace dEngine.Graphics
             {
                 unchecked
                 {
-                    return ((Geometry?.GetHashCode() ?? 0) * 397) ^ (Material?.GetHashCode() ?? 0);
+                    return ((Geometry?.GetHashCode() ?? 0)*397) ^ (Material?.GetHashCode() ?? 0);
                 }
             }
+
+            // ReSharper disable once MemberCanBePrivate.Local
+            public readonly Geometry Geometry;
+            // ReSharper disable once MemberCanBePrivate.Local
+            public readonly Material Material;
         }
 
         internal class PartDistanceComparer : IComparer<Part>

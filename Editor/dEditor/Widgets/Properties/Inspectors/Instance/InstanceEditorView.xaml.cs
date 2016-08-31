@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Widgets.Properties.Inspectors.Instance
 {
-	/// <summary>
-	/// Interaction logic for InstanceEditorView.xaml
-	/// </summary>
-	public partial class InstanceEditorView : UserControl
-	{
-		public InstanceEditorView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for InstanceEditorView.xaml
+    /// </summary>
+    public partial class InstanceEditorView : UserControl
+    {
+        public InstanceEditorView()
+        {
+            InitializeComponent();
+        }
+    }
 }

@@ -18,16 +18,6 @@ namespace dEditor.Widgets.CodeEditor
 {
     public sealed class AvalonEditBehaviour : Behavior<TextEditor>
     {
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(AvalonEditBehaviour),
-                new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    PropertyChangedCallback));
-
-        public static readonly DependencyProperty SelectedTextProperty = DependencyProperty.Register(
-            "SelectedText", typeof(string), typeof(AvalonEditBehaviour),
-            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                PropertyChangedCallback));
-
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
@@ -85,5 +75,15 @@ namespace dEditor.Widgets.CodeEditor
             editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
             editor.CaretOffset = caretOffset;
         }
+
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register("Text", typeof(string), typeof(AvalonEditBehaviour),
+                new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    PropertyChangedCallback));
+
+        public static readonly DependencyProperty SelectedTextProperty = DependencyProperty.Register(
+            "SelectedText", typeof(string), typeof(AvalonEditBehaviour),
+            new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                PropertyChangedCallback));
     }
 }

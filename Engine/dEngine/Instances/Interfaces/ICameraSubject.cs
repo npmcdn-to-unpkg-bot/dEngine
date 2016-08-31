@@ -13,7 +13,7 @@
 namespace dEngine.Instances.Interfaces
 {
     /// <summary>
-    /// An interface for instances which can be a <see cref="Camera.CameraSubject"/>.
+    /// An interface for instances which can be a <see cref="Camera.CameraSubject" />.
     /// </summary>
     public interface ICameraSubject
     {

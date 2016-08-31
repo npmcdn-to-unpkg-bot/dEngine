@@ -11,14 +11,14 @@
 
 namespace dEditor.Tools
 {
-	public class SelectTool : StudioTool
-	{
-		protected override void OnEquipped()
-		{
-		}
+    public class SelectTool : StudioTool
+    {
+        protected override void OnEquipped()
+        {
+        }
 
-		protected override void OnUnequipped()
-		{
-		}
-	}
+        protected override void OnUnequipped()
+        {
+        }
+    }
 }

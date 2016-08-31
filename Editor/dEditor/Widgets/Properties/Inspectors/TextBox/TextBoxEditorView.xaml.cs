@@ -15,25 +15,25 @@ using System.Windows.Input;
 
 namespace dEditor.Widgets.Properties.Inspectors.TextBox
 {
-	/// <summary>
-	/// Interaction logic for TextBoxEditorView.xaml
-	/// </summary>
-	public partial class TextBoxEditorView : UserControl
-	{
-		public TextBoxEditorView()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    /// Interaction logic for TextBoxEditorView.xaml
+    /// </summary>
+    public partial class TextBoxEditorView : UserControl
+    {
+        public TextBoxEditorView()
+        {
+            InitializeComponent();
+        }
 
-	    private void UIElement_OnKeyUp(object sender, KeyEventArgs e)
-	    {
-	        if (e.Key != Key.Enter) return;
+        private void UIElement_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
             ((dynamic)DataContext).ApplyValueWithHistory();
         }
 
-	    private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
+        private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
         {
             ((dynamic)DataContext).ApplyValueWithHistory();
         }
-	}
+    }
 }

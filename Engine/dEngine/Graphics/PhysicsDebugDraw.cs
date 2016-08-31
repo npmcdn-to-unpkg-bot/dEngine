@@ -9,6 +9,7 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using BulletSharp;
 using C5;
 using dEngine.Graphics.Structs;
@@ -16,6 +17,7 @@ using dEngine.Instances;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using Buffer = SharpDX.Direct3D11.Buffer;
 using Matrix = BulletSharp.Math.Matrix;
 using Point = dEngine.Graphics.Structs.Point;
 
@@ -92,7 +94,7 @@ namespace dEngine.Graphics
             {
                 if (_bufferDirty)
                 {
-                    var length = Point.Stride * 2 * _lineCount;
+                    var length = Point.Stride*2*_lineCount;
 
                     if (length > _lastLength)
                     {
@@ -107,7 +109,7 @@ namespace dEngine.Graphics
                         context.MapSubresource(_lineBuffer, MapMode.WriteDiscard, MapFlags.None, out stream);
 
                         var count = _points.Count;
-                        for (int i = 0; i < count; i++)
+                        for (var i = 0; i < count; i++)
                             stream.Write(_points[i]);
 
                         context.UnmapSubresource(_lineBuffer, 0);
@@ -118,7 +120,7 @@ namespace dEngine.Graphics
                 LinePass.Use(ref context);
                 context.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
                 context.InputAssembler.SetVertexBuffers(0, _lineBufferBinding);
-                context.Draw(_lineCount * 2, _points.Offset);
+                context.Draw(_lineCount*2, _points.Offset);
 
                 context.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList; // reset topology
                 _points.Clear();
@@ -173,7 +175,7 @@ namespace dEngine.Graphics
             public override void UpdateRenderData()
             {
                 base.UpdateRenderData();
-                _renderData.Size = new Vector3(_radius, _halfHeight * 2, _radius);
+                _renderData.Size = new Vector3(_radius, _halfHeight*2, _radius);
             }
         }
 
@@ -192,7 +194,7 @@ namespace dEngine.Graphics
                 _halfHeight = halfHeight;
                 _transform = transform;
                 _color = color;
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public RenderObject RenderObject { get; set; }

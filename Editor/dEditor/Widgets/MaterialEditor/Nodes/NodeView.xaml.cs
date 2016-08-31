@@ -13,16 +13,11 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
     /// </summary>
     public partial class NodeView
     {
+        private static int CurrentZIndex;
         private bool _dragging;
         private Point _clickPos;
-        private Dictionary<Slot, ConnectionLine> _lines;
+        private readonly Dictionary<Slot, ConnectionLine> _lines;
         private Node _node;
-
-        public NodeViewModel ViewModel => (NodeViewModel)DataContext;
-        public MaterialEditorViewModel MaterialEditor => (MaterialEditorViewModel)Editor.Current.Shell.ActiveDocument;
-        public Canvas Canvas => MaterialEditor.Canvas;
-
-        private static int CurrentZIndex;
 
         public NodeView()
         {
@@ -30,6 +25,12 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
             DataContextChanged += OnDataContextChanged;
             InitializeComponent();
         }
+
+        public NodeViewModel ViewModel => (NodeViewModel)DataContext;
+        public MaterialEditorViewModel MaterialEditor => (MaterialEditorViewModel)Editor.Current.Shell.ActiveDocument;
+        public Canvas Canvas => MaterialEditor.Canvas;
+
+        public int ZIndex { get; set; }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs args)
         {
@@ -53,9 +54,7 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
         private void NodeOnDestroyed()
         {
             foreach (var line in _lines)
-            {
                 line.Value.Dispose();
-            }
             _lines.Clear();
         }
 
@@ -65,29 +64,21 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
             {
                 ConnectionLine line;
                 if (_lines.TryGetValue(slot, out line))
-                {
                     line.Dispose();
-                }
                 if (slot.Mode == InOut.In)
-                {
                     if (slot.Output != null)
                     {
                         line = new ConnectionLine(Canvas, slot, slot.Output);
                         _lines[slot] = line;
                     }
-                }
             });
         }
 
         private void UpdateLines()
         {
             foreach (var line in _lines.Values)
-            {
                 line.Update();
-            }
         }
-
-        public int ZIndex { get; set; }
 
         private void NodeView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -114,7 +105,7 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
 
         public static float RoundOff10(float i)
         {
-            return ((float)Math.Round(i / 10.0)) * 10;
+            return (float)Math.Round(i/10.0)*10;
         }
     }
 }

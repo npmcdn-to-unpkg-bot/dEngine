@@ -11,7 +11,7 @@
 
 using System.Windows;
 using Caliburn.Micro;
-using dEngine;
+using dEditor.Widgets.MaterialEditor.Nodes.Views;
 using dEngine.Instances.Materials;
 using dEngine.Instances.Materials.Nodes;
 
@@ -24,8 +24,6 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
         private Point _position;
         private NodeContent _nodeContent;
 
-        public Node Node { get; }
-
         public NodeViewModel(Node node)
         {
             Node = node;
@@ -35,13 +33,15 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
             switch (node.GetType().Name)
             {
                 case nameof(TextureParameterNode):
-                    NodeContent = new Views.TextureNodeView();
+                    NodeContent = new TextureNodeView();
                     break;
                 case nameof(FinalNode):
-                    NodeContent = new Views.MainNodeView();
+                    NodeContent = new MainNodeView();
                     break;
             }
         }
+
+        public Node Node { get; }
 
         public override string DisplayName => Node.Name;
 

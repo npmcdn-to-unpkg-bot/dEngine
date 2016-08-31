@@ -1,26 +1,24 @@
-﻿
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using dEngine.Instances.Attributes;
 using dEngine.Services;
 using dEngine.Utility;
 using Neo.IronLua;
 
-
 namespace dEngine.Instances
 {
-    using Attributes;
-
     /// <summary>
     /// A player team.
     /// </summary>
-    [TypeId(19), ToolboxGroup("Gameplay")]
+    [TypeId(19)]
+    [ToolboxGroup("Gameplay")]
     public class Team : Instance
     {
         private readonly HashSet<Player> _players;
 
-        /// <summary/>
+        private bool _autoAssignable;
+
+        /// <summary />
         public Team()
         {
             _players = new HashSet<Player>();
@@ -28,12 +26,11 @@ namespace dEngine.Instances
             ParentLocked = true;
         }
 
-        private bool _autoAssignable;
-
         /// <summary>
         /// Determines if this team can be balanced.
         /// </summary>
-        [InstMember(1), EditorVisible("Behaviour")]
+        [InstMember(1)]
+        [EditorVisible("Behaviour")]
         public bool AutoAssignable
         {
             get { return _autoAssignable; }

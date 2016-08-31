@@ -36,19 +36,19 @@ namespace dEngine.Utility.Extensions
         public static Expression<Func<object>> GetCacheableMethod(this Type type, string name, BindingFlags flags)
         {
             var method = type.GetMethod(name, flags);
-            return () => method.Invoke(null, new object[] { });
+            return () => method.Invoke(null, new object[] {});
         }
 
         public static Expression<Func<object, object>> GetValueGetter(this PropertyInfo propertyInfo)
         {
             var getter = propertyInfo.GetGetMethod(true);
-            return (obj) => getter.Invoke(obj, new object[] { });
+            return obj => getter.Invoke(obj, new object[] {});
         }
 
         public static Expression<Action<object, object>> GetValueSetter(this PropertyInfo propertyInfo)
         {
             var setter = propertyInfo.GetSetMethod(true);
-            return (obj, val) => setter.Invoke(obj, new[] { val });
+            return (obj, val) => setter.Invoke(obj, new[] {val});
         }
 
         public static object GetDefaultValue(this Type type)

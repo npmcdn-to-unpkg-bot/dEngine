@@ -8,10 +8,10 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 namespace dEngine.Instances.Diagnostics
 {
     internal class RunningAverageItemDouble : StatsItem
     {
-        
     }
 }

@@ -17,7 +17,6 @@ using dEngine.Instances.Attributes;
 using dEngine.Services;
 using dEngine.Utility;
 using dEngine.Utility.Extensions;
-
 using SharpDX;
 
 namespace dEngine.Instances
@@ -25,52 +24,11 @@ namespace dEngine.Instances
     /// <summary>
     /// An instance which represents a single sound.
     /// </summary>
-    [TypeId(18), ToolboxGroup("Gameplay"), ExplorerOrder(1)]
+    [TypeId(18)]
+    [ToolboxGroup("Gameplay")]
+    [ExplorerOrder(1)]
     public class Sound : Instance
     {
-        /// <summary>
-        /// Fired when the sound ends.
-        /// </summary>
-        /// <eventParam name="soundId" />
-        public readonly Signal<string> Ended;
-
-        /// <summary>
-        /// Fired when the sound has loaded.
-        /// </summary>
-        /// <eventParam name="soundId" />
-        public readonly Signal<string> Loaded;
-
-        /// <summary>
-        /// Fired every time the sound loops.
-        /// </summary>
-        /// <eventParam name="soundId" />
-        /// <eventParam name="loopCount" />
-        public readonly Signal<string, int> OnLoop;
-
-        /// <summary>
-        /// Fired when the sound is paused.
-        /// </summary>
-        /// <eventParam name="soundId" />
-        public readonly Signal<string> Paused;
-
-        /// <summary>
-        /// Fired when the sound is played.
-        /// </summary>
-        /// <eventParam name="soundId" />
-        public readonly Signal<string> Played;
-
-        /// <summary>
-        /// Fired when the sound is played after being paused.
-        /// </summary>
-        /// <eventParam name="soundId" />
-        public readonly Signal<string> Resumed;
-
-        /// <summary>
-        /// Fired when the sound is stopped.
-        /// </summary>
-        /// <eventParam name="soundId" />
-        public readonly Signal<string> Stopped;
-
         private float _attenuation;
 
         private AttenuationType _attenuationType;
@@ -114,7 +72,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The source of the media file.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public Content<AudioData> SoundId
         {
             get { return _soundId; }
@@ -135,7 +94,8 @@ namespace dEngine.Instances
         /// <summary>
         /// If true the audio will loop.
         /// </summary>
-        [InstMember(2), EditorVisible("Behaviour")]
+        [InstMember(2)]
+        [EditorVisible("Behaviour")]
         public bool Looped
         {
             get { return _looped; }
@@ -145,12 +105,10 @@ namespace dEngine.Instances
                 _looped = value;
 
                 if (_isPlaying)
-                {
                     if (value)
                         Reset();
                     else
                         _voice?.ExitLoop();
-                }
 
                 NotifyChanged();
             }
@@ -159,7 +117,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The volume multiplier of the sound.
         /// </summary>
-        [InstMember(4), EditorVisible]
+        [InstMember(4)]
+        [EditorVisible]
         public float Volume
         {
             get { return _volume; }
@@ -175,7 +134,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The volume multiplier of the sound.
         /// </summary>
-        [InstMember(5), EditorVisible]
+        [InstMember(5)]
+        [EditorVisible]
         public float Pitch
         {
             get { return _pitch; }
@@ -191,7 +151,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The distance at which the sound will begin to attenuate.
         /// </summary>
-        [InstMember(6), EditorVisible]
+        [InstMember(6)]
+        [EditorVisible]
         public float MinDistance
         {
             get { return _minDistance; }
@@ -206,7 +167,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The maximum distance that the sound can be heard from.
         /// </summary>
-        [InstMember(7), EditorVisible]
+        [InstMember(7)]
+        [EditorVisible]
         public float MaxDistance
         {
             get { return _maxDistance; }
@@ -221,7 +183,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The attenuation mode.
         /// </summary>
-        [InstMember(8), EditorVisible]
+        [InstMember(8)]
+        [EditorVisible]
         public AttenuationType Attenuation
         {
             get { return _attenuationType; }
@@ -288,8 +251,8 @@ namespace dEngine.Instances
 
         internal int SamplesPerSecond
             =>
-                (_soundId.Asset.AudioSource.WaveFormat.BytesPerSecond /
-                 _soundId.Asset.AudioSource.WaveFormat.BytesPerSample);
+            _soundId.Asset.AudioSource.WaveFormat.BytesPerSecond/
+            _soundId.Asset.AudioSource.WaveFormat.BytesPerSample;
 
         /// <summary>
         /// The playback position of the audio in seconds.
@@ -301,8 +264,8 @@ namespace dEngine.Instances
             {
                 if (_voice == null)
                     return StartingPosition;
-                var samples = (_soundId.Asset.AudioSource.Length / _soundId.Asset.AudioSource.WaveFormat.BytesPerSample);
-                var pos = ((_voice.State.SamplesPlayed - (samples * _loopCount)) / SamplesPerSecond) *
+                var samples = _soundId.Asset.AudioSource.Length/_soundId.Asset.AudioSource.WaveFormat.BytesPerSample;
+                var pos = (_voice.State.SamplesPlayed - samples*_loopCount)/SamplesPerSecond*
                           SoundService.MasteringVoice.VoiceDetails.InputChannels;
                 return TimeSpan.FromSeconds(pos);
             }
@@ -330,6 +293,9 @@ namespace dEngine.Instances
 
         internal XAudio2Buffer CurrentAudioBuffer => _looped ? _loopedAudioBuffer : _audioBuffer;
 
+        internal bool Is3D { get; private set; }
+        internal bool IsActive { get; set; }
+
         internal void Update()
         {
             if (!Is3D)
@@ -353,7 +319,7 @@ namespace dEngine.Instances
             {
                 case AttenuationType.Linear:
                     _attenuation = Math.Max(1,
-                        1 - SoundService.StaticRolloffScale * (distance - _minDistance) / (_maxDistance - _minDistance));
+                        1 - SoundService.StaticRolloffScale*(distance - _minDistance)/(_maxDistance - _minDistance));
                     break;
                 case AttenuationType.Logarithmic:
                     break;
@@ -372,7 +338,7 @@ namespace dEngine.Instances
 
         private void UpdateVolume()
         {
-            _voice?.SetVolume(_volume * _attenuation, 0);
+            _voice?.SetVolume(_volume*_attenuation, 0);
         }
 
         /// <inheritdoc />
@@ -384,9 +350,6 @@ namespace dEngine.Instances
             _attenuation = 1.0f;
             SoundService.SetSound3D(this, Is3D);
         }
-
-        internal bool Is3D { get; private set; }
-        internal bool IsActive { get; set; }
 
         /// <inheritdoc />
         public override void Destroy()
@@ -419,14 +382,12 @@ namespace dEngine.Instances
                 return;
 
             if (!_looped)
-            {
                 if (_voice.State.BuffersQueued == 0)
                 {
                     _voice.Stop();
                     _voice.FlushSourceBuffers();
                     _voice.SubmitSourceBuffer(CurrentAudioBuffer);
                 }
-            }
 
             _voice.Start();
 
@@ -437,9 +398,9 @@ namespace dEngine.Instances
 
         private int GetPlayOffset(double seconds)
         {
-            var samples = (_soundId.Asset.AudioSource.Length / _soundId.Asset.AudioSource.WaveFormat.BytesPerSample);
-            var positionOffset = -((int)_voice.State.SamplesPlayed - (samples * _loopCount));
-            positionOffset += (int)(StartingPosition.totalSeconds * SamplesPerSecond);
+            var samples = _soundId.Asset.AudioSource.Length/_soundId.Asset.AudioSource.WaveFormat.BytesPerSample;
+            var positionOffset = -((int)_voice.State.SamplesPlayed - samples*_loopCount);
+            positionOffset += (int)(StartingPosition.totalSeconds*SamplesPerSecond);
             return (int)positionOffset;
         }
 
@@ -500,7 +461,7 @@ namespace dEngine.Instances
         /// </summary>
         public void Stop()
         {
-            if (!IsPlaying || _voice == null)
+            if (!IsPlaying || (_voice == null))
                 return;
 
             if (_looped)
@@ -573,5 +534,48 @@ namespace dEngine.Instances
             _loopCount++;
             Engine.GameThread.Enqueue(() => OnLoop.Fire(_soundId, _loopCount));
         }
+
+        /// <summary>
+        /// Fired when the sound ends.
+        /// </summary>
+        /// <eventParam name="soundId" />
+        public readonly Signal<string> Ended;
+
+        /// <summary>
+        /// Fired when the sound has loaded.
+        /// </summary>
+        /// <eventParam name="soundId" />
+        public readonly Signal<string> Loaded;
+
+        /// <summary>
+        /// Fired every time the sound loops.
+        /// </summary>
+        /// <eventParam name="soundId" />
+        /// <eventParam name="loopCount" />
+        public readonly Signal<string, int> OnLoop;
+
+        /// <summary>
+        /// Fired when the sound is paused.
+        /// </summary>
+        /// <eventParam name="soundId" />
+        public readonly Signal<string> Paused;
+
+        /// <summary>
+        /// Fired when the sound is played.
+        /// </summary>
+        /// <eventParam name="soundId" />
+        public readonly Signal<string> Played;
+
+        /// <summary>
+        /// Fired when the sound is played after being paused.
+        /// </summary>
+        /// <eventParam name="soundId" />
+        public readonly Signal<string> Resumed;
+
+        /// <summary>
+        /// Fired when the sound is stopped.
+        /// </summary>
+        /// <eventParam name="soundId" />
+        public readonly Signal<string> Stopped;
     }
 }

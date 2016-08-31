@@ -11,8 +11,8 @@
 
 namespace dEditor.Widgets.AdvancedObjects
 {
-	public interface IAdvancedObjects
-	{
-		bool SelectInsertedObject { get; set; }
-	}
+    public interface IAdvancedObjects
+    {
+        bool SelectInsertedObject { get; set; }
+    }
 }

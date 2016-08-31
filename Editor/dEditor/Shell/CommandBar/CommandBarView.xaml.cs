@@ -41,7 +41,7 @@ namespace dEditor.Shell.CommandBar
 
         private void ComboBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && !string.IsNullOrWhiteSpace(ComboBox.Text))
+            if ((e.Key == Key.Enter) && !string.IsNullOrWhiteSpace(ComboBox.Text))
             {
                 _replacementChar = "";
                 IoC.Get<ICommandBar>().Execute(ComboBox.Text);

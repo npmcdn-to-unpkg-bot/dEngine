@@ -9,8 +9,6 @@
 // // You should have received a copy of the GNU General Public
 // // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using dEditor.Dialogs.FindAndReplace;
-using dEditor.Shell;
 using dEngine.Services;
 
 namespace dEditor.Framework.Services

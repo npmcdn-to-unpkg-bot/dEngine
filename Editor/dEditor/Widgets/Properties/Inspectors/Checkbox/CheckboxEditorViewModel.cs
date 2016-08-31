@@ -9,35 +9,33 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Reflection;
 using dEngine.Serializer.V1;
 
 namespace dEditor.Widgets.Properties.Inspectors.Checkbox
 {
-	public class CheckboxEditorViewModel : EditorBase<Boolean>, ILabelled
-	{
-		public CheckboxEditorViewModel(object obj, Inst.CachedProperty propDesc) : base(obj, propDesc)
-		{
-		}
+    public class CheckboxEditorViewModel : EditorBase<bool>, ILabelled
+    {
+        public CheckboxEditorViewModel(object obj, Inst.CachedProperty propDesc) : base(obj, propDesc)
+        {
+        }
 
-		public bool? CheckValue
-		{
-			get
-			{
-				if (AreMultipleValuesSame)
-					return Value;
-				return null;
-			}
-			set { Value = value.GetValueOrDefault(); }
-		}
+        public bool? CheckValue
+        {
+            get
+            {
+                if (AreMultipleValuesSame)
+                    return Value;
+                return null;
+            }
+            set { Value = value.GetValueOrDefault(); }
+        }
 
-		public override void NotifyOfPropertyChange(string propertyName = null)
-		{
-			if (propertyName == nameof(Value))
-				NotifyOfPropertyChange(nameof(CheckValue));
+        public override void NotifyOfPropertyChange(string propertyName = null)
+        {
+            if (propertyName == nameof(Value))
+                NotifyOfPropertyChange(nameof(CheckValue));
 
-			base.NotifyOfPropertyChange(propertyName);
-		}
-	}
+            base.NotifyOfPropertyChange(propertyName);
+        }
+    }
 }

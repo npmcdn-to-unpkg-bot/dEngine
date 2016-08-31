@@ -13,7 +13,6 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using dEditor.Framework;
-using dEditor.Utility;
 using dEngine;
 using dEngine.Instances;
 using GongSolutions.Wpf.DragDrop;
@@ -22,8 +21,6 @@ namespace dEditor.Widgets.Viewport
 {
     public class ViewportViewModel : Document, IDropTarget
     {
-        public ScreenGui ViewportGui { get; set; }
-
         public ViewportViewModel(bool createGui = true)
         {
             Editor.Current.ProjectChanged += p => NotifyOfPropertyChange(() => DisplayName);
@@ -39,6 +36,8 @@ namespace dEditor.Widgets.Viewport
 
             viewportScript.Run(this);
         }
+
+        public ScreenGui ViewportGui { get; set; }
 
         public override string DisplayName => Game.Workspace?.PlaceId ?? "???";
 
@@ -83,9 +82,7 @@ namespace dEditor.Widgets.Viewport
             }
 
             if (dataObject.ContainsFileDropList() || dataObject.GetDataPresent("GongSolutions.Wpf.DragDrop"))
-            {
                 effects = DragDropEffects.Copy;
-            }
         }
 
         public void OnPreviewDragDrop(object sender, DataObject dataObject)

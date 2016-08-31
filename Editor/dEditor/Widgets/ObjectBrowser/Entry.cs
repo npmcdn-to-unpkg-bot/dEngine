@@ -13,9 +13,9 @@ using System;
 
 namespace dEditor.Widgets.ObjectBrowser
 {
-	public abstract class Entry
-	{
-		public string Name { get; protected set; }
-		public Uri Icon { get; protected set; }
-	}
+    public abstract class Entry
+    {
+        public string Name { get; protected set; }
+        public Uri Icon { get; protected set; }
+    }
 }

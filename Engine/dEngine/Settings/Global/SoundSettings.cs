@@ -13,7 +13,6 @@ using System;
 using System.Runtime.CompilerServices;
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Settings.Global
 {
     /// <summary>
@@ -23,6 +22,9 @@ namespace dEngine.Settings.Global
     public class SoundSettings : Settings
     {
         private static int _maxActiveSoundCount;
+
+        private static int _sampleRate;
+        private static bool _decodeFec;
 
         /// <summary>
         /// The maximum number of sounds that can be played at once.
@@ -38,9 +40,6 @@ namespace dEngine.Settings.Global
                 NotifyChangedStatic();
             }
         }
-
-        private static int _sampleRate;
-        private static bool _decodeFec;
 
         /// <summary>
         /// The output sample rate. If set to zero, the default system sample rate will be used.

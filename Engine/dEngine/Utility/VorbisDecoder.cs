@@ -21,7 +21,6 @@ namespace dEngine.Utility
         private readonly Stream _stream;
         private readonly VorbisReader _vorbisReader;
 
-        private readonly WaveFormat _waveFormat;
         private bool _disposed;
 
         public VorbisDecoder(Stream stream)
@@ -32,7 +31,7 @@ namespace dEngine.Utility
                 throw new ArgumentException("Stream is not readable.", nameof(stream));
             _stream = stream;
             _vorbisReader = new VorbisReader(stream, false);
-            _waveFormat = new WaveFormat(_vorbisReader.SampleRate, 32, _vorbisReader.Channels, AudioEncoding.IeeeFloat);
+            WaveFormat = new WaveFormat(_vorbisReader.SampleRate, 32, _vorbisReader.Channels, AudioEncoding.IeeeFloat);
         }
 
         public bool CanSeek
@@ -40,15 +39,17 @@ namespace dEngine.Utility
             get { return _stream.CanSeek; }
         }
 
-        public WaveFormat WaveFormat
-        {
-            get { return _waveFormat; }
-        }
+        public WaveFormat WaveFormat { get; }
 
         //got fixed through workitem #17, thanks for reporting @rgodart.
         public long Length
         {
-            get { return CanSeek ? (long)(_vorbisReader.TotalTime.TotalSeconds * _waveFormat.SampleRate * _waveFormat.Channels) : 0; }
+            get
+            {
+                return CanSeek
+                    ? (long)(_vorbisReader.TotalTime.TotalSeconds*WaveFormat.SampleRate*WaveFormat.Channels)
+                    : 0;
+            }
         }
 
         //got fixed through workitem #17, thanks for reporting @rgodart.
@@ -56,16 +57,19 @@ namespace dEngine.Utility
         {
             get
             {
-                return CanSeek ? (long)(_vorbisReader.DecodedTime.TotalSeconds * _vorbisReader.SampleRate * _vorbisReader.Channels) : 0;
+                return CanSeek
+                    ? (long)(_vorbisReader.DecodedTime.TotalSeconds*_vorbisReader.SampleRate*_vorbisReader.Channels)
+                    : 0;
             }
             set
             {
                 if (!CanSeek)
                     throw new InvalidOperationException("NVorbisSource is not seekable.");
-                if (value < 0 || value > Length)
+                if ((value < 0) || (value > Length))
                     throw new ArgumentOutOfRangeException(nameof(value));
 
-                _vorbisReader.DecodedTime = System.TimeSpan.FromSeconds((double)value / _vorbisReader.SampleRate / _vorbisReader.Channels);
+                _vorbisReader.DecodedTime =
+                    System.TimeSpan.FromSeconds((double)value/_vorbisReader.SampleRate/_vorbisReader.Channels);
             }
         }
 

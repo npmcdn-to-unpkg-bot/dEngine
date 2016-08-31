@@ -11,10 +11,8 @@
 
 using System.Windows.Input;
 using dEditor.Framework;
-using dEngine;
 using dEngine.Instances;
 using dEngine.Services;
-using dEngine.Utility;
 
 namespace dEditor.Widgets.Explorer
 {

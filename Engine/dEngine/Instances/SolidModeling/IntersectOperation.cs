@@ -13,11 +13,13 @@ using dEngine.Instances.Attributes;
 
 namespace dEngine.Instances
 {
-	/// <summary>
-	/// A part representing a Subtract CSG operation - a portion common to both objects.
-	/// </summary>
-	[TypeId(144), Uncreatable, ExplorerOrder(3)]
-	public sealed class IntersectOperation : PartOperation
-	{
-	}
+    /// <summary>
+    /// A part representing a Subtract CSG operation - a portion common to both objects.
+    /// </summary>
+    [TypeId(144)]
+    [Uncreatable]
+    [ExplorerOrder(3)]
+    public sealed class IntersectOperation : PartOperation
+    {
+    }
 }

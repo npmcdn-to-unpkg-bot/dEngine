@@ -26,6 +26,7 @@ using dEngine.Utility;
 using dEngine.Utility.Extensions;
 using dEngine.Utility.Native;
 using Microsoft.VisualBasic.Devices;
+
 // ReSharper disable UnusedVariable
 
 #pragma warning disable 1591
@@ -320,30 +321,26 @@ namespace dEngine
             };
 
             if (lastControl != null)
-            {
                 lastControl.Layout -= sizeChanged;
-            }
 
             if (handle != IntPtr.Zero)
-            {
                 Control.Layout += sizeChanged;
-            }
         }
 
         private static void StartThread(string name, Action<object> startMethod)
         {
             var thread = new Thread(o =>
-            {
-                try
                 {
-                    startMethod(o);
-                }
-                catch (Exception e)
-                {
-                    OnThreadFailed(name, e);
-                }
-            })
-            { Name = name };
+                    try
+                    {
+                        startMethod(o);
+                    }
+                    catch (Exception e)
+                    {
+                        OnThreadFailed(name, e);
+                    }
+                })
+                {Name = name};
             thread.Start();
             Game.DataModel.BindToClose((Action)thread.Abort, int.MaxValue);
         }
@@ -366,7 +363,7 @@ namespace dEngine
 
         internal static class GameThread
         {
-            internal const float FixedStep = 1 / 50f;
+            internal const float FixedStep = 1/50f;
 
             private static ConcurrentWorkQueue<Action> _queue;
             internal static ManualResetEventSlim _resetter = new ManualResetEventSlim(false);
@@ -410,9 +407,7 @@ namespace dEngine
                     // Physics
                     var physicsStep = (float)physicsStopwatch.Elapsed.TotalSeconds;
                     foreach (var world in Game.Worlds)
-                    {
                         world.Key.Physics?.Step(physicsStep);
-                    }
                     physicsStopwatch.Restart();
 
                     // Heartbeat
@@ -504,12 +499,8 @@ namespace dEngine
                 while (!CancelTokenSource.IsCancellationRequested)
                 {
                     if (!SoundService.Update())
-                    {
                         if (SoundService.IsCriticalError)
-                        {
                             SoundService.Reset();
-                        }
-                    }
                     _queue.Work();
                     //_stopwatch.Restart();
                 }

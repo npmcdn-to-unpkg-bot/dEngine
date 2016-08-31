@@ -25,7 +25,7 @@ namespace dEngine.Graphics
     internal static class Shaders
     {
         private static ConcurrentDictionary<string, GfxShader> _shaders;
-        
+
         private static readonly char[] _cacheMagic = "SHADERCACHE".ToCharArray();
 
         internal static void Init()
@@ -55,15 +55,14 @@ namespace dEngine.Graphics
             var serializer = new XmlSerializer(typeof(GfxShader));
 
             foreach (var manifest in assembly.GetManifestResourceNames())
-            {
                 if (manifest.EndsWith(".shader"))
                 {
                     var stream = assembly.GetManifestResourceStream(manifest);
 
                     using (var reader = new StreamReader(stream))
                     {
-                        string xml = reader.ReadLine();
-                        string source = "\n";
+                        var xml = reader.ReadLine();
+                        var source = "\n";
 
                         if (!xml.StartsWith("<Shader"))
                             continue;
@@ -86,7 +85,6 @@ namespace dEngine.Graphics
                         _shaders[shader.Name] = shader;
                     }
                 }
-            }
         }
 
         private static void CacheShaders(string shaderCache)
@@ -94,20 +92,22 @@ namespace dEngine.Graphics
             try
             {
                 using (var stream = File.Create(shaderCache))
-                using (var writer = new BinaryWriter(stream))
                 {
-                    writer.Write(_cacheMagic);
-
-                    foreach (var shader in _shaders.Values)
+                    using (var writer = new BinaryWriter(stream))
                     {
-                        var shaderStream = new MemoryStream();
-                        shader.Save(new BinaryWriter(shaderStream, Encoding.Default, true));
-                        var inputBuffer = shaderStream.GetBuffer();
-                        var outputBuffer = LZ4Codec.Encode(inputBuffer, 0, (int)shaderStream.Length);
+                        writer.Write(_cacheMagic);
 
-                        writer.Write(outputBuffer.Length);
-                        writer.Write((int)shaderStream.Length);
-                        writer.Write(outputBuffer);
+                        foreach (var shader in _shaders.Values)
+                        {
+                            var shaderStream = new MemoryStream();
+                            shader.Save(new BinaryWriter(shaderStream, Encoding.Default, true));
+                            var inputBuffer = shaderStream.GetBuffer();
+                            var outputBuffer = LZ4Codec.Encode(inputBuffer, 0, (int)shaderStream.Length);
+
+                            writer.Write(outputBuffer.Length);
+                            writer.Write((int)shaderStream.Length);
+                            writer.Write(outputBuffer);
+                        }
                     }
                 }
             }
@@ -123,38 +123,42 @@ namespace dEngine.Graphics
         private static void LoadShaders()
         {
             using (var cache = File.OpenRead(RenderSettings.ShaderCache))
-            using (var reader = new BinaryReader(cache))
             {
-                var magic = reader.ReadChars(_cacheMagic.Length);
-
-                if (VisualC.CompareMemory(magic, _cacheMagic, magic.Length) != 0)
-                    throw new InvalidDataException("The shader cache did not match the magic bytes.");
-
-                do
+                using (var reader = new BinaryReader(cache))
                 {
-                    var compressedLength = reader.ReadInt32();
-                    var decompressedLength = reader.ReadInt32();
-                    var inputBuffer = reader.ReadBytes(compressedLength);
-                    var outputBuffer = LZ4Codec.Decode(inputBuffer, 0, compressedLength, decompressedLength);
+                    var magic = reader.ReadChars(_cacheMagic.Length);
 
-                    using (var shaderStream = new MemoryStream(outputBuffer))
-                    using (var shaderReader = new BinaryReader(shaderStream))
+                    if (VisualC.CompareMemory(magic, _cacheMagic, magic.Length) != 0)
+                        throw new InvalidDataException("The shader cache did not match the magic bytes.");
+
+                    do
                     {
-                        var name = shaderReader.ReadString();
-                        var passCount = shaderReader.ReadInt32();
-                        var passes = new List<GfxShader.Pass>(passCount);
-                        for (int i = 0; i < passCount; i++)
+                        var compressedLength = reader.ReadInt32();
+                        var decompressedLength = reader.ReadInt32();
+                        var inputBuffer = reader.ReadBytes(compressedLength);
+                        var outputBuffer = LZ4Codec.Decode(inputBuffer, 0, compressedLength, decompressedLength);
+
+                        using (var shaderStream = new MemoryStream(outputBuffer))
                         {
-                            var pass = new GfxShader.Pass();
-                            pass.Load(shaderReader);
-                            passes[i] = pass;
+                            using (var shaderReader = new BinaryReader(shaderStream))
+                            {
+                                var name = shaderReader.ReadString();
+                                var passCount = shaderReader.ReadInt32();
+                                var passes = new List<GfxShader.Pass>(passCount);
+                                for (var i = 0; i < passCount; i++)
+                                {
+                                    var pass = new GfxShader.Pass();
+                                    pass.Load(shaderReader);
+                                    passes[i] = pass;
+                                }
+                                var source = shaderReader.ReadString();
+                                var shader = new GfxShader(name, passes, source);
+                                shader.Passes.ForEach(p => p.Load());
+                                _shaders[name] = shader;
+                            }
                         }
-                        var source = shaderReader.ReadString();
-                        var shader = new GfxShader(name, passes, source);
-                        shader.Passes.ForEach(p => p.Load());
-                        _shaders[name] = shader;
-                    }
-                } while (cache.Position < cache.Length);
+                    } while (cache.Position < cache.Length);
+                }
             }
         }
 
@@ -168,11 +172,8 @@ namespace dEngine.Graphics
         public static void DisposeAll()
         {
             foreach (var shader in _shaders.Values)
-            {
                 shader.Dispose();
-            }
             _shaders.Clear();
-
         }
     }
 }

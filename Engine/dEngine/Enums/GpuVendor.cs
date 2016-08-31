@@ -8,6 +8,7 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 namespace dEngine
 {
     /// <summary>
@@ -19,17 +20,20 @@ namespace dEngine
         /// The GPU vendor is unknown.
         /// </summary>
         Unknown,
+
         /// <summary>
         /// The GPU was made by NVIDIA.
         /// </summary>
         Nvidia = 0x10DE,
+
         /// <summary>
         /// The GPU was made by AMD.
         /// </summary>
         AMD = 0x1002,
+
         /// <summary>
         /// The GPU was made by Intel.
         /// </summary>
-        Intel = 0x8086,
+        Intel = 0x8086
     }
 }

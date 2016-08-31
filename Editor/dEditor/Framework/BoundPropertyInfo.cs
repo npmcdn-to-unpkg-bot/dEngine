@@ -10,67 +10,65 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Reflection;
 using dEngine.Instances;
-using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
 
 namespace dEditor.Framework
 {
-	public class BoundPropertyInfo : IEquatable<BoundPropertyInfo>
-	{
-		private object _value;
+    public class BoundPropertyInfo : IEquatable<BoundPropertyInfo>
+    {
+        private object _value;
 
-		public BoundPropertyInfo(object o, Inst.CachedProperty property, string displayName = null)
-		{
-			Object = o;
-			Property = property;
+        public BoundPropertyInfo(object o, Inst.CachedProperty property, string displayName = null)
+        {
+            Object = o;
+            Property = property;
 
-		    IsReadOnly = property.Set == null || !property.IsSetterPublic;
+            IsReadOnly = (property.Set == null) || !property.IsSetterPublic;
 
             DisplayName = displayName ?? property.EditorVisible?.DisplayName ?? property.Name;
 
-			UpdateValue();
+            UpdateValue();
 
-			var instance = o as Instance;
-			if (instance != null)
-				instance.Changed.Event += OnInstanceChanged;
-		}
+            var instance = o as Instance;
+            if (instance != null)
+                instance.Changed.Event += OnInstanceChanged;
+        }
 
-		public object Object { get; }
+        public object Object { get; }
 
-		public Inst.CachedProperty Property { get; }
+        public Inst.CachedProperty Property { get; }
 
-		public object Value
-		{
-			get { return _value; }
-			set { Property?.FastSet(Object, value); }
-		}
+        public object Value
+        {
+            get { return _value; }
+            set { Property?.FastSet(Object, value); }
+        }
 
-		public bool IsReadOnly { get; private set; }
-		public string DisplayName { get; private set; }
+        public bool IsReadOnly { get; private set; }
+        public string DisplayName { get; private set; }
 
-		public bool Equals(BoundPropertyInfo other)
-		{
-			return Property == other.Property;
-		}
+        public bool Equals(BoundPropertyInfo other)
+        {
+            return Property == other.Property;
+        }
 
-		~BoundPropertyInfo()
-		{
-			var instance = Object as Instance;
-			if (instance != null)
-				instance.Changed.Event -= OnInstanceChanged;
-		}
+        ~BoundPropertyInfo()
+        {
+            var instance = Object as Instance;
+            if (instance != null)
+                instance.Changed.Event -= OnInstanceChanged;
+        }
 
-		private void OnInstanceChanged(string s)
-		{
-			if (s == Property.Name)
-				UpdateValue();
-		}
+        private void OnInstanceChanged(string s)
+        {
+            if (s == Property.Name)
+                UpdateValue();
+        }
 
-		private void UpdateValue()
-		{
-			_value = Property.FastGet(Object);
-		}
-	}
+        private void UpdateValue()
+        {
+            _value = Property.FastGet(Object);
+        }
+    }
 }

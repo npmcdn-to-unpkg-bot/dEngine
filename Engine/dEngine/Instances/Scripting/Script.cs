@@ -20,7 +20,9 @@ namespace dEngine.Instances
     /// <remarks>
     /// A <see cref="Script" /> must be a descendant of an <see cref="IWorld" /> or <see cref="ServerScriptService" /> to run.
     /// </remarks>
-    [TypeId(4), ToolboxGroup("Scripting"), ExplorerOrder(3)]
+    [TypeId(4)]
+    [ToolboxGroup("Scripting")]
+    [ExplorerOrder(3)]
     public class Script : LuaSourceContainer
     {
         private bool _disabled;
@@ -38,7 +40,8 @@ namespace dEngine.Instances
         /// <remarks>
         /// Setting Disabled to false at runtime will force the script to execute.
         /// </remarks>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public bool Disabled
         {
             get { return _disabled; }
@@ -84,7 +87,7 @@ namespace dEngine.Instances
             _validAncestry = CheckIfAncestorValid();
 
             // if the new ancestry is valid, but the previous was not
-            if (RunService.SimulationState == SimulationState.Running && _validAncestry && !prevAncestryValid)
+            if ((RunService.SimulationState == SimulationState.Running) && _validAncestry && !prevAncestryValid)
                 Run();
         }
 
@@ -101,12 +104,12 @@ namespace dEngine.Instances
         /// </summary>
         protected virtual bool CheckIfAncestorValid()
         {
-            return World != null || IsDescendantOf(ServerScriptService.Service);
+            return (World != null) || IsDescendantOf(ServerScriptService.Service);
         }
 
         internal bool CheckCanRun()
         {
-            return RunService.SimulationState == SimulationState.Running
+            return (RunService.SimulationState == SimulationState.Running)
                    && !IsRunning
                    && _validAncestry;
         }
@@ -118,7 +121,7 @@ namespace dEngine.Instances
         {
             if (Disabled)
                 return;
-                //return LuaResult.Empty;
+            //return LuaResult.Empty;
 
             ScriptService.ExecuteAsync(this, args).ConfigureAwait(false);
 

@@ -17,14 +17,14 @@ namespace dEditor.Widgets.Diagnostics
 {
     public class StatsItemTreeNode : SharpTreeNode
     {
-        public StatsItem Item { get; }
-
-        public string Value => Item.ValueString;
-
         public StatsItemTreeNode(StatsItem item)
         {
             Item = item;
         }
+
+        public StatsItem Item { get; }
+
+        public string Value => Item.ValueString;
 
         public override object Text => Item.Name;
         public override object Icon => null;

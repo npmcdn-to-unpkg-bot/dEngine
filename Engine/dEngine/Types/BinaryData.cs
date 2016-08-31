@@ -23,14 +23,13 @@ namespace dEngine
     {
         private Stream stream;
 
-        /// <summary/>
+        /// <summary />
         public BinaryData()
         {
-            
         }
 
         /// <summary>
-        /// Creates a <see cref="BinaryData"/> from the given bytes.
+        /// Creates a <see cref="BinaryData" /> from the given bytes.
         /// </summary>
         public BinaryData(byte[] bytes)
         {
@@ -38,21 +37,21 @@ namespace dEngine
         }
 
         /// <summary>
-        /// Creates a <see cref="BinaryData"/> from the given stream.
+        /// Creates a <see cref="BinaryData" /> from the given stream.
         /// </summary>
         public BinaryData(Stream stream)
         {
             this.stream = stream;
         }
 
-        /// <summary/>
+        /// <summary />
         public void Save(BinaryWriter writer)
         {
             writer.Write(stream.Length);
             stream.CopyTo(writer.BaseStream);
         }
 
-        /// <summary/>
+        /// <summary />
         public void Load(BinaryReader reader)
         {
             var count = reader.ReadInt32();

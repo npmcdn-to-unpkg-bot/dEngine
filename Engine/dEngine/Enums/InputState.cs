@@ -10,19 +10,20 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+
 #pragma warning disable 1591
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for input states.
-	/// </summary>
-	public enum InputState
-	{
-		None = 0,
-		Begin = 1,
-		Change = 2,
-		End = 3,
-		Cancel = 4
-	}
+    /// <summary>
+    /// Enum for input states.
+    /// </summary>
+    public enum InputState
+    {
+        None = 0,
+        Begin = 1,
+        Change = 2,
+        End = 3,
+        Cancel = 4
+    }
 }

@@ -9,69 +9,53 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System.Diagnostics;
 using dEngine.Instances.Attributes;
 using Lidgren.Network;
 
-
 namespace dEngine.Services.Networking
 {
-	/// <summary>
-	/// Base class for <see cref="NetworkClient" /> and <see cref="NetworkServer" />
-	/// </summary>
-	[TypeId(74)]
-	public abstract class NetworkPeer : Service
-	{
-		internal NetPeer _peer;
-		internal NetPeerConfiguration _peerConfig;
+    /// <summary>
+    /// Base class for <see cref="NetworkClient" /> and <see cref="NetworkServer" />
+    /// </summary>
+    [TypeId(74)]
+    public abstract class NetworkPeer : Service
+    {
+        internal NetPeer _peer;
+        internal NetPeerConfiguration _peerConfig;
 
-		/// <inheritdoc />
-		protected NetworkPeer()
-		{
-		}
-
-	    internal static bool IsClient()
-	    {
-	        return Engine.Mode == EngineMode.Game || Engine.Mode == EngineMode.LevelEditor;
-        }
-
-        internal static bool IsServer()
-        {
-            return Engine.Mode == EngineMode.Server || Engine.Mode == EngineMode.LevelEditor;
-        }
+        protected double _accumulator;
 
         /// <summary>
         /// If true, the peer has been started.
         /// </summary>
         [EditorVisible]
-	    public bool IsRunning
-	    {
-	        get { return _isRunning; }
-	        protected set { _isRunning = value; }
-	    }
+        public bool IsRunning { get; protected set; }
 
-	    internal abstract void ProcessMessages();
+        internal static bool IsClient()
+        {
+            return (Engine.Mode == EngineMode.Game) || (Engine.Mode == EngineMode.LevelEditor);
+        }
 
-	    protected double _accumulator;
-	    private bool _isRunning;
+        internal static bool IsServer()
+        {
+            return (Engine.Mode == EngineMode.Server) || (Engine.Mode == EngineMode.LevelEditor);
+        }
 
-	    /// <summary>
+        internal abstract void ProcessMessages();
+
+        /// <summary>
         /// Performs a network update.
         /// </summary>
         /// <param name="step">The time since the last step.</param>
-	    public void Update(double step)
+        public void Update(double step)
         {
-            if (!_isRunning)
+            if (!IsRunning)
                 return;
 
-	        _accumulator += step;
-	        if (_accumulator >= step)
-            {
+            _accumulator += step;
+            if (_accumulator >= step)
                 if (IsRunning)
-                {
                     ProcessMessages();
-                }
-            }
-	    }
-	}
+        }
+    }
 }

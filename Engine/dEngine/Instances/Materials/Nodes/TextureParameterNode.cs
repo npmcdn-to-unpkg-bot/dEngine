@@ -11,6 +11,7 @@
 
 using dEngine.Data;
 using dEngine.Instances.Attributes;
+
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
 #pragma warning disable 1591
@@ -25,16 +26,13 @@ namespace dEngine.Instances.Materials.Nodes
     {
         private Content<Texture> _textureId;
 
-        public TextureParameterNode()
-        {
-
-        }
-
         #region Properties
+
         /// <summary>
         /// The texture to sample.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public Content<Texture> TextureId
         {
             get { return _textureId; }
@@ -45,17 +43,21 @@ namespace dEngine.Instances.Materials.Nodes
                 NotifyChanged();
             }
         }
+
         #endregion
 
         #region Inputs
+
         /// <summary>
         /// The UV input.
         /// </summary>
         [NodeSlot("UVs", SlotType.Float, InOut.In)]
         public Slot TexCoord { get; private set; }
+
         #endregion
 
         #region Outputs
+
         /// <summary>
         /// Outputs the R channel.
         /// </summary>
@@ -85,6 +87,7 @@ namespace dEngine.Instances.Materials.Nodes
         /// </summary>
         [NodeSlot("RGB", SlotType.Float3, InOut.Out)]
         public Slot RGB { get; private set; }
+
         #endregion
     }
 }

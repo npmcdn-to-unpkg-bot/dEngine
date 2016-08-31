@@ -4,97 +4,92 @@ using System.Windows.Input;
 
 namespace dEditor.Framework.Controls.TreeListView
 {
-	public class TreeListItem : ListViewItem, INotifyPropertyChanged
-	{
-		#region Properties
+    public class TreeListItem : ListViewItem, INotifyPropertyChanged
+    {
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (Node != null)
+                switch (e.Key)
+                {
+                    case Key.Right:
+                        e.Handled = true;
+                        if (!Node.IsExpanded)
+                        {
+                            Node.IsExpanded = true;
+                            ChangeFocus(Node);
+                        }
+                        else if (Node.Children.Count > 0)
+                            ChangeFocus(Node.Children[0]);
+                        break;
 
-		private TreeNode _node;
-		public TreeNode Node
-		{
-			get { return _node; }
-			internal set
-			{
-				_node = value;
-				OnPropertyChanged("Node");
-			}
-		}
+                    case Key.Left:
 
-		#endregion
+                        e.Handled = true;
+                        if (Node.IsExpanded && Node.IsExpandable)
+                        {
+                            Node.IsExpanded = false;
+                            ChangeFocus(Node);
+                        }
+                        else
+                            ChangeFocus(Node.Parent);
+                        break;
 
-		public TreeListItem()
-		{
-		}
+                    case Key.Subtract:
+                        e.Handled = true;
+                        Node.IsExpanded = false;
+                        ChangeFocus(Node);
+                        break;
 
-		protected override void OnKeyDown(KeyEventArgs e)
-		{
-			if (Node != null)
-			{
-				switch (e.Key)
-				{
-					case Key.Right:
-						e.Handled = true;
-						if (!Node.IsExpanded)
-						{
-							Node.IsExpanded = true;
-							ChangeFocus(Node);
-						}
-						else if (Node.Children.Count > 0)
-							ChangeFocus(Node.Children[0]);
-						break;
+                    case Key.Add:
+                        e.Handled = true;
+                        Node.IsExpanded = true;
+                        ChangeFocus(Node);
+                        break;
+                }
 
-					case Key.Left:
+            if (!e.Handled)
+                base.OnKeyDown(e);
+        }
 
-						e.Handled = true;
-						if (Node.IsExpanded && Node.IsExpandable)
-						{
-							Node.IsExpanded = false;
-							ChangeFocus(Node);
-						}
-						else
-							ChangeFocus(Node.Parent);
-						break;
+        private void ChangeFocus(TreeNode node)
+        {
+            var tree = node.Tree;
+            if (tree != null)
+            {
+                var item = tree.ItemContainerGenerator.ContainerFromItem(node) as TreeListItem;
+                if (item != null)
+                    item.Focus();
+                else
+                    tree.PendingFocusNode = node;
+            }
+        }
 
-					case Key.Subtract:
-						e.Handled = true;
-						Node.IsExpanded = false;
-						ChangeFocus(Node);
-						break;
+        #region Properties
 
-					case Key.Add:
-						e.Handled = true;
-						Node.IsExpanded = true;
-						ChangeFocus(Node);
-						break;
-				}
-			}
+        private TreeNode _node;
 
-			if (!e.Handled)
-				base.OnKeyDown(e);
-		}
+        public TreeNode Node
+        {
+            get { return _node; }
+            internal set
+            {
+                _node = value;
+                OnPropertyChanged("Node");
+            }
+        }
 
-		private void ChangeFocus(TreeNode node)
-		{
-			var tree = node.Tree;
-			if (tree != null)
-			{
-				var item = tree.ItemContainerGenerator.ContainerFromItem(node) as TreeListItem;
-				if (item != null)
-					item.Focus();
-				else
-					tree.PendingFocusNode = node;
-			}
-		}
+        #endregion
 
-		#region INotifyPropertyChanged Members
+        #region INotifyPropertyChanged Members
 
-		public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-		private void OnPropertyChanged(string name)
-		{
-			if (PropertyChanged != null)
-				PropertyChanged(this, new PropertyChangedEventArgs(name));
-		}
+        private void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

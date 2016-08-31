@@ -17,11 +17,13 @@ using dEngine.Services;
 using dEngine.Settings.Global;
 using SharpDX;
 using SharpDX.Direct3D11;
+
 // ReSharper disable UnusedMember.Local
 
 namespace dEngine.Instances
 {
-    [TypeId(180), Uncreatable]
+    [TypeId(180)]
+    [Uncreatable]
     internal sealed class AmbientOcclusionEffect : PostEffect
     {
         private static Texture _noiseTexture;
@@ -56,7 +58,7 @@ namespace dEngine.Instances
         public AmbientOcclusionEffect()
         {
             _effectOrder = (int)EffectPrority.AmbientOcclusion;
-            _constantBuffer = new ConstantBuffer<SSAOConstantData> { Data = { NoiseSize = _noiseTexture.Width } };
+            _constantBuffer = new ConstantBuffer<SSAOConstantData> {Data = {NoiseSize = _noiseTexture.Width}};
             Radius = 0.125f;
             Intensity = 2f;
             Distance = 1f;
@@ -68,7 +70,9 @@ namespace dEngine.Instances
         /// <summary>
         /// The maximum radius of a gap that will introduce ambient occlusion.
         /// </summary>
-        [InstMember(1), EditorVisible, Range(0.01f, 1.25f)]
+        [InstMember(1)]
+        [EditorVisible]
+        [Range(0.01f, 1.25f)]
         public float Radius
         {
             get { return _radius; }
@@ -85,7 +89,9 @@ namespace dEngine.Instances
         /// <summary>
         /// The degree of darkness added by ambient occlusion.
         /// </summary>
-        [InstMember(2), EditorVisible, Range(0f, 16f)]
+        [InstMember(2)]
+        [EditorVisible]
+        [Range(0f, 16f)]
         public float Intensity
         {
             get { return _intensity; }
@@ -102,7 +108,9 @@ namespace dEngine.Instances
         /// <summary>
         /// The distance between an occluded sample and its occluder.
         /// </summary>
-        [InstMember(3), EditorVisible, Range(0, 10f)]
+        [InstMember(3)]
+        [EditorVisible]
+        [Range(0, 10f)]
         public float Distance
         {
             get { return _distance; }
@@ -119,7 +127,9 @@ namespace dEngine.Instances
         /// <summary>
         /// Offsets the occlusion cone.
         /// </summary>
-        [InstMember(4), EditorVisible, Range(0, 1f)]
+        [InstMember(4)]
+        [EditorVisible]
+        [Range(0, 1f)]
         public float Bias
         {
             get { return _bias; }
@@ -136,7 +146,9 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how much ambient occlusion should be added in bright areas.
         /// </summary>
-        [InstMember(5), EditorVisible, Range(0f, 1f)]
+        [InstMember(5)]
+        [EditorVisible]
+        [Range(0f, 1f)]
         public float LumContribution
         {
             get { return _lumContribution; }
@@ -153,7 +165,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The colour of the occlusion. Usually black.
         /// </summary>
-        [InstMember(6), EditorVisible]
+        [InstMember(6)]
+        [EditorVisible]
         public Colour OcclusionColour
         {
             get { return _occlusionColour; }
@@ -170,7 +183,9 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how sharp the bilateral blur is.
         /// </summary>
-        [InstMember(7), EditorVisible("Bilateral"), Range(0.05f, 1f)]
+        [InstMember(7)]
+        [EditorVisible("Bilateral")]
+        [Range(0.05f, 1f)]
         public float BlurBilateralThreshold
         {
             get { return _blurBilateralThreshold; }
@@ -187,7 +202,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The maximum distance at which ambient occlusion is applied to objects.
         /// </summary>
-        [InstMember(8), EditorVisible("Distance Cutoff")]
+        [InstMember(8)]
+        [EditorVisible("Distance Cutoff")]
         public float MaxDistance
         {
             get { return _maxDistance; }
@@ -204,7 +220,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The falloff of the effect beyond <see cref="MaxDistance" />.
         /// </summary>
-        [InstMember(9), EditorVisible("Distance Cutoff")]
+        [InstMember(9)]
+        [EditorVisible("Distance Cutoff")]
         public float Falloff
         {
             get { return _falloff; }
@@ -239,7 +256,7 @@ namespace dEngine.Instances
             {
                 var rt = GetDownsampledTexture();
                 context.ClearRenderTargetView(rt, Color.White);
-                
+
                 context.OutputMerger.SetRenderTargets(null, rt);
                 context.PixelShader.SetShaderResources(1, null, Camera.DepthStencilBuffer, Camera.Buffer2, _noiseTexture);
                 context.PixelShader.SetShaderResource(0, Camera.Buffer0);
@@ -256,10 +273,6 @@ namespace dEngine.Instances
                 }
 
                 //context.Draw(4, 0);
-            }
-            else
-            {
-                
             }
         }
 

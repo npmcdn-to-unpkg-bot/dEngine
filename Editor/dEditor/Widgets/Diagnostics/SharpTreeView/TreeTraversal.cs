@@ -17,7 +17,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
     /// <summary>
     /// Static helper methods for traversing trees.
     /// </summary>
-    static class TreeTraversal
+    internal static class TreeTraversal
     {
         /// <summary>
         /// Converts a tree data structure into a flat list by traversing it in pre-order.
@@ -27,7 +27,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         /// <returns>Iterator that enumerates the tree structure in pre-order.</returns>
         public static IEnumerable<T> PreOrder<T>(T root, Func<T, IEnumerable<T>> recursion)
         {
-            return PreOrder(new T[] { root }, recursion);
+            return PreOrder(new[] {root}, recursion);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         /// <returns>Iterator that enumerates the tree structure in pre-order.</returns>
         public static IEnumerable<T> PreOrder<T>(IEnumerable<T> input, Func<T, IEnumerable<T>> recursion)
         {
-            Stack<IEnumerator<T>> stack = new Stack<IEnumerator<T>>();
+            var stack = new Stack<IEnumerator<T>>();
             try
             {
                 stack.Push(input.GetEnumerator());
@@ -46,13 +46,11 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
                 {
                     while (stack.Peek().MoveNext())
                     {
-                        T element = stack.Peek().Current;
+                        var element = stack.Peek().Current;
                         yield return element;
-                        IEnumerable<T> children = recursion(element);
+                        var children = recursion(element);
                         if (children != null)
-                        {
                             stack.Push(children.GetEnumerator());
-                        }
                     }
                     stack.Pop().Dispose();
                 }
@@ -60,9 +58,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             finally
             {
                 while (stack.Count > 0)
-                {
                     stack.Pop().Dispose();
-                }
             }
         }
     }

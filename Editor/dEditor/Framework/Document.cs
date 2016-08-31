@@ -15,28 +15,28 @@ using dEngine.Instances;
 
 namespace dEditor.Framework
 {
-	/// <summary>
-	/// A document is a type of module which is docked in the middle of the window.
-	/// </summary>
-	public abstract class Document : LayoutItem
-	{
-		protected Document()
-		{
-			ShouldReopenOnStart = false;
-		}
+    /// <summary>
+    /// A document is a type of module which is docked in the middle of the window.
+    /// </summary>
+    public abstract class Document : LayoutItem
+    {
+        protected Document()
+        {
+            ShouldReopenOnStart = false;
+        }
 
-		public override ICommand CloseCommand
-		{
-			get { return _closeCommand ?? (_closeCommand = new RelayCommand(p => TryClose(null), p => true)); }
-		}
+        public override ICommand CloseCommand
+        {
+            get { return _closeCommand ?? (_closeCommand = new RelayCommand(p => TryClose(null), p => true)); }
+        }
 
-		public virtual void OnHide()
-		{
-		}
+        public virtual void OnHide()
+        {
+        }
 
-		public virtual Task OnSave(LuaSourceContainer container)
-		{
-			return Task.FromResult(true);
-		}
-	}
+        public virtual Task OnSave(LuaSourceContainer container)
+        {
+            return Task.FromResult(true);
+        }
+    }
 }

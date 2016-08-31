@@ -15,21 +15,21 @@ using System.Windows.Input;
 
 namespace dEditor.Widgets.AdvancedObjects
 {
-	/// <summary>
-	/// Interaction logic for AdvancedObjectView.xaml
-	/// </summary>
-	public partial class AdvancedObjectsView
-	{
-		public AdvancedObjectsView()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    /// Interaction logic for AdvancedObjectView.xaml
+    /// </summary>
+    public partial class AdvancedObjectsView
+    {
+        public AdvancedObjectsView()
+        {
+            InitializeComponent();
+        }
 
-		private void ListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
-		{
-			var item = ItemsControl.ContainerFromElement(ListBox, (DependencyObject)e.OriginalSource) as ListBoxItem;
-			if (item != null)
-				((AdvancedObjectsViewModel)DataContext).OnObjectMouseDown((ObjectEntry)item.DataContext, e);
-		}
-	}
+        private void ListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = ItemsControl.ContainerFromElement(ListBox, (DependencyObject)e.OriginalSource) as ListBoxItem;
+            if (item != null)
+                ((AdvancedObjectsViewModel)DataContext).OnObjectMouseDown((ObjectEntry)item.DataContext, e);
+        }
+    }
 }

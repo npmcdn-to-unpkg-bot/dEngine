@@ -13,24 +13,24 @@ using dEngine.Instances;
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for message networking channels.
-	/// </summary>
-	public enum MessageChannel
-	{
-		/// <summary>
-		/// The standard channel.
-		/// </summary>
-		Standard = 0,
+    /// <summary>
+    /// Enum for message networking channels.
+    /// </summary>
+    public enum MessageChannel
+    {
+        /// <summary>
+        /// The standard channel.
+        /// </summary>
+        Standard = 0,
 
-		/// <summary>
-		/// Channel for replication messages.
-		/// </summary>
-		Replication = 1,
+        /// <summary>
+        /// Channel for replication messages.
+        /// </summary>
+        Replication = 1,
 
-		/// <summary>
-		/// Channel for <see cref="RemoteFunction" /> and <see cref="RemoteEvent" />.
-		/// </summary>
-		Remote = 2
-	}
+        /// <summary>
+        /// Channel for <see cref="RemoteFunction" /> and <see cref="RemoteEvent" />.
+        /// </summary>
+        Remote = 2
+    }
 }

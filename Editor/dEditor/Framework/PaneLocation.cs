@@ -11,10 +11,10 @@
 
 namespace dEditor.Framework
 {
-	public enum PaneLocation
-	{
-		Left,
-		Right,
-		Bottom
-	}
+    public enum PaneLocation
+    {
+        Left,
+        Right,
+        Bottom
+    }
 }

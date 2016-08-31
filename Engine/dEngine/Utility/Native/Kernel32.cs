@@ -14,15 +14,15 @@ using System.Runtime.InteropServices;
 
 namespace dEngine.Utility.Native
 {
-	internal static class Kernel32
-	{
+    internal static class Kernel32
+    {
         [DllImport("kernel32.dll")]
         public static extern void OutputDebugString(string outputString);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-		public static extern IntPtr GetModuleHandle(string moduleName);
+        public static extern IntPtr GetModuleHandle(string moduleName);
 
-		[DllImport("kernel32.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("kernel32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool SetDllDirectory(string pathName);
 
         [DllImport("kernel32.dll")]

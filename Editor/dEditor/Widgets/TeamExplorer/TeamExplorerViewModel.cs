@@ -15,8 +15,6 @@ namespace dEditor.Widgets.TeamExplorer
 {
     public class TeamExplorerViewModel : Widget
     {
-
-
         public override PaneLocation PreferredLocation { get; } = PaneLocation.Right;
     }
 }

@@ -19,91 +19,48 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 {
     public sealed class TreeFlattener : IList, INotifyCollectionChanged
     {
+        private readonly bool includeRoot;
+
         /// <summary>
         /// The root node of the flat list tree.
         /// Tjis is not necessarily the root of the model!
         /// </summary>
         internal SharpTreeNode root;
-        readonly bool includeRoot;
-        readonly object syncRoot = new object();
 
         public TreeFlattener(SharpTreeNode modelRoot, bool includeRoot)
         {
-            this.root = modelRoot;
+            root = modelRoot;
             while (root.listParent != null)
                 root = root.listParent;
             root.treeFlattener = this;
             this.includeRoot = includeRoot;
         }
 
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-        public void RaiseCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
-            if (CollectionChanged != null)
-                CollectionChanged(this, e);
-        }
-
-        public void NodesInserted(int index, IEnumerable<SharpTreeNode> nodes)
-        {
-            if (!includeRoot) index--;
-            foreach (SharpTreeNode node in nodes)
-            {
-                RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, node, index++));
-            }
-        }
-
-        public void NodesRemoved(int index, IEnumerable<SharpTreeNode> nodes)
-        {
-            if (!includeRoot) index--;
-            foreach (SharpTreeNode node in nodes)
-            {
-                RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, node, index));
-            }
-        }
-
-        public void Stop()
-        {
-            Debug.Assert(root.treeFlattener == this);
-            root.treeFlattener = null;
-        }
-
         public object this[int index]
         {
             get
             {
-                if (index < 0 || index >= this.Count)
+                if ((index < 0) || (index >= Count))
                     throw new ArgumentOutOfRangeException();
                 return SharpTreeNode.GetNodeByVisibleIndex(root, includeRoot ? index : index + 1);
             }
-            set
-            {
-                throw new NotSupportedException();
-            }
+            set { throw new NotSupportedException(); }
         }
 
         public int Count
         {
-            get
-            {
-                return includeRoot ? root.GetTotalListLength() : root.GetTotalListLength() - 1;
-            }
+            get { return includeRoot ? root.GetTotalListLength() : root.GetTotalListLength() - 1; }
         }
 
         public int IndexOf(object item)
         {
-            SharpTreeNode node = item as SharpTreeNode;
-            if (node != null && node.IsVisible && node.GetListRoot() == root)
-            {
+            var node = item as SharpTreeNode;
+            if ((node != null) && node.IsVisible && (node.GetListRoot() == root))
                 if (includeRoot)
                     return SharpTreeNode.GetVisibleIndexForNode(node);
                 else
                     return SharpTreeNode.GetVisibleIndexForNode(node) - 1;
-            }
-            else
-            {
-                return -1;
-            }
+            return -1;
         }
 
         bool IList.IsReadOnly
@@ -121,13 +78,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             get { return false; }
         }
 
-        object ICollection.SyncRoot
-        {
-            get
-            {
-                return syncRoot;
-            }
-        }
+        object ICollection.SyncRoot { get; } = new object();
 
         void IList.Insert(int index, object item)
         {
@@ -156,7 +107,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 
         public void CopyTo(Array array, int arrayIndex)
         {
-            foreach (object item in this)
+            foreach (var item in this)
                 array.SetValue(item, arrayIndex++);
         }
 
@@ -167,10 +118,38 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 
         public IEnumerator GetEnumerator()
         {
-            for (int i = 0; i < this.Count; i++)
-            {
+            for (var i = 0; i < Count; i++)
                 yield return this[i];
-            }
+        }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        public void RaiseCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (CollectionChanged != null)
+                CollectionChanged(this, e);
+        }
+
+        public void NodesInserted(int index, IEnumerable<SharpTreeNode> nodes)
+        {
+            if (!includeRoot) index--;
+            foreach (var node in nodes)
+                RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, node,
+                    index++));
+        }
+
+        public void NodesRemoved(int index, IEnumerable<SharpTreeNode> nodes)
+        {
+            if (!includeRoot) index--;
+            foreach (var node in nodes)
+                RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, node,
+                    index));
+        }
+
+        public void Stop()
+        {
+            Debug.Assert(root.treeFlattener == this);
+            root.treeFlattener = null;
         }
     }
 }

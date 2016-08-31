@@ -10,9 +10,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-
 
 namespace dEngine
 {
@@ -21,34 +19,21 @@ namespace dEngine
     /// </summary>
     public abstract class Sequence<T> where T : struct
     {
-        [InstMember(1)]
-        protected Keypoint[] _keypoints;
-
-        /// <summary>
-        /// The sequence values.
-        /// </summary>
-        public Keypoint[] Keypoints => _keypoints; // TODO: see if array is acceptable, or LuaTable required
+        [InstMember(1)] protected Keypoint[] _keypoints;
 
         /// <summary>
         /// Empty constructor.
         /// </summary>
         protected Sequence()
-        { }
+        {
+        }
 
         /// <summary>
         /// Creates a sequence using two keypoints of the same value.
         /// </summary>
         protected Sequence(T value)
         {
-            _keypoints = new[] { new Keypoint(0, value), new Keypoint(1, value) };
-        }
-
-        /// <summary>
-        /// Creates a new keypoint.
-        /// </summary>
-        public static Keypoint NewKeypoint(float time, T value)
-        {
-            return new Keypoint(time, value);
+            _keypoints = new[] {new Keypoint(0, value), new Keypoint(1, value)};
         }
 
         /// <summary>
@@ -67,7 +52,20 @@ namespace dEngine
             _keypoints = values.ToArray();
         }
 
-        /// <summary/>
+        /// <summary>
+        /// The sequence values.
+        /// </summary>
+        public Keypoint[] Keypoints => _keypoints; // TODO: see if array is acceptable, or LuaTable required
+
+        /// <summary>
+        /// Creates a new keypoint.
+        /// </summary>
+        public static Keypoint NewKeypoint(float time, T value)
+        {
+            return new Keypoint(time, value);
+        }
+
+        /// <summary />
         public override string ToString()
         {
             var str = "";
@@ -89,14 +87,12 @@ namespace dEngine
             /// <summary>
             /// The time in the sequence that the keypoint will be positioned at.
             /// </summary>
-            [InstMember(1)]
-            public readonly float Time;
+            [InstMember(1)] public readonly float Time;
 
             /// <summary>
             /// The value of the keypoint/
             /// </summary>
-            [InstMember(2)]
-            public readonly T Value;
+            [InstMember(2)] public readonly T Value;
 
             /// <summary>
             /// Creates a sequence keypoint.

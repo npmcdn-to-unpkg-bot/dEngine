@@ -11,264 +11,264 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace dEngine.Utility
 {
-	internal static class RawInputDefinitions
-	{
-		/// <summary>
-		/// Enumeration containing the type device the raw input is coming from.
-		/// </summary>
-		public enum RawInputType
-		{
-			/// <summary>
-			/// Mouse input.
-			/// </summary>
-			Mouse = 0,
+    internal static class RawInputDefinitions
+    {
+        /// <summary>
+        /// Contains the raw input from a device.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct RawInput
+        {
+            /// <summary>
+            /// Header for the data.
+            /// </summary>
+            public RawInputHeader Header;
 
-			/// <summary>
-			/// Keyboard input.
-			/// </summary>
-			Keyboard = 1,
+            public Union Data;
 
-			/// <summary>
-			/// Human interface device input.
-			/// </summary>
-			HID = 2,
+            [StructLayout(LayoutKind.Explicit)]
+            public struct Union
+            {
+                /// <summary>
+                /// Mouse raw input data.
+                /// </summary>
+                [FieldOffset(0)] public RawMouse Mouse;
 
-			/// <summary>
-			/// Another device that is not the keyboard or the mouse.
-			/// </summary>
-			Other = 3
-		}
+                /// <summary>
+                /// Keyboard raw input data.
+                /// </summary>
+                [FieldOffset(0)] public RawKeyboard Keyboard;
 
-		/// <summary>
-		/// Enumeration containing flags for raw keyboard input.
-		/// </summary>
-		[Flags]
-		public enum RawKeyboardFlags : ushort
-		{
-			/// <summary></summary>
-			KeyMake = 0,
+                /// <summary>
+                /// HID raw input data.
+                /// </summary>
+                [FieldOffset(0)] public RawHID HID;
+            }
+        }
 
-			/// <summary></summary>
-			KeyBreak = 1,
+        /// <summary>
+        /// Value type for raw input from a HID.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RawHID
+        {
+            /// <summary>Size of the HID data in bytes.</summary>
+            public int Size;
 
-			/// <summary></summary>
-			KeyE0 = 2,
+            /// <summary>Number of HID in Data.</summary>
+            public int Count;
 
-			/// <summary></summary>
-			KeyE1 = 4,
+            /// <summary>Data for the HID.</summary>
+            public IntPtr Data;
+        }
 
-			/// <summary></summary>
-			TerminalServerSetLED = 8,
+        /// <summary>
+        /// Value type for a raw input header.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct RawInputHeader
+        {
+            /// <summary>Type of device the input is coming from.</summary>
+            public RawInputType Type;
 
-			/// <summary></summary>
-			TerminalServerShadow = 0x10,
+            /// <summary>Size of the packet of data.</summary>
+            public int Size;
 
-			/// <summary></summary>
-			TerminalServerVKPACKET = 0x20
-		}
+            /// <summary>Handle to the device sending the data.</summary>
+            public IntPtr Device;
 
-		/// <summary>
-		/// Enumeration containing the button data for raw mouse input.
-		/// </summary>
-		[Flags]
-		public enum RawMouseButtons
-			: ushort
-		{
-			/// <summary>No button.</summary>
-			None = 0,
+            /// <summary>wParam from the window message.</summary>
+            public IntPtr wParam;
+        }
 
-			/// <summary>Left (button 1) down.</summary>
-			LeftDown = 0x0001,
+        /// <summary>
+        /// Contains information about the state of the mouse.
+        /// </summary>
+        [StructLayout(LayoutKind.Explicit)]
+        internal struct RawMouse
+        {
+            /// <summary>
+            /// The mouse state.
+            /// </summary>
+            [FieldOffset(0)] public RawMouseFlags Flags;
 
-			/// <summary>Left (button 1) up.</summary>
-			LeftUp = 0x0002,
+            /// <summary>
+            /// Flags for the event.
+            /// </summary>
+            [FieldOffset(4)] public RawMouseButtons ButtonFlags;
 
-			/// <summary>Right (button 2) down.</summary>
-			RightDown = 0x0004,
+            /// <summary>
+            /// If the mouse wheel is moved, this will contain the delta amount.
+            /// </summary>
+            [FieldOffset(6)] public ushort ButtonData;
 
-			/// <summary>Right (button 2) up.</summary>
-			RightUp = 0x0008,
+            /// <summary>
+            /// Raw button data.
+            /// </summary>
+            [FieldOffset(8)] public uint RawButtons;
 
-			/// <summary>Middle (button 3) down.</summary>
-			MiddleDown = 0x0010,
+            /// <summary>
+            /// The motion in the X direction. This is signed relative motion or
+            /// absolute motion, depending on the value of usFlags.
+            /// </summary>
+            [FieldOffset(12)] public int LastX;
 
-			/// <summary>Middle (button 3) up.</summary>
-			MiddleUp = 0x0020,
+            /// <summary>
+            /// The motion in the Y direction. This is signed relative motion or absolute motion,
+            /// depending on the value of usFlags.
+            /// </summary>
+            [FieldOffset(16)] public int LastY;
 
-			/// <summary>Button 4 down.</summary>
-			Button4Down = 0x0040,
+            /// <summary>
+            /// The device-specific additional information for the event.
+            /// </summary>
+            [FieldOffset(20)] public uint ExtraInformation;
+        }
 
-			/// <summary>Button 4 up.</summary>
-			Button4Up = 0x0080,
+        /// <summary>
+        /// Enumeration containing the flags for raw mouse data.
+        /// </summary>
+        [Flags]
+        internal enum RawMouseFlags : ushort
+        {
+            /// <summary>Relative to the last position.</summary>
+            MoveRelative = 0,
 
-			/// <summary>Button 5 down.</summary>
-			Button5Down = 0x0100,
+            /// <summary>Absolute positioning.</summary>
+            MoveAbsolute = 1,
 
-			/// <summary>Button 5 up.</summary>
-			Button5Up = 0x0200,
+            /// <summary>Coordinate data is mapped to a virtual desktop.</summary>
+            VirtualDesktop = 2,
 
-			/// <summary>Mouse wheel moved.</summary>
-			MouseWheel = 0x0400
-		}
+            /// <summary>Attributes for the mouse have changed.</summary>
+            AttributesChanged = 4
+        }
 
+        /// <summary>
+        /// Value type for raw input from a keyboard.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RawKeyboard
+        {
+            /// <summary>Scan code for key depression.</summary>
+            public short MakeCode;
 
-		/// <summary>
-		/// Contains the raw input from a device.
-		/// </summary>
-		[StructLayout(LayoutKind.Sequential)]
-		internal struct RawInput
-		{
-			/// <summary>
-			/// Header for the data.
-			/// </summary>
-			public RawInputHeader Header;
+            /// <summary>Scan code information.</summary>
+            public RawKeyboardFlags Flags;
 
-			public Union Data;
+            /// <summary>Reserved.</summary>
+            public short Reserved;
 
-			[StructLayout(LayoutKind.Explicit)]
-			public struct Union
-			{
-				/// <summary>
-				/// Mouse raw input data.
-				/// </summary>
-				[FieldOffset(0)] public RawMouse Mouse;
+            /// <summary>Virtual key code.</summary>
+            public Keys VirtualKey;
 
-				/// <summary>
-				/// Keyboard raw input data.
-				/// </summary>
-				[FieldOffset(0)] public RawKeyboard Keyboard;
+            /// <summary>Corresponding window message.</summary>
+            public uint Message;
 
-				/// <summary>
-				/// HID raw input data.
-				/// </summary>
-				[FieldOffset(0)] public RawHID HID;
-			}
-		}
+            /// <summary>Extra information.</summary>
+            public int ExtraInformation;
+        }
 
-		/// <summary>
-		/// Value type for raw input from a HID.
-		/// </summary>
-		[StructLayout(LayoutKind.Sequential)]
-		public struct RawHID
-		{
-			/// <summary>Size of the HID data in bytes.</summary>
-			public int Size;
+        /// <summary>
+        /// Enumeration containing the type device the raw input is coming from.
+        /// </summary>
+        public enum RawInputType
+        {
+            /// <summary>
+            /// Mouse input.
+            /// </summary>
+            Mouse = 0,
 
-			/// <summary>Number of HID in Data.</summary>
-			public int Count;
+            /// <summary>
+            /// Keyboard input.
+            /// </summary>
+            Keyboard = 1,
 
-			/// <summary>Data for the HID.</summary>
-			public IntPtr Data;
-		}
+            /// <summary>
+            /// Human interface device input.
+            /// </summary>
+            HID = 2,
 
-		/// <summary>
-		/// Value type for a raw input header.
-		/// </summary>
-		[StructLayout(LayoutKind.Sequential)]
-		internal struct RawInputHeader
-		{
-			/// <summary>Type of device the input is coming from.</summary>
-			public RawInputType Type;
+            /// <summary>
+            /// Another device that is not the keyboard or the mouse.
+            /// </summary>
+            Other = 3
+        }
 
-			/// <summary>Size of the packet of data.</summary>
-			public int Size;
+        /// <summary>
+        /// Enumeration containing flags for raw keyboard input.
+        /// </summary>
+        [Flags]
+        public enum RawKeyboardFlags : ushort
+        {
+            /// <summary></summary>
+            KeyMake = 0,
 
-			/// <summary>Handle to the device sending the data.</summary>
-			public IntPtr Device;
+            /// <summary></summary>
+            KeyBreak = 1,
 
-			/// <summary>wParam from the window message.</summary>
-			public IntPtr wParam;
-		}
+            /// <summary></summary>
+            KeyE0 = 2,
 
-		/// <summary>
-		/// Contains information about the state of the mouse.
-		/// </summary>
-		[StructLayout(LayoutKind.Explicit)]
-		internal struct RawMouse
-		{
-			/// <summary>
-			/// The mouse state.
-			/// </summary>
-			[FieldOffset(0)] public RawMouseFlags Flags;
+            /// <summary></summary>
+            KeyE1 = 4,
 
-			/// <summary>
-			/// Flags for the event.
-			/// </summary>
-			[FieldOffset(4)] public RawMouseButtons ButtonFlags;
+            /// <summary></summary>
+            TerminalServerSetLED = 8,
 
-			/// <summary>
-			/// If the mouse wheel is moved, this will contain the delta amount.
-			/// </summary>
-			[FieldOffset(6)] public ushort ButtonData;
+            /// <summary></summary>
+            TerminalServerShadow = 0x10,
 
-			/// <summary>
-			/// Raw button data.
-			/// </summary>
-			[FieldOffset(8)] public uint RawButtons;
+            /// <summary></summary>
+            TerminalServerVKPACKET = 0x20
+        }
 
-			/// <summary>
-			/// The motion in the X direction. This is signed relative motion or
-			/// absolute motion, depending on the value of usFlags.
-			/// </summary>
-			[FieldOffset(12)] public int LastX;
+        /// <summary>
+        /// Enumeration containing the button data for raw mouse input.
+        /// </summary>
+        [Flags]
+        public enum RawMouseButtons
+            : ushort
+        {
+            /// <summary>No button.</summary>
+            None = 0,
 
-			/// <summary>
-			/// The motion in the Y direction. This is signed relative motion or absolute motion,
-			/// depending on the value of usFlags.
-			/// </summary>
-			[FieldOffset(16)] public int LastY;
+            /// <summary>Left (button 1) down.</summary>
+            LeftDown = 0x0001,
 
-			/// <summary>
-			/// The device-specific additional information for the event.
-			/// </summary>
-			[FieldOffset(20)] public uint ExtraInformation;
-		}
+            /// <summary>Left (button 1) up.</summary>
+            LeftUp = 0x0002,
 
-		/// <summary>
-		/// Enumeration containing the flags for raw mouse data.
-		/// </summary>
-		[Flags]
-		internal enum RawMouseFlags : ushort
-		{
-			/// <summary>Relative to the last position.</summary>
-			MoveRelative = 0,
+            /// <summary>Right (button 2) down.</summary>
+            RightDown = 0x0004,
 
-			/// <summary>Absolute positioning.</summary>
-			MoveAbsolute = 1,
+            /// <summary>Right (button 2) up.</summary>
+            RightUp = 0x0008,
 
-			/// <summary>Coordinate data is mapped to a virtual desktop.</summary>
-			VirtualDesktop = 2,
+            /// <summary>Middle (button 3) down.</summary>
+            MiddleDown = 0x0010,
 
-			/// <summary>Attributes for the mouse have changed.</summary>
-			AttributesChanged = 4
-		}
+            /// <summary>Middle (button 3) up.</summary>
+            MiddleUp = 0x0020,
 
-		/// <summary>
-		/// Value type for raw input from a keyboard.
-		/// </summary>
-		[StructLayout(LayoutKind.Sequential)]
-		public struct RawKeyboard
-		{
-			/// <summary>Scan code for key depression.</summary>
-			public short MakeCode;
+            /// <summary>Button 4 down.</summary>
+            Button4Down = 0x0040,
 
-			/// <summary>Scan code information.</summary>
-			public RawKeyboardFlags Flags;
+            /// <summary>Button 4 up.</summary>
+            Button4Up = 0x0080,
 
-			/// <summary>Reserved.</summary>
-			public short Reserved;
+            /// <summary>Button 5 down.</summary>
+            Button5Down = 0x0100,
 
-			/// <summary>Virtual key code.</summary>
-			public System.Windows.Forms.Keys VirtualKey;
+            /// <summary>Button 5 up.</summary>
+            Button5Up = 0x0200,
 
-			/// <summary>Corresponding window message.</summary>
-			public uint Message;
-
-			/// <summary>Extra information.</summary>
-			public int ExtraInformation;
-		}
-	}
+            /// <summary>Mouse wheel moved.</summary>
+            MouseWheel = 0x0400
+        }
+    }
 }

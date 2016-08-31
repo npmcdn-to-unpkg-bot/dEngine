@@ -28,9 +28,9 @@
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
         <Setter Property="MinWidth" Value="75px" />
         <Setter Property="MinHeight" Value="31px" />
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="FontFamily" Value="Roboto"/>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontFamily" Value="Roboto" />
         <Setter Property="FontSize" Value="13px" />
 
         <Setter Property="Template">
@@ -38,13 +38,14 @@
                 <ControlTemplate TargetType="Button">
                     <Border CornerRadius="2" TextBlock.Foreground="{TemplateBinding Foreground}" x:Name="Border">
                         <Border.Background>
-                            <SolidColorBrush Color="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <SolidColorBrush
+                                Color="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Border.Background>
 
                         <ContentPresenter Margin="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            RecognizesAccessKey="True" />
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -52,13 +53,13 @@
 
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Opacity" Value="0.5" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="Red"/>
+                <Setter Property="Background" Value="Red" />
             </Trigger>
             <Trigger Property="IsPressed" Value="true">
-                <Setter Property="Background" Value="{StaticResource ControlPressedColor}"/>
+                <Setter Property="Background" Value="{StaticResource ControlPressedColor}" />
             </Trigger>
         </Style.Triggers>
     </Style>

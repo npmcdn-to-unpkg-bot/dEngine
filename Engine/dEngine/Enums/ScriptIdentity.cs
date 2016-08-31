@@ -10,6 +10,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+
 #pragma warning disable 1591
 
 namespace dEngine
@@ -17,12 +18,12 @@ namespace dEngine
     [Flags]
     public enum ScriptIdentity
     {
-        Clr  = 1 << 0,
-        Script     = 1 << 1,
-        Mod        = 1 << 2,
-        Plugin     = 1 << 3,
-        Editor     = 1 << 4,
+        Clr = 1 << 0,
+        Script = 1 << 1,
+        Mod = 1 << 2,
+        Plugin = 1 << 3,
+        Editor = 1 << 4,
         CoreScript = 1 << 5,
-        Server     = 1 << 56,
+        Server = 1 << 56
     }
 }

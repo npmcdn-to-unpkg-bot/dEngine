@@ -11,18 +11,18 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for Steam Avatar sizes.
-	/// </summary>
-	public enum AvatarSize
-	{
-		/// <summary />
-		Small,
+    /// <summary>
+    /// Enum for Steam Avatar sizes.
+    /// </summary>
+    public enum AvatarSize
+    {
+        /// <summary />
+        Small,
 
-		/// <summary />
-		Medium,
+        /// <summary />
+        Medium,
 
-		/// <summary />
-		Large
-	}
+        /// <summary />
+        Large
+    }
 }

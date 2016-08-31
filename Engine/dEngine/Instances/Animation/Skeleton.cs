@@ -11,19 +11,19 @@
 
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Instances
 {
-	/// <summary>
-	/// A skeleton.
-	/// </summary>
-	[TypeId(33), ExplorerOrder(3)]
-	public class Skeleton : Instance
-	{
-		/// <summary>
-		/// The root bone of this skeleton.
-		/// </summary>
-		[InstMember(1)]
-		public Bone RootBone { get; set; }
-	}
+    /// <summary>
+    /// A skeleton.
+    /// </summary>
+    [TypeId(33)]
+    [ExplorerOrder(3)]
+    public class Skeleton : Instance
+    {
+        /// <summary>
+        /// The root bone of this skeleton.
+        /// </summary>
+        [InstMember(1)]
+        public Bone RootBone { get; set; }
+    }
 }

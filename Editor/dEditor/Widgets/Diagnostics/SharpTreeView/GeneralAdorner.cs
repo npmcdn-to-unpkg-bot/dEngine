@@ -17,19 +17,16 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 {
     public class GeneralAdorner : Adorner
     {
+        private FrameworkElement child;
+
         public GeneralAdorner(UIElement target)
             : base(target)
         {
         }
 
-        FrameworkElement child;
-
         public FrameworkElement Child
         {
-            get
-            {
-                return child;
-            }
+            get { return child; }
             set
             {
                 if (child != value)

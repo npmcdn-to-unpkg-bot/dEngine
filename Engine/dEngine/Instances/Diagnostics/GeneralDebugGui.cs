@@ -15,30 +15,34 @@ using dEngine.Instances.Attributes;
 
 namespace dEngine.Instances.Diagnostics
 {
-	[TypeId(197)]
-	public sealed class GeneralDebugGui : DebugGui
-	{
-		private readonly TextLabel _gameTaskLabel;
-		private readonly TextLabel _graphicsTaskLabel;
-		private readonly Stack _stack;
+    [TypeId(197)]
+    public sealed class GeneralDebugGui : DebugGui
+    {
+        private readonly TextLabel _gameTaskLabel;
+        private readonly TextLabel _graphicsTaskLabel;
+        private readonly Stack _stack;
 
-		internal GeneralDebugGui(CoreGui coreGui) : base(coreGui)
-		{
-			_stack = new Stack {Parent = this, Size = new UDim2(0.3f, 0, 0.3f, 0), BackgroundColour = Colour.Transparent};
+        internal GeneralDebugGui(CoreGui coreGui) : base(coreGui)
+        {
+            _stack = new Stack
+            {
+                Parent = this,
+                Size = new UDim2(0.3f, 0, 0.3f, 0),
+                BackgroundColour = Colour.Transparent
+            };
 
-			_graphicsTaskLabel = MakeDebugTextLabel(_stack);
-			_gameTaskLabel = MakeDebugTextLabel(_stack);
-		}
+            _graphicsTaskLabel = MakeDebugTextLabel(_stack);
+            _gameTaskLabel = MakeDebugTextLabel(_stack);
+        }
 
-	    protected override void OnUpdate()
-	    {
-	        
-	    }
+        protected override void OnUpdate()
+        {
+        }
 
-	    public override void Destroy()
-		{
-			base.Destroy();
-			_stack.Destroy();
-		}
-	}
+        public override void Destroy()
+        {
+            base.Destroy();
+            _stack.Destroy();
+        }
+    }
 }

@@ -21,7 +21,8 @@ namespace dEngine.Instances
     /// <summary>
     /// A debug system for a script.
     /// </summary>
-    [TypeId(123), Uncreatable]
+    [TypeId(123)]
+    [Uncreatable]
     public class ScriptDebugger : Instance
     {
         private readonly List<DebuggerBreakpoint> _breakpoints;
@@ -95,9 +96,7 @@ namespace dEngine.Instances
         public DebuggerBreakpoint SetBreakpoint(int line)
         {
             if (_breakpoints.Any(x => x.Line == line))
-            {
                 throw new InvalidOperationException($"A breakpoint is already set at line {line}.");
-            }
 
             var bp = new DebuggerBreakpoint(this, line);
 
@@ -153,6 +152,36 @@ namespace dEngine.Instances
             Script.LuaGlobal[key] = value;
         }
 
+        /// <summary>
+        /// Fired when a breakpoint is added to the script.
+        /// </summary>
+        public readonly Signal<DebuggerBreakpoint> BreakpointAdded;
+
+        /// <summary>
+        /// Fired when a breakpoint is removed from the script.
+        /// </summary>
+        public readonly Signal<DebuggerBreakpoint> BreakpointRemoved;
+
+        /// <summary>
+        /// Fired when a breakpoint is hit.
+        /// </summary>
+        public readonly Signal<DebuggerBreakpoint> EncounteredBreak;
+
+        /// <summary>
+        /// Fired when a script resumes after a break.
+        /// </summary>
+        public readonly Signal<double> Resuming;
+
+        /// <summary>
+        /// Fired when a watch is added.
+        /// </summary>
+        public readonly Signal<DebuggerWatch> WatchAdded;
+
+        /// <summary>
+        /// Fired when a watch is removed.
+        /// </summary>
+        public readonly Signal<DebuggerWatch> WatchRemoved;
+
         internal class LuaDebugger : LuaTraceLineDebugger
         {
             private readonly ScriptDebugger _debugger;
@@ -175,9 +204,7 @@ namespace dEngine.Instances
                 // TODO: evaluate condition
 
                 if (bp != null)
-                {
                     _debugger.EncounteredBreak.Fire(bp);
-                }
             }
 
             protected override void OnExceptionUnwind(LuaTraceLineExceptionEventArgs args)
@@ -216,42 +243,13 @@ namespace dEngine.Instances
                 base.OnExceptionUnwind(args);
             }
         }
-
-        /// <summary>
-        /// Fired when a breakpoint is added to the script.
-        /// </summary>
-        public readonly Signal<DebuggerBreakpoint> BreakpointAdded;
-
-        /// <summary>
-        /// Fired when a breakpoint is removed from the script.
-        /// </summary>
-        public readonly Signal<DebuggerBreakpoint> BreakpointRemoved;
-
-        /// <summary>
-        /// Fired when a breakpoint is hit.
-        /// </summary>
-        public readonly Signal<DebuggerBreakpoint> EncounteredBreak;
-
-        /// <summary>
-        /// Fired when a script resumes after a break.
-        /// </summary>
-        public readonly Signal<double> Resuming;
-
-        /// <summary>
-        /// Fired when a watch is added.
-        /// </summary>
-        public readonly Signal<DebuggerWatch> WatchAdded;
-
-        /// <summary>
-        /// Fired when a watch is removed.
-        /// </summary>
-        public readonly Signal<DebuggerWatch> WatchRemoved;
     }
 
     /// <summary>
     /// A script watch.
     /// </summary>
-    [TypeId(124), Uncreatable]
+    [TypeId(124)]
+    [Uncreatable]
     public class DebuggerWatch : Instance
     {
         internal DebuggerWatch(ScriptDebugger debugger, string expression)
@@ -281,7 +279,8 @@ namespace dEngine.Instances
     /// <summary>
     /// A script breakpoint.
     /// </summary>
-    [TypeId(125), Uncreatable]
+    [TypeId(125)]
+    [Uncreatable]
     public class DebuggerBreakpoint : Instance
     {
         private string _condition;

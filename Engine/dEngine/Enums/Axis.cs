@@ -11,18 +11,18 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for the X, Y and Z axes.
-	/// </summary>
-	public enum Axis
-	{
-		/// <summary>The X axis.</summary>
-		X,
+    /// <summary>
+    /// Enum for the X, Y and Z axes.
+    /// </summary>
+    public enum Axis
+    {
+        /// <summary>The X axis.</summary>
+        X,
 
-		/// <summary>The Y axis.</summary>
-		Y,
+        /// <summary>The Y axis.</summary>
+        Y,
 
-		/// <summary>The Z axis.</summary>
-		Z
-	}
+        /// <summary>The Z axis.</summary>
+        Z
+    }
 }

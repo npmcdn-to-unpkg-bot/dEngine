@@ -13,11 +13,11 @@ using System;
 
 namespace dEngine.Instances.Attributes
 {
-	/// <summary>
-	/// Prevents scripts from creating an instance of this type.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Class)]
-	public class UncreatableAttribute : Attribute
-	{
-	}
+    /// <summary>
+    /// Prevents scripts from creating an instance of this type.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class UncreatableAttribute : Attribute
+    {
+    }
 }

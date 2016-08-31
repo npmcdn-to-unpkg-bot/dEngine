@@ -35,6 +35,8 @@ namespace dEngine.Settings.Global
         private static float _simulatedRandomLatency;
         private static double _tickrate;
 
+        private static float _networkingScale;
+
         static NetworkSettings()
         {
             _peerConfig = new NetPeerConfiguration($"dEngineGame_{Engine.AppId}");
@@ -69,7 +71,7 @@ namespace dEngine.Settings.Global
                 NotifyChangedStatic();
             }
         }
-        
+
         /// <summary>
         /// Enables UPnP support, which allows port forwarding and access to the external IP address.
         /// </summary>
@@ -117,7 +119,7 @@ namespace dEngine.Settings.Global
         }
 
         /// <summary>
-        /// The behaviour of unreliable sends above <see cref="Mtu"/>.
+        /// The behaviour of unreliable sends above <see cref="Mtu" />.
         /// </summary>
         [EditorVisible("MTU", "Unreliable Size Behaviour")]
         public static UnreliableSizeBehaviour UnreliableSizeBehaviour
@@ -133,7 +135,8 @@ namespace dEngine.Settings.Global
         /// <summary>
         /// Simulates packet loss.
         /// </summary>
-        [EditorVisible("Lag Simulation", "Simulated Packet Loss"), Range(0, 1)]
+        [EditorVisible("Lag Simulation", "Simulated Packet Loss")]
+        [Range(0, 1)]
         public static float SimulatedPacketLoss
         {
             get { return _simulatedPacketLoss; }
@@ -148,7 +151,8 @@ namespace dEngine.Settings.Global
         /// <summary>
         /// The chance for a packet to be duplicated.
         /// </summary>
-        [EditorVisible("Lag Simulation", "Simulated Duplicates Chance"), Range(0, 1)]
+        [EditorVisible("Lag Simulation", "Simulated Duplicates Chance")]
+        [Range(0, 1)]
         public static float SimulatedDuplicatesChance
         {
             get { return _simulatedDuplicatesChance; }
@@ -326,8 +330,6 @@ namespace dEngine.Settings.Global
             }
         }
 
-        private static float _networkingScale;
-
         /// <summary>
         /// Visual smoothing of network data such as players and objects.
         /// </summary>
@@ -345,7 +347,6 @@ namespace dEngine.Settings.Global
                 NotifyChangedStatic();
             }
         }
-
 
 
         internal static NetPeerConfiguration GetNetPeerConfig(NetworkPeer peer)
@@ -369,7 +370,7 @@ namespace dEngine.Settings.Global
             ConnectionTimeout = 25.0f;
             UseMessageRecycling = true;
             RecycledCacheMaxCount = 64;
-            Tickrate = 1 / 20f;
+            Tickrate = 1/20f;
         }
 
         private static void NotifyChangedStatic([CallerMemberName] string propertyName = null)

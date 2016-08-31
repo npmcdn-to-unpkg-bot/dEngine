@@ -16,7 +16,8 @@ using dEngine.Services;
 
 namespace dEngine.Instances.Diagnostics
 {
-    [TypeId(204), Uncreatable]
+    [TypeId(204)]
+    [Uncreatable]
     public class StatsItem : Instance
     {
         protected double _value;
@@ -35,8 +36,17 @@ namespace dEngine.Instances.Diagnostics
             Parent = parent;
         }
 
-        internal double Value { get { return _value; } set { _value = value; } }
-        internal string ValueString { get { return _valueString ?? _value.ToString(); } set { _valueString = value; } }
+        internal double Value
+        {
+            get { return _value; }
+            set { _value = value; }
+        }
+
+        internal string ValueString
+        {
+            get { return _valueString ?? _value.ToString(); }
+            set { _valueString = value; }
+        }
 
         [ScriptSecurity(ScriptIdentity.Plugin)]
         public double GetValue()

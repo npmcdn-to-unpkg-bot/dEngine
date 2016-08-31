@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Widgets.ContentBrowser
 {
-	/// <summary>
-	/// Interaction logic for FolderOptions.xaml
-	/// </summary>
-	public partial class FolderOptions : UserControl
-	{
-		public FolderOptions()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for FolderOptions.xaml
+    /// </summary>
+    public partial class FolderOptions : UserControl
+    {
+        public FolderOptions()
+        {
+            InitializeComponent();
+        }
+    }
 }

@@ -16,7 +16,9 @@ namespace dEngine.Instances
     /// <summary>
     /// A <see cref="ValueContainer" /> that holds a boolean.
     /// </summary>
-    [TypeId(50), ToolboxGroup("Values"), ExplorerOrder(3)]
+    [TypeId(50)]
+    [ToolboxGroup("Values")]
+    [ExplorerOrder(3)]
     public sealed class BoolValue : ValueContainer
     {
         private bool _value;
@@ -30,7 +32,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The value this container holds.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public bool Value
         {
             get { return _value; }

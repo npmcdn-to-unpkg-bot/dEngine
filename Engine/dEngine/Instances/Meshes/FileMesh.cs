@@ -12,32 +12,32 @@
 using dEngine.Data;
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Instances
 {
-	[TypeId(26)]
-	public abstract class FileMesh : Mesh
-	{
-		private Content<Geometry> _meshContent;
+    [TypeId(26)]
+    public abstract class FileMesh : Mesh
+    {
+        private Content<Geometry> _meshContent;
 
-		/// <inheritdoc />
-		protected FileMesh()
-		{
-			_meshContent = new Content<Geometry>();
-		}
+        /// <inheritdoc />
+        protected FileMesh()
+        {
+            _meshContent = new Content<Geometry>();
+        }
 
-		/// <summary>
-		/// The content ID of the skeletal mesh data.
-		/// </summary>
-		[InstMember(1), EditorVisible]
-		public Content<Geometry> MeshId
-		{
-			get { return _meshContent; }
-			set
-			{
-				_meshContent = value;
-				value.Subscribe(this, (id, asset) => { SetGeometry(asset); });
-			}
-		}
-	}
+        /// <summary>
+        /// The content ID of the skeletal mesh data.
+        /// </summary>
+        [InstMember(1)]
+        [EditorVisible]
+        public Content<Geometry> MeshId
+        {
+            get { return _meshContent; }
+            set
+            {
+                _meshContent = value;
+                value.Subscribe(this, (id, asset) => { SetGeometry(asset); });
+            }
+        }
+    }
 }

@@ -20,7 +20,6 @@ using System.Xml;
 using Caliburn.Micro;
 using dEditor.Framework;
 using dEditor.Instances;
-using dEditor.Utility;
 using dEditor.Widgets.CodeEditor.Commands;
 using dEngine.Instances;
 using dEngine.Services;
@@ -34,12 +33,6 @@ namespace dEditor.Widgets.CodeEditor
     [Export(typeof(ICodeEditor))]
     public class CodeEditorViewModel : Document, ICodeEditor
     {
-        public static readonly DependencyProperty ZoomInCommandProperty = DependencyProperty.Register("ZoomInCommand",
-            typeof(ICommand), typeof(CodeEditorViewModel));
-
-        public static readonly DependencyProperty ZoomOutCommandProperty = DependencyProperty.Register("ZoomOutCommand",
-            typeof(ICommand), typeof(CodeEditorViewModel));
-
         private FontFamily _fontFamily;
         private float _fontSize;
         private SolidColorBrush _foregroundBrush;
@@ -61,16 +54,6 @@ namespace dEditor.Widgets.CodeEditor
                 var test = new TextEditor();
                 AvalonEditCommands.DeleteLine.Execute(null, test);
             });
-        }
-
-        protected override void OnActivate()
-        {
-            ContextActionService.SetState("scriptEditorFocus", true);
-        }
-
-        protected override void OnDeactivate(bool close)
-        {
-            ContextActionService.SetState("scriptEditorFocus", false);
         }
 
         public CodeEditorViewModel(LuaSourceContainer luaSourceContainer)
@@ -138,6 +121,8 @@ namespace dEditor.Widgets.CodeEditor
             }
         }
 
+        public TextEditor TextEditor { get; set; }
+
         public void UpdateTheme()
         {
             using (var stream = Assembly.GetExecutingAssembly()
@@ -153,7 +138,7 @@ namespace dEditor.Widgets.CodeEditor
 
                 var tc = EditorSettings.TextColour;
                 ForegroundBrush =
-                    new SolidColorBrush(Color.FromRgb((byte)(tc.r * 255), (byte)(tc.g * 255), (byte)(tc.b * 255)));
+                    new SolidColorBrush(Color.FromRgb((byte)(tc.r*255), (byte)(tc.g*255), (byte)(tc.b*255)));
 
                 var reader = new XmlTextReader(new StringReader(xml));
 
@@ -166,7 +151,16 @@ namespace dEditor.Widgets.CodeEditor
         }
 
         public string CurrentSelection { get; set; }
-        public TextEditor TextEditor { get; set; }
+
+        protected override void OnActivate()
+        {
+            ContextActionService.SetState("scriptEditorFocus", true);
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            ContextActionService.SetState("scriptEditorFocus", false);
+        }
 
         public override int GetHashCode()
         {
@@ -176,7 +170,7 @@ namespace dEditor.Widgets.CodeEditor
         public override bool Equals(object obj)
         {
             var other = obj as CodeEditorViewModel;
-            return other != null
+            return (other != null)
                    && Equals(LuaSourceContainer, other.LuaSourceContainer);
         }
 
@@ -190,5 +184,11 @@ namespace dEditor.Widgets.CodeEditor
             var editor = IoC.Get<ICodeEditor>(script.InstanceId);
             Editor.Current.Shell.ActiveDocument = (CodeEditorViewModel)editor;
         }
+
+        public static readonly DependencyProperty ZoomInCommandProperty = DependencyProperty.Register("ZoomInCommand",
+            typeof(ICommand), typeof(CodeEditorViewModel));
+
+        public static readonly DependencyProperty ZoomOutCommandProperty = DependencyProperty.Register("ZoomOutCommand",
+            typeof(ICommand), typeof(CodeEditorViewModel));
     }
 }

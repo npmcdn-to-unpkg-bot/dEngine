@@ -13,26 +13,26 @@ using System;
 
 namespace dEngine.Instances.Attributes
 {
-	/// <summary>
-	/// An attribute for hinting at the intended range of a property.
-	/// </summary>
-	public class RangeAttribute : Attribute
-	{
+    /// <summary>
+    /// An attribute for hinting at the intended range of a property.
+    /// </summary>
+    public class RangeAttribute : Attribute
+    {
+        /// <summary />
+        public RangeAttribute(double min, double max)
+        {
+            Min = min;
+            Max = max;
+        }
+
         /// <summary>
         /// The maximum value.
         /// </summary>
-		public double Max { get; }
+        public double Max { get; }
 
         /// <summary>
         /// The minimum value.
         /// </summary>
-		public double Min { get; }
-
-        /// <summary/>
-		public RangeAttribute(double min, double max)
-		{
-			Min = min;
-			Max = max;
-		}
-	}
+        public double Min { get; }
+    }
 }

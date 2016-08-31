@@ -11,28 +11,23 @@
 
 using System;
 using BulletSharp;
+using BulletSharp.Math;
 using dEngine.Instances.Attributes;
 using dEngine.Instances.Interfaces;
 using dEngine.Services;
 using dEngine.Utility;
-
-using SharpDX;
-using Matrix = BulletSharp.Math.Matrix;
 
 namespace dEngine.Instances
 {
     /// <summary>
     /// A character is an instance which can be controlled by players or AI.
     /// </summary>
-    [TypeId(22), ExplorerOrder(5), ToolboxGroup("Gameplay")]
+    [TypeId(22)]
+    [ExplorerOrder(5)]
+    [ToolboxGroup("Gameplay")]
     public sealed class Character : Part, ICameraSubject
     {
         private readonly CharacterMotionState _motionState;
-
-        /// <summary>
-        /// Fired when <see cref="Health" /> reaches zero.
-        /// </summary>
-        public readonly Signal Died;
 
         private CFrame _cframe;
         private Vector3 _headOffset;
@@ -62,16 +57,6 @@ namespace dEngine.Instances
             Changed.Connect(OnChanged);
         }
 
-        private void OnChanged(string prop)
-        {
-            if (prop == nameof(Size))
-            {
-                var size = Size;
-                _capsuleRadius = Math.Max(size.x, size.z)/2.0f;
-                _capsuleHeight = size.y;
-            }
-        }
-
         internal int ShieldCount { get; set; }
 
         /// <summary>
@@ -98,7 +83,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The speed at which the character moves.
         /// </summary>
-        [InstMember(1), EditorVisible("Movement")]
+        [InstMember(1)]
+        [EditorVisible("Movement")]
         public float WalkSpeed
         {
             get { return _walkSpeed; }
@@ -113,13 +99,14 @@ namespace dEngine.Instances
         /// <summary>
         /// The amount of health the Humanoid has.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public float Health
         {
             get { return _health; }
             set
             {
-                if (value == _health || (value > 0 && _health == 0)) return;
+                if ((value == _health) || ((value > 0) && (_health == 0))) return;
 
                 _health = value;
 
@@ -133,14 +120,15 @@ namespace dEngine.Instances
         /// <summary>
         /// The radius of the collision capsule.
         /// </summary>
-        [InstMember(3), EditorVisible("Physics")]
+        [InstMember(3)]
+        [EditorVisible("Physics")]
         public float CapsuleRadius
         {
             get { return _capsuleRadius; }
             set
             {
                 if (value == _capsuleRadius) return;
-                Size = new Vector3(value * 2, _capsuleHeight, value * 2);
+                Size = new Vector3(value*2, _capsuleHeight, value*2);
                 RebuildRigidBody();
                 NotifyChanged();
             }
@@ -149,14 +137,15 @@ namespace dEngine.Instances
         /// <summary>
         /// The height of the collision capsule.
         /// </summary>
-        [InstMember(4), EditorVisible("Physics")]
+        [InstMember(4)]
+        [EditorVisible("Physics")]
         public float CapsuleHeight
         {
             get { return _capsuleHeight; }
             set
             {
                 if (value == _capsuleHeight) return;
-                Size = new Vector3(_capsuleRadius * 2, value, _capsuleRadius * 2);
+                Size = new Vector3(_capsuleRadius*2, value, _capsuleRadius*2);
                 RebuildRigidBody();
                 NotifyChanged();
             }
@@ -165,7 +154,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The camera offset from the center of the capsule.
         /// </summary>
-        [InstMember(5), EditorVisible]
+        [InstMember(5)]
+        [EditorVisible]
         public Vector3 HeadOffset
         {
             get { return _headOffset; }
@@ -206,6 +196,16 @@ namespace dEngine.Instances
             return (Vector3)RigidBody.LinearVelocity;
         }
 
+        private void OnChanged(string prop)
+        {
+            if (prop == nameof(Size))
+            {
+                var size = Size;
+                _capsuleRadius = Math.Max(size.x, size.z)/2.0f;
+                _capsuleHeight = size.y;
+            }
+        }
+
         /// <summary>
         /// Subtracts health if the Humanoid is not protected by a <see cref="Forcefield" />.
         /// </summary>
@@ -213,11 +213,9 @@ namespace dEngine.Instances
         public void TakeDamage(float amount)
         {
             if (!IsShielded)
-            {
                 Health -= Math.Abs(amount);
-            }
         }
-        
+
         /// <summary>
         /// Adds health to the Humanoid.
         /// </summary>
@@ -241,41 +239,23 @@ namespace dEngine.Instances
             var moved = true;
 
             if (forward && left && !right)
-            {
                 angleY = 45;
-            }
             else if (forward && right && !left)
-            {
                 angleY = -45;
-            }
             else if (forward)
-            {
                 angleY = 0;
-            }
             else if (backward && left && !right)
-            {
                 angleY = 180 + -45;
-            }
             else if (backward && right && !left)
-            {
                 angleY = 180 + 45;
-            }
             else if (backward)
-            {
                 angleY = 180;
-            }
             else if (left && !right)
-            {
                 angleY = 90;
-            }
             else if (right && !left)
-            {
                 angleY = -90;
-            }
             else
-            {
                 moved = false;
-            }
 
             angleY *= Mathf.Deg2Rad;
 
@@ -284,9 +264,9 @@ namespace dEngine.Instances
             if (moved)
             {
                 var cameraCF = Game.FocusedCamera?.CFrame ?? CFrame.Identity;
-                var moveCF = cameraCF * CFrame.Angles(0, angleY, 0);
+                var moveCF = cameraCF*CFrame.Angles(0, angleY, 0);
 
-                var moveDir = (moveCF.lookVector * _walkSpeed);
+                var moveDir = moveCF.lookVector*_walkSpeed;
                 MoveDirection = new Vector3(moveDir.X, 0, moveDir.Y).unit;
                 linearVelocity = new BulletSharp.Math.Vector3(moveDir.X, 0, moveDir.Z);
             }
@@ -325,7 +305,7 @@ namespace dEngine.Instances
                 _capsuleShape?.Dispose();
                 RigidBody?.Dispose();
 
-                _capsuleShape = new CapsuleShape(_capsuleRadius, _capsuleHeight / 2);
+                _capsuleShape = new CapsuleShape(_capsuleRadius, _capsuleHeight/2);
                 var mass = GetMass();
                 var intertia = _capsuleShape.CalculateLocalInertia(mass);
                 var constructionInfo = new RigidBodyConstructionInfo(mass, _motionState, _capsuleShape, intertia);
@@ -360,13 +340,9 @@ namespace dEngine.Instances
             Skeleton skeleton;
 
             if ((skeletalMesh = child as SkeletalMesh) != null)
-            {
                 SkeletalMesh = skeletalMesh;
-            }
             else if ((skeleton = child as Skeleton) != null)
-            {
                 Skeleton = skeleton;
-            }
         }
 
         /// <inheritdoc />
@@ -374,14 +350,10 @@ namespace dEngine.Instances
         {
             base.OnChildRemoved(child);
 
-            if ((child as SkeletalMesh) != null)
-            {
+            if (child as SkeletalMesh != null)
                 SkeletalMesh = null;
-            }
-            else if ((child as Skeleton) != null)
-            {
+            else if (child as Skeleton != null)
                 Skeleton = null;
-            }
         }
 
         /// <summary>
@@ -389,7 +361,7 @@ namespace dEngine.Instances
         /// </summary>
         public override float GetMass()
         {
-            return _capsuleRadius * _capsuleHeight * _capsuleRadius * 0.7f;
+            return _capsuleRadius*_capsuleHeight*_capsuleRadius*0.7f;
         }
 
         /// <summary>
@@ -399,7 +371,7 @@ namespace dEngine.Instances
         public void Teleport(Vector3 position)
         {
             var rotation = _cframe - _cframe.p;
-            RigidBody.WorldTransform = (Matrix)(new CFrame(position) * rotation);
+            RigidBody.WorldTransform = (Matrix)(new CFrame(position)*rotation);
         }
 
         /// <summary>
@@ -409,8 +381,13 @@ namespace dEngine.Instances
         /// <param name="lookVector">The direction to face.</param>
         public void Teleport(Vector3 position, Vector3 lookVector)
         {
-            RigidBody.WorldTransform = (Matrix)(new CFrame(position, position + lookVector));
+            RigidBody.WorldTransform = (Matrix)new CFrame(position, position + lookVector);
         }
+
+        /// <summary>
+        /// Fired when <see cref="Health" /> reaches zero.
+        /// </summary>
+        public readonly Signal Died;
 
         internal class CharacterMotionState : MotionState
         {

@@ -12,13 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using dEngine.Instances;
 using dEngine.Settings.Global;
 using dEngine.Utility;
 using Neo.IronLua;
+
 #pragma warning disable 4014
 
 namespace dEngine.Services
@@ -26,6 +26,11 @@ namespace dEngine.Services
     public partial class ScriptService
     {
         internal static ConcurrentWorkQueue<Execution> ExecutionQueue { get; set; }
+
+        /// <summary>
+        /// Gets the coroutine that the accessing script is running on.
+        /// </summary>
+        internal static LuaThread CurrentThread => (LuaThread)LuaThread.running()[0];
 
         /// <summary>
         /// Starts a script.
@@ -48,41 +53,39 @@ namespace dEngine.Services
                     continue;
 
                 if (isServer)
-                {
                     if (!(script is LocalScript) &&
                         (script.IsDescendantOf(Game.Workspace) ||
                          script.IsDescendantOf(ServerScriptService.Service)))
-                    {
                         script.Run();
-                    }
-                }
 
                 if (isClient)
-                {
                     if (script is LocalScript && script.IsDescendantOf(Players.Service.LocalPlayer))
-                    {
                         script.Run();
-                    }
-                }
             }
         }
 
         internal static void StopAllScripts()
         {
             foreach (var script in Scripts.Values)
-            {
                 script.Stop();
-            }
         }
 
         internal static void ResumeWaitingScripts()
         {
-            if (RunService.SimulationState == SimulationState.Paused || _stopwatch.Elapsed.TotalSeconds < 0.03)
+            if ((RunService.SimulationState == SimulationState.Paused) || (_stopwatch.Elapsed.TotalSeconds < 0.03))
                 return;
 
             ExecutionQueue.Work();
 
             _stopwatch.Restart();
+        }
+
+        /// <summary>
+        /// Yields the coroutine that the accessing script is running on.
+        /// </summary>
+        internal static void YieldThread()
+        {
+            LuaThread.yield(null);
         }
 
         internal abstract class Execution
@@ -128,7 +131,11 @@ namespace dEngine.Services
             {
                 var compileOptions = new CustomCompileOptions(Script)
                 {
-                    DebugEngine = LuaSettings.DebugEngineEnabled ? (Script.Debugger?.NeoDebugger ?? (Script.Debugger = new ScriptDebugger(Script)).NeoDebugger) : null
+                    DebugEngine =
+                        LuaSettings.DebugEngineEnabled
+                            ? (Script.Debugger?.NeoDebugger ??
+                               (Script.Debugger = new ScriptDebugger(Script)).NeoDebugger)
+                            : null
                 };
 
                 var del = (Action)delegate
@@ -140,7 +147,8 @@ namespace dEngine.Services
                         Script.IsRunning = true;
                         CurrentScript = Script;
 
-                        var chunk = Lua.CompileChunk(new StringReader(Script.Source), Script.InstanceId, compileOptions, new KeyValuePair<string, Type>("args", typeof(LuaTable)));
+                        var chunk = Lua.CompileChunk(new StringReader(Script.Source), Script.InstanceId, compileOptions,
+                            new KeyValuePair<string, Type>("args", typeof(LuaTable)));
                         var argsTable = Args.ToLuaTable();
 
                         Result = Script.LuaGlobal.DoChunk(chunk, argsTable);
@@ -169,7 +177,8 @@ namespace dEngine.Services
             private readonly LuaThread _luaThread;
             private readonly Action _continueAction;
 
-            internal WaitExecution(LuaSourceContainer source, LuaThread thread, double seconds, Action continueAction = null) : base(source)
+            internal WaitExecution(LuaSourceContainer source, LuaThread thread, double seconds,
+                Action continueAction = null) : base(source)
             {
                 _luaThread = thread;
                 _continueAction = continueAction;
@@ -191,19 +200,6 @@ namespace dEngine.Services
 
                 return true;
             }
-        }
-
-        /// <summary>
-        /// Gets the coroutine that the accessing script is running on.
-        /// </summary>
-        internal static LuaThread CurrentThread => (LuaThread)LuaThread.running()[0];
-
-        /// <summary>
-        /// Yields the coroutine that the accessing script is running on.
-        /// </summary>
-        internal static void YieldThread()
-        {
-            LuaThread.yield(null);
         }
     }
 }

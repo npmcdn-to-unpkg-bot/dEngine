@@ -11,24 +11,24 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// The cascade partitioning method.
-	/// </summary>
-	public enum CascadePartitionMode
-	{
-		/// <summary>
-		/// Use manually defined splits.
-		/// </summary>
-		Manual,
+    /// <summary>
+    /// The cascade partitioning method.
+    /// </summary>
+    public enum CascadePartitionMode
+    {
+        /// <summary>
+        /// Use manually defined splits.
+        /// </summary>
+        Manual,
 
-		/// <summary>
-		/// Use a logarithmic algorithm to determine splits.
-		/// </summary>
-		Logarithmic,
+        /// <summary>
+        /// Use a logarithmic algorithm to determine splits.
+        /// </summary>
+        Logarithmic,
 
-		/// <summary>
-		/// Use the PSSM algorithm to determine splits.
-		/// </summary>
-		ParallelSplit
-	}
+        /// <summary>
+        /// Use the PSSM algorithm to determine splits.
+        /// </summary>
+        ParallelSplit
+    }
 }

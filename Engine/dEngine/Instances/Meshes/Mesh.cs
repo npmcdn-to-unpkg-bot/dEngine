@@ -16,137 +16,134 @@ using dEngine.Instances.Attributes;
 using dEngine.Instances.Materials;
 using dEngine.Utility;
 
-
 namespace dEngine.Instances
 {
-	/// <summary>
-	/// A base class for meshes.
-	/// </summary>
-	[TypeId(25), ToolboxGroup("Brick equipment")]
-	public abstract class Mesh : Instance
-	{
-		/// <summary>
-		/// The geometry to render.
-		/// </summary>
-		protected Geometry _geometry;
+    /// <summary>
+    /// A base class for meshes.
+    /// </summary>
+    [TypeId(25)]
+    [ToolboxGroup("Brick equipment")]
+    public abstract class Mesh : Instance
+    {
+        /// <summary>
+        /// The geometry to render.
+        /// </summary>
+        protected Geometry _geometry;
 
-		private Material _material;
-		private Vector3 _offset;
-		private Part _parentPart;
-		private Vector3 _scale;
-		private bool _usePartSize;
+        private Vector3 _offset;
+        private Part _parentPart;
+        private Vector3 _scale;
+        private bool _usePartSize;
 
-		/// <inheritdoc />
-		protected Mesh()
-		{
-		    _material = Material.Smooth;
+        /// <inheritdoc />
+        protected Mesh()
+        {
+            Material = Material.Smooth;
 
             Scale = Vector3.One;
-			Renderer.Meshes.TryAdd(this);
-		}
+            Renderer.Meshes.TryAdd(this);
+        }
 
-		internal Geometry Geometry => _geometry;
+        internal Geometry Geometry => _geometry;
 
-		/// <summary>
-		/// The offset of the mesh from its origin.
-		/// </summary>
-		[InstMember(1), EditorVisible]
-		public Vector3 Offset
-		{
-			get { return _offset; }
-			set
-			{
-				if (value == _offset) return;
-				_offset = value;
-				GeometryUpdated?.Invoke();
-				NotifyChanged();
-			}
-		}
+        /// <summary>
+        /// The offset of the mesh from its origin.
+        /// </summary>
+        [InstMember(1)]
+        [EditorVisible]
+        public Vector3 Offset
+        {
+            get { return _offset; }
+            set
+            {
+                if (value == _offset) return;
+                _offset = value;
+                GeometryUpdated?.Invoke();
+                NotifyChanged();
+            }
+        }
 
-		/// <summary>
-		/// The scale of the mesh.
-		/// </summary>
-		[InstMember(2), EditorVisible]
-		public Vector3 Scale
-		{
-			get { return _scale; }
-			set
-			{
-				if (value == _scale)
-					return;
+        /// <summary>
+        /// The scale of the mesh.
+        /// </summary>
+        [InstMember(2)]
+        [EditorVisible]
+        public Vector3 Scale
+        {
+            get { return _scale; }
+            set
+            {
+                if (value == _scale)
+                    return;
 
-				_scale = value;
-				GeometryUpdated?.Invoke();
-				NotifyChanged(nameof(Scale));
-			}
-		}
+                _scale = value;
+                GeometryUpdated?.Invoke();
+                NotifyChanged(nameof(Scale));
+            }
+        }
 
-		/// <summary>
-		/// Determines whether the mesh uses the parent's <see cref="Part.Size" /> property.
-		/// </summary>
-		[InstMember(3), EditorVisible]
-		public bool UsePartSize
-		{
-			get { return _usePartSize; }
-			set
-			{
-				if (value == _usePartSize)
-					return;
+        /// <summary>
+        /// Determines whether the mesh uses the parent's <see cref="Part.Size" /> property.
+        /// </summary>
+        [InstMember(3)]
+        [EditorVisible]
+        public bool UsePartSize
+        {
+            get { return _usePartSize; }
+            set
+            {
+                if (value == _usePartSize)
+                    return;
 
-				_usePartSize = value;
-				GeometryUpdated?.Invoke();
-				NotifyChanged(nameof(Scale));
-			}
-		}
+                _usePartSize = value;
+                GeometryUpdated?.Invoke();
+                NotifyChanged(nameof(Scale));
+            }
+        }
 
-		/// <summary>
-		/// The material to use for this mesh.
-		/// </summary>
-		[InstMember(4), EditorVisible, ContentId(ContentType.Material)]
-		public Material Material
-		{
-			get { return _material; }
-			set
-			{
-				_material = value;
-			}
-		}
+        /// <summary>
+        /// The material to use for this mesh.
+        /// </summary>
+        [InstMember(4)]
+        [EditorVisible]
+        [ContentId(ContentType.Material)]
+        public Material Material { get; set; }
 
-		/// <inheritdoc />
-		protected override void OnAncestryChanged(Instance child, Instance parent)
-		{
-			base.OnAncestryChanged(child, parent);
+        /// <inheritdoc />
+        protected override void OnAncestryChanged(Instance child, Instance parent)
+        {
+            base.OnAncestryChanged(child, parent);
 
-			if (child == this)
-			{
-				if (_parentPart != null)
-					_parentPart.ChildMesh = null;
+            if (child == this)
+            {
+                if (_parentPart != null)
+                    _parentPart.ChildMesh = null;
 
-				_parentPart = parent as Part;
-				if (_parentPart != null)
-					_parentPart.ChildMesh = this;
-			}
-		}
+                _parentPart = parent as Part;
+                if (_parentPart != null)
+                    _parentPart.ChildMesh = this;
+            }
+        }
 
-		/// <summary>
-		/// </summary>
-		protected void InvokeGeometryUpdated()
-		{
-			GeometryUpdated?.Invoke();
-		}
+        /// <summary>
+        /// </summary>
+        protected void InvokeGeometryUpdated()
+        {
+            GeometryUpdated?.Invoke();
+        }
 
-		/// <summary>
-		/// </summary>
-		internal void SetGeometry(Geometry geometry)
-		{
-			_geometry = geometry;
-            
-			Material = _geometry?.Material;
+        /// <summary>
+        /// </summary>
+        internal void SetGeometry(Geometry geometry)
+        {
+            _geometry = geometry;
 
-			GeometryChanged?.Invoke(geometry);
-		}
+            Material = _geometry?.Material;
 
-		internal event Action GeometryUpdated;
-		internal event Action<Geometry> GeometryChanged;
-	}
+            GeometryChanged?.Invoke(geometry);
+        }
+
+        internal event Action GeometryUpdated;
+        internal event Action<Geometry> GeometryChanged;
+    }
 }

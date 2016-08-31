@@ -13,15 +13,15 @@ using System;
 
 namespace dEditor.Widgets.ObjectBrowser
 {
-	public class EnumItemEntry : MemberEntry
-	{
-		public EnumItemEntry(Type enumType, string key)
-		{
-			Name = key;
-			Icon = new Uri("/dEditor;component/Content/Icons/Toolbar/EnumItem_16x.png", UriKind.Relative);
-			EnumType = enumType;
-		}
+    public class EnumItemEntry : MemberEntry
+    {
+        public EnumItemEntry(Type enumType, string key)
+        {
+            Name = key;
+            Icon = new Uri("/dEditor;component/Content/Icons/Toolbar/EnumItem_16x.png", UriKind.Relative);
+            EnumType = enumType;
+        }
 
-		public Type EnumType { get; }
-	}
+        public Type EnumType { get; }
+    }
 }

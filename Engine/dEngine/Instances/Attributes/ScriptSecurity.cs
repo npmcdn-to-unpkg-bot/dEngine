@@ -10,26 +10,25 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using dEngine.Services;
-using System.Runtime.CompilerServices;
 
 namespace dEngine.Instances.Attributes
 {
     /// <summary>
     /// Defines the required script identity to access this member.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property), Serializable]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
+    [Serializable]
     public class ScriptSecurityAttribute : Attribute, IValueAttribute
     {
-        /// <summary/>
-        public ScriptIdentity Identity { get; }
-
-        /// <summary/>
+        /// <summary />
         internal ScriptSecurityAttribute(ScriptIdentity identity)
         {
             Identity = identity;
         }
-        
+
+        /// <summary />
+        public ScriptIdentity Identity { get; }
+
         string IValueAttribute.GetValue()
         {
             return Identity.ToString();

@@ -114,13 +114,13 @@ namespace dEngine.Graphics
                 return;
 
             var stride = InstanceRenderData.Stride;
-            var length = stride * Math.Max(_renderables.Count, 1); // buffers with a size of 0 are invalid
+            var length = stride*Math.Max(_renderables.Count, 1); // buffers with a size of 0 are invalid
 
             var gpuBuffer = InstanceBufferGpu;
 
-            if (gpuBuffer?.IsDisposed != false || length > gpuBuffer.Description.SizeInBytes)
+            if ((gpuBuffer?.IsDisposed != false) || (length > gpuBuffer.Description.SizeInBytes))
             {
-                var newLength = length * 2;
+                var newLength = length*2;
 
                 gpuBuffer?.Dispose();
 
@@ -199,13 +199,11 @@ namespace dEngine.Graphics
             var newTopology = Geometry.PrimitiveTopology;
 
             if (newTopology != context.InputAssembler.PrimitiveTopology)
-            {
                 context.InputAssembler.PrimitiveTopology = Geometry.PrimitiveTopology;
-            }
 
             context.InputAssembler.SetVertexBuffers(0, Bindings);
             context.InputAssembler.SetIndexBuffer(Geometry.IndexBuffer, Format.R32_UInt, 0);
-            
+
             context.DrawIndexedInstanced(Geometry.IndexCount, InstanceCount, 0, 0, 0);
 
             if (pix) PixHelper.EndEvent();
@@ -243,7 +241,7 @@ namespace dEngine.Graphics
 
                     var lastIndex = _renderables.Count - 1;
 
-                    if (lastIndex == -1 && lastIndex < _renderables.Count)
+                    if ((lastIndex == -1) && (lastIndex < _renderables.Count))
                         return;
 
                     var lastItem = _renderables[lastIndex];
@@ -288,7 +286,7 @@ namespace dEngine.Graphics
             {
                 if (_instanceBufferCpu == null) return;
                 if (instance.RenderIndex == -1) return;
-                _instanceBufferCpu.Position = InstanceRenderData.Stride * instance.RenderIndex;
+                _instanceBufferCpu.Position = InstanceRenderData.Stride*instance.RenderIndex;
                 _instanceBufferCpu.Write(instance.RenderData);
                 _bufferDirty = true;
             }

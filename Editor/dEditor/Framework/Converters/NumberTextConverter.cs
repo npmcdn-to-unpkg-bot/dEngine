@@ -15,21 +15,21 @@ using System.Windows.Data;
 
 namespace dEditor.Framework.Converters
 {
-	public class NumberTextConverter : IValueConverter
-	{
-	    public int DecimalCount { get; set; } = 32;
+    public class NumberTextConverter : IValueConverter
+    {
+        public int DecimalCount { get; set; } = 32;
 
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-		{
-			return ((double)value).ToString("0." + new string('#', DecimalCount));
-		}
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((double)value).ToString("0." + new string('#', DecimalCount));
+        }
 
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-		{
-			string s = value as string;
-			double result;
-			var didParse = double.TryParse(s, out result);
-			return string.IsNullOrEmpty(s) || !didParse ? 0 : result;
-		}
-	}
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var s = value as string;
+            double result;
+            var didParse = double.TryParse(s, out result);
+            return string.IsNullOrEmpty(s) || !didParse ? 0 : result;
+        }
+    }
 }

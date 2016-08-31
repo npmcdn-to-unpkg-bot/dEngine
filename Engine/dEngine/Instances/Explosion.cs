@@ -19,7 +19,9 @@ namespace dEngine.Instances
     /// <summary>
     /// An explosion applies force to objects within the blast radius at the position of the parent <see cref="Part" />.
     /// </summary>
-    [TypeId(220), ExplorerOrder(3), ToolboxGroup("Gameplay")]
+    [TypeId(220)]
+    [ExplorerOrder(3)]
+    [ToolboxGroup("Gameplay")]
     public class Explosion : Instance
     {
         private readonly ParticleEmitter _emitter;
@@ -58,7 +60,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines the amount of force to apply to objects within the <see cref="BlastRadius" />
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public float BlastPressure
         {
             get { return _blastPressure; }
@@ -73,7 +76,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The radius of the explosion.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public float BlastRadius
         {
             get { return _blastRadius; }
@@ -89,7 +93,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines whether the explosion will make craters terrain.
         /// </summary>
-        [InstMember(3), EditorVisible]
+        [InstMember(3)]
+        [EditorVisible]
         public bool Craters
         {
             get { return _craters; }
@@ -104,7 +109,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines whether the explosion is visible.
         /// </summary>
-        [InstMember(4), EditorVisible]
+        [InstMember(4)]
+        [EditorVisible]
         public bool Visible
         {
             get { return _visible; }
@@ -145,12 +151,19 @@ namespace dEngine.Instances
 
             if (RunService.SimulationState != SimulationState.Running)
                 return;
-            
+
             var resultCallback = new ExplosionContactTestCallback(this, parentPart.Position);
             World.Physics.World.ContactTest(_ghostObject, resultCallback);
 
             Destroy();
         }
+
+        /// <summary>
+        /// Fires for every physical object that is caught in the <see cref="BlastRadius" />.
+        /// </summary>
+        /// <eventParam name="object" />
+        /// <eventParam name="distance" />
+        public readonly Signal<Part, float> OnHit;
 
         private class ExplosionContactTestCallback : ContactResultCallback
         {
@@ -167,25 +180,26 @@ namespace dEngine.Instances
                 _radius = explosion._blastRadius;
             }
 
-            public override float AddSingleResult(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0,
+            public override float AddSingleResult(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0,
+                int index0,
                 CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
             {
                 var part = (Part)colObj1Wrap.CollisionObject.UserObject;
 
                 var didHitCharacter = part is Character;
-                
+
                 var partPosition = part.CFrame.p;
 
                 var delta = partPosition - _parentPosition;
                 var dist = delta.magnitude;
                 var normal = delta == Vector3.Zero ? Vector3.Up : delta.unit;
                 normal = Vector3.Up;
-                var radius = part.Size.magnitude / 2;
-                var surfaceArea = radius * radius;
-                var impulse = normal * _pressure * surfaceArea * (1.0f / 4560.0f);
-                var frac = didHitCharacter ? 1 - Math.Max(0, Math.Min(1, (dist - 2) / _radius)) : 1;
+                var radius = part.Size.magnitude/2;
+                var surfaceArea = radius*radius;
+                var impulse = normal*_pressure*surfaceArea*(1.0f/4560.0f);
+                var frac = didHitCharacter ? 1 - Math.Max(0, Math.Min(1, (dist - 2)/_radius)) : 1;
                 impulse *= frac;
-                var torque = impulse * 0.5f * radius;
+                var torque = impulse*0.5f*radius;
                 var bulletImpulse = new BulletSharp.Math.Vector3(impulse.x, impulse.y, impulse.z);
                 var bulletPosition = new BulletSharp.Math.Vector3(partPosition.X, partPosition.Y, partPosition.z);
                 var bulletTorque = new BulletSharp.Math.Vector3(torque.x, torque.y, torque.z);
@@ -197,12 +211,5 @@ namespace dEngine.Instances
                 return 0;
             }
         }
-
-        /// <summary>
-        /// Fires for every physical object that is caught in the <see cref="BlastRadius" />.
-        /// </summary>
-        /// <eventParam name="object" />
-        /// <eventParam name="distance" />
-        public readonly Signal<Part, float> OnHit;
     }
 }

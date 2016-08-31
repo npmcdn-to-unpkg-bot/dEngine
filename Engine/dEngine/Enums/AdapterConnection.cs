@@ -8,6 +8,7 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 namespace dEngine
 {
     public enum AdapterConnection
@@ -16,6 +17,6 @@ namespace dEngine
         WWan,
         WiFi,
         Lan,
-        Mobile,
+        Mobile
     }
 }

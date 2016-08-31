@@ -9,7 +9,6 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -22,14 +21,7 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
     /// </summary>
     public partial class NodePin
     {
-        public static readonly DependencyProperty PinBrushProperty = DependencyProperty.Register("PinBrush",
-            typeof(Brush), typeof(NodePin), new PropertyMetadata(Brushes.White));
-
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register("Mode", typeof(InOut?),
-            typeof(NodePin), new PropertyMetadata(default(InOut?), PropertyChangedCallback));
-
-        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register("Header", typeof(string),
-            typeof(NodePin), new PropertyMetadata(""));
+        private const int Offset = 10;
 
         public NodePin()
         {
@@ -54,8 +46,6 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
             set { SetValue(HeaderProperty, value); }
         }
 
-        private const int Offset = 10;
-
         private static void PropertyChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             var value = (InOut)obj.GetValue(args.Property);
@@ -74,5 +64,14 @@ namespace dEditor.Widgets.MaterialEditor.Nodes
                 DockPanel.SetDock(nodePin.NodeLabel, System.Windows.Controls.Dock.Left);
             }
         }
+
+        public static readonly DependencyProperty PinBrushProperty = DependencyProperty.Register("PinBrush",
+            typeof(Brush), typeof(NodePin), new PropertyMetadata(Brushes.White));
+
+        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register("Mode", typeof(InOut?),
+            typeof(NodePin), new PropertyMetadata(default(InOut?), PropertyChangedCallback));
+
+        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register("Header", typeof(string),
+            typeof(NodePin), new PropertyMetadata(""));
     }
 }

@@ -10,42 +10,37 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace dEditor.Widgets.MaterialEditor
 {
-	/// <summary>
-	/// Interaction logic for MaterialEditorView.xaml
-	/// </summary>
-	public partial class MaterialEditorView : UserControl
-	{
-		public MaterialEditorView()
-		{
-			InitializeComponent();
-			DataContextChanged += OnDataContextChanged;
-		}
+    /// <summary>
+    /// Interaction logic for MaterialEditorView.xaml
+    /// </summary>
+    public partial class MaterialEditorView : UserControl
+    {
+        public MaterialEditorView()
+        {
+            InitializeComponent();
+            DataContextChanged += OnDataContextChanged;
+        }
 
-		private void OnDataContextChanged(object sender,
-			DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-		{
-			var vm = (MaterialEditorViewModel)DataContext;
+        private void OnDataContextChanged(object sender,
+            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var vm = (MaterialEditorViewModel)DataContext;
 
-			if (MaterialPreviewPanel.IsHandleCreated)
-			{
-				vm.OnHandleSet(MaterialPreviewPanel.Handle);
-			}
-			else
-			{
-				MaterialPreviewPanel.HandleCreated += (s, e) => vm.OnHandleSet(MaterialPreviewPanel.Handle);
-			}
-		}
+            if (MaterialPreviewPanel.IsHandleCreated)
+                vm.OnHandleSet(MaterialPreviewPanel.Handle);
+            else
+                MaterialPreviewPanel.HandleCreated += (s, e) => vm.OnHandleSet(MaterialPreviewPanel.Handle);
+        }
 
-		private void GraphCanvas_OnInitialized(object sender, EventArgs e)
-		{
-			var vm = (MaterialEditorViewModel)DataContext;
-			vm.Canvas = sender as Canvas;
-		}
-	}
+        private void GraphCanvas_OnInitialized(object sender, EventArgs e)
+        {
+            var vm = (MaterialEditorViewModel)DataContext;
+            vm.Canvas = sender as Canvas;
+        }
+    }
 }

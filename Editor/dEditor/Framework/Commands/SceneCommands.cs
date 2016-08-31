@@ -28,7 +28,7 @@ namespace dEditor.Framework.Commands
         public override bool CanExecute(object parameter)
         {
             var type = parameter as Type;
-            return type != null && typeof(Instance).IsAssignableFrom(type);
+            return (type != null) && typeof(Instance).IsAssignableFrom(type);
         }
 
         public override void Execute(object parameter)
@@ -58,9 +58,7 @@ namespace dEditor.Framework.Commands
             SelectionService.Service.ClearSelection();
 
             foreach (var child in items.SelectMany(item => item.Children))
-            {
                 SelectionService.Service.Select(child);
-            }
         }
     }
 
@@ -106,7 +104,7 @@ namespace dEditor.Framework.Commands
 
         public override bool CanExecute(object parameter)
         {
-            return Game.FocusedCamera != null && SelectionService.Any();
+            return (Game.FocusedCamera != null) && SelectionService.Any();
         }
 
         public override void Execute(object parameter)

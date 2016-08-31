@@ -13,16 +13,18 @@ using dEngine.Instances.Attributes;
 
 namespace dEngine.Instances
 {
-	/// <summary>
-	/// A gui element which draws text.
-	/// </summary>
-	[TypeId(70), ToolboxGroup("GUI"), ExplorerOrder(19)]
-	public class TextLabel : TextElement
-	{
-		/// <inheritdoc />
-		public TextLabel()
-		{
-			Size = new UDim2(0, 200, 0, 50);
-		}
-	}
+    /// <summary>
+    /// A gui element which draws text.
+    /// </summary>
+    [TypeId(70)]
+    [ToolboxGroup("GUI")]
+    [ExplorerOrder(19)]
+    public class TextLabel : TextElement
+    {
+        /// <inheritdoc />
+        public TextLabel()
+        {
+            Size = new UDim2(0, 200, 0, 50);
+        }
+    }
 }

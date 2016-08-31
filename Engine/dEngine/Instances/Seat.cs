@@ -11,21 +11,22 @@
 
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Instances
 {
     /// <summary>
     /// A brick which can be occupied by a <see cref="Character" />.
     /// </summary>
-    [TypeId(16), ExplorerOrder(3), ToolboxGroup("Bricks")]
+    [TypeId(16)]
+    [ExplorerOrder(3)]
+    [ToolboxGroup("Bricks")]
     public class Seat : Part
     {
-        protected bool _disabled;
         private readonly Attachment _attachment;
+        protected bool _disabled;
         private bool _occupyOnTouch;
         private Character _occupant;
 
-        /// <summary/>
+        /// <summary />
         public Seat()
         {
             _attachment = new Attachment
@@ -35,15 +36,6 @@ namespace dEngine.Instances
                 Archivable = false,
                 ParentLocked = false
             };
-        }
-
-        /// <inheritdoc/>
-        public override void Destroy()
-        {
-            base.Destroy();
-
-            Occupant = null;
-            _attachment.ParentLocked = false;
         }
 
         /// <summary>
@@ -60,7 +52,7 @@ namespace dEngine.Instances
             set
             {
                 if (value == _occupant) return;
-                _occupant = value; 
+                _occupant = value;
                 NotifyChanged();
             }
         }
@@ -68,7 +60,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if this object can be occupied by touching it.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public bool OccupyOnTouch
         {
             get { return _occupyOnTouch; }
@@ -78,6 +71,15 @@ namespace dEngine.Instances
                 _occupyOnTouch = value;
                 NotifyChanged();
             }
+        }
+
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            base.Destroy();
+
+            Occupant = null;
+            _attachment.ParentLocked = false;
         }
     }
 }

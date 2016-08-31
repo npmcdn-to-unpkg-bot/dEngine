@@ -8,7 +8,10 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 #pragma warning disable 1591
+
 namespace dEngine
 {
     public enum RenderPriority
@@ -17,6 +20,6 @@ namespace dEngine
         Input = 100,
         Camera = 200,
         Character = 300,
-        Last = 2000,
+        Last = 2000
     }
 }

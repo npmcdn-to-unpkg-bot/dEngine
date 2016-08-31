@@ -46,16 +46,13 @@ namespace dEngine.Services
 
             // prevent non-graphics app from downloading unnecessary assets.
             if (RenderSettings.GraphicsMode == GraphicsMode.NoGraphics)
-            {
-                if (assetType == typeof(Texture) || assetType == typeof(Material) || assetType == typeof(Cubemap) || assetType == typeof(AnimationData))
+                if ((assetType == typeof(Texture)) || (assetType == typeof(Material)) || (assetType == typeof(Cubemap)) ||
+                    (assetType == typeof(AnimationData)))
                     CanDownload = false;
-            }
 
             if (Engine.Mode == EngineMode.Server) // prevent server from downloading unnecessary assets.
-            {
                 if (assetType == typeof(AudioData))
                     CanDownload = false;
-            }
         }
 
         /// <summary>
@@ -90,9 +87,7 @@ namespace dEngine.Services
         {
             Resource resource;
             if (_resources.TryGetValue(contentId, out resource))
-            {
                 resource.Download();
-            }
         }
 
         /// <summary>
@@ -102,9 +97,7 @@ namespace dEngine.Services
         {
             Resource resource;
             if (!_resources.TryGetValue(contentId, out resource))
-            {
                 _resources[contentId] = resource = new Resource(contentId);
-            }
             return new Reference<TAsset>(resource);
         }
 
@@ -196,9 +189,7 @@ namespace dEngine.Services
                     return;
 
                 if (disposing)
-                {
                     Content?.Dispose();
-                }
 
                 Content = null;
                 ReferenceCount = 0;

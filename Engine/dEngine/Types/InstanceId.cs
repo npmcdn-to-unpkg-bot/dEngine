@@ -74,8 +74,8 @@ namespace dEngine
         private static Guid Decompress(ref string id)
         {
             var base64 = id
-                .Replace('_', '/')
-                .Replace('-', '+')
+                             .Replace('_', '/')
+                             .Replace('-', '+')
                          + "==";
             var bytes = Convert.FromBase64String(base64);
             return new Guid(bytes);

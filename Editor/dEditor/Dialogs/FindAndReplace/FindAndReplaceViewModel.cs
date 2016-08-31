@@ -29,8 +29,14 @@ namespace dEditor.Dialogs.FindAndReplace
             var selection = GetSelection(currentEditor);
             _selectionModeAvailable = !string.IsNullOrEmpty(selection);
 
-            var options = new List<string> {"Selection", "Current Script", "Entire Game", "Entire Project (includes content folder)"};
-            if (currentEditor != null && _selectionModeAvailable)
+            var options = new List<string>
+            {
+                "Selection",
+                "Current Script",
+                "Entire Game",
+                "Entire Project (includes content folder)"
+            };
+            if ((currentEditor != null) && _selectionModeAvailable)
                 options.Insert(0, selection);
 
             LookInModes = options;
@@ -51,6 +57,11 @@ namespace dEditor.Dialogs.FindAndReplace
             }
             set { LookIn = _selectionModeAvailable ? (LookInMode)value : (LookInMode)value + 1; }
         }
+
+        public bool MatchCase { get; set; }
+        public bool MatchWholeWord { get; set; }
+        public bool UseRegex { get; set; }
+        public bool AppendResults { get; set; }
 
         private ICodeEditor GetCurrentDocumentAsCodeEditor()
         {
@@ -96,24 +107,19 @@ namespace dEditor.Dialogs.FindAndReplace
             };
         }
 
-        public bool MatchCase { get; set; }
-        public bool MatchWholeWord { get; set; }
-        public bool UseRegex { get; set; }
-        public bool AppendResults { get; set; }
-
-        public enum Window
-        {
-            Results1,
-            Results2,
-        }
-
         public enum LookInMode
         {
             Selection,
             CurrentScript,
             ContentFolder,
             EntireGame,
-            EntireProject,
+            EntireProject
+        }
+
+        public enum Window
+        {
+            Results1,
+            Results2
         }
     }
 }

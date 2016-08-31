@@ -14,12 +14,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using C5;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using dEngine.Utility;
 using Neo.IronLua;
-
 
 namespace dEngine.Services
 {
@@ -27,24 +25,10 @@ namespace dEngine.Services
     /// A service for managing selection in level editors.
     /// </summary>
     [LevelEditorRelated]
-    [TypeId(63), ExplorerOrder(-1)]
+    [TypeId(63)]
+    [ExplorerOrder(-1)]
     public partial class SelectionService : Service
     {
-        /// <summary>
-        /// Fired for every item removed in a Deselect() call.
-        /// </summary>
-        public readonly Signal<Instance> Deselected;
-
-        /// <summary>
-        /// Fired for every item added in a Select() call.
-        /// </summary>
-        public readonly Signal<Instance> Selected;
-
-        /// <summary>
-        /// Fired when the selection is changed.
-        /// </summary>
-        public readonly Signal SelectionChanged;
-
         /// <inheritdoc />
         public SelectionService()
         {
@@ -91,7 +75,7 @@ namespace dEngine.Services
             if (clearCurrentSelection)
                 ClearSelection();
 
-            if (item == null || item.IsSelected)
+            if ((item == null) || item.IsSelected)
                 return;
 
             _selection.TryAdd(item);
@@ -100,12 +84,10 @@ namespace dEngine.Services
             SelectionChanged.Fire();
             var element = item as GuiElement;
             if (element != null)
-            {
                 lock (Locker)
                 {
                     SelectedGuiElements.Add(element);
                 }
-            }
 
             if (pushToHistory)
                 HistoryService.ExecuteAction(new SelectionAction(item, false));
@@ -118,7 +100,7 @@ namespace dEngine.Services
         /// <param name="pushToHistory">Determines if an action is pushed to the <see cref="HistoryService" /></param>
         public void Deselect(Instance item, bool pushToHistory = true)
         {
-            if (item == null || !item.IsSelected)
+            if ((item == null) || !item.IsSelected)
                 return;
 
             _selection.TryRemove(item);
@@ -128,16 +110,29 @@ namespace dEngine.Services
 
             var element = item as GuiElement;
             if (element != null)
-            {
                 lock (Locker)
                 {
                     SelectedGuiElements.Add(element);
                 }
-            }
 
             if (pushToHistory)
                 HistoryService.ExecuteAction(new SelectionAction(item, true));
         }
+
+        /// <summary>
+        /// Fired for every item removed in a Deselect() call.
+        /// </summary>
+        public readonly Signal<Instance> Deselected;
+
+        /// <summary>
+        /// Fired for every item added in a Select() call.
+        /// </summary>
+        public readonly Signal<Instance> Selected;
+
+        /// <summary>
+        /// Fired when the selection is changed.
+        /// </summary>
+        public readonly Signal SelectionChanged;
 
         private class SelectionAction : HistoryService.HistoryAction
         {
@@ -155,13 +150,13 @@ namespace dEngine.Services
                 if (_invert)
                     Service.Select(_item, pushToHistory: false);
                 else
-                    Service.Deselect(_item, pushToHistory: false);
+                    Service.Deselect(_item, false);
             }
 
             public override void Execute()
             {
                 if (_invert)
-                    Service.Deselect(_item, pushToHistory: false);
+                    Service.Deselect(_item, false);
                 else
                     Service.Select(_item, pushToHistory: false);
             }
@@ -171,12 +166,16 @@ namespace dEngine.Services
     public partial class SelectionService
     {
         internal static SelectionService Service;
-        private static readonly ReaderWriterLockSlim _locker = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-        private static readonly ConcurrentDictionary<Instance, byte> _selection = new ConcurrentDictionary<Instance, byte>();
+        private static readonly ReaderWriterLockSlim _locker =
+            new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+
+        private static readonly ConcurrentDictionary<Instance, byte> _selection =
+            new ConcurrentDictionary<Instance, byte>();
+
+        internal static C5.HashSet<GuiElement> SelectedGuiElements = new C5.HashSet<GuiElement>();
 
         internal static IEnumerable<Instance> Selection => _selection.Keys;
-        internal static C5.HashSet<GuiElement> SelectedGuiElements = new C5.HashSet<GuiElement>();
         internal static int SelectionCount => _selection.Count;
 
         internal static IEnumerable<T> Select<T>(Func<Instance, T> selector)

@@ -12,39 +12,38 @@
 using System.IO;
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Data
 {
-	/// <summary>
-	/// Container class for animation data;
-	/// </summary>
-	[TypeId(23)]
-	public class AnimationData : AssetBase
-	{
-		/// <inheritdoc />
-		public override ContentType ContentType => ContentType.Animation;
+    /// <summary>
+    /// Container class for animation data;
+    /// </summary>
+    [TypeId(23)]
+    public class AnimationData : AssetBase
+    {
+        /// <inheritdoc />
+        public override ContentType ContentType => ContentType.Animation;
 
-	    protected override void OnSave(BinaryWriter writer)
-	    {
-	        //base.OnSave(writer);
-	    }
+        protected override void OnSave(BinaryWriter writer)
+        {
+            //base.OnSave(writer);
+        }
 
-	    protected override void OnLoad(BinaryReader reader)
-	    {
-	        //base.OnLoad(reader);
-	    }
+        protected override void OnLoad(BinaryReader reader)
+        {
+            //base.OnLoad(reader);
+        }
 
-	    /// <inheritdoc />
-		protected override void Dispose(bool disposing)
-		{
-			if (_disposed)
-				return;
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
 
-			if (disposing)
-			{
-			}
+            if (disposing)
+            {
+            }
 
-			_disposed = true;
-		}
-	}
+            _disposed = true;
+        }
+    }
 }

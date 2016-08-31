@@ -30,8 +30,27 @@ namespace dEngine.Data
     [TypeId(20)]
     public class AudioData : AssetBase
     {
-        [InstMember(1)]
-        private byte[] _bytes;
+        private static readonly byte[] _mp3Magic = {(byte)'I', (byte)'D', (byte)'3'};
+        private static readonly byte[] _mp3Magic2 = {0xFF, 0xFB};
+        private static readonly byte[] _oggMagic = {(byte)'O', (byte)'g', (byte)'g', (byte)'S'};
+        private static readonly byte[] _riffMagic = {(byte)'R', (byte)'I', (byte)'F', (byte)'F'};
+
+        private static readonly byte[] _waveMagic =
+        {
+            (byte)'W', (byte)'A', (byte)'V', (byte)'E', (byte)'f', (byte)'m',
+            (byte)'t'
+        };
+
+        private static readonly byte[] _opusMagic =
+        {
+            (byte)'O', (byte)'p', (byte)'u', (byte)'s', (byte)'H', (byte)'e',
+            (byte)'a', (byte)'d'
+        };
+
+        private static readonly byte[] _flacMagic = {(byte)'f', (byte)'L', (byte)'a', (byte)'C'};
+        private static readonly byte[] _m4aMagic = {0x00, 0x00, 0x00, (byte)' ', (byte)'f', (byte)'t', (byte)'y'};
+
+        [InstMember(1)] private byte[] _bytes;
 
         internal IWaveSource AudioSource { get; private set; }
 
@@ -58,15 +77,6 @@ namespace dEngine.Data
             AudioSource = GetSoundSource(stream);
         }
 
-        private static readonly byte[] _mp3Magic = { (byte)'I', (byte)'D', (byte)'3' };
-        private static readonly byte[] _mp3Magic2 = { 0xFF, 0xFB };
-        private static readonly byte[] _oggMagic = { (byte)'O', (byte)'g', (byte)'g', (byte)'S' };
-        private static readonly byte[] _riffMagic = { (byte)'R', (byte)'I', (byte)'F', (byte)'F' };
-        private static readonly byte[] _waveMagic = { (byte)'W', (byte)'A', (byte)'V', (byte)'E', (byte)'f', (byte)'m', (byte)'t' };
-        private static readonly byte[] _opusMagic = { (byte)'O', (byte)'p', (byte)'u', (byte)'s', (byte)'H', (byte)'e', (byte)'a', (byte)'d' };
-        private static readonly byte[] _flacMagic = { (byte)'f', (byte)'L', (byte)'a', (byte)'C' };
-        private static readonly byte[] _m4aMagic = { 0x00, 0x00, 0x00, (byte)' ', (byte)'f', (byte)'t', (byte)'y' };
-
         internal static ISoundOut GetSoundOut()
         {
             if (WasapiOut.IsSupportedOnCurrentPlatform)
@@ -80,11 +90,9 @@ namespace dEngine.Data
             stream.Read(magic, 0, 8);
             stream.Position = 0;
 
-            if (VisualC.CompareMemory(magic, _mp3Magic, 3) == 0 ||
-                VisualC.CompareMemory(magic, _mp3Magic2, 2) == 0)
-            {
+            if ((VisualC.CompareMemory(magic, _mp3Magic, 3) == 0) ||
+                (VisualC.CompareMemory(magic, _mp3Magic2, 2) == 0))
                 return new DmoMp3Decoder(stream);
-            }
             if (VisualC.CompareMemory(magic, _oggMagic, 4) == 0)
             {
                 stream.Position = 0x1C;
@@ -92,32 +100,24 @@ namespace dEngine.Data
                 stream.Position = 0;
 
                 if (VisualC.CompareMemory(magic, _opusMagic, 8) == 0)
-                {
                     throw new NotSupportedException("Ogg Opus is not currently supported.");
-                }
 
                 var decoder = new VorbisDecoder(stream);
                 var converter = new SampleToPcm16(decoder);
                 return converter;
             }
             if (VisualC.CompareMemory(magic, _flacMagic, 4) == 0)
-            {
                 return new FlacFile(stream, FlacPreScanMode.Sync);
-            }
             if (VisualC.CompareMemory(magic, _riffMagic, 4) == 0)
             {
                 stream.Position = 8;
                 stream.Read(magic, 0, 7);
                 if (VisualC.CompareMemory(magic, _waveMagic, 7) == 0)
-                {
                     return new MediaFoundationDecoder(stream);
-                }
                 stream.Position = 0;
             }
             if (VisualC.CompareMemory(magic, _m4aMagic, 7) == 0)
-            {
                 return new MediaFoundationDecoder(stream);
-            }
 
             throw new FormatException("The stream is an unsupported format.");
         }
@@ -139,9 +139,7 @@ namespace dEngine.Data
                 return;
 
             if (disposing)
-            {
                 AudioSource?.Dispose();
-            }
 
             _bytes = null;
 

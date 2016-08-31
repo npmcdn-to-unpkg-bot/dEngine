@@ -8,12 +8,15 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 #pragma warning disable 1591
+
 namespace dEngine
 {
     public enum ShadowFormat
     {
         Sm16Bit = 0,
-        Sm32Bit = 1,
+        Sm32Bit = 1
     }
 }

@@ -11,21 +11,21 @@
 
 namespace dEditor.Tools.Building
 {
-	public abstract class StudioBuildTool : StudioTool
-	{
-		private double? _increment;
+    public abstract class StudioBuildTool : StudioTool
+    {
+        private double? _increment;
 
-		public abstract double[] IncrementOptions { get; }
+        public abstract double[] IncrementOptions { get; }
 
-		public double Increment
-		{
-			get { return _increment ?? IncrementOptions[0]; }
-			set
-			{
-				if (value.Equals(_increment)) return;
-				_increment = value;
-				NotifyOfPropertyChange();
-			}
-		}
-	}
+        public double Increment
+        {
+            get { return _increment ?? IncrementOptions[0]; }
+            set
+            {
+                if (value.Equals(_increment)) return;
+                _increment = value;
+                NotifyOfPropertyChange();
+            }
+        }
+    }
 }

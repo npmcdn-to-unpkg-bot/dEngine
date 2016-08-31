@@ -14,13 +14,14 @@ using dEngine.Data;
 using dEngine.Instances.Attributes;
 using dEngine.Utility;
 
-
 namespace dEngine.Instances
 {
     /// <summary>
     /// A generic particle system.
     /// </summary>
-    [TypeId(133), ExplorerOrder(3), ToolboxGroup("Brick equipment")]
+    [TypeId(133)]
+    [ExplorerOrder(3)]
+    [ToolboxGroup("Brick equipment")]
     public class ParticleEmitter : Instance
     {
         private Vector3 _acceleration;
@@ -42,7 +43,7 @@ namespace dEngine.Instances
         private float _velocitySpread;
         private float _zOffset;
 
-        /// <summary/>
+        /// <summary />
         public ParticleEmitter()
         {
             Acceleration = Vector3.Zero;
@@ -68,7 +69,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Applies constant acceleration to all particles.
         /// </summary>
-        [InstMember(1), EditorVisible("Motion")]
+        [InstMember(1)]
+        [EditorVisible("Motion")]
         public Vector3 Acceleration
         {
             get { return _acceleration; }
@@ -83,7 +85,8 @@ namespace dEngine.Instances
         /// <summary>
         /// A sequence of colours a particle will use over their lifetime.
         /// </summary>
-        [InstMember(2), EditorVisible("Appearance")]
+        [InstMember(2)]
+        [EditorVisible("Appearance")]
         public ColourSequence Colour
         {
             get { return _colourSequence; }
@@ -98,7 +101,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how much drag the particles have.
         /// </summary>
-        [InstMember(3), EditorVisible("Particles")]
+        [InstMember(3)]
+        [EditorVisible("Particles")]
         public float Drag
         {
             get { return _drag; }
@@ -113,7 +117,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The direction that the particles will emit in.
         /// </summary>
-        [InstMember(4), EditorVisible("Emission")]
+        [InstMember(4)]
+        [EditorVisible("Emission")]
         public NormalId EmissionDirection
         {
             get { return _emissionDirection; }
@@ -128,7 +133,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if the emitter is enabled.
         /// </summary>
-        [InstMember(5), EditorVisible]
+        [InstMember(5)]
+        [EditorVisible]
         public bool Enabled
         {
             get { return _enabled; }
@@ -143,7 +149,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The lifetime of the particles.
         /// </summary>
-        [InstMember(6), EditorVisible("Emission")]
+        [InstMember(6)]
+        [EditorVisible("Emission")]
         public NumberRange Lifetime
         {
             get { return _lifetime; }
@@ -158,7 +165,9 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how much the particles blend with eachother.
         /// </summary>
-        [InstMember(7), EditorVisible("Appearance"), Range(0, 1)]
+        [InstMember(7)]
+        [EditorVisible("Appearance")]
+        [Range(0, 1)]
         public float Blending
         {
             get { return _blending; }
@@ -174,7 +183,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines whether particles rigidly move with the part they're emitted from.
         /// </summary>
-        [InstMember(8), EditorVisible("Particles")]
+        [InstMember(8)]
+        [EditorVisible("Particles")]
         public bool LockedToPart
         {
             get { return _lockedToPart; }
@@ -189,7 +199,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The rate at which particles are emitted.
         /// </summary>
-        [InstMember(9), EditorVisible("Emission")]
+        [InstMember(9)]
+        [EditorVisible("Emission")]
         public float Rate
         {
             get { return _rate; }
@@ -204,7 +215,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Defines minimum/maximum rotational speed.
         /// </summary>
-        [InstMember(10), EditorVisible("Emission")]
+        [InstMember(10)]
+        [EditorVisible("Emission")]
         public NumberRange RotSpeed
         {
             get { return _rotSpeed; }
@@ -219,7 +231,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Defines minimum/maximum rotation.
         /// </summary>
-        [InstMember(11), EditorVisible]
+        [InstMember(11)]
+        [EditorVisible]
         public NumberRange Rotation
         {
             get { return _rotation; }
@@ -234,7 +247,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The size of the particles over their lifeitme.
         /// </summary>
-        [InstMember(12), EditorVisible("Appearance")]
+        [InstMember(12)]
+        [EditorVisible("Appearance")]
         public NumberSequence Size
         {
             get { return _size; }
@@ -249,7 +263,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The speed of the particles.
         /// </summary>
-        [InstMember(13), EditorVisible("Emission")]
+        [InstMember(13)]
+        [EditorVisible("Emission")]
         public NumberRange Speed
         {
             get { return _speed; }
@@ -264,7 +279,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The texture for each particle.
         /// </summary>
-        [InstMember(14), EditorVisible("Appearance")]
+        [InstMember(14)]
+        [EditorVisible("Appearance")]
         public Content<Texture> Texture
         {
             get { return _texture; }
@@ -279,7 +295,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The transparency of a particle over its lifetime.
         /// </summary>
-        [InstMember(15), EditorVisible("Appearance")]
+        [InstMember(15)]
+        [EditorVisible("Appearance")]
         public NumberSequence Transparency
         {
             get { return _transparency; }
@@ -294,7 +311,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how the particles move relative to the emitter part.
         /// </summary>
-        [InstMember(16), EditorVisible("Particles")]
+        [InstMember(16)]
+        [EditorVisible("Particles")]
         public float VelocityInheritance
         {
             get { return _velocityInheritance; }
@@ -310,7 +328,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how offset a particle can be fired from the local positive Z of the emitter part.
         /// </summary>
-        [InstMember(17), EditorVisible]
+        [InstMember(17)]
+        [EditorVisible]
         public float VelocitySpread
         {
             get { return _velocitySpread; }
@@ -325,7 +344,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Used to order the drawing of emitters.
         /// </summary>
-        [InstMember(18), EditorVisible("Appearance")]
+        [InstMember(18)]
+        [EditorVisible("Appearance")]
         public float ZOffset
         {
             get { return _zOffset; }

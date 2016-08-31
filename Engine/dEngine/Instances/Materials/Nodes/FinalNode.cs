@@ -10,6 +10,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using dEngine.Instances.Attributes;
+
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
 namespace dEngine.Instances.Materials.Nodes
@@ -23,19 +24,19 @@ namespace dEngine.Instances.Materials.Nodes
         /// <summary>
         /// The colour of the material.
         /// </summary>
-        [NodeSlot("Base Colour", SlotType.Float3, InOut.In, DisableDomains = new[] { MaterialDomain.LightFunction })]
+        [NodeSlot("Base Colour", SlotType.Float3, InOut.In, DisableDomains = new[] {MaterialDomain.LightFunction})]
         public Slot BaseColour { get; private set; }
 
         /// <summary>
         /// Determiens how metallic the material is.
         /// </summary>
-        [NodeSlot("Metallic", SlotType.Float, InOut.In, DisableDomains = new[] { MaterialDomain.LightFunction })]
+        [NodeSlot("Metallic", SlotType.Float, InOut.In, DisableDomains = new[] {MaterialDomain.LightFunction})]
         public Slot Metallic { get; private set; }
 
         /// <summary>
         /// Determines how smooth the material is.
         /// </summary>
-        [NodeSlot("Smoothness", SlotType.Float, InOut.In, DisableDomains = new[] { MaterialDomain.LightFunction })]
+        [NodeSlot("Smoothness", SlotType.Float, InOut.In, DisableDomains = new[] {MaterialDomain.LightFunction})]
         public Slot Smoothness { get; private set; }
 
         /// <summary>
@@ -47,14 +48,15 @@ namespace dEngine.Instances.Materials.Nodes
         /// <summary>
         /// The opacity of the material.
         /// </summary>
-        [NodeSlot("Opacity", SlotType.Float3, InOut.In, DisableDomains = new[] {MaterialDomain.LightFunction, MaterialDomain.GUI})]
+        [NodeSlot("Opacity", SlotType.Float3, InOut.In,
+             DisableDomains = new[] {MaterialDomain.LightFunction, MaterialDomain.GUI})]
         public Slot Opacity { get; private set; }
 
         /// <summary>
         /// Determines whether the pixel is clipped or not.
         /// </summary>
         [NodeSlot("Opacity Mask", SlotType.Float3, InOut.In,
-            DisableDomains = new[] {MaterialDomain.LightFunction, MaterialDomain.Decal, MaterialDomain.GUI})]
+             DisableDomains = new[] {MaterialDomain.LightFunction, MaterialDomain.Decal, MaterialDomain.GUI})]
         public Slot OpacityMask { get; private set; }
 
         /// <summary>

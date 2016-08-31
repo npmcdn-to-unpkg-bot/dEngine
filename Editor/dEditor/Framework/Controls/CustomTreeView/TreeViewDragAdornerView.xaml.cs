@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Framework.Controls.CustomTreeView
 {
-	/// <summary>
-	/// Interaction logic for TreeViewDragAdornerView.xaml
-	/// </summary>
-	public partial class TreeViewDragAdornerView : UserControl
-	{
-		public TreeViewDragAdornerView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for TreeViewDragAdornerView.xaml
+    /// </summary>
+    public partial class TreeViewDragAdornerView : UserControl
+    {
+        public TreeViewDragAdornerView()
+        {
+            InitializeComponent();
+        }
+    }
 }

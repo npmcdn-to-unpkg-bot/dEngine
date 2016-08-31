@@ -9,35 +9,32 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System.Reflection;
 using dEngine.Serializer.V1;
 
 namespace dEditor.Widgets.Properties.Inspectors.Vector2
 {
-	public class Vector2EditorViewModel : EditorBase<dEngine.Vector2>, ILabelled
-	{
-		public Vector2EditorViewModel(object obj, Inst.CachedProperty desc) : base(obj, desc)
-		{
-		}
+    public class Vector2EditorViewModel : EditorBase<dEngine.Vector2>, ILabelled
+    {
+        public Vector2EditorViewModel(object obj, Inst.CachedProperty desc) : base(obj, desc)
+        {
+        }
 
-		public string StringValue
-		{
-			get { return Value.ToString(); }
-			set
-			{
-				var nums = value.Split(',');
-				Value = new dEngine.Vector2(float.Parse(nums[0]), float.Parse(nums[1]));
-				NotifyOfPropertyChange(() => StringValue);
-			}
-		}
+        public string StringValue
+        {
+            get { return Value.ToString(); }
+            set
+            {
+                var nums = value.Split(',');
+                Value = new dEngine.Vector2(float.Parse(nums[0]), float.Parse(nums[1]));
+                NotifyOfPropertyChange(() => StringValue);
+            }
+        }
 
-		public override void NotifyOfPropertyChange(string propertyName)
-		{
-			if (propertyName == "Value")
-			{
-				NotifyOfPropertyChange(() => StringValue);
-			}
-			base.NotifyOfPropertyChange(propertyName);
-		}
-	}
+        public override void NotifyOfPropertyChange(string propertyName)
+        {
+            if (propertyName == "Value")
+                NotifyOfPropertyChange(() => StringValue);
+            base.NotifyOfPropertyChange(propertyName);
+        }
+    }
 }

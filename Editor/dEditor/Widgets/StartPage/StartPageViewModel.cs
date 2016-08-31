@@ -19,25 +19,25 @@ using dEditor.Framework.Commands;
 namespace dEditor.Widgets.StartPage
 {
     [Export(typeof(IStartPage))]
-	public class StartPageViewModel : Document, IStartPage
-	{
-		public StartPageViewModel()
-		{
-			DisplayName = "Start Page";
+    public class StartPageViewModel : Document, IStartPage
+    {
+        public StartPageViewModel()
+        {
+            DisplayName = "Start Page";
 
-			RecentProjects = new ObservableCollection<Project>();
+            RecentProjects = new ObservableCollection<Project>();
 
-			NotifyOfPropertyChange(() => NoRecentProjects);
-		}
+            NotifyOfPropertyChange(() => NoRecentProjects);
+        }
 
-		public ObservableCollection<Project> RecentProjects { get; set; }
+        public ObservableCollection<Project> RecentProjects { get; set; }
 
-		public bool NoRecentProjects => RecentProjects.Count == 0;
+        public bool NoRecentProjects => RecentProjects.Count == 0;
 
-		public override BitmapSource IconSource { get; } =
-			new BitmapImage(new Uri("/dEditor;component/Content/Icons/Toolbar/house_16xLG.png", UriKind.Relative));
+        public override BitmapSource IconSource { get; } =
+            new BitmapImage(new Uri("/dEditor;component/Content/Icons/Toolbar/house_16xLG.png", UriKind.Relative));
 
-		public OpenProjectCommand OpenProjectCommand => Editor.Current.Shell.OpenProjectCommand;
-		public NewProjectCommand NewProjectCommand => Editor.Current.Shell.NewProjectCommand;
-	}
+        public OpenProjectCommand OpenProjectCommand => Editor.Current.Shell.OpenProjectCommand;
+        public NewProjectCommand NewProjectCommand => Editor.Current.Shell.NewProjectCommand;
+    }
 }

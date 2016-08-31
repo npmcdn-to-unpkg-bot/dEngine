@@ -16,25 +16,25 @@ using dEngine;
 
 namespace dEditor.Dialogs.ProjectProperties
 {
-	/// <summary>
-	/// Interaction logic for ProjectViewModel.xaml
-	/// </summary>
-	public partial class ProjectView : UserControl
-	{
-		public ProjectView()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    /// Interaction logic for ProjectViewModel.xaml
+    /// </summary>
+    public partial class ProjectView : UserControl
+    {
+        public ProjectView()
+        {
+            InitializeComponent();
+        }
 
-	    private void MakeStartup(object sender, RoutedEventArgs e)
+        private void MakeStartup(object sender, RoutedEventArgs e)
         {
             Project.Current.StartupPlace = ((PlaceItem)sender).Name;
             Project.Current.Save(false);
         }
 
-	    private void Load(object sender, RoutedEventArgs e)
+        private void Load(object sender, RoutedEventArgs e)
         {
             Game.Workspace.LoadPlace(((PlaceItem)sender).Name);
         }
-	}
+    }
 }

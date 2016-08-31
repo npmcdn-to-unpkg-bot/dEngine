@@ -21,7 +21,6 @@ using dEngine.Instances.Interfaces;
 using dEngine.Instances.Materials;
 using dEngine.Serializer.V1;
 using dEngine.Services.Networking;
-using dEngine.Settings.Global;
 using dEngine.Utility;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -34,21 +33,12 @@ namespace dEngine.Instances
     /// <summary>
     /// A building block.
     /// </summary>
-    [TypeId(5), ToolboxGroup("Bricks"), ExplorerOrder(11)]
+    [TypeId(5)]
+    [ToolboxGroup("Bricks")]
+    [ExplorerOrder(11)]
     public class Part : PVInstance, IRenderable, ICameraSubject
     {
         private const float _minSize = 0;
-
-        /// <summary/>
-        public static implicit operator RigidBody(Part part)
-        {
-            return part.RigidBody;
-        }
-
-        /// <summary>
-        /// Fired when <see cref="CFrame" /> is set or the part is moved in the physics engine.
-        /// </summary>
-        internal readonly Signal Moved;
 
         private volatile bool _anchored;
         private Colour _brickColour;
@@ -71,28 +61,7 @@ namespace dEngine.Instances
 
         internal Player NetworkOwner;
 
-        /// <summary>
-        /// Sets the player who should own this part.
-        /// </summary>
-        /// <remarks>
-        /// If `player` is set to null, the server will take ownership.
-        /// </remarks>
-        public void SetNetworkOwner(Player player = null)
-        {
-            if (NetworkServer.IsHost)
-                NetworkOwner = player;
-        }
-
-        /// <summary>
-        /// Returns the player that owns this part.
-        /// </summary>
-        /// <remarks>
-        /// If `nil` is returned it means the server is the owner.
-        /// </remarks>
-        public Player GetNetworkOwner()
-        {
-            return NetworkOwner;
-        }
+        private PhysicalProperties _physicalProperties;
 
         /// <inheritdoc />
         public Part()
@@ -118,7 +87,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The colour of the block.
         /// </summary>
-        [InstMember(1), EditorVisible("Appearance")]
+        [InstMember(1)]
+        [EditorVisible("Appearance")]
         public Colour BrickColour
         {
             get { return _brickColour; }
@@ -134,7 +104,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The shape of the part.
         /// </summary>
-        [InstMember(2), EditorVisible("Part")]
+        [InstMember(2)]
+        [EditorVisible("Part")]
         public Shape Shape
         {
             get { return _shape; }
@@ -151,7 +122,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines if this block can collide with other objects.
         /// </summary>
-        [InstMember(4), EditorVisible("Behaviour")]
+        [InstMember(4)]
+        [EditorVisible("Behaviour")]
         public bool CanCollide
         {
             get { return _canCollide; }
@@ -172,7 +144,10 @@ namespace dEngine.Instances
         /// <summary>
         /// The material to render this part with.
         /// </summary>
-        [InstMember(5), EditorVisible("Appearance"), ContentId(ContentType.Material), Obsolete]
+        [InstMember(5)]
+        [EditorVisible("Appearance")]
+        [ContentId(ContentType.Material)]
+        [Obsolete]
         public Material Material
         {
             get { return _material; }
@@ -188,7 +163,8 @@ namespace dEngine.Instances
         /// <summary>
         /// If false, this part should not be selectable by 3D pickers.
         /// </summary>
-        [InstMember(6), EditorVisible("Behaviour")]
+        [InstMember(6)]
+        [EditorVisible("Behaviour")]
         public bool Locked
         {
             get { return _locked; }
@@ -203,7 +179,9 @@ namespace dEngine.Instances
         /// <summary>
         /// The transparency of the part.
         /// </summary>
-        [InstMember(7), EditorVisible("Appearance"), Range(0, 1)]
+        [InstMember(7)]
+        [EditorVisible("Appearance")]
+        [Range(0, 1)]
         public float Transparency
         {
             get { return _transparency; }
@@ -221,7 +199,9 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how smooth the surface is.
         /// </summary>
-        [InstMember(8), EditorVisible("Appearance"), Range(0, 1)]
+        [InstMember(8)]
+        [EditorVisible("Appearance")]
+        [Range(0, 1)]
         public float Smoothness
         {
             get { return _smoothness; }
@@ -237,7 +217,9 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how metallic the surface is.
         /// </summary>
-        [InstMember(9), EditorVisible("Appearance"), Range(0, 1)]
+        [InstMember(9)]
+        [EditorVisible("Appearance")]
+        [Range(0, 1)]
         public float Metallic
         {
             get { return _metallic; }
@@ -294,7 +276,8 @@ namespace dEngine.Instances
         /// <remarks>
         /// When accessed by a model this may calculate the bounding box.
         /// </remarks>
-        [InstMember(11), EditorVisible("Part")]
+        [InstMember(11)]
+        [EditorVisible("Part")]
         public override Vector3 Size
         {
             get { return _size; }
@@ -309,7 +292,7 @@ namespace dEngine.Instances
                 lock (Locker)
                 {
                     var rigidBody = RigidBody;
-                    rigidBody.CollisionShape.LocalScaling = new BulletVector3(_size.x / 2, _size.y / 2, _size.z / 2);
+                    rigidBody.CollisionShape.LocalScaling = new BulletVector3(_size.x/2, _size.y/2, _size.z/2);
                     if (rigidBody.IsInWorld)
                         World?.Physics?.World.UpdateSingleAabb(rigidBody);
                 }
@@ -322,7 +305,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The properties of the physics engine.
         /// </summary>
-        [InstMember(12), EditorVisible]
+        [InstMember(12)]
+        [EditorVisible]
         public PhysicalProperties PhysicalProperties
         {
             get { return _physicalProperties; }
@@ -345,7 +329,7 @@ namespace dEngine.Instances
             {
                 if (value == _cframe.p) return;
                 var rotation = _cframe - _cframe.p;
-                CFrame = new CFrame(value) * rotation;
+                CFrame = new CFrame(value)*rotation;
             }
         }
 
@@ -355,13 +339,13 @@ namespace dEngine.Instances
         [EditorVisible]
         public Vector3 Rotation
         {
-            get { return _cframe.getEulerAngles() * Mathf.Rad2Deg; }
+            get { return _cframe.getEulerAngles()*Mathf.Rad2Deg; }
             set
             {
                 if (value == Rotation) return;
-                var v3 = value * Mathf.Deg2Rad;
+                var v3 = value*Mathf.Deg2Rad;
                 var rotation = CFrame.Angles(v3.x, v3.y, v3.z);
-                CFrame = new CFrame(_cframe.p) * rotation;
+                CFrame = new CFrame(_cframe.p)*rotation;
             }
         }
 
@@ -430,7 +414,8 @@ namespace dEngine.Instances
         /// <summary>
         /// If true, the part will be physically immovable and static.
         /// </summary>
-        [InstMember(3), EditorVisible("Behaviour")]
+        [InstMember(3)]
+        [EditorVisible("Behaviour")]
         public bool Anchored
         {
             get { return _anchored; }
@@ -440,15 +425,9 @@ namespace dEngine.Instances
                 _anchored = value;
 
                 if (value)
-                {
-                    //Velocity = Vector3.Zero;
-                    //RotVelocity = Vector3.Zero;
                     UpdateMass();
-                }
                 else
-                {
                     UpdateMass();
-                }
 
                 NotifyChanged();
             }
@@ -479,13 +458,10 @@ namespace dEngine.Instances
             var matrix = _modelMatrix;
 
             if (_childMesh != null)
-            {
-                //matrix *= Matrix.Translation((SharpDX.Vector3)_childMesh.Offset);
                 if (_childMesh.UsePartSize)
                     renderSize *= _childMesh.Scale;
                 else
                     renderSize = _childMesh.Scale;
-            }
 
             RenderData = new InstanceRenderData
             {
@@ -500,6 +476,35 @@ namespace dEngine.Instances
             };
 
             RenderObject?.UpdateInstance(this);
+        }
+
+        /// <summary />
+        public static implicit operator RigidBody(Part part)
+        {
+            return part.RigidBody;
+        }
+
+        /// <summary>
+        /// Sets the player who should own this part.
+        /// </summary>
+        /// <remarks>
+        /// If `player` is set to null, the server will take ownership.
+        /// </remarks>
+        public void SetNetworkOwner(Player player = null)
+        {
+            if (NetworkServer.IsHost)
+                NetworkOwner = player;
+        }
+
+        /// <summary>
+        /// Returns the player that owns this part.
+        /// </summary>
+        /// <remarks>
+        /// If `nil` is returned it means the server is the owner.
+        /// </remarks>
+        public Player GetNetworkOwner()
+        {
+            return NetworkOwner;
         }
 
         private void OnChildMeshGeometryUpdated()
@@ -550,7 +555,7 @@ namespace dEngine.Instances
         {
             lock (PhysicsSimulation.Locker)
             {
-                for (int i = 0; i < RigidBody.NumConstraintRefs; i++)
+                for (var i = 0; i < RigidBody.NumConstraintRefs; i++)
                 {
                     var constraint = RigidBody.GetConstraintRef(i);
                     World?.Physics?.World.RemoveConstraint(constraint);
@@ -567,7 +572,7 @@ namespace dEngine.Instances
             var parts = new HashSet<Part>();
             lock (PhysicsSimulation.Locker)
             {
-                for (int i = 0; i < RigidBody.NumConstraintRefs; i++)
+                for (var i = 0; i < RigidBody.NumConstraintRefs; i++)
                 {
                     var partA = (Part)RigidBody.GetConstraintRef(i).RigidBodyA.UserObject;
                     var partB = (Part)RigidBody.GetConstraintRef(i).RigidBodyB.UserObject;
@@ -595,7 +600,7 @@ namespace dEngine.Instances
             lock (PhysicsSimulation.Locker)
             {
                 var constraints = new ArrayListEx<Constraint>(RigidBody.NumConstraintRefs);
-                for (int i = 0; i < RigidBody.NumConstraintRefs; i++)
+                for (var i = 0; i < RigidBody.NumConstraintRefs; i++)
                 {
                     var constraint = RigidBody.GetConstraintRef(i).Userobject as Constraint;
                     constraints.Add(constraint);
@@ -609,7 +614,7 @@ namespace dEngine.Instances
         /// </summary>
         public virtual float GetMass()
         {
-            return _size.x * _size.y * _size.z * _physicalProperties.Density;
+            return _size.x*_size.y*_size.z*_physicalProperties.Density;
         }
 
         /// <summary>
@@ -681,14 +686,16 @@ namespace dEngine.Instances
                     break;
                 case Shape.Wedge:
                     var wedgeGeo = Primitives.WedgeGeometry;
-                    shape = new ConvexTriangleMeshShape(new TriangleIndexVertexArray(wedgeGeo.Indices, wedgeGeo.Vertices.Select(v => (BulletVector3)v.Position).ToList()));
+                    shape =
+                        new ConvexTriangleMeshShape(new TriangleIndexVertexArray(wedgeGeo.Indices,
+                            wedgeGeo.Vertices.Select(v => (BulletVector3)v.Position).ToList()));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
             shape.Margin *= PhysicsSimulation.Scale;
             shape.Margin = 0;
-            shape.LocalScaling = new BulletVector3(_size.x / 2, _size.y / 2, _size.z / 2);
+            shape.LocalScaling = new BulletVector3(_size.x/2, _size.y/2, _size.z/2);
             return shape;
         }
 
@@ -697,7 +704,7 @@ namespace dEngine.Instances
         /// </summary>
         protected bool CanRender()
         {
-            return !(World == null || _transparency == 1 || IsDestroyed || _deserializing);
+            return !((World == null) || (_transparency == 1) || IsDestroyed || _deserializing);
         }
 
         internal override void BeforeDeserialization()
@@ -724,12 +731,8 @@ namespace dEngine.Instances
             lock (Locker)
             {
                 if (RenderObject != null)
-                {
-                    // TODO: check why RenderIndex is -1 while RenderObject is set with ChildMesh
-                    //Debug.Assert(RenderIndex != -1);
                     if (RenderIndex == -1)
                         return;
-                }
                 RenderObject?.Remove(this);
 
                 if (!CanRender())
@@ -740,7 +743,7 @@ namespace dEngine.Instances
                 if (_childMesh != null)
                 {
                     var childGeo = _childMesh.Geometry;
-                    if (childGeo == null || !childGeo.IsLoaded) return;
+                    if ((childGeo == null) || !childGeo.IsLoaded) return;
                     newRO = World.RenderObjectProvider[childGeo, _childMesh.Material];
                 }
                 else
@@ -749,7 +752,6 @@ namespace dEngine.Instances
                 }
 
                 if (newRO != null)
-                {
                     if (_transparency > 0) // transparent instances are added to the RO by the renderer.
                     {
                         //RenderObject = newRO; // set so the renderer knows the intended RO.
@@ -759,9 +761,23 @@ namespace dEngine.Instances
                         newRO.Add(this);
                         newRO.UpdateInstance(this);
                     }
-                }
             }
         }
+
+        /// <summary>
+        /// Fired when <see cref="CFrame" /> is set or the part is moved in the physics engine.
+        /// </summary>
+        internal readonly Signal Moved;
+
+        /// <summary>
+        /// Fired when another object comes into contact with this object.
+        /// </summary>
+        public readonly Signal<Part> Touched;
+
+        /// <summary>
+        /// Fired when another object stops touching this object.
+        /// </summary>
+        public readonly Signal<Part> TouchEnded;
 
         private class PartMotionState : MotionState
         {
@@ -791,17 +807,5 @@ namespace dEngine.Instances
                 _part.Moved.Fire();
             }
         }
-
-        /// <summary>
-        /// Fired when another object comes into contact with this object.
-        /// </summary>
-        public readonly Signal<Part> Touched;
-
-        /// <summary>
-        /// Fired when another object stops touching this object.
-        /// </summary>
-        public readonly Signal<Part> TouchEnded;
-
-        private PhysicalProperties _physicalProperties;
     }
 }

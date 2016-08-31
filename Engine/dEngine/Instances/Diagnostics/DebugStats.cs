@@ -13,7 +13,8 @@ using dEngine.Instances.Attributes;
 
 namespace dEngine.Instances.Diagnostics
 {
-    [Uncreatable, ExplorerOrder(-1)]
+    [Uncreatable]
+    [ExplorerOrder(-1)]
     internal sealed class DebugStats : Instance
     {
         public DebugStats()

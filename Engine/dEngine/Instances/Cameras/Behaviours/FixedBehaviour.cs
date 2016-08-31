@@ -72,7 +72,7 @@ namespace dEngine.Instances
 
         internal override void Update(double step)
         {
-            var dt = (float)step / (1 / 16.0f);
+            var dt = (float)step/(1/16.0f);
             var camera = _camera;
 
             var camCF = camera.CFrame;
@@ -93,19 +93,19 @@ namespace dEngine.Instances
             else if (_moveDown)
                 focus += camCF.down;
 
-            focus = focus *
-                dt *
-                (_shiftHeld 
-                ? UserGameSettings.CameraShiftSpeed 
-                : UserGameSettings.CameraSpeed) +
+            focus = focus*
+                    dt*
+                    (_shiftHeld
+                        ? UserGameSettings.CameraShiftSpeed
+                        : UserGameSettings.CameraSpeed) +
                     camera.Focus.p;
-            
+
             var lookVector = camera.CFrame.lookVector;
             //Vector2.Multiply(ref _rotateInput, dt, out _rotateInput);
             RotateCamera(ref lookVector, ref _rotateInput, out lookVector);
             _rotateInput = Vector2.Zero;
             camera.Focus = new CFrame(focus);
-            camera.CFrame = new CFrame(focus - lookVector * _zoom, focus);
+            camera.CFrame = new CFrame(focus - lookVector*_zoom, focus);
         }
 
 
@@ -116,8 +116,8 @@ namespace dEngine.Instances
 
             var lookVector = _camera.CFrame.lookVector;
             var center = (Vector3)boundingSphere.Center;
-            var zoom = Math.Abs(_camera.AspectRatio * boundingSphere.Radius / Mathf.Sin(_camera.FieldOfView / 2));
-            _camera.Focus = new CFrame(center - (zoom * lookVector), center);
+            var zoom = Math.Abs(_camera.AspectRatio*boundingSphere.Radius/Mathf.Sin(_camera.FieldOfView/2));
+            _camera.Focus = new CFrame(center - zoom*lookVector, center);
 
             _focused = true;
         }

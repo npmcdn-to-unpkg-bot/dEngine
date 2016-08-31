@@ -11,11 +11,11 @@
 
 namespace dEngine.Instances
 {
-	/// <summary>
-	/// An interface for types which can only have one instance.
-	/// Implementations must have a static "GetExisting()" object, which returns the singleton instance.
-	/// </summary>
-	public interface ISingleton
-	{
-	}
+    /// <summary>
+    /// An interface for types which can only have one instance.
+    /// Implementations must have a static "GetExisting()" object, which returns the singleton instance.
+    /// </summary>
+    public interface ISingleton
+    {
+    }
 }

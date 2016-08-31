@@ -9,42 +9,42 @@
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using dEngine.Instances.Attributes;
-
 
 namespace dEngine.Instances
 {
     /// <summary>
-    /// Protects a <see cref="Character"/> from damage by <see cref="Character.TakeDamage"/>.
+    /// Protects a <see cref="Character" /> from damage by <see cref="Character.TakeDamage" />.
     /// </summary>
-    [TypeId(15), ExplorerOrder(3), ToolboxGroup("Gameplay")]
+    [TypeId(15)]
+    [ExplorerOrder(3)]
+    [ToolboxGroup("Gameplay")]
     public sealed class Forcefield : Instance
-	{
-		private Character _character;
+    {
+        private Character _character;
 
-		/// <inheritdoc/>
-		public Forcefield()
-		{
-			ParentChanged.Event += OnParentChanged;
-		}
+        /// <inheritdoc />
+        public Forcefield()
+        {
+            ParentChanged.Event += OnParentChanged;
+        }
 
-		private void OnParentChanged(Instance parent)
-		{
-			var character = parent as Character;
-			var lastCharacter = _character;
+        private void OnParentChanged(Instance parent)
+        {
+            var character = parent as Character;
+            var lastCharacter = _character;
             _character = character;
 
-			if (character != null)
-			{
+            if (character != null)
+            {
                 character.ShieldCount++;
-				Logger.Trace($"Character {character} gained a Forcefield.");
-			}
-			else if (lastCharacter != null)
-			{
-				lastCharacter.ShieldCount--;
-				Logger.Trace($"Character {lastCharacter} lost a Forcefield.");
-			}
-		}
-	}
+                Logger.Trace($"Character {character} gained a Forcefield.");
+            }
+            else if (lastCharacter != null)
+            {
+                lastCharacter.ShieldCount--;
+                Logger.Trace($"Character {lastCharacter} lost a Forcefield.");
+            }
+        }
+    }
 }

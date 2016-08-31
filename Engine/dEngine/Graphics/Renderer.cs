@@ -36,11 +36,9 @@ using FactoryD2D = SharpDX.Direct2D1.Factory2;
 using FactoryDXGI = SharpDX.DXGI.Factory2;
 using FactoryWIC = SharpDX.WIC.ImagingFactory;
 using FactoryDW = SharpDX.DirectWrite.Factory1;
-using FactoryType = SharpDX.Direct2D1.FactoryType;
 using FeatureLevel = SharpDX.Direct3D.FeatureLevel;
 using Mesh = dEngine.Instances.Mesh;
 using PixelFormatWIC = SharpDX.WIC.PixelFormat;
-using TextAntialiasMode = SharpDX.Direct2D1.TextAntialiasMode;
 
 namespace dEngine.Graphics
 {
@@ -49,7 +47,7 @@ namespace dEngine.Graphics
     /// </summary>
     public static class Renderer
     {
-        internal const float ThrottleFramerate = 1 / 15f;
+        internal const float ThrottleFramerate = 1/15f;
         private static Vector2 _controlSize = Vector2.One;
 
         internal static DeviceD3D Device;
@@ -86,8 +84,6 @@ namespace dEngine.Graphics
         internal static Texture MaterialDiffuseBuffer;
         internal static Texture MaterialNormalBuffer;
         internal static Texture MaterialSpecularBuffer;
-
-        internal static readonly object Locker = new object();
         internal static ILogger Logger = LogService.GetLogger();
 
         internal static float DeltaTime;
@@ -154,7 +150,7 @@ namespace dEngine.Graphics
 
             Brushes =
                 new MemoizingMRUCache<Colour, SolidColorBrush>(
-                    (colour, _) => new SolidColorBrush(Context2D, (Color4)colour) { Opacity = colour.A }, int.MaxValue,
+                    (colour, _) => new SolidColorBrush(Context2D, (Color4)colour) {Opacity = colour.A}, int.MaxValue,
                     brush => brush.Dispose());
             // ------------------------------------
 
@@ -226,7 +222,7 @@ namespace dEngine.Graphics
             };
 
             var device = new SharpDX.Direct3D11.Device(adapter, deviceCreationFlags, levels)
-            { DebugName = adapter.Description.Description };
+                {DebugName = adapter.Description.Description};
 
             Logger.Info(
                 $"GPU{graphicsAdapter}: {device.DebugName} ({((long)adapter.Description.DedicatedVideoMemory).ToPrettySize()} VRAM)");
@@ -506,12 +502,12 @@ namespace dEngine.Graphics
         /// </summary>
         public static Vector2 GetNearestResolution(Vector2 res)
         {
-            const int count = 7680 / 16; // 8K max res (16x9 * 480)
+            const int count = 7680/16; // 8K max res (16x9 * 480)
 
             for (var i = count; i > 0; i--)
             {
-                var width = i * 16;
-                var height = i * 9;
+                var width = i*16;
+                var height = i*9;
 
                 if ((res.x >= width) && (res.y >= height))
                     return new Vector2(width, height);
@@ -531,6 +527,8 @@ namespace dEngine.Graphics
             else
                 Initialized += callback;
         }
+
+        internal static readonly object Locker = new object();
 
         internal class PartDistanceComparer : IComparer<Part>
         {

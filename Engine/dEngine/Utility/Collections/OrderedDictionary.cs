@@ -7,7 +7,8 @@ using System.Linq;
 namespace dEngine.Utility
 {
     /// <summary>
-    /// A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
+    /// A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the
+    /// original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
     /// </summary>
     /// <typeparam name="TKey">The type of keys</typeparam>
     /// <typeparam name="TValue">The type of values</typeparam>
@@ -38,9 +39,10 @@ namespace dEngine.Utility
     }
 
     /// <summary>
-    /// A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
+    /// A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the
+    /// original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
     /// </summary>
-    /// <typeparam name="TKey">The type of keys. Musn't be <see cref="int"/></typeparam>
+    /// <typeparam name="TKey">The type of keys. Musn't be <see cref="int" /></typeparam>
     /// <typeparam name="TValue">The type of values.</typeparam>
     public sealed class OrderedDictionary<TKey, TValue> : IOrderedDictionary<TKey, TValue>
     {
@@ -55,7 +57,8 @@ namespace dEngine.Utility
         private readonly List<TKey> fKeys;
 
         /// <summary>
-        /// A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
+        /// A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the
+        /// original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
         /// </summary>
         public OrderedDictionary()
         {
@@ -117,7 +120,8 @@ namespace dEngine.Utility
         }
 
         /// <summary>
-        /// The value under the given key. New entries are added at the end of the order. Updating an existing entry does not change its position.     
+        /// The value under the given key. New entries are added at the end of the order. Updating an existing entry does not
+        /// change its position.
         /// </summary>
         public TValue this[TKey key]
         {
@@ -125,17 +129,14 @@ namespace dEngine.Utility
             set
             {
                 if (!fDictionary.ContainsKey(key))
-                {
-                    // New entries are added at the end of the order.
                     fKeys.Add(key);
-                }
 
                 fDictionary[key] = value;
             }
         }
 
         /// <summary>
-        ///  Find the position of an element by key. Returns -1 if the dictionary does not contain an element with the given key.
+        /// Find the position of an element by key. Returns -1 if the dictionary does not contain an element with the given key.
         /// </summary>
         public int IndexOf(TKey key)
         {
@@ -205,7 +206,8 @@ namespace dEngine.Utility
         }
 
         /// <summary>
-        /// Remove a key-value pair from the dictionary. Return true if pair was successfully removed. Otherwise, if the pair was not found, return false.
+        /// Remove a key-value pair from the dictionary. Return true if pair was successfully removed. Otherwise, if the pair was
+        /// not found, return false.
         /// </summary>
         public bool Remove(KeyValuePair<TKey, TValue> pair)
         {
@@ -223,8 +225,8 @@ namespace dEngine.Utility
         /// </summary>
         public bool Remove(TKey key)
         {
-            bool wasInDictionary = fDictionary.Remove(key);
-            bool wasInKeys = fKeys.Remove(key);
+            var wasInDictionary = fDictionary.Remove(key);
+            var wasInKeys = fKeys.Remove(key);
             Contract.Assume(wasInDictionary == wasInKeys);
             return wasInDictionary;
         }
@@ -259,15 +261,6 @@ namespace dEngine.Utility
             }
         }
 
-        private IEnumerable<KeyValuePair<TKey, TValue>> Enumerate()
-        {
-            foreach (var key in fKeys)
-            {
-                var value = fDictionary[key];
-                yield return new KeyValuePair<TKey, TValue>(key, value);
-            }
-        }
-
         IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
         {
             return Enumerate().GetEnumerator();
@@ -276,6 +269,15 @@ namespace dEngine.Utility
         IEnumerator IEnumerable.GetEnumerator()
         {
             return Enumerate().GetEnumerator();
+        }
+
+        private IEnumerable<KeyValuePair<TKey, TValue>> Enumerate()
+        {
+            foreach (var key in fKeys)
+            {
+                var value = fDictionary[key];
+                yield return new KeyValuePair<TKey, TValue>(key, value);
+            }
         }
 
         /// <summary>

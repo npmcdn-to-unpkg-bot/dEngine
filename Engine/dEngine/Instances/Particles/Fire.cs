@@ -10,11 +10,10 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+using dEngine.Instances.Attributes;
 
 namespace dEngine.Instances
 {
-    using Attributes;
-
     /// <summary>
     /// A fire particle emitter.
     /// </summary>

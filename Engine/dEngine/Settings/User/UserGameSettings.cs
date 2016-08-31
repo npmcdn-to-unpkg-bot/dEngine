@@ -18,7 +18,6 @@ using dEngine.Services;
 using dEngine.Utility;
 using Neo.IronLua;
 
-
 namespace dEngine.Settings.User
 {
     /// <summary>
@@ -47,11 +46,6 @@ namespace dEngine.Settings.User
         private static WindowMode _windowMode;
         private static float _cameraShiftSpeed;
         private static bool _cameraSpeedup;
-
-        /// <summary>
-        /// Fired when a custom setting is changed.
-        /// </summary>
-        public readonly Signal<string, string> CustomSettingChanged;
 
         /// <summary />
         public UserGameSettings()
@@ -423,5 +417,10 @@ namespace dEngine.Settings.User
             VoipEnabled = true;
             VoipVolume = 1;
         }
+
+        /// <summary>
+        /// Fired when a custom setting is changed.
+        /// </summary>
+        public readonly Signal<string, string> CustomSettingChanged;
     }
 }

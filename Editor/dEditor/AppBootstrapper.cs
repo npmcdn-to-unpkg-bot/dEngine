@@ -33,11 +33,10 @@ using dEditor.Widgets.CodeEditor;
 using dEditor.Widgets.StartPage;
 using dEngine;
 using dEngine.Instances;
-using dEngine.Serializer.V1;
 using dEngine.Services;
 using dEngine.Utility.Extensions;
 using DateTime = System.DateTime;
-
+using TimeSpan = System.TimeSpan;
 
 namespace dEditor
 {
@@ -45,6 +44,8 @@ namespace dEditor
     {
         private static readonly Assembly _externalBaml =
             Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "dEditor.exe"));
+
+        internal DispatcherTimer AutoSaveTimer;
 
         public AppBootstrapper()
         {
@@ -56,7 +57,9 @@ namespace dEditor
                 Debug.Assert(project != null);
                 var path = Path.Combine(project.ProjectPath, $"{project.Name}.game");
                 using (var file = File.Create(path))
+                {
                     data.CopyTo(file);
+                }
             };
 
             Engine.SavePlace = (place, data) =>
@@ -65,14 +68,16 @@ namespace dEditor
                 Debug.Assert(project != null);
                 var path = Path.Combine(project.ProjectPath, "Places", $"{place}.place");
                 using (var file = File.Create(path))
+                {
                     data.CopyTo(file);
+                }
             };
 
             ContentProvider.CustomFetchHandler = CustomFetchHandler;
             Engine.Start(EngineMode.LevelEditor);
-            DataModel.SetStartupArguments(new Dictionary<string, string> { { "IsEditor", "true" } });
+            DataModel.SetStartupArguments(new Dictionary<string, string> {{"IsEditor", "true"}});
             InputService.MouseInputApi = InputApi.Windows;
-            Editor.Current.Settings = new EditorSettings { Name = "Editor", Parent = Engine.Settings };
+            Editor.Current.Settings = new EditorSettings {Name = "Editor", Parent = Engine.Settings};
             Engine.Settings.Load();
 
             KeyBindings.Init();
@@ -82,11 +87,9 @@ namespace dEditor
 
             ToolManager.SelectTool.IsEquipped = true;
 
-            AutoSaveTimer = new DispatcherTimer(System.TimeSpan.FromMinutes(EditorSettings.AutosaveInterval),
+            AutoSaveTimer = new DispatcherTimer(TimeSpan.FromMinutes(EditorSettings.AutosaveInterval),
                 DispatcherPriority.Background, PerformAutoSave, Editor.Current.Dispatcher);
         }
-
-        internal DispatcherTimer AutoSaveTimer;
 
         protected override object GetInstance(Type service, string key)
         {
@@ -94,20 +97,16 @@ namespace dEditor
                 service = typeof(WindowManager);
 
             if (service == typeof(ICommandBar))
-            {
                 return Editor.Current.Shell.CommandBar;
-            }
             if (service == typeof(IStatusBar))
-            {
                 return Editor.Current.Shell.StatusBar;
-            }
             if (service == typeof(ICodeEditor))
             {
                 var existing = Editor.Current.Shell?.Items.OfType<CodeEditorViewModel>()
                     .FirstOrDefault(w => w.LuaSourceContainer.InstanceId.Equals(key));
                 if (existing != null)
                     return existing;
-                
+
                 WeakReference<Instance> obj;
                 Game.Instances.TryGetValue(key, out obj);
                 var editor = new CodeEditorViewModel((LuaSourceContainer)obj);
@@ -129,7 +128,7 @@ namespace dEditor
                 return Editor.Current.Shell?.Items.Where(w => w.GetType() == service) ?? Enumerable.Empty<object>();
             if (typeof(Widget).IsAssignableFrom(service))
                 return Editor.Current.Shell?.Widgets.Where(w => w.GetType() == service) ?? Enumerable.Empty<object>();
-            return new[] { service.FastConstruct() };
+            return new[] {service.FastConstruct()};
         }
 
         private static Stream CustomFetchHandler(string protocol, string path)
@@ -152,9 +151,7 @@ namespace dEditor
                             if (test)
                             ;
                             if (entry.Key.ToString() == editorPath)
-                            {
                                 return (Stream)entry.Value;
-                            }
                         }
                     }
                     throw new NotSupportedException($"No file found in editor manifest resource.");
@@ -165,8 +162,8 @@ namespace dEditor
 
         private static void PerformAutoSave(object sender, EventArgs e)
         {
-            if (RunService.SimulationState != SimulationState.Stopped || // do not auto-save during sessions
-                Editor.Current.MainWindow.WindowState == WindowState.Minimized || EditorSettings.AutosaveEnabled)
+            if ((RunService.SimulationState != SimulationState.Stopped) || // do not auto-save during sessions
+                (Editor.Current.MainWindow.WindowState == WindowState.Minimized) || EditorSettings.AutosaveEnabled)
                 // do not auto-save if window is minimized
                 return;
 
@@ -203,9 +200,7 @@ namespace dEditor
             Editor.Current.Args = args;
 
             if (!string.IsNullOrEmpty(args.API))
-            {
                 File.WriteAllText(args.API, API.Dump());
-            }
 
             var settings = new Dictionary<string, object>
             {
@@ -244,7 +239,7 @@ namespace dEditor
                 // TODO: remove test autoload
                 //var p = Project.Load(@"C:\Users\Dan\Documents\dEditor\Projects\MyGame\MyGame.dproj");
                 //p.Open();
-                
+
                 /*
                 var mat = new Material();
                 var tex = new TextureParamaterNode();

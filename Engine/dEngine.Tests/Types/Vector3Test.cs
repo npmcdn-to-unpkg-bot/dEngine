@@ -11,7 +11,7 @@
 
 namespace dEngine.Tests
 {
-	public class Vector3Test
-	{
-	}
+    public class Vector3Test
+    {
+    }
 }

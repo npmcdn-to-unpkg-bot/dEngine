@@ -22,7 +22,6 @@ using dEngine.Utility.Native;
 using Neo.IronLua;
 using SharpDX.Multimedia;
 using SharpDX.RawInput;
-using SharpDX.XInput;
 
 // ReSharper disable UnusedMember.Local
 
@@ -218,15 +217,16 @@ namespace dEngine.Services
                         }
 
                         var io = new InputObject(Key.Unknown, InputState.Change, InputType.MouseMovement,
-                            new Vector3(CursorX, CursorY, rawMouse.WheelDelta), new Vector3(rawMouse.X, rawMouse.Y, rawMouse.WheelDelta));
+                            new Vector3(CursorX, CursorY, rawMouse.WheelDelta),
+                            new Vector3(rawMouse.X, rawMouse.Y, rawMouse.WheelDelta));
                         Process(ref io);
                     }
 
                     if (MouseInputApi != InputApi.RawInput)
                         return;
                     //if (!MouseWithinViewport(CursorX, CursorY) || (MouseInputApi != InputApi.RawInput))
-                        // ignore if mouse action was outside the viewport
-                        //return;
+                    // ignore if mouse action was outside the viewport
+                    //return;
 
                     if (rawMouse.ButtonFlags != MouseButtonFlags.None)
                     {
@@ -294,7 +294,8 @@ namespace dEngine.Services
                         }
 
                         var io = new InputObject(Key.Unknown, inputState, inputType,
-                            new Vector3(CursorX, CursorY, rawMouse.WheelDelta), new Vector3(rawMouse.X, rawMouse.Y, rawMouse.WheelDelta));
+                            new Vector3(CursorX, CursorY, rawMouse.WheelDelta),
+                            new Vector3(rawMouse.X, rawMouse.Y, rawMouse.WheelDelta));
                         Process(ref io);
                     }
                 }
@@ -303,7 +304,8 @@ namespace dEngine.Services
                     Key key;
 
                     if (rawKeyboard.Key == Keys.ControlKey)
-                        if ((rawKeyboard.ScanCodeFlags == ScanCodeFlags.Make) || (rawKeyboard.ScanCodeFlags == ScanCodeFlags.Break))
+                        if ((rawKeyboard.ScanCodeFlags == ScanCodeFlags.Make) ||
+                            (rawKeyboard.ScanCodeFlags == ScanCodeFlags.Break))
                             key = Key.LeftControl;
                         else if (rawKeyboard.ScanCodeFlags.HasFlag(ScanCodeFlags.E0))
                             key = Key.RightControl;
@@ -717,8 +719,8 @@ namespace dEngine.Services
                     SetCursorPos(_point.X, _point.Y);
                     break;
                 case MouseBehaviour.LockCenter:
-                    CursorX = _point.X = (int)(Renderer.ControlSize.x / 2);
-                    CursorY = _point.Y = (int)(Renderer.ControlSize.y / 2);
+                    CursorX = _point.X = (int)(Renderer.ControlSize.x/2);
+                    CursorY = _point.Y = (int)(Renderer.ControlSize.y/2);
                     ClientToScreen(_currentControl.Handle, ref _point);
                     SetCursorPos(_point.X, _point.Y);
                     break;
@@ -752,7 +754,6 @@ namespace dEngine.Services
         {
             lock (Locker)
             {
-                
             }
         }
 
@@ -853,10 +854,10 @@ namespace dEngine.Services
             {
                 case InputType.MouseButton1:
                     hitElement?.Focus();
-                    hitElement?.MouseButton1Down.Fire((int) input.Position.X, (int) input.Position.Y);
+                    hitElement?.MouseButton1Down.Fire((int)input.Position.X, (int)input.Position.Y);
                     break;
                 case InputType.MouseButton2:
-                    hitElement?.MouseButton2Down.Fire((int) input.Position.X, (int) input.Position.Y);
+                    hitElement?.MouseButton2Down.Fire((int)input.Position.X, (int)input.Position.Y);
                     break;
             }
         }
@@ -866,15 +867,15 @@ namespace dEngine.Services
             var hitElement = GlobalHitTest();
 
             if (input.InputType == InputType.MouseButton1)
-                hitElement?.MouseButton1Up.Fire((int) input.Position.X, (int) input.Position.Y);
+                hitElement?.MouseButton1Up.Fire((int)input.Position.X, (int)input.Position.Y);
             else if (input.InputType == InputType.MouseButton2)
-                hitElement?.MouseButton2Up.Fire((int) input.Position.X, (int) input.Position.Y);
+                hitElement?.MouseButton2Up.Fire((int)input.Position.X, (int)input.Position.Y);
         }
 
         private void OnMouseInputChanged(InputObject input)
         {
-            var x = (int) input.Position.X;
-            var y = (int) input.Position.Y;
+            var x = (int)input.Position.X;
+            var y = (int)input.Position.Y;
 
             var hitElement = GlobalHitTest();
 

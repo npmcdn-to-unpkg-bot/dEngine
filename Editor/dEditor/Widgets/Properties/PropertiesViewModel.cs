@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -37,12 +36,10 @@ using dEditor.Widgets.Properties.Inspectors.Vector3;
 using dEditor.Widgets.Properties.Inspectors.Vector4;
 using dEngine;
 using dEngine.Instances;
-using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
 using dEngine.Services;
 using dEngine.Settings;
 using TimeSpan = dEngine.TimeSpan;
-
 
 namespace dEditor.Widgets.Properties
 {
@@ -62,9 +59,7 @@ namespace dEditor.Widgets.Properties
             {
                 var count = SelectionService.SelectionCount;
                 if (count == 0)
-                {
                     return "Properties";
-                }
                 if (count == 1)
                 {
                     var first = SelectionService.First();
@@ -104,7 +99,7 @@ namespace dEditor.Widgets.Properties
             {
                 DeselectItem(value);
                 _target = value;
-                SelectItems(new[] { value });
+                SelectItems(new[] {value});
             }
         }
 
@@ -113,9 +108,7 @@ namespace dEditor.Widgets.Properties
             base.OnDeactivate(close);
 
             if (close)
-            {
                 Game.Selection.Selected.Event -= OnSelect;
-            }
         }
 
         private void SelectItems(IEnumerable<object> selection)
@@ -128,9 +121,7 @@ namespace dEditor.Widgets.Properties
                 var bindingAttr = BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.Instance;
 
                 if (isSettings)
-                {
                     bindingAttr |= BindingFlags.Static;
-                }
 
                 var type = Inst.CacheType(obj.GetType());
                 var properties = type.Properties;
@@ -143,7 +134,7 @@ namespace dEditor.Widgets.Properties
 
                     var visibleAttr = property.EditorVisible;
 
-                    if (visibleAttr == null || FilteredCategories.Contains(visibleAttr.Group))
+                    if ((visibleAttr == null) || FilteredCategories.Contains(visibleAttr.Group))
                         continue;
 
                     if (property.IsDeprecated && !EditorSettings.ShowDeprecated)
@@ -177,16 +168,14 @@ namespace dEditor.Widgets.Properties
                         editor.AddObject(obj, property);
                     }
 
-                    if (groupNeedsAdded && editor != null)
+                    if (groupNeedsAdded && (editor != null))
                         groups.Add(visibleAttr.Group, groupEntry);
                 }
             }
 
             var inspectors = new List<InspectorBase>(12);
             foreach (var group in groups)
-            {
                 inspectors.Add(new CollapsibleGroupViewModel(group.Key, group.Value.Editors.Values.Cast<InspectorBase>()));
-            }
 
             Inspectors = inspectors;
             NotifyOfPropertyChange(nameof(Inspectors));
@@ -224,9 +213,7 @@ namespace dEditor.Widgets.Properties
         private void OnSelect(Instance obj)
         {
             if (UseSelectionService)
-            {
                 Application.Current.Dispatcher.InvokeAsync(() => SelectItems(SelectionService.ToList()));
-            }
         }
 
         private IEditor GetEditor(object obj, Inst.CachedProperty desc, object data)
@@ -272,7 +259,8 @@ namespace dEditor.Widgets.Properties
                         return new TextBoxEditorViewModel(obj, desc);
                     if (desc.PropertyType.IsEnum)
                         return new EnumEditorViewModel(obj, desc);
-                    if (desc.PropertyType.IsGenericType && desc.PropertyType.GetGenericTypeDefinition() == typeof(Content<>))
+                    if (desc.PropertyType.IsGenericType &&
+                        (desc.PropertyType.GetGenericTypeDefinition() == typeof(Content<>)))
                         return new ContentEditorViewModel(obj, desc);
                     if (typeof(Instance).IsAssignableFrom(desc.PropertyType))
                         return new InstanceEditorViewModel(obj, desc);

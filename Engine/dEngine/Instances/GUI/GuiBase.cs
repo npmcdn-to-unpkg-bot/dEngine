@@ -13,11 +13,11 @@ using dEngine.Instances.Attributes;
 
 namespace dEngine.Instances
 {
-	/// <summary>
-	/// Base class for 2D and 3D guis.
-	/// </summary>
-	[TypeId(126)]
-	public abstract class GuiBase : Instance
-	{
-	}
+    /// <summary>
+    /// Base class for 2D and 3D guis.
+    /// </summary>
+    [TypeId(126)]
+    public abstract class GuiBase : Instance
+    {
+    }
 }

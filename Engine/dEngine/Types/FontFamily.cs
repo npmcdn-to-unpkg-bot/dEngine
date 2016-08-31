@@ -26,7 +26,7 @@ namespace dEngine
         {
             _family = family;
         }
-        
+
 #pragma warning disable 1591
         public static FontFamily Arial = new FontFamily("Arial");
         public static FontFamily ComicSans = new FontFamily("Comic Sans");

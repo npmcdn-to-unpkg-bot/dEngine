@@ -11,7 +11,7 @@
 
 namespace dEditor.Widgets.Properties
 {
-	public interface IProperties
-	{
-	}
+    public interface IProperties
+    {
+    }
 }

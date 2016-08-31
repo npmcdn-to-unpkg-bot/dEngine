@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace dEditor.Widgets.MaterialEditor.Nodes.Views
+﻿namespace dEditor.Widgets.MaterialEditor.Nodes.Views
 {
     /// <summary>
     /// Interaction logic for MainNodeView.xaml

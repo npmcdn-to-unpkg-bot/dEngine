@@ -10,20 +10,21 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+
 #pragma warning disable 1591
 
 namespace dEngine
 {
-	/// <summary>
-	/// An enum representing a normal direction.
-	/// </summary>
-	public enum NormalId
-	{
-		Right = 0,
-		Top = 1,
-		Back = 2,
-		Left = 3,
-		Bottom = 4,
-		Front = 5
-	}
+    /// <summary>
+    /// An enum representing a normal direction.
+    /// </summary>
+    public enum NormalId
+    {
+        Right = 0,
+        Top = 1,
+        Back = 2,
+        Left = 3,
+        Bottom = 4,
+        Front = 5
+    }
 }

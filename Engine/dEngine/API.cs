@@ -31,13 +31,15 @@ namespace dEngine
     [JsonObject(MemberSerialization.OptOut)]
     public class API
     {
-        public Class RootClass { get; set; }
-        public Dictionary<string, Class> DataTypes { get; } = new Dictionary<string, Class>();
+        private static readonly char[] _alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 
         static API()
         {
             Comments = new Comments("dEngine.xml");
         }
+
+        public Class RootClass { get; set; }
+        public Dictionary<string, Class> DataTypes { get; } = new Dictionary<string, Class>();
 
         /// <summary>
         /// The XML comments.
@@ -47,7 +49,7 @@ namespace dEngine
         private static string GetCategoryFromType(Type type)
         {
             string typeCategory;
-            if (typeof(Instance).IsAssignableFrom(type) || type == typeof(Instance))
+            if (typeof(Instance).IsAssignableFrom(type) || (type == typeof(Instance)))
                 typeCategory = "class";
             else if (typeof(IDataType).IsAssignableFrom(type))
                 typeCategory = "datatype";
@@ -55,8 +57,6 @@ namespace dEngine
                 typeCategory = "internal";
             return typeCategory;
         }
-
-        private static readonly char[] _alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 
         /// <summary>
         /// Dumps the API as a string.
@@ -72,11 +72,17 @@ namespace dEngine
                     .ExportedTypes.Where(
                         t =>
                             (typeof(Instance).IsAssignableFrom(t) || typeof(IDataType).IsAssignableFrom(t) ||
-                            t == typeof(Instance)) && t != typeof(DynamicObject)).OrderBy(t => t.Name);
+                             (t == typeof(Instance))) && (t != typeof(DynamicObject))).OrderBy(t => t.Name);
 
             foreach (var type in types)
             {
-                var @class = new Class { Name = type.Name, FullName = type.FullName, IsAbstract = type.IsAbstract, IsService = typeof(Service).IsAssignableFrom(type)};
+                var @class = new Class
+                {
+                    Name = type.Name,
+                    FullName = type.FullName,
+                    IsAbstract = type.IsAbstract,
+                    IsService = typeof(Service).IsAssignableFrom(type)
+                };
                 var kind = @class.Kind = GetCategoryFromType(type);
 
                 switch (kind)
@@ -95,7 +101,11 @@ namespace dEngine
 
                 foreach (var attribute in type.GetCustomAttributes())
                 {
-                    var attr = new Attribute { Name = attribute.GetType().Name, Value = (attribute as IValueAttribute)?.GetValue() };
+                    var attr = new Attribute
+                    {
+                        Name = attribute.GetType().Name,
+                        Value = (attribute as IValueAttribute)?.GetValue()
+                    };
                     @class.Attributes.Add(attr.Name, attr);
                 }
 
@@ -107,20 +117,20 @@ namespace dEngine
                 var methodFlags = BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance;
                 foreach (var methodInfo in type.GetMethods(methodFlags).OrderBy(m => m.Name))
                 {
-                    if (methodInfo.IsSpecialName || methodInfo.DeclaringType != type || methodInfo.Name == "TryGetMember" || methodInfo.Name == "Equals" || methodInfo.Name == "ToString")
+                    if (methodInfo.IsSpecialName || (methodInfo.DeclaringType != type) ||
+                        (methodInfo.Name == "TryGetMember") || (methodInfo.Name == "Equals") ||
+                        (methodInfo.Name == "ToString"))
                         continue;
 
                     if (kind == "datatype")
-                    {
-                        if (methodInfo.Name == "Load" || methodInfo.Name == "Save")
+                        if ((methodInfo.Name == "Load") || (methodInfo.Name == "Save"))
                             continue;
-                    }
 
                     var method = new Function
                     {
                         Name = methodInfo.Name,
                         ReturnType = methodInfo.ReturnType.FullName,
-                        DeclaringType = @class.FullName,
+                        DeclaringType = @class.FullName
                     };
 
                     Comments.Comment methodComment;
@@ -130,7 +140,7 @@ namespace dEngine
 
                     foreach (var parameterInfo in methodInfo.GetParameters())
                     {
-                        string paramComment = "";
+                        var paramComment = "";
                         methodComment.Parameters?.TryGetValue(parameterInfo.Name, out paramComment);
 
                         var param = new Parameter
@@ -138,14 +148,20 @@ namespace dEngine
                             Name = parameterInfo.Name,
                             Comment = paramComment,
                             ParameterType = parameterInfo.ParameterType.FullName,
-                            DefaultValue = parameterInfo.HasDefaultValue ? (parameterInfo.DefaultValue?.ToString() ?? "null") : ""
+                            DefaultValue =
+                                parameterInfo.HasDefaultValue ? (parameterInfo.DefaultValue?.ToString() ?? "null") : ""
                         };
                         method.Parameters.Add(param);
                     }
 
                     foreach (var attribute in methodInfo.GetCustomAttributes())
                     {
-                        var attr = new Attribute { Name = attribute.GetType().Name, Value = (attribute as IValueAttribute)?.GetValue() }; ;
+                        var attr = new Attribute
+                        {
+                            Name = attribute.GetType().Name,
+                            Value = (attribute as IValueAttribute)?.GetValue()
+                        };
+                        ;
                         method.Attributes[attr.Name] = attr;
                     }
 
@@ -158,10 +174,12 @@ namespace dEngine
 
                 foreach (var property in type.GetProperties(flags).OrderBy(p => p.Name))
                 {
-                    if (property.DeclaringType != type || property.IsSpecialName || property.Name == "RenderData" || property.Name == "RenderIndex" || property.Name == "RenderObject")
+                    if ((property.DeclaringType != type) || property.IsSpecialName || (property.Name == "RenderData") ||
+                        (property.Name == "RenderIndex") || (property.Name == "RenderObject"))
                         continue;
 
-                    if (@class.FullName == typeof(Instance).FullName && property.Name == "Item") // hack to get rid of weird property
+                    if ((@class.FullName == typeof(Instance).FullName) && (property.Name == "Item"))
+                        // hack to get rid of weird property
                         continue;
 
                     var prop = new Property
@@ -169,7 +187,7 @@ namespace dEngine
                         Name = property.Name,
                         PropertyType = property.PropertyType.FullName,
                         ReadOnly = property.SetMethod?.IsPublic != true,
-                        DeclaringType = @class.FullName,
+                        DeclaringType = @class.FullName
                     };
 
                     Comments.Comment propComment;
@@ -179,18 +197,25 @@ namespace dEngine
 
                     foreach (var attribute in property.GetCustomAttributes())
                     {
-                        var attr = new Attribute { Name = attribute.GetType().Name, Value = (attribute as IValueAttribute)?.GetValue() }; ;
+                        var attr = new Attribute
+                        {
+                            Name = attribute.GetType().Name,
+                            Value = (attribute as IValueAttribute)?.GetValue()
+                        };
+                        ;
                         prop.Attributes[attr.Name] = attr;
                     }
 
                     @class.Properties.Add(prop);
                 }
 
-                foreach (var fieldInfo in type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+                foreach (
+                    var fieldInfo in
+                    type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
                 {
-                    if (fieldInfo.FieldType != typeof(Signal)
+                    if ((fieldInfo.FieldType != typeof(Signal))
                         && !(fieldInfo.FieldType.IsGenericType
-                        && fieldInfo.FieldType.GetGenericTypeDefinition() == typeof(Signal<>)))
+                             && (fieldInfo.FieldType.GetGenericTypeDefinition() == typeof(Signal<>))))
                         continue;
 
                     if (fieldInfo.DeclaringType != type)
@@ -201,7 +226,7 @@ namespace dEngine
                     Comments.Comment eventComment;
                     Comments.Get(fieldInfo, out eventComment);
 
-                    int paramIndex = 0;
+                    var paramIndex = 0;
 
                     var signal = new Signal
                     {
@@ -210,12 +235,12 @@ namespace dEngine
                         Summary = eventComment.Summary,
                         Parameters = paramTypes.Select(t =>
                         {
-                            string paramName = _alphabet[paramIndex].ToString();
+                            var paramName = _alphabet[paramIndex].ToString();
 
                             eventComment.Parameters?.TryGetValue(paramIndex.ToString(), out paramName);
 
                             paramIndex++;
-                            return new Parameter { Name = paramName, ParameterType = t.FullName };
+                            return new Parameter {Name = paramName, ParameterType = t.FullName};
                         })
                     };
                     @class.Signals.Add(signal);
@@ -228,9 +253,7 @@ namespace dEngine
                     continue;
                 var superClass = objectClass.BaseClass;
                 if (!string.IsNullOrEmpty(superClass))
-                {
                     objectClasses[superClass].SubClasses.Add(objectClass);
-                }
             }
 
             api.RootClass = objectClasses[typeof(Instance).FullName];
@@ -271,7 +294,6 @@ namespace dEngine
         [JsonObject(MemberSerialization.OptOut)]
         public class DataType
         {
-
         }
 
         [JsonObject(MemberSerialization.OptOut)]

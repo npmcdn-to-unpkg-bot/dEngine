@@ -30,9 +30,7 @@ namespace dEditor.Shell
 
             var textBox = GetTemplateChild("PART_EditableTextBox") as TextBox;
             if (textBox != null)
-            {
                 _textBox = textBox;
-            }
 
             _textBox.Padding = new Thickness(2);
         }

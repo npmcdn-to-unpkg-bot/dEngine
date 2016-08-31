@@ -17,7 +17,6 @@ using dEngine;
 
 namespace dEditor.Widgets.MaterialEditor
 {
-
     public class InOutToAlignmentConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -26,9 +25,9 @@ namespace dEditor.Widgets.MaterialEditor
             switch (mode)
             {
                 case InOut.In:
-                    return System.Windows.HorizontalAlignment.Left;
+                    return HorizontalAlignment.Left;
                 case InOut.Out:
-                    return System.Windows.HorizontalAlignment.Right;
+                    return HorizontalAlignment.Right;
             }
             return null;
         }

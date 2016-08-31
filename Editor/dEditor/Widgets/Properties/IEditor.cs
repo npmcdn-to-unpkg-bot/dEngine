@@ -10,20 +10,19 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
-using System.Reflection;
 using dEditor.Framework;
 using dEngine.Serializer.V1;
 
 namespace dEditor.Widgets.Properties
 {
-	public interface IEditor
-	{
-		string DisplayName { get; set; }
-		string Description { get; }
-		bool IsReadOnly { get; }
-		PropertiesViewModel PropertiesWidget { get; set; }
-		Dictionary<object, BoundPropertyInfo> Objects { get; }
-		BoundPropertyInfo AddObject(object obj, Inst.CachedProperty descriptor);
-		void RemoveObject(object obj);
-	}
+    public interface IEditor
+    {
+        string DisplayName { get; set; }
+        string Description { get; }
+        bool IsReadOnly { get; }
+        PropertiesViewModel PropertiesWidget { get; set; }
+        Dictionary<object, BoundPropertyInfo> Objects { get; }
+        BoundPropertyInfo AddObject(object obj, Inst.CachedProperty descriptor);
+        void RemoveObject(object obj);
+    }
 }

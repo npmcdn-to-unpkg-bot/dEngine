@@ -24,7 +24,6 @@ using dEditor.Utility;
 using dEngine;
 using dEngine.Instances;
 using dEngine.Services;
-using dEngine.Utility.Extensions;
 using Gma.System.MouseKeyHook;
 
 namespace dEditor
@@ -78,11 +77,6 @@ namespace dEditor
         public List<Plugin> Plugins { get; }
 
         /// <summary>
-        /// Fired when <see cref="Project" /> is changed.
-        /// </summary>
-        public event Action<Project> ProjectChanged;
-
-        /// <summary>
         /// The currently loaded project.
         /// </summary>
         public Project Project
@@ -97,6 +91,11 @@ namespace dEditor
         }
 
         public AppArgs Args { get; set; }
+
+        /// <summary>
+        /// Fired when <see cref="Project" /> is changed.
+        /// </summary>
+        public event Action<Project> ProjectChanged;
 
         private void OnProjectChanged(Project project)
         {
@@ -125,8 +124,8 @@ namespace dEditor
                 Directory.GetFiles(pluginsPath).Where(f => f.EndsWith(".plugin"));
 
             var insertService = DataModel.GetService<InsertService>();
-            int totalPlugins = 0;
-            int pluginsLoaded = 0;
+            var totalPlugins = 0;
+            var pluginsLoaded = 0;
             foreach (var pluginFile in pluginsFiles)
             {
                 totalPlugins++;
@@ -143,10 +142,8 @@ namespace dEditor
                     }
 
                     if (!(container is Model || container is Folder))
-                    {
                         Engine.Logger.Warn(
                             $"Plugin file {Path.GetFileName(pluginFile)} must be a Folder, Model or Script. (was a {container.ClassName})");
-                    }
 
                     Plugin.Load(container);
                 }
@@ -170,9 +167,7 @@ namespace dEditor
         public void UnloadPlugins()
         {
             foreach (var plugin in Plugins.ToList())
-            {
                 plugin.Destroy();
-            }
         }
 
         private void CurrentOnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

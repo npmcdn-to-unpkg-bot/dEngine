@@ -27,16 +27,7 @@ namespace dEngine.Instances
         protected int _effectOrder;
         private bool _enabled;
 
-        protected enum EffectPrority
-        {
-            AmbientOcclusion,
-            MotionBlur,
-            DepthOfField,
-            Bloom,
-            LensFlare,
-            ToneMapping,
-            ColourCorrection = 50000
-        }
+        protected Camera Camera;
 
         /// <inheritdoc />
         protected PostEffect()
@@ -44,22 +35,11 @@ namespace dEngine.Instances
             Enabled = true;
         }
 
-        internal virtual void UpdateSize(Camera camera)
-        {
-        }
-
-        protected Camera Camera;
-
-        internal void SetCamera(Camera camera)
-        {
-            Camera = camera;
-            UpdateSize(camera);
-        }
-
         /// <summary>
         /// Determines if the effect is applied.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public bool Enabled
         {
             get { return _enabled; }
@@ -73,6 +53,16 @@ namespace dEngine.Instances
             }
         }
 
+        internal virtual void UpdateSize(Camera camera)
+        {
+        }
+
+        internal void SetCamera(Camera camera)
+        {
+            Camera = camera;
+            UpdateSize(camera);
+        }
+
         internal abstract void Render(ref DeviceContext context);
 
         /// <inheritdoc />
@@ -80,6 +70,17 @@ namespace dEngine.Instances
         {
             base.Destroy();
             Camera?.PostEffects.Remove(this);
+        }
+
+        protected enum EffectPrority
+        {
+            AmbientOcclusion,
+            MotionBlur,
+            DepthOfField,
+            Bloom,
+            LensFlare,
+            ToneMapping,
+            ColourCorrection = 50000
         }
 
         internal class PostEffectSorter : IComparer<PostEffect>

@@ -11,24 +11,24 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for mouse behaviour.
-	/// </summary>
-	public enum MouseBehaviour
-	{
-		/// <summary>
-		/// Cursor can move freely.
-		/// </summary>
-		Default,
+    /// <summary>
+    /// Enum for mouse behaviour.
+    /// </summary>
+    public enum MouseBehaviour
+    {
+        /// <summary>
+        /// Cursor can move freely.
+        /// </summary>
+        Default,
 
-		/// <summary>
-		/// Cursor is locked to the center of the screen.
-		/// </summary>
-		LockCenter,
+        /// <summary>
+        /// Cursor is locked to the center of the screen.
+        /// </summary>
+        LockCenter,
 
-		/// <summary>
-		/// Cursor is locked at its current position.
-		/// </summary>
-		LockCurrentPosition
-	}
+        /// <summary>
+        /// Cursor is locked at its current position.
+        /// </summary>
+        LockCurrentPosition
+    }
 }

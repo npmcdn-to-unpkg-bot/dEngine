@@ -12,29 +12,30 @@
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Services
 {
-	/// <summary>
-	/// A container service who executes scripts on the server.
-	/// </summary>
-	/// <remarks>
-	/// Objects stored in this container will not be baked into the client.
-	/// </remarks>
-	/// <seealso cref="Workspace" />
-	[TypeId(79), ExplorerOrder(6), ToolboxGroup("Containers")]
-	public sealed class ServerScriptService : Service
-	{
-		public static ServerScriptService Service;
+    /// <summary>
+    /// A container service who executes scripts on the server.
+    /// </summary>
+    /// <remarks>
+    /// Objects stored in this container will not be baked into the client.
+    /// </remarks>
+    /// <seealso cref="Workspace" />
+    [TypeId(79)]
+    [ExplorerOrder(6)]
+    [ToolboxGroup("Containers")]
+    public sealed class ServerScriptService : Service
+    {
+        public static ServerScriptService Service;
 
-		public ServerScriptService()
-		{
-			Service = this;
-		}
+        public ServerScriptService()
+        {
+            Service = this;
+        }
 
-		internal static object GetExisting()
-		{
-			return DataModel.GetService<ServerScriptService>();
-		}
-	}
+        internal static object GetExisting()
+        {
+            return DataModel.GetService<ServerScriptService>();
+        }
+    }
 }

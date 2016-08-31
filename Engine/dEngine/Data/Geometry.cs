@@ -66,7 +66,7 @@ namespace dEngine.Data
 
             if ((weights != null) && (weights.Length > 0))
                 IsSkinned = true;
-            
+
             Renderer.InvokeResourceDependent(DoBuildBuffersJob);
 
             IsLoaded = true;
@@ -150,7 +150,7 @@ namespace dEngine.Data
         /// Fired when the buffers are rebuilt.
         /// </summary>
         public event Action Rebuilt;
-        
+
         private void LoadRobloxMesh(Stream stream)
         {
             using (var stringReader = new StreamReader(stream))
@@ -160,9 +160,9 @@ namespace dEngine.Data
                 var triangleCount = int.Parse(test);
                 var dataLine = stringReader.ReadLine();
                 dataLine = dataLine.Substring(1, dataLine.Length - 1);
-                var vectors = dataLine.Split(new[] { "][" }, StringSplitOptions.RemoveEmptyEntries);
+                var vectors = dataLine.Split(new[] {"]["}, StringSplitOptions.RemoveEmptyEntries);
 
-                var vertCount = triangleCount * 3;
+                var vertCount = triangleCount*3;
                 Vertices = new Vertex[vertCount];
 
                 for (var j = 0; j < vertCount; j += 3)
@@ -265,7 +265,7 @@ namespace dEngine.Data
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Geometry)obj);
+            return (obj.GetType() == GetType()) && Equals((Geometry)obj);
         }
 
         /// <inheritdoc />

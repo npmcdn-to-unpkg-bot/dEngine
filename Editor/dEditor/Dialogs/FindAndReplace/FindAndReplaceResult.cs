@@ -26,7 +26,6 @@ namespace dEditor.Dialogs.FindAndReplace
             public LuaSourceContainer Source { get; }
             public string Name { get; }
             public int LineNumber { get; }
-
         }
     }
 }

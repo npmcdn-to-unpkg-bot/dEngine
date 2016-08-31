@@ -35,7 +35,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public float CartoonFactor
         {
             get { return _cartoonFactor; }
@@ -50,7 +51,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public float MaxSpeed
         {
             get { return _maxSpeed; }
@@ -65,7 +67,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(3), EditorVisible]
+        [InstMember(3)]
+        [EditorVisible]
         public float MaxThrust
         {
             get { return _maxThrust; }
@@ -80,7 +83,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The maximum amount of torque that can be applied.
         /// </summary>
-        [InstMember(4), EditorVisible]
+        [InstMember(4)]
+        [EditorVisible]
         public Vector3 MaxTorque
         {
             get { return _maxTorque; }
@@ -95,7 +99,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(5), EditorVisible]
+        [InstMember(5)]
+        [EditorVisible]
         public Part Target
         {
             get { return _target; }
@@ -110,7 +115,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(6), EditorVisible]
+        [InstMember(6)]
+        [EditorVisible]
         public Vector3 TargetOffset
         {
             get { return _targetOffset; }
@@ -125,7 +131,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(7), EditorVisible]
+        [InstMember(7)]
+        [EditorVisible]
         public float TargetRadius
         {
             get { return _targetRadius; }
@@ -140,7 +147,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(8), EditorVisible]
+        [InstMember(8)]
+        [EditorVisible]
         public float ThrustD
         {
             get { return _thrustD; }
@@ -155,7 +163,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(10), EditorVisible]
+        [InstMember(10)]
+        [EditorVisible]
         public float ThrustP
         {
             get { return _thrustP; }
@@ -170,7 +179,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(11), EditorVisible]
+        [InstMember(11)]
+        [EditorVisible]
         public float TurnD
         {
             get { return _turnD; }
@@ -185,7 +195,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(12), EditorVisible]
+        [InstMember(12)]
+        [EditorVisible]
         public float TurnP
         {
             get { return _turnP; }

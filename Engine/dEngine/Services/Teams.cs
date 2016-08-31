@@ -17,13 +17,13 @@ using dEngine.Instances.Attributes;
 using dEngine.Utility.Extensions;
 using Neo.IronLua;
 
-
 namespace dEngine.Services
 {
     /// <summary>
     /// A service for managing teams.
     /// </summary>
-    [TypeId(150), ToolboxGroup("Containers")]
+    [TypeId(150)]
+    [ToolboxGroup("Containers")]
     public class Teams : Service
     {
         internal static Teams Service;
@@ -38,7 +38,7 @@ namespace dEngine.Services
 
         private void RebalanceTeamsRandom()
         {
-            int i = 0;
+            var i = 0;
 
             var teams = AllTeams.ToArray();
 
@@ -50,7 +50,6 @@ namespace dEngine.Services
             foreach (var team in newTeams)
                 foreach (var plr in team)
                     plr.Team = teams[i++];
-
         }
 
         private void RebalanceTeamsTrueSkill()
@@ -83,7 +82,7 @@ namespace dEngine.Services
         public LuaTable GetTeams()
         {
             var table = new LuaTable();
-            int i = 0;
+            var i = 0;
             foreach (var child in Children)
             {
                 var team = child as Team;

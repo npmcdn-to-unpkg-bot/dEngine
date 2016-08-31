@@ -10,6 +10,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using BulletSharp;
+using C5;
 
 namespace dEngine.Instances
 {
@@ -18,11 +19,11 @@ namespace dEngine.Instances
         private GhostObject _frustumGhost;
         private CollisionShape _frustumShape;
 
-        internal void FrustumCull(ref Part[] parts, ref C5.ArrayList<Part> output)
+        internal void FrustumCull(ref Part[] parts, ref ArrayList<Part> output)
         {
             var ghost = _frustumGhost;
             var numOverlap = ghost.NumOverlappingObjects;
-            for (int i = 0; i < numOverlap; i++)
+            for (var i = 0; i < numOverlap; i++)
             {
                 var obj = ghost.GetOverlappingObject(i);
                 var part = obj.UserObject as Part;
@@ -58,15 +59,16 @@ namespace dEngine.Instances
             }
         }
 
-        private void MakeFrustumCollisionShape(out CollisionShape shape) // TODO: this method doesn't take fov into account?
+        private void MakeFrustumCollisionShape(out CollisionShape shape)
+            // TODO: this method doesn't take fov into account?
         {
             CompoundShape frustumShape;
 
             var nearPlane = _clipNear;
             var farPlane = _clipFar;
 
-            var planesFraction = farPlane / nearPlane;
-            var centralPlane = (farPlane - nearPlane) * 0.5f;
+            var planesFraction = farPlane/nearPlane;
+            var centralPlane = (farPlane - nearPlane)*0.5f;
             float left, right, bottom, top;
             var screenSize = _viewportSize;
             var aspect = AspectRatio;
@@ -84,10 +86,10 @@ namespace dEngine.Instances
                 bottom = -aspect;
                 top = aspect;
             }
-            var farLeft = left * planesFraction;
-            var farRight = right * planesFraction;
-            var farBottom = bottom * planesFraction;
-            var farTop = top * planesFraction;
+            var farLeft = left*planesFraction;
+            var farRight = right*planesFraction;
+            var farBottom = bottom*planesFraction;
+            var farTop = top*planesFraction;
 
             var convexShape = new ConvexHullShape();
 
@@ -102,10 +104,8 @@ namespace dEngine.Instances
                 new BulletSharp.Math.Vector3(farLeft, farBottom, -farPlane),
                 new BulletSharp.Math.Vector3(farRight, farBottom, -farPlane)
             };
-            for (int t = 0; t < 8; t++)
-            {
+            for (var t = 0; t < 8; t++)
                 convexShape.AddPointRef(ref points[t]);
-            }
 
             shape = convexShape;
         }

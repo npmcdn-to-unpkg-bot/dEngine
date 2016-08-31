@@ -14,11 +14,11 @@ using dEditor.Widgets.Viewport;
 
 namespace dEditor.Shell.Client
 {
-	public class ClientShellViewModel : Conductor<ViewportViewModel>
-	{
-		public ClientShellViewModel()
-		{
-			ActiveItem = new ViewportViewModel(false);
-		}
-	}
+    public class ClientShellViewModel : Conductor<ViewportViewModel>
+    {
+        public ClientShellViewModel()
+        {
+            ActiveItem = new ViewportViewModel(false);
+        }
+    }
 }

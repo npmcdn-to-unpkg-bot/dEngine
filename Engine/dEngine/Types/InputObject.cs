@@ -19,36 +19,6 @@ namespace dEngine
     /// </summary>
     public class InputObject : IDataType
     {
-        /// <summary>
-        /// Determines if this input has been handled.
-        /// </summary>
-        public bool Handled { get; set; }
-
-        /// <summary>
-        /// The pressed key.
-        /// </summary>
-        [InstMember(1)] public Key Key { get; private set; }
-
-        /// <summary>
-        /// The state of the input.
-        /// </summary>
-        [InstMember(2)] public InputState InputState { get; private set; }
-
-        /// <summary>
-        /// The type of input.
-        /// </summary>
-        [InstMember(3)] public InputType InputType { get; private set; }
-
-        /// <summary>
-        /// Describes the positional value.
-        /// </summary>
-        [InstMember(4)] public Vector3 Position { get; private set; }
-
-        /// <summary>
-        /// Describes the delta for mouse/stick movements.
-        /// </summary>
-        [InstMember(5)] public Vector3 Delta { get; private set; }
-
         internal InputObject(Key key, InputState inputState, InputType inputType)
         {
             Key = key;
@@ -67,12 +37,47 @@ namespace dEngine
             Delta = delta;
         }
 
-        /// <summary/>
+        /// <summary />
         public InputObject()
         {
         }
 
-        /// <summary/>
+        /// <summary>
+        /// Determines if this input has been handled.
+        /// </summary>
+        public bool Handled { get; set; }
+
+        /// <summary>
+        /// The pressed key.
+        /// </summary>
+        [InstMember(1)]
+        public Key Key { get; private set; }
+
+        /// <summary>
+        /// The state of the input.
+        /// </summary>
+        [InstMember(2)]
+        public InputState InputState { get; private set; }
+
+        /// <summary>
+        /// The type of input.
+        /// </summary>
+        [InstMember(3)]
+        public InputType InputType { get; private set; }
+
+        /// <summary>
+        /// Describes the positional value.
+        /// </summary>
+        [InstMember(4)]
+        public Vector3 Position { get; private set; }
+
+        /// <summary>
+        /// Describes the delta for mouse/stick movements.
+        /// </summary>
+        [InstMember(5)]
+        public Vector3 Delta { get; private set; }
+
+        /// <summary />
         public void Load(BinaryReader reader)
         {
             Key = (Key)reader.ReadInt32();
@@ -86,7 +91,7 @@ namespace dEngine
             Delta = delta;
         }
 
-        /// <summary/>
+        /// <summary />
         public void Save(BinaryWriter writer)
         {
             writer.Write((int)Key);

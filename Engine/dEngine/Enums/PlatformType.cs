@@ -10,17 +10,18 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+
 #pragma warning disable 1591
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for platform types.
-	/// </summary>
-	public enum PlatformType
-	{
-		Desktop,
-		Console,
-		Mobile
-	}
+    /// <summary>
+    /// Enum for platform types.
+    /// </summary>
+    public enum PlatformType
+    {
+        Desktop,
+        Console,
+        Mobile
+    }
 }

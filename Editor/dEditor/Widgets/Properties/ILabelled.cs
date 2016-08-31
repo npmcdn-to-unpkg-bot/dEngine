@@ -11,7 +11,7 @@
 
 namespace dEditor.Widgets.Properties
 {
-	public interface ILabelled
-	{
-	}
+    public interface ILabelled
+    {
+    }
 }

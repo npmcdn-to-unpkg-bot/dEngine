@@ -16,6 +16,5 @@ namespace dEngine.Instances.Materials.Nodes
     [TypeId(221)]
     public abstract class ParameterNode : Node
     {
-        
     }
 }

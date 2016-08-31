@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Widgets.Properties.Inspectors.Vector4
 {
-	/// <summary>
-	/// Interaction logic for Vector4EditorView.xaml
-	/// </summary>
-	public partial class Vector4EditorView : UserControl
-	{
-		public Vector4EditorView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for Vector4EditorView.xaml
+    /// </summary>
+    public partial class Vector4EditorView : UserControl
+    {
+        public Vector4EditorView()
+        {
+            InitializeComponent();
+        }
+    }
 }

@@ -11,19 +11,19 @@
 
 namespace dEngine
 {
-	/// <summary>
-	/// Determines how the collision models of a <see cref="CSGOperation" /> behave.
-	/// </summary>
-	public enum CollisionFidelity
-	{
-		/// <summary>
-		/// Uses a convex hull for collision.
-		/// </summary>
-		ConvexHull,
+    /// <summary>
+    /// Determines how the collision models of a <see cref="CSGOperation" /> behave.
+    /// </summary>
+    public enum CollisionFidelity
+    {
+        /// <summary>
+        /// Uses a convex hull for collision.
+        /// </summary>
+        ConvexHull,
 
-		/// <summary>
-		/// Uses a bounding box for collision.
-		/// </summary>
-		BoundingBox
-	}
+        /// <summary>
+        /// Uses a bounding box for collision.
+        /// </summary>
+        BoundingBox
+    }
 }

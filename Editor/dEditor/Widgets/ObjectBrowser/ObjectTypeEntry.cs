@@ -15,27 +15,21 @@ using dEngine.Instances;
 
 namespace dEditor.Widgets.ObjectBrowser
 {
-	public class ObjectTypeEntry : Entry
-	{
-		public ObjectTypeEntry(Type type)
-		{
-			Name = type.Name;
-			Type = type;
+    public class ObjectTypeEntry : Entry
+    {
+        public ObjectTypeEntry(Type type)
+        {
+            Name = type.Name;
+            Type = type;
 
-			if (typeof(Instance).IsAssignableFrom(type))
-			{
-				Icon = IconProvider.GetIconUri(type);
-			}
-			else if (type.IsEnum)
-			{
-				Icon = new Uri("/dEditor;component/Content/Icons/Toolbar/Enumerator_orange_16x.png", UriKind.Relative);
-			}
-			else
-			{
-				Icon = new Uri("/dEditor;component/Content/Icons/Toolbar/Class_yellow_16x.png", UriKind.Relative);
-			}
-		}
+            if (typeof(Instance).IsAssignableFrom(type))
+                Icon = IconProvider.GetIconUri(type);
+            else if (type.IsEnum)
+                Icon = new Uri("/dEditor;component/Content/Icons/Toolbar/Enumerator_orange_16x.png", UriKind.Relative);
+            else
+                Icon = new Uri("/dEditor;component/Content/Icons/Toolbar/Class_yellow_16x.png", UriKind.Relative);
+        }
 
-		public Type Type { get; }
-	}
+        public Type Type { get; }
+    }
 }

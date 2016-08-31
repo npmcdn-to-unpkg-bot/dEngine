@@ -15,79 +15,65 @@ using System.Windows.Input;
 
 namespace dEditor.Framework.Services
 {
-	public static class InputBindingManager
-	{
-		public static readonly DependencyProperty UpdatePropertySourceWhenEnterPressedProperty = DependencyProperty
-			.RegisterAttached(
-				"UpdatePropertySourceWhenEnterPressed", typeof(DependencyProperty), typeof(InputBindingManager),
-				new PropertyMetadata(null, OnUpdatePropertySourceWhenEnterPressedPropertyChanged));
+    public static class InputBindingManager
+    {
+        static InputBindingManager()
+        {
+        }
 
-		static InputBindingManager()
-		{
-		}
+        public static void SetUpdatePropertySourceWhenEnterPressed(DependencyObject dp, DependencyProperty value)
+        {
+            dp.SetValue(UpdatePropertySourceWhenEnterPressedProperty, value);
+        }
 
-		public static void SetUpdatePropertySourceWhenEnterPressed(DependencyObject dp, DependencyProperty value)
-		{
-			dp.SetValue(UpdatePropertySourceWhenEnterPressedProperty, value);
-		}
+        public static DependencyProperty GetUpdatePropertySourceWhenEnterPressed(DependencyObject dp)
+        {
+            return (DependencyProperty)dp.GetValue(UpdatePropertySourceWhenEnterPressedProperty);
+        }
 
-		public static DependencyProperty GetUpdatePropertySourceWhenEnterPressed(DependencyObject dp)
-		{
-			return (DependencyProperty)dp.GetValue(UpdatePropertySourceWhenEnterPressedProperty);
-		}
+        private static void OnUpdatePropertySourceWhenEnterPressedPropertyChanged(DependencyObject dp,
+            DependencyPropertyChangedEventArgs e)
+        {
+            var element = dp as UIElement;
 
-		private static void OnUpdatePropertySourceWhenEnterPressedPropertyChanged(DependencyObject dp,
-			DependencyPropertyChangedEventArgs e)
-		{
-			UIElement element = dp as UIElement;
+            if (element == null)
+                return;
 
-			if (element == null)
-			{
-				return;
-			}
+            if (e.OldValue != null)
+                element.PreviewKeyDown -= HandlePreviewKeyDown;
 
-			if (e.OldValue != null)
-			{
-				element.PreviewKeyDown -= HandlePreviewKeyDown;
-			}
+            if (e.NewValue != null)
+                element.PreviewKeyDown += HandlePreviewKeyDown;
+        }
 
-			if (e.NewValue != null)
-			{
-				element.PreviewKeyDown += HandlePreviewKeyDown;
-			}
-		}
+        private static void HandlePreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                DoUpdateSource(e.Source);
+        }
 
-		static void HandlePreviewKeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.Key == Key.Enter)
-			{
-				DoUpdateSource(e.Source);
-			}
-		}
+        private static void DoUpdateSource(object source)
+        {
+            var property =
+                GetUpdatePropertySourceWhenEnterPressed(source as DependencyObject);
 
-		static void DoUpdateSource(object source)
-		{
-			DependencyProperty property =
-				GetUpdatePropertySourceWhenEnterPressed(source as DependencyObject);
+            if (property == null)
+                return;
 
-			if (property == null)
-			{
-				return;
-			}
+            var elt = source as UIElement;
 
-			UIElement elt = source as UIElement;
+            if (elt == null)
+                return;
 
-			if (elt == null)
-			{
-				return;
-			}
+            var binding = BindingOperations.GetBindingExpression(elt, property);
 
-			BindingExpression binding = BindingOperations.GetBindingExpression(elt, property);
+            if (binding != null)
+                binding.UpdateSource();
+        }
 
-			if (binding != null)
-			{
-				binding.UpdateSource();
-			}
-		}
-	}
+        public static readonly DependencyProperty UpdatePropertySourceWhenEnterPressedProperty = DependencyProperty
+            .RegisterAttached(
+                "UpdatePropertySourceWhenEnterPressed", typeof(DependencyProperty), typeof(InputBindingManager),
+                new PropertyMetadata(null, OnUpdatePropertySourceWhenEnterPressedPropertyChanged));
+    }
 }

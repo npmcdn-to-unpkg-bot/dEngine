@@ -10,21 +10,22 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+
 #pragma warning disable 1591
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enumeration for friend status.
-	/// </summary>
-	public enum FriendStatus
-	{
-		Offline,
-		Online,
-		Busy,
-		Away,
-		Snooze,
-		LookingToTrade,
-		LookingToPlay
-	}
+    /// <summary>
+    /// Enumeration for friend status.
+    /// </summary>
+    public enum FriendStatus
+    {
+        Offline,
+        Online,
+        Busy,
+        Away,
+        Snooze,
+        LookingToTrade,
+        LookingToPlay
+    }
 }

@@ -8,7 +8,10 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 #pragma warning disable 1591
+
 namespace dEngine
 {
     public enum ShadowMode
@@ -21,6 +24,6 @@ namespace dEngine
         Evsm2 = 5,
         Evsm4 = 6,
         MsmHamburger = 7,
-        MsmHausdorff = 8,
+        MsmHausdorff = 8
     }
 }

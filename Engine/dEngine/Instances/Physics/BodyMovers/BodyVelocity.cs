@@ -22,14 +22,14 @@ namespace dEngine.Instances
     public sealed class BodyVelocity : BodyMover
     {
         private readonly float _gainIntegral = 1;
-        private float _p;
         private readonly float _d = 1;
+        private float _p;
         private Vector3 _integralTerm;
         private Vector3 _maxForce;
         private Vector3 _velocity;
         private BulletVector3 _lastProcessVar;
 
-        /// <summary/>
+        /// <summary />
         public BodyVelocity()
         {
             _maxForce = new Vector3(4000);
@@ -39,7 +39,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The amount of force applied on each axis.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public Vector3 MaxForce
         {
             get { return _maxForce; }
@@ -53,7 +54,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how aggressively the object tries to reach its goal.
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public float P
         {
             get { return _p; }
@@ -68,7 +70,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The desired velocity.
         /// </summary>
-        [InstMember(3), EditorVisible]
+        [InstMember(3)]
+        [EditorVisible]
         public Vector3 Velocity
         {
             get { return _velocity; }
@@ -88,7 +91,7 @@ namespace dEngine.Instances
 
             var p0 = _velocity;
 
-            var output = _p * error + p0;
+            var output = _p*error + p0;
 
             if (output > _maxForce)
                 output = _maxForce;

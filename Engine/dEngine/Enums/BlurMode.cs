@@ -10,17 +10,18 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+
 #pragma warning disable 1591
 
 namespace dEngine
 {
     /// <summary>
-    /// Blurring methods to use in <see cref="AmbientOcclusionEffect"/>.
+    /// Blurring methods to use in <see cref="AmbientOcclusionEffect" />.
     /// </summary>
     public enum BlurMode
     {
         None,
         Gaussian,
-        HighQualityBilateral,
+        HighQualityBilateral
     }
 }

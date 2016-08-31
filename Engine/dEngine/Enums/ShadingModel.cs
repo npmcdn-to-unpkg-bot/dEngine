@@ -1,4 +1,6 @@
-﻿#pragma warning disable 1591
+﻿
+#pragma warning disable 1591
+
 namespace dEngine
 {
     public enum ShadingModel
@@ -13,6 +15,6 @@ namespace dEngine
         Hair,
         Cloth,
         Eye,
-        Classic = 255,
+        Classic = 255
     }
 }

@@ -16,262 +16,262 @@ using System.Linq;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using dEngine.Settings.Global;
-using Neo.IronLua;
-
 
 namespace dEngine.Services
 {
-	/// <summary>
-	/// A service for undo/redo.
-	/// </summary>
-	[TypeId(194), ExplorerOrder(-1)]
-	public class HistoryService : Service
-	{
-		internal static HistoryService Service;
-		private readonly C5.LinkedList<HistoryAction> _redoStack;
-		private readonly C5.LinkedList<HistoryAction> _undoStack;
-		private readonly List<string> _waypoints;
+    /// <summary>
+    /// A service for undo/redo.
+    /// </summary>
+    [TypeId(194)]
+    [ExplorerOrder(-1)]
+    public class HistoryService : Service
+    {
+        internal static HistoryService Service;
+        private readonly C5.LinkedList<HistoryAction> _redoStack;
+        private readonly C5.LinkedList<HistoryAction> _undoStack;
+        private readonly List<string> _waypoints;
 
-		/// <summary>
-		/// Fired when a waypoint is redone.
-		/// </summary>
-		public readonly Signal<string> Redone;
+        private bool _enabled;
 
-		/// <summary>
-		/// Fired when a waypoint is undone.
-		/// </summary>
-		public readonly Signal<string> Undone;
+        /// <inheirtdoc />
+        public HistoryService()
+        {
+            Service = this;
 
-		/// <summary>
-		/// Fired when a waypoint is set.
-		/// </summary>
-		public readonly Signal<string> WaypointSet;
+            _undoStack = new C5.LinkedList<HistoryAction>();
+            _redoStack = new C5.LinkedList<HistoryAction>();
+            _waypoints = new List<string>();
 
-		private bool _enabled;
+            Undone = new Signal<string>(this);
+            Redone = new Signal<string>(this);
+            WaypointSet = new Signal<string>(this);
 
-		/// <inheirtdoc />
-		public HistoryService()
-		{
-			Service = this;
-
-			_undoStack = new C5.LinkedList<HistoryAction>();
-			_redoStack = new C5.LinkedList<HistoryAction>();
-			_waypoints = new List<string>();
-
-			Undone = new Signal<string>(this);
-			Redone = new Signal<string>(this);
-			WaypointSet = new Signal<string>(this);
-
-            ContextActionService.Register("history.undo", () => { if (CanUndo()) Undo();});
-            ContextActionService.Register("history.redo", () => { if (CanRedo()) Redo(); });
+            ContextActionService.Register("history.undo", () =>
+            {
+                if (CanUndo()) Undo();
+            });
+            ContextActionService.Register("history.redo", () =>
+            {
+                if (CanRedo()) Redo();
+            });
 
             _enabled = true;
-		}
+        }
 
-		internal static event Action<HistoryAction> ActionExecuted;
+        internal static event Action<HistoryAction> ActionExecuted;
 
-		/// <summary>
-		/// Sets whether or not the service is enabled.
-		/// </summary>
-		public void SetEnabled(bool enabled)
-		{
-			lock (Locker)
-			{
-				_enabled = enabled;
+        /// <summary>
+        /// Sets whether or not the service is enabled.
+        /// </summary>
+        public void SetEnabled(bool enabled)
+        {
+            lock (Locker)
+            {
+                _enabled = enabled;
 
-				if (!enabled)
-				{
-					_undoStack.Clear();
-					_redoStack.Clear();
-				}
-			}
-		}
-
-		internal static void ExecuteAction(HistoryAction action)
-		{
-			lock (Service.Locker)
-			{
-				Service._redoStack.Clear();
-				Service._undoStack.Push(action);
-
-				action.Execute();
-				ActionExecuted?.Invoke(action);
-
-				if (DebugSettings.LogHistoryActions)
-				{
-					Service.Logger.Trace($"HistoryService: action pushed");
-				}
-			}
-		}
-
-		internal static void Waypoint(string waypoint)
-		{
-			Service.SetWaypoint(waypoint);
-		}
-
-		/// <summary>
-		/// Saves a waypoint in history.
-		/// </summary>
-		/// <param name="waypoint">The name of the waypoint.</param>
-		public void SetWaypoint(string waypoint)
-		{
-			lock (Locker)
-			{
-				waypoint = waypoint ?? "";
-				int actionCount = 0;
-
-				for (int i = _undoStack.Count - 1; i >= 0; i--)
-				{
-					var action = _undoStack[i];
-					if (action.Waypoint != -1)
-						break;
-					action.Waypoint = _waypoints.Count;
-					actionCount++;
-				}
-				_waypoints.Add(waypoint);
-
-				WaypointSet.Fire(waypoint);
-
-				if (DebugSettings.LogHistoryWaypoints)
-					Logger.Trace($"HistoryService: Waypoint #{_waypoints.Count - 1} \"{waypoint}\" set. ({actionCount} actions)");
-			}
-		}
-
-		/// <summary>
-		/// Executes the last undone action.
-		/// </summary>
-		public void Redo()
-		{
-			lock (Locker)
-			{
-				if (!CanRedoInternal().Item1)
-					throw new InvalidOperationException("Cannot redo: nothing to redo.");
-
-				var targetWaypoint = -1;
-                
-				var actionCount = 0;
-				while (!_redoStack.IsEmpty)
+                if (!enabled)
                 {
-					var action = _redoStack.Last;
+                    _undoStack.Clear();
+                    _redoStack.Clear();
+                }
+            }
+        }
 
-					if (action.Waypoint != -1 && targetWaypoint == -1)
-					{
-						targetWaypoint = action.Waypoint;
-					}
+        internal static void ExecuteAction(HistoryAction action)
+        {
+            lock (Service.Locker)
+            {
+                Service._redoStack.Clear();
+                Service._undoStack.Push(action);
 
-					if (action.Waypoint != targetWaypoint)
-						break;
+                action.Execute();
+                ActionExecuted?.Invoke(action);
 
-					_redoStack.RemoveLast();
-					_undoStack.Push(action);
-					action.Execute();
-					actionCount++;
-				}
+                if (DebugSettings.LogHistoryActions)
+                    Service.Logger.Trace($"HistoryService: action pushed");
+            }
+        }
 
-				if (DebugSettings.LogHistoryEvents)
-					Logger.Trace(
-						$"HistoryService: Redo Waypoint{targetWaypoint} ({_waypoints[targetWaypoint]}). ({actionCount} actions.)");
+        internal static void Waypoint(string waypoint)
+        {
+            Service.SetWaypoint(waypoint);
+        }
 
-				Redone.Fire(_waypoints[targetWaypoint]);
-			}
-		}
+        /// <summary>
+        /// Saves a waypoint in history.
+        /// </summary>
+        /// <param name="waypoint">The name of the waypoint.</param>
+        public void SetWaypoint(string waypoint)
+        {
+            lock (Locker)
+            {
+                waypoint = waypoint ?? "";
+                var actionCount = 0;
 
-		/// <summary>
-		/// Undoes the last action.
-		/// </summary>
-		public void Undo()
-		{
-			lock (Locker)
-			{
-				if (!CanUndoInternal().Item1)
-					throw new InvalidOperationException("Cannot undo: nothing to undo.");
+                for (var i = _undoStack.Count - 1; i >= 0; i--)
+                {
+                    var action = _undoStack[i];
+                    if (action.Waypoint != -1)
+                        break;
+                    action.Waypoint = _waypoints.Count;
+                    actionCount++;
+                }
+                _waypoints.Add(waypoint);
 
-				var targetWaypoint = -1;
+                WaypointSet.Fire(waypoint);
 
-				int actionCount = 0;
+                if (DebugSettings.LogHistoryWaypoints)
+                    Logger.Trace(
+                        $"HistoryService: Waypoint #{_waypoints.Count - 1} \"{waypoint}\" set. ({actionCount} actions)");
+            }
+        }
 
-				while (!_undoStack.IsEmpty)
-				{
-				    var action = _undoStack.Last;
+        /// <summary>
+        /// Executes the last undone action.
+        /// </summary>
+        public void Redo()
+        {
+            lock (Locker)
+            {
+                if (!CanRedoInternal().Item1)
+                    throw new InvalidOperationException("Cannot redo: nothing to redo.");
 
-					if (action.Waypoint != -1 && targetWaypoint == -1)
-					{
-						targetWaypoint = action.Waypoint;
-					}
+                var targetWaypoint = -1;
 
-					if (action.Waypoint != targetWaypoint)
-						break;
+                var actionCount = 0;
+                while (!_redoStack.IsEmpty)
+                {
+                    var action = _redoStack.Last;
 
-					_undoStack.Remove(action);
-					_redoStack.Push(action);
-					action.Undo();
-					actionCount++;
-				}
+                    if ((action.Waypoint != -1) && (targetWaypoint == -1))
+                        targetWaypoint = action.Waypoint;
 
-				Debug.Assert(actionCount > 0, "actionCount > 0");
+                    if (action.Waypoint != targetWaypoint)
+                        break;
 
-				if (DebugSettings.LogHistoryEvents)
-					Logger.Trace(
-						$"HistoryService: Undo Waypoint{targetWaypoint} ({_waypoints[targetWaypoint]}). ({actionCount} actions.)");
+                    _redoStack.RemoveLast();
+                    _undoStack.Push(action);
+                    action.Execute();
+                    actionCount++;
+                }
 
-				Undone.Fire(_waypoints[targetWaypoint]);
-			}
-		}
+                if (DebugSettings.LogHistoryEvents)
+                    Logger.Trace(
+                        $"HistoryService: Redo Waypoint{targetWaypoint} ({_waypoints[targetWaypoint]}). ({actionCount} actions.)");
 
-		/// <summary>
-		/// Determines if <see cref="Undo" /> can be successfully called.
-		/// </summary>
-		public LuaTuple<bool, string> CanUndo()
-		{
-			return CanUndoInternal();
-		}
+                Redone.Fire(_waypoints[targetWaypoint]);
+            }
+        }
 
-		/// <summary>
-		/// Determines if <see cref="Redo" /> can be successfully called.
-		/// </summary>
-		public LuaTuple<bool, string> CanRedo()
-		{
-			return CanRedoInternal();
-		}
+        /// <summary>
+        /// Undoes the last action.
+        /// </summary>
+        public void Undo()
+        {
+            lock (Locker)
+            {
+                if (!CanUndoInternal().Item1)
+                    throw new InvalidOperationException("Cannot undo: nothing to undo.");
 
-		internal static Tuple<bool, string> CanUndoInternal()
-		{
-			var stack = Service?._undoStack;
-			var peek = PeekLatestWaypoint(stack);
-			return peek != null
-				? new Tuple<bool, string>(true, Service._waypoints[peek.Waypoint])
-				: new Tuple<bool, string>(false, null);
-		}
+                var targetWaypoint = -1;
 
-		internal static Tuple<bool, string> CanRedoInternal()
-		{
-			var stack = Service?._redoStack;
-			var peek = PeekLatestWaypoint(stack);
-			return peek != null
-				? new Tuple<bool, string>(true, Service._waypoints[peek.Waypoint])
-				: new Tuple<bool, string>(false, null);
-		}
+                var actionCount = 0;
 
-		private static T PeekLatestWaypoint<T>(IEnumerable<T> stack) where T : HistoryAction
-		{
-			return stack?.FirstOrDefault(action => action.Waypoint != -1);
-		}
+                while (!_undoStack.IsEmpty)
+                {
+                    var action = _undoStack.Last;
 
-		internal static object GetExisting()
-		{
-			return DataModel.GetService<HistoryService>();
-		}
+                    if ((action.Waypoint != -1) && (targetWaypoint == -1))
+                        targetWaypoint = action.Waypoint;
 
-		internal abstract class HistoryAction
-		{
-			protected HistoryAction()
-			{
-				Waypoint = -1;
+                    if (action.Waypoint != targetWaypoint)
+                        break;
+
+                    _undoStack.Remove(action);
+                    _redoStack.Push(action);
+                    action.Undo();
+                    actionCount++;
+                }
+
+                Debug.Assert(actionCount > 0, "actionCount > 0");
+
+                if (DebugSettings.LogHistoryEvents)
+                    Logger.Trace(
+                        $"HistoryService: Undo Waypoint{targetWaypoint} ({_waypoints[targetWaypoint]}). ({actionCount} actions.)");
+
+                Undone.Fire(_waypoints[targetWaypoint]);
+            }
+        }
+
+        /// <summary>
+        /// Determines if <see cref="Undo" /> can be successfully called.
+        /// </summary>
+        public LuaTuple<bool, string> CanUndo()
+        {
+            return CanUndoInternal();
+        }
+
+        /// <summary>
+        /// Determines if <see cref="Redo" /> can be successfully called.
+        /// </summary>
+        public LuaTuple<bool, string> CanRedo()
+        {
+            return CanRedoInternal();
+        }
+
+        internal static Tuple<bool, string> CanUndoInternal()
+        {
+            var stack = Service?._undoStack;
+            var peek = PeekLatestWaypoint(stack);
+            return peek != null
+                ? new Tuple<bool, string>(true, Service._waypoints[peek.Waypoint])
+                : new Tuple<bool, string>(false, null);
+        }
+
+        internal static Tuple<bool, string> CanRedoInternal()
+        {
+            var stack = Service?._redoStack;
+            var peek = PeekLatestWaypoint(stack);
+            return peek != null
+                ? new Tuple<bool, string>(true, Service._waypoints[peek.Waypoint])
+                : new Tuple<bool, string>(false, null);
+        }
+
+        private static T PeekLatestWaypoint<T>(IEnumerable<T> stack) where T : HistoryAction
+        {
+            return stack?.FirstOrDefault(action => action.Waypoint != -1);
+        }
+
+        internal static object GetExisting()
+        {
+            return DataModel.GetService<HistoryService>();
+        }
+
+        /// <summary>
+        /// Fired when a waypoint is redone.
+        /// </summary>
+        public readonly Signal<string> Redone;
+
+        /// <summary>
+        /// Fired when a waypoint is undone.
+        /// </summary>
+        public readonly Signal<string> Undone;
+
+        /// <summary>
+        /// Fired when a waypoint is set.
+        /// </summary>
+        public readonly Signal<string> WaypointSet;
+
+        internal abstract class HistoryAction
+        {
+            protected HistoryAction()
+            {
+                Waypoint = -1;
             }
 
-			public int Waypoint { get; set; }
-			public abstract void Undo();
-			public abstract void Execute();
-		}
-	}
+            public int Waypoint { get; set; }
+            public abstract void Undo();
+            public abstract void Execute();
+        }
+    }
 }

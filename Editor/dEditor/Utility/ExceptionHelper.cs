@@ -10,59 +10,59 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Diagnostics;
 using System.Windows;
-using dEngine.Utility.Extensions;
 using Ookii.Dialogs.Wpf;
 
 namespace dEditor.Utility
 {
-	public static class ExceptionHelper
-	{
-		private static bool IsDialogOpen;
+    public static class ExceptionHelper
+    {
+        private static bool IsDialogOpen;
 
-		public static void ShowCrashDialog(this Exception e)
-		{
-			if (IsDialogOpen)
-				return;
+        public static void ShowCrashDialog(this Exception e)
+        {
+            if (IsDialogOpen)
+                return;
 
             Editor.Logger.Error(e);
 
-			e = e.InnerException ?? e;
+            e = e.InnerException ?? e;
 
-			var dialog = new TaskDialog
-			{
-				WindowTitle = "dEditor",
-				ButtonStyle = TaskDialogButtonStyle.CommandLinks,
-				AllowDialogCancellation = false,
-				MainInstruction = "dEditor has stopped working.",
-				Content = "An unhandled exception was thrown, so the program needs to exit."
-			};
+            var dialog = new TaskDialog
+            {
+                WindowTitle = "dEditor",
+                ButtonStyle = TaskDialogButtonStyle.CommandLinks,
+                AllowDialogCancellation = false,
+                MainInstruction = "dEditor has stopped working.",
+                Content = "An unhandled exception was thrown, so the program needs to exit."
+            };
 
-			var restartButton = new TaskDialogButton("Restart the program");
-			var closeButton = new TaskDialogButton("Close the program");
+            var restartButton = new TaskDialogButton("Restart the program");
+            var closeButton = new TaskDialogButton("Close the program");
 
-			dialog.Buttons.Add(restartButton);
-			dialog.Buttons.Add(closeButton);
+            dialog.Buttons.Add(restartButton);
+            dialog.Buttons.Add(closeButton);
 
-			dialog.ExpandFooterArea = true;
+            dialog.ExpandFooterArea = true;
 
-			dialog.ExpandedControlText = "Show exception details";
-			dialog.ExpandedInformation = $"{e.Source} : {e.Message} {Environment.NewLine} {e.StackTrace}";
+            dialog.ExpandedControlText = "Show exception details";
+            dialog.ExpandedInformation = $"{e.Source} : {e.Message} {Environment.NewLine} {e.StackTrace}";
 
 
-			IsDialogOpen = true;
-			var resultButton = dialog.ShowDialog();
-			IsDialogOpen = false;
+            IsDialogOpen = true;
+            var resultButton = dialog.ShowDialog();
+            IsDialogOpen = false;
 
-			if (resultButton == restartButton)
-			{
-				System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-				Environment.Exit(e.HResult);
-			}
+            if (resultButton == restartButton)
+            {
+                Process.Start(Application.ResourceAssembly.Location);
+                Environment.Exit(e.HResult);
+            }
             else if (resultButton == closeButton)
             {
                 Environment.Exit(e.HResult);
             }
-		}
-	}
+        }
+    }
 }

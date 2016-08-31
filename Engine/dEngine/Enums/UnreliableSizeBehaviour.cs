@@ -8,6 +8,7 @@
 // 
 // You should have received a copy of the GNU Lesser General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 namespace dEngine
 {
     /// <summary>
@@ -20,14 +21,15 @@ namespace dEngine
         /// </summary>
         IgnoreMTU = 0,
 
-		/// <summary>
-		/// Use normal fragmentation for unreliable messages - if a fragment is dropped, memory for received fragments are never reclaimed.
-		/// </summary>
-		NormalFragmentation = 1,
+        /// <summary>
+        /// Use normal fragmentation for unreliable messages - if a fragment is dropped, memory for received fragments are never
+        /// reclaimed.
+        /// </summary>
+        NormalFragmentation = 1,
 
-		/// <summary>
-		/// Alternate behaviour; just drops unreliable messages above MTU.
-		/// </summary>
-		DropAboveMTU = 2,
+        /// <summary>
+        /// Alternate behaviour; just drops unreliable messages above MTU.
+        /// </summary>
+        DropAboveMTU = 2
     }
 }

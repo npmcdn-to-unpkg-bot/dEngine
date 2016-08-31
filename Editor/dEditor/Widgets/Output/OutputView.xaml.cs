@@ -10,45 +10,33 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-using dEditor.Instances;
 
 namespace dEditor.Widgets.Output
 {
-	/// <summary>
-	/// Interaction logic for OutputView.xaml
-	/// </summary>
-	public partial class OutputView
-	{
-		public OutputView()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    /// Interaction logic for OutputView.xaml
+    /// </summary>
+    public partial class OutputView
+    {
+        private bool _autoScroll;
 
-	    private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        public OutputView()
         {
-            var scrollViewer = ((ScrollViewer)e.Source);
-
-            if (e.ExtentHeightChange == 0)
-            {
-                if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
-                {
-                    _autoScroll = true;
-                }
-                else
-                {
-                    _autoScroll = false;
-                }
-            }
-            
-            if (_autoScroll && e.ExtentHeightChange != 0)
-            {   // Content changed and autoscroll mode set
-                // Autoscroll
-                scrollViewer.ScrollToVerticalOffset((e.Source as ScrollViewer).ExtentHeight);
-            }
+            InitializeComponent();
         }
 
-	    private bool _autoScroll;
-	}
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            var scrollViewer = (ScrollViewer)e.Source;
+
+            if (e.ExtentHeightChange == 0)
+                if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
+                    _autoScroll = true;
+                else
+                    _autoScroll = false;
+
+            if (_autoScroll && (e.ExtentHeightChange != 0))
+                scrollViewer.ScrollToVerticalOffset((e.Source as ScrollViewer).ExtentHeight);
+        }
+    }
 }

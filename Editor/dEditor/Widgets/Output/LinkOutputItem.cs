@@ -15,11 +15,12 @@ namespace dEditor.Widgets.Output
 {
     public class LinkOutputItem : OutputItem
     {
-        public LinkOutputItem(ref string msg, ref LogLevel level, ref string logger, ref string url) : base(ref msg, ref level, ref logger)
+        public LinkOutputItem(ref string msg, ref LogLevel level, ref string logger, ref string url)
+            : base(ref msg, ref level, ref logger)
         {
             Url = url;
         }
 
-        public string Url { get;  }
+        public string Url { get; }
     }
 }

@@ -12,7 +12,6 @@
 using System;
 using dEngine.Instances.Attributes;
 
-
 namespace dEngine.Instances
 {
     /// <summary>
@@ -26,14 +25,19 @@ namespace dEngine.Instances
         private Vector3 _maxForce;
         private Vector3 _position;
 
-        /// <summary/>
+        /// <summary />
         [Obsolete]
-        public Vector3 position { get { return Position; } set { Position = value; } }
+        public Vector3 position
+        {
+            get { return Position; }
+            set { Position = value; }
+        }
 
         /// <summary>
         /// The target position of the object.
         /// </summary>
-        [InstMember(1), EditorVisible]
+        [InstMember(1)]
+        [EditorVisible]
         public Vector3 Position
         {
             get { return _position; }
@@ -48,7 +52,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Summary
         /// </summary>
-        [InstMember(2), EditorVisible]
+        [InstMember(2)]
+        [EditorVisible]
         public Vector3 MaxForce
         {
             get { return _maxForce; }
@@ -63,7 +68,8 @@ namespace dEngine.Instances
         /// <summary>
         /// The amount of dampening to apply.
         /// </summary>
-        [InstMember(3), EditorVisible]
+        [InstMember(3)]
+        [EditorVisible]
         public float Damping
         {
             get { return _dampening; }
@@ -78,7 +84,8 @@ namespace dEngine.Instances
         /// <summary>
         /// Determines how aggressively the object tries to reach its goal.
         /// </summary>
-        [InstMember(4), EditorVisible]
+        [InstMember(4)]
+        [EditorVisible]
         public float Power
         {
             get { return _pressure; }

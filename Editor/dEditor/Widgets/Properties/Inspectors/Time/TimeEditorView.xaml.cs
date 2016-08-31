@@ -13,14 +13,14 @@ using System.Windows.Controls;
 
 namespace dEditor.Widgets.Properties.Inspectors.Time
 {
-	/// <summary>
-	/// Interaction logic for TimeEditorView.xaml
-	/// </summary>
-	public partial class TimeEditorView : UserControl
-	{
-		public TimeEditorView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for TimeEditorView.xaml
+    /// </summary>
+    public partial class TimeEditorView : UserControl
+    {
+        public TimeEditorView()
+        {
+            InitializeComponent();
+        }
+    }
 }

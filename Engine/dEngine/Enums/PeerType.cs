@@ -15,14 +15,14 @@ using System;
 
 namespace dEngine
 {
-	/// <summary>
-	/// Enum for peer types.
-	/// </summary>
-	[Flags]
-	public enum PeerType
-	{
-		Client = 1,
-		Server = 2,
-		Hybrid = Client | Server
-	}
+    /// <summary>
+    /// Enum for peer types.
+    /// </summary>
+    [Flags]
+    public enum PeerType
+    {
+        Client = 1,
+        Server = 2,
+        Hybrid = Client | Server
+    }
 }

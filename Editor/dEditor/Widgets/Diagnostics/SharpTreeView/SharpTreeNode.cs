@@ -22,20 +22,19 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 {
     public partial class SharpTreeNode : INotifyPropertyChanged
     {
-        SharpTreeNodeCollection modelChildren;
+        private SharpTreeNodeCollection modelChildren;
         internal SharpTreeNode modelParent;
-        bool isVisible = true;
 
-        void UpdateIsVisible(bool parentIsVisible, bool updateFlattener)
+        private void UpdateIsVisible(bool parentIsVisible, bool updateFlattener)
         {
-            bool newIsVisible = parentIsVisible && !isHidden;
-            if (isVisible != newIsVisible)
+            var newIsVisible = parentIsVisible && !isHidden;
+            if (IsVisible != newIsVisible)
             {
-                isVisible = newIsVisible;
+                IsVisible = newIsVisible;
 
                 // invalidate the augmented data
-                SharpTreeNode node = this;
-                while (node != null && node.totalListLength >= 0)
+                var node = this;
+                while ((node != null) && (node.totalListLength >= 0))
                 {
                     node.totalListLength = -1;
                     node = node.listParent;
@@ -43,9 +42,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
                 // Remember the removed nodes:
                 List<SharpTreeNode> removedNodes = null;
                 if (updateFlattener && !newIsVisible)
-                {
                     removedNodes = VisibleDescendantsAndSelf().ToList();
-                }
                 // also update the model children:
                 UpdateChildIsVisible(false);
 
@@ -78,25 +75,102 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             }
         }
 
-        protected virtual void OnIsVisibleChanged() { }
-
-        void UpdateChildIsVisible(bool updateFlattener)
+        protected virtual void OnIsVisibleChanged()
         {
-            if (modelChildren != null && modelChildren.Count > 0)
+        }
+
+        private void UpdateChildIsVisible(bool updateFlattener)
+        {
+            if ((modelChildren != null) && (modelChildren.Count > 0))
             {
-                bool showChildren = isVisible && isExpanded;
-                foreach (SharpTreeNode child in modelChildren)
-                {
+                var showChildren = IsVisible && isExpanded;
+                foreach (var child in modelChildren)
                     child.UpdateIsVisible(showChildren, updateFlattener);
-                }
             }
         }
 
-        #region Main
+        #region OnChildrenChanged
 
-        public SharpTreeNode()
+        protected internal virtual void OnChildrenChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+                foreach (SharpTreeNode node in e.OldItems)
+                {
+                    Debug.Assert(node.modelParent == this);
+                    node.modelParent = null;
+                    Debug.WriteLine("Removing {0} from {1}", node, this);
+                    var removeEnd = node;
+                    while ((removeEnd.modelChildren != null) && (removeEnd.modelChildren.Count > 0))
+                        removeEnd = removeEnd.modelChildren.Last();
+
+                    List<SharpTreeNode> removedNodes = null;
+                    var visibleIndexOfRemoval = 0;
+                    if (node.IsVisible)
+                    {
+                        visibleIndexOfRemoval = GetVisibleIndexForNode(node);
+                        removedNodes = node.VisibleDescendantsAndSelf().ToList();
+                    }
+
+                    RemoveNodes(node, removeEnd);
+
+                    if (removedNodes != null)
+                    {
+                        var flattener = GetListRoot().treeFlattener;
+                        if (flattener != null)
+                            flattener.NodesRemoved(visibleIndexOfRemoval, removedNodes);
+                    }
+                }
+            if (e.NewItems != null)
+            {
+                SharpTreeNode insertionPos;
+                if (e.NewStartingIndex == 0)
+                    insertionPos = null;
+                else
+                    insertionPos = modelChildren[e.NewStartingIndex - 1];
+
+                foreach (SharpTreeNode node in e.NewItems)
+                {
+                    Debug.Assert(node.modelParent == null);
+                    node.modelParent = this;
+                    node.UpdateIsVisible(IsVisible && isExpanded, false);
+                    //Debug.WriteLine("Inserting {0} after {1}", node, insertionPos);
+
+                    while ((insertionPos != null) && (insertionPos.modelChildren != null) &&
+                           (insertionPos.modelChildren.Count > 0))
+                        insertionPos = insertionPos.modelChildren.Last();
+                    InsertNodeAfter(insertionPos ?? this, node);
+
+                    insertionPos = node;
+                    if (node.IsVisible)
+                    {
+                        var flattener = GetListRoot().treeFlattener;
+                        if (flattener != null)
+                            flattener.NodesInserted(GetVisibleIndexForNode(node), node.VisibleDescendantsAndSelf());
+                    }
+                }
+            }
+
+            RaisePropertyChanged("ShowExpander");
+            RaiseIsLastChangedIfNeeded(e);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Gets called when the item is double-clicked.
+        /// </summary>
+        public virtual void ActivateItem(RoutedEventArgs e)
         {
         }
+
+        public override string ToString()
+        {
+            // used for keyboard navigation
+            var text = Text;
+            return text != null ? text.ToString() : string.Empty;
+        }
+
+        #region Main
 
         public SharpTreeNodeCollection Children
         {
@@ -143,7 +217,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             get { return Parent == null; }
         }
 
-        bool isHidden;
+        private bool isHidden;
 
         public bool IsHidden
         {
@@ -154,7 +228,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
                 {
                     isHidden = value;
                     if (modelParent != null)
-                        UpdateIsVisible(modelParent.isVisible && modelParent.isExpanded, true);
+                        UpdateIsVisible(modelParent.IsVisible && modelParent.isExpanded, true);
                     RaisePropertyChanged("IsHidden");
                     if (Parent != null)
                         Parent.RaisePropertyChanged("ShowExpander");
@@ -165,12 +239,9 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         /// <summary>
         /// Return true when this node is not hidden and when all parent nodes are expanded and not hidden.
         /// </summary>
-        public bool IsVisible
-        {
-            get { return isVisible; }
-        }
+        public bool IsVisible { get; private set; } = true;
 
-        bool isSelected;
+        private bool isSelected;
 
         public bool IsSelected
         {
@@ -187,78 +258,6 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 
         #endregion
 
-        #region OnChildrenChanged
-        internal protected virtual void OnChildrenChanged(NotifyCollectionChangedEventArgs e)
-        {
-            if (e.OldItems != null)
-            {
-                foreach (SharpTreeNode node in e.OldItems)
-                {
-                    Debug.Assert(node.modelParent == this);
-                    node.modelParent = null;
-                    Debug.WriteLine("Removing {0} from {1}", node, this);
-                    SharpTreeNode removeEnd = node;
-                    while (removeEnd.modelChildren != null && removeEnd.modelChildren.Count > 0)
-                        removeEnd = removeEnd.modelChildren.Last();
-
-                    List<SharpTreeNode> removedNodes = null;
-                    int visibleIndexOfRemoval = 0;
-                    if (node.isVisible)
-                    {
-                        visibleIndexOfRemoval = GetVisibleIndexForNode(node);
-                        removedNodes = node.VisibleDescendantsAndSelf().ToList();
-                    }
-
-                    RemoveNodes(node, removeEnd);
-
-                    if (removedNodes != null)
-                    {
-                        var flattener = GetListRoot().treeFlattener;
-                        if (flattener != null)
-                        {
-                            flattener.NodesRemoved(visibleIndexOfRemoval, removedNodes);
-                        }
-                    }
-                }
-            }
-            if (e.NewItems != null)
-            {
-                SharpTreeNode insertionPos;
-                if (e.NewStartingIndex == 0)
-                    insertionPos = null;
-                else
-                    insertionPos = modelChildren[e.NewStartingIndex - 1];
-
-                foreach (SharpTreeNode node in e.NewItems)
-                {
-                    Debug.Assert(node.modelParent == null);
-                    node.modelParent = this;
-                    node.UpdateIsVisible(isVisible && isExpanded, false);
-                    //Debug.WriteLine("Inserting {0} after {1}", node, insertionPos);
-
-                    while (insertionPos != null && insertionPos.modelChildren != null && insertionPos.modelChildren.Count > 0)
-                    {
-                        insertionPos = insertionPos.modelChildren.Last();
-                    }
-                    InsertNodeAfter(insertionPos ?? this, node);
-
-                    insertionPos = node;
-                    if (node.isVisible)
-                    {
-                        var flattener = GetListRoot().treeFlattener;
-                        if (flattener != null)
-                        {
-                            flattener.NodesInserted(GetVisibleIndexForNode(node), node.VisibleDescendantsAndSelf());
-                        }
-                    }
-                }
-            }
-
-            RaisePropertyChanged("ShowExpander");
-            RaiseIsLastChangedIfNeeded(e);
-        }
-        #endregion
-
         #region Expanding / LazyLoading
 
         public virtual object ExpandedIcon
@@ -271,7 +270,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             get { return LazyLoading || Children.Any(c => !c.isHidden); }
         }
 
-        bool isExpanded;
+        private bool isExpanded;
 
         public bool IsExpanded
         {
@@ -296,10 +295,15 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             }
         }
 
-        protected virtual void OnExpanding() { }
-        protected virtual void OnCollapsing() { }
+        protected virtual void OnExpanding()
+        {
+        }
 
-        bool lazyLoading;
+        protected virtual void OnCollapsing()
+        {
+        }
+
+        private bool lazyLoading;
 
         public bool LazyLoading
         {
@@ -321,7 +325,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             }
         }
 
-        bool canExpandRecursively = true;
+        private bool canExpandRecursively = true;
 
         /// <summary>
         /// Gets whether this node can be expanded recursively.
@@ -360,7 +364,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 
         public IEnumerable<SharpTreeNode> Descendants()
         {
-            return TreeTraversal.PreOrder(this.Children, n => n.Children);
+            return TreeTraversal.PreOrder(Children, n => n.Children);
         }
 
         public IEnumerable<SharpTreeNode> DescendantsAndSelf()
@@ -370,12 +374,12 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 
         internal IEnumerable<SharpTreeNode> VisibleDescendants()
         {
-            return TreeTraversal.PreOrder(this.Children.Where(c => c.isVisible), n => n.Children.Where(c => c.isVisible));
+            return TreeTraversal.PreOrder(Children.Where(c => c.IsVisible), n => n.Children.Where(c => c.IsVisible));
         }
 
         internal IEnumerable<SharpTreeNode> VisibleDescendantsAndSelf()
         {
-            return TreeTraversal.PreOrder(this, n => n.Children.Where(c => c.isVisible));
+            return TreeTraversal.PreOrder(this, n => n.Children.Where(c => c.IsVisible));
         }
 
         public IEnumerable<SharpTreeNode> Ancestors()
@@ -392,9 +396,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         {
             yield return this;
             foreach (var node in Ancestors())
-            {
                 yield return node;
-            }
         }
 
         #endregion
@@ -406,7 +408,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             get { return false; }
         }
 
-        bool isEditing;
+        private bool isEditing;
 
         public bool IsEditing
         {
@@ -440,18 +442,15 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
             get { return false; }
         }
 
-        bool? isChecked;
+        private bool? isChecked;
 
         public bool? IsChecked
         {
             get { return isChecked; }
-            set
-            {
-                SetIsChecked(value, true);
-            }
+            set { SetIsChecked(value, true); }
         }
 
-        void SetIsChecked(bool? value, bool update)
+        private void SetIsChecked(bool? value, bool update)
         {
             if (isChecked != value)
             {
@@ -460,36 +459,22 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
                 if (update)
                 {
                     if (IsChecked != null)
-                    {
                         foreach (var child in Descendants())
-                        {
                             if (child.IsCheckable)
-                            {
                                 child.SetIsChecked(IsChecked, false);
-                            }
-                        }
-                    }
 
                     foreach (var parent in Ancestors())
-                    {
                         if (parent.IsCheckable)
-                        {
                             if (!parent.TryValueForIsChecked(true))
-                            {
                                 if (!parent.TryValueForIsChecked(false))
-                                {
                                     parent.SetIsChecked(null, false);
-                                }
-                            }
-                        }
-                    }
                 }
 
                 RaisePropertyChanged("IsChecked");
             }
         }
 
-        bool TryValueForIsChecked(bool? value)
+        private bool TryValueForIsChecked(bool? value)
         {
             if (Children.Where(n => n.IsCheckable).All(n => n.IsChecked == value))
             {
@@ -503,102 +488,106 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 
         #region Cut / Copy / Paste / Delete
 
-        public bool IsCut { get { return false; } }
-        /*
-			static List<SharpTreeNode> cuttedNodes = new List<SharpTreeNode>();
-			static IDataObject cuttedData;
-			static EventHandler requerySuggestedHandler; // for weak event
-	
-			static void StartCuttedDataWatcher()
-			{
-				requerySuggestedHandler = new EventHandler(CommandManager_RequerySuggested);
-				CommandManager.RequerySuggested += requerySuggestedHandler;
-			}
-	
-			static void CommandManager_RequerySuggested(object sender, EventArgs e)
-			{
-				if (cuttedData != null && !Clipboard.IsCurrent(cuttedData)) {
-					ClearCuttedData();
-				}
-			}
-	
-			static void ClearCuttedData()
-			{
-				foreach (var node in cuttedNodes) {
-					node.IsCut = false;
-				}
-				cuttedNodes.Clear();
-				cuttedData = null;
-			}
-	
-			//static public IEnumerable<SharpTreeNode> PurifyNodes(IEnumerable<SharpTreeNode> nodes)
-			//{
-			//    var list = nodes.ToList();
-			//    var array = list.ToArray();
-			//    foreach (var node1 in array) {
-			//        foreach (var node2 in array) {
-			//            if (node1.Descendants().Contains(node2)) {
-			//                list.Remove(node2);
-			//            }
-			//        }
-			//    }
-			//    return list;
-			//}
-	
-			bool isCut;
-	
-			public bool IsCut
-			{
-				get { return isCut; }
-				private set
-				{
-					isCut = value;
-					RaisePropertyChanged("IsCut");
-				}
-			}
-	
-			internal bool InternalCanCut()
-			{
-				return InternalCanCopy() && InternalCanDelete();
-			}
-	
-			internal void InternalCut()
-			{
-				ClearCuttedData();
-				cuttedData = Copy(ActiveNodesArray);
-				Clipboard.SetDataObject(cuttedData);
-	
-				foreach (var node in ActiveNodes) {
-					node.IsCut = true;
-					cuttedNodes.Add(node);
-				}
-			}
-	
-			internal bool InternalCanCopy()
-			{
-				return CanCopy(ActiveNodesArray);
-			}
-	
-			internal void InternalCopy()
-			{
-				Clipboard.SetDataObject(Copy(ActiveNodesArray));
-			}
-	
-			internal bool InternalCanPaste()
-			{
-				return CanPaste(Clipboard.GetDataObject());
-			}
-	
-			internal void InternalPaste()
-			{
-				Paste(Clipboard.GetDataObject());
-	
-				if (cuttedData != null) {
-					DeleteCore(cuttedNodes.ToArray());
-					ClearCuttedData();
-				}
-			}
-		 */
+        public bool IsCut
+        {
+            get { return false; }
+        }
+
+/*
+                                    static List<SharpTreeNode> cuttedNodes = new List<SharpTreeNode>();
+                                    static IDataObject cuttedData;
+                                    static EventHandler requerySuggestedHandler; // for weak event
+                            
+                                    static void StartCuttedDataWatcher()
+                                    {
+                                        requerySuggestedHandler = new EventHandler(CommandManager_RequerySuggested);
+                                        CommandManager.RequerySuggested += requerySuggestedHandler;
+                                    }
+                            
+                                    static void CommandManager_RequerySuggested(object sender, EventArgs e)
+                                    {
+                                        if (cuttedData != null && !Clipboard.IsCurrent(cuttedData)) {
+                                            ClearCuttedData();
+                                        }
+                                    }
+                            
+                                    static void ClearCuttedData()
+                                    {
+                                        foreach (var node in cuttedNodes) {
+                                            node.IsCut = false;
+                                        }
+                                        cuttedNodes.Clear();
+                                        cuttedData = null;
+                                    }
+                            
+                                    //static public IEnumerable<SharpTreeNode> PurifyNodes(IEnumerable<SharpTreeNode> nodes)
+                                    //{
+                                    //    var list = nodes.ToList();
+                                    //    var array = list.ToArray();
+                                    //    foreach (var node1 in array) {
+                                    //        foreach (var node2 in array) {
+                                    //            if (node1.Descendants().Contains(node2)) {
+                                    //                list.Remove(node2);
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //    return list;
+                                    //}
+                            
+                                    bool isCut;
+                            
+                                    public bool IsCut
+                                    {
+                                        get { return isCut; }
+                                        private set
+                                        {
+                                            isCut = value;
+                                            RaisePropertyChanged("IsCut");
+                                        }
+                                    }
+                            
+                                    internal bool InternalCanCut()
+                                    {
+                                        return InternalCanCopy() && InternalCanDelete();
+                                    }
+                            
+                                    internal void InternalCut()
+                                    {
+                                        ClearCuttedData();
+                                        cuttedData = Copy(ActiveNodesArray);
+                                        Clipboard.SetDataObject(cuttedData);
+                            
+                                        foreach (var node in ActiveNodes) {
+                                            node.IsCut = true;
+                                            cuttedNodes.Add(node);
+                                        }
+                                    }
+                            
+                                    internal bool InternalCanCopy()
+                                    {
+                                        return CanCopy(ActiveNodesArray);
+                                    }
+                            
+                                    internal void InternalCopy()
+                                    {
+                                        Clipboard.SetDataObject(Copy(ActiveNodesArray));
+                                    }
+                            
+                                    internal bool InternalCanPaste()
+                                    {
+                                        return CanPaste(Clipboard.GetDataObject());
+                                    }
+                            
+                                    internal void InternalPaste()
+                                    {
+                                        Paste(Clipboard.GetDataObject());
+                            
+                                        if (cuttedData != null) {
+                                            DeleteCore(cuttedNodes.ToArray());
+                                            ClearCuttedData();
+                                        }
+                                    }
+                                 */
 
         public virtual bool CanDelete()
         {
@@ -637,9 +626,11 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 				Drop(data, Children.Count, DropEffect.Copy);
 			}
 		 */
+
         #endregion
 
         #region Drag and Drop
+
         public virtual bool CanDrag(SharpTreeNode[] nodes)
         {
             return false;
@@ -647,15 +638,13 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
 
         public virtual void StartDrag(DependencyObject dragSource, SharpTreeNode[] nodes)
         {
-            DragDropEffects effects = DragDropEffects.All;
+            var effects = DragDropEffects.All;
             if (!nodes.All(n => n.CanDelete()))
                 effects &= ~DragDropEffects.Move;
-            DragDropEffects result = DragDrop.DoDragDrop(dragSource, Copy(nodes), effects);
+            var result = DragDrop.DoDragDrop(dragSource, Copy(nodes), effects);
             if (result == DragDropEffects.Move)
-            {
-                foreach (SharpTreeNode node in nodes)
+                foreach (var node in nodes)
                     node.DeleteCore();
-            }
         }
 
         public virtual bool CanDrop(DragEventArgs e, int index)
@@ -678,6 +667,7 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         {
             throw new NotSupportedException(GetType().Name + " does not support Drop()");
         }
+
         #endregion
 
         #region IsLast (for TreeView lines)
@@ -686,12 +676,12 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         {
             get
             {
-                return Parent == null ||
-                    Parent.Children[Parent.Children.Count - 1] == this;
+                return (Parent == null) ||
+                       (Parent.Children[Parent.Children.Count - 1] == this);
             }
         }
 
-        void RaiseIsLastChangedIfNeeded(NotifyCollectionChangedEventArgs e)
+        private void RaiseIsLastChangedIfNeeded(NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
@@ -699,20 +689,14 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
                     if (e.NewStartingIndex == Children.Count - 1)
                     {
                         if (Children.Count > 1)
-                        {
                             Children[Children.Count - 2].RaisePropertyChanged("IsLast");
-                        }
                         Children[Children.Count - 1].RaisePropertyChanged("IsLast");
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     if (e.OldStartingIndex == Children.Count)
-                    {
                         if (Children.Count > 0)
-                        {
                             Children[Children.Count - 1].RaisePropertyChanged("IsLast");
-                        }
-                    }
                     break;
             }
         }
@@ -726,25 +710,9 @@ namespace dEditor.Widgets.Diagnostics.SharpTreeView
         public void RaisePropertyChanged(string name)
         {
             if (PropertyChanged != null)
-            {
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets called when the item is double-clicked.
-        /// </summary>
-        public virtual void ActivateItem(RoutedEventArgs e)
-        {
-        }
-
-        public override string ToString()
-        {
-            // used for keyboard navigation
-            object text = this.Text;
-            return text != null ? text.ToString() : string.Empty;
-        }
     }
 }
