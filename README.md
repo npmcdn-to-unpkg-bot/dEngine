@@ -4,7 +4,7 @@
 # dEngine
 An open source engine based on the ROBLOX API for standalone games. It's currently early in development.
 ## Requirements
-[.NET Framework 4.6](https://www.microsoft.com/en-gb/download/details.aspx?id=48130)
+[.NET Framework 4.6](https://www.microsoft.com/en-gb/download/details.aspx?id=48130)  
 [Visual Studio 2015](https://beta.visualstudio.com/downloads/)
 ## Setup
 1. [Download](https://github.com/DanDevPC/dEngine/archive/master.zip) or clone the repository.
