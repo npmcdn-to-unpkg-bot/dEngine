@@ -1,5 +1,5 @@
 
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/dandevpc/dengine?branch=master&svg=true)](https://ci.appveyor.com/project/dandevpc/dengine/branch/master) <a href="https://dengine-slack.herokuapp.com"><img src="https://worldvectorlogo.com/logos/slack.svg" width="60" /></a>
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/dandevpc/dengine?branch=master&svg=true)](https://ci.appveyor.com/project/dandevpc/dengine/branch/master) [![Gitter](https://badges.gitter.im/dandevpc/gitter.svg)](https://gitter.im/dandevpc/engine)
 
 # dEngine
 An open source engine based on the ROBLOX API for standalone games. It's currently early in development.
