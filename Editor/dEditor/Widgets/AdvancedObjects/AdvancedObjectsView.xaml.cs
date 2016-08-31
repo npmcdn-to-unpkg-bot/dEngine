@@ -31,5 +31,22 @@ namespace dEditor.Widgets.AdvancedObjects
             if (item != null)
                 ((AdvancedObjectsViewModel)DataContext).OnObjectMouseDown((ObjectEntry)item.DataContext, e);
         }
+
+        private void ListBox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            var selectedIndex = ListBox.SelectedIndex;
+            var count = ListBox.Items.Count;
+            for (var i = selectedIndex+1; i < count; i++)
+            {
+                var item = (ObjectEntry)ListBox.Items[i];
+                var chr = new KeyConverter().ConvertToString(e.Key).ToUpper()[0];
+                if (item.Name[0] == chr)
+                {
+                    ListBox.SelectedIndex = i;
+                    ListBox.ScrollIntoView(item);
+                    break;
+                }
+            }
+        }
     }
 }

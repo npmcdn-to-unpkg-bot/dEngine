@@ -12,6 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Threading;
 using dEditor.Tools.Building;
 using dEngine;
 using dEngine.Instances;
@@ -71,6 +73,14 @@ namespace dEditor.Tools
 
         private static void GroupSelection()
         {
+            if (SelectionService.Selection.Any(s => s.ParentLocked))
+            {
+                Editor.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    MessageBox.Show("The selected objects cannot be grouped.", "dEditor");
+                });
+                return;
+            }
             HistoryService.ExecuteAction(new GroupSelectionAction());
             HistoryService.Waypoint("Group");
         }

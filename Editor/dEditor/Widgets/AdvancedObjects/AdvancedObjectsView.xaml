@@ -21,8 +21,8 @@
             <Border Background="White" BorderBrush="#CCC" DockPanel.Dock="Bottom" BorderThickness="0, 1, 0, 0">
                 <CheckBox Margin="4" IsChecked="{Binding SelectInsertedObject}">Select inserted object</CheckBox>
             </Border>
-            <ListBox x:Name="ListBox" BorderThickness="0" DockPanel.Dock="Top" Background="Transparent"
-                     ItemsSource="{Binding Items}" PreviewMouseDown="ListBox_OnPreviewMouseDown">
+            <ListBox x:Name="ListBox" TextSearch.TextPath="Name" BorderThickness="0" DockPanel.Dock="Top" Background="Transparent"
+                     ItemsSource="{Binding Items}" PreviewMouseDown="ListBox_OnPreviewMouseDown" KeyDown="ListBox_OnKeyDown" >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource CustomListBoxItem}">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

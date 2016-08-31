@@ -539,16 +539,17 @@ namespace dEngine.Instances
                 if (_waitForChildList.TryGetValue(name, out threads))
                     threads.Add(thread);
                 else
-                    _waitForChildList.Add(name, new List<LuaThread>(new[] {thread}));
+                    _waitForChildList.Add(name, new List<LuaThread>(new[] { thread }));
             }
 
-            Timer timer = null;
-            var timerAction = new TimerCallback(obj =>
+            if (timeout != null)
             {
-                ScriptService.ResumeThread(thread);
-                timer?.Dispose();
-            });
-            timer = timeout == null ? new Timer(timerAction) : new Timer(timerAction, null, (int)(timeout*1000), -1);
+                var action = new TimerCallback(obj =>
+                {
+                    ScriptService.ResumeThread(thread);
+                });
+                new Timer(action, null, (int)(timeout * 1000), -1);
+            }
 
             ScriptService.YieldThread();
 

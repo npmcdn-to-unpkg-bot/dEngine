@@ -42,7 +42,7 @@ namespace dEngine
         /// A CFrame with an identity matrix.
         /// </summary>
         public static CFrame Identity = new CFrame(Vector3.Zero);
-
+        
         /// <summary>
         /// A CFrame with a zeroed matrix.
         /// </summary>

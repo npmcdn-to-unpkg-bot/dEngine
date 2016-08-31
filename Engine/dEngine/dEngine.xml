@@ -87,13 +87,13 @@
             </summary>
         </member>
         <member name="M:dEngine.Data.AssetBase.OnSave(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Data.AssetBase.OnLoad(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Data.AssetBase.Finalize">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Data.AssetBase.Dispose(System.Boolean)">
             <summary>
@@ -303,7 +303,7 @@
         </member>
         <member name="T:dEngine.BlurMode">
             <summary>
-            Blurring methods to use in <see cref="!:AmbientOcclusionEffect"/>.
+            Blurring methods to use in <see cref="!:AmbientOcclusionEffect" />.
             </summary>
         </member>
         <member name="T:dEngine.EngineMode">
@@ -658,12 +658,15 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Attributes.WarningAttribute.#ctor(System.String)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Instances.Attributes.RangeAttribute">
             <summary>
             An attribute for hinting at the intended range of a property.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.Attributes.RangeAttribute.#ctor(System.Double,System.Double)">
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Attributes.RangeAttribute.Max">
             <summary>
@@ -675,19 +678,16 @@
             The minimum value.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.Attributes.RangeAttribute.#ctor(System.Double,System.Double)">
-            <summary/>
-        </member>
         <member name="T:dEngine.Instances.Attributes.ScriptSecurityAttribute">
             <summary>
             Defines the required script identity to access this member.
             </summary>
         </member>
-        <member name="P:dEngine.Instances.Attributes.ScriptSecurityAttribute.Identity">
-            <summary/>
-        </member>
         <member name="M:dEngine.Instances.Attributes.ScriptSecurityAttribute.#ctor(dEngine.ScriptIdentity)">
-            <summary/>
+            <summary />
+        </member>
+        <member name="P:dEngine.Instances.Attributes.ScriptSecurityAttribute.Identity">
+            <summary />
         </member>
         <member name="T:dEngine.Instances.Attributes.TypeIdAttribute">
             <summary>
@@ -780,8 +780,10 @@
             </summary>
             <remarks>
             In a game, each client has its own Camera object.
-            Cameras exist only on the viewer's client, within in a user's local <see cref="T:dEngine.Services.Workspace"/>. This means it can't be edited from the server.
-            When code is [running on a client](index.html?title=LocalScript) it can access the Camera through the <see cref="P:dEngine.Services.Workspace.CurrentCamera"/> property.
+            Cameras exist only on the viewer's client, within in a user's local <see cref="T:dEngine.Services.Workspace" />. This means it can't be
+            edited from the server.
+            When code is [running on a client](index.html?title=LocalScript) it can access the Camera through the
+            <see cref="P:dEngine.Services.Workspace.CurrentCamera" /> property.
             ## State
             A camera's state is defined in the following way:
             * The <see cref="P:dEngine.Instances.Camera.CFrame" /> property represents the position and orientation of the camera.
@@ -916,11 +918,11 @@
         </member>
         <member name="T:dEngine.Instances.Diagnostics.DebuggerManager">
             <summary>
-            Manager for <see cref="T:dEngine.Instances.ScriptDebugger"/>s.
+            Manager for <see cref="T:dEngine.Instances.ScriptDebugger" />s.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Diagnostics.DebuggerManager.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Diagnostics.DebuggerManager.DebuggingEnabled">
             <summary>
@@ -934,7 +936,7 @@
         </member>
         <member name="M:dEngine.Instances.Diagnostics.DebuggerManager.GetDebuggers">
             <summary>
-            Returns an array of all <see cref="T:dEngine.Instances.ScriptDebugger"/>s.
+            Returns an array of all <see cref="T:dEngine.Instances.ScriptDebugger" />s.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Diagnostics.DebuggerManager.Resume">
@@ -1032,13 +1034,13 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Storyboard.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Instances.Storyboard.OnChildAdded(dEngine.Instances.Instance)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Instances.Storyboard.OnChildRemoved(dEngine.Instances.Instance)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Instances.Storyboard.Begin">
             <summary>
@@ -1091,15 +1093,14 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Hint.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Instances.Materials.Material">
             <summary>
-            
             </summary>
         </member>
         <member name="M:dEngine.Instances.Materials.Material.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Materials.Material.Domain">
             <summary>
@@ -1128,12 +1129,22 @@
         </member>
         <member name="M:dEngine.Instances.Materials.Material.CreateInstance">
             <summary>
-            Returns a <see cref="T:dEngine.Instances.Materials.MaterialInstance"/> of this material.
+            Returns a <see cref="T:dEngine.Instances.Materials.MaterialInstance" /> of this material.
             </summary>
         </member>
         <member name="T:dEngine.Instances.Materials.MaterialInstance">
             <summary>
-            An instance of a <see cref="P:dEngine.Instances.Materials.MaterialInstance.Material"/> which can be used to modify paramaters on the fly.
+            An instance of a <see cref="P:dEngine.Instances.Materials.MaterialInstance.Material" /> which can be used to modify paramaters on the fly.
+            </summary>
+        </member>
+        <member name="P:dEngine.Instances.Materials.MaterialInstance.Domain">
+            <summary>
+            The <see cref="T:dEngine.MaterialDomain" /> of the parent material.
+            </summary>
+        </member>
+        <member name="P:dEngine.Instances.Materials.MaterialInstance.ShadingModel">
+            <summary>
+            The <see cref="T:dEngine.ShadingModel" /> of the parent material.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Materials.MaterialInstance.SetParameter(System.String,System.Object)">
@@ -1141,33 +1152,13 @@
             Sets the value of a material paramater.
             </summary>
         </member>
-        <member name="P:dEngine.Instances.Materials.MaterialInstance.Domain">
-            <summary>
-            The <see cref="T:dEngine.MaterialDomain"/> of the parent material.
-            </summary>
-        </member>
-        <member name="P:dEngine.Instances.Materials.MaterialInstance.ShadingModel">
-            <summary>
-            The <see cref="T:dEngine.ShadingModel"/> of the parent material.
-            </summary>
-        </member>
         <member name="T:dEngine.Instances.Materials.Node">
             <summary>
             Base class for material nodes.
             </summary>
         </member>
-        <member name="F:dEngine.Instances.Materials.Node.SlotConnected">
-            <summary>
-            Fired when a slot is connected.
-            </summary>
-        </member>
         <member name="M:dEngine.Instances.Materials.Node.#ctor">
-            <summary/>
-        </member>
-        <member name="M:dEngine.Instances.Materials.Node.GetSlots(dEngine.InOut)">
-            <summary>
-            Gets the slots of the given mode.
-            </summary>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Materials.Node.Position">
             <summary>
@@ -1182,6 +1173,16 @@
         <member name="P:dEngine.Instances.Materials.Node.Comment">
             <summary>
             The comment attached to the node.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.Materials.Node.GetSlots(dEngine.InOut)">
+            <summary>
+            Gets the slots of the given mode.
+            </summary>
+        </member>
+        <member name="F:dEngine.Instances.Materials.Node.SlotConnected">
+            <summary>
+            Fired when a slot is connected.
             </summary>
         </member>
         <member name="T:dEngine.Instances.Materials.Nodes.FinalNode">
@@ -1285,15 +1286,15 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Message.#ctor">
-            <summary/>
-        </member>
-        <member name="M:dEngine.Instances.Message.OnWorldChanged(dEngine.Instances.IWorld,dEngine.Instances.IWorld)">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Message.Text">
             <summary>
             The text to display.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.Message.OnWorldChanged(dEngine.Instances.IWorld,dEngine.Instances.IWorld)">
+            <summary />
         </member>
         <member name="T:dEngine.Instances.LensFlareEffect">
             <summary>
@@ -1301,44 +1302,44 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.LensFlareEffect.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Instances.BindableEvent">
             <summary>
-            Acts as a custom event to allow communication between scripts. 
+            Acts as a custom event to allow communication between scripts.
             </summary>
         </member>
         <member name="M:dEngine.Instances.BindableEvent.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Instances.BindableEvent.Fire(System.Object[])">
             <summary>
-            Fires the <see cref="F:dEngine.Instances.BindableEvent.Event"/>.
+            Fires the <see cref="F:dEngine.Instances.BindableEvent.Event" />.
             </summary>
             <param name="arguments">The arguments to pass to the event.</param>
         </member>
         <member name="F:dEngine.Instances.BindableEvent.Event">
             <summary>
-            An event which is fired by <see cref="M:dEngine.Instances.BindableEvent.Fire(System.Object[])"/>.
+            An event which is fired by <see cref="M:dEngine.Instances.BindableEvent.Fire(System.Object[])" />.
             </summary>
-            <eventParam name="arguments"/>
+            <eventParam name="arguments" />
         </member>
         <member name="T:dEngine.Instances.BindableFunction">
             <summary>
             Acts as a custom function to allow communication between scripts.
             </summary>
         </member>
+        <member name="P:dEngine.Instances.BindableFunction.OnInvoke">
+            <summary>
+            A function to be invoked when <see cref="M:dEngine.Instances.BindableFunction.Invoke(System.Object[])" /> is called.
+            </summary>
+        </member>
         <member name="M:dEngine.Instances.BindableFunction.Invoke(System.Object[])">
             <summary>
-            Invokes the <see cref="P:dEngine.Instances.BindableFunction.OnInvoke"/> method.
+            Invokes the <see cref="P:dEngine.Instances.BindableFunction.OnInvoke" /> method.
             </summary>
             <param name="args">The arguments to pass to the callback.</param>
             <returns>The return value of the callback.</returns>
-        </member>
-        <member name="P:dEngine.Instances.BindableFunction.OnInvoke">
-            <summary>
-            A function to be invoked when <see cref="M:dEngine.Instances.BindableFunction.Invoke(System.Object[])"/> is called.
-            </summary>
         </member>
         <member name="T:dEngine.Instances.BoolValue">
             <summary>
@@ -1397,9 +1398,6 @@
             A bone.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.Bone.#ctor">
-            <inheritdoc />
-        </member>
         <member name="P:dEngine.Instances.Bone.CFrame">
             <summary>
             The transform of the bone relative to <see cref="P:dEngine.Instances.Skeleton.RootBone" />.
@@ -1429,7 +1427,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.GlobalDataStore.#ctor">
-            <inheritdoc/>
+            <inheritdoc />
         </member>
         <member name="T:dEngine.Instances.DataStores.OrderedDataStore">
             <summary>
@@ -1438,11 +1436,11 @@
         </member>
         <member name="T:dEngine.Instances.Forcefield">
             <summary>
-            Protects a <see cref="T:dEngine.Instances.Character"/> from damage by <see cref="M:dEngine.Instances.Character.TakeDamage(System.Single)"/>.
+            Protects a <see cref="T:dEngine.Instances.Character" /> from damage by <see cref="M:dEngine.Instances.Character.TakeDamage(System.Single)" />.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Forcefield.#ctor">
-            <inheritdoc/>
+            <inheritdoc />
         </member>
         <member name="T:dEngine.Instances.Button">
             <summary>
@@ -1463,7 +1461,7 @@
         </member>
         <member name="T:dEngine.Instances.Interfaces.ICameraSubject">
             <summary>
-            An interface for instances which can be a <see cref="P:dEngine.Instances.Camera.CameraSubject"/>.
+            An interface for instances which can be a <see cref="P:dEngine.Instances.Camera.CameraSubject" />.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Interfaces.ICameraSubject.GetVelocity">
@@ -1608,7 +1606,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.ParticleEmitter.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.ParticleEmitter.Acceleration">
             <summary>
@@ -1767,7 +1765,7 @@
             </summary>
         </member>
         <member name="P:dEngine.Instances.BodyPosition.position">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.BodyPosition.Position">
             <summary>
@@ -1810,7 +1808,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.BodyVelocity.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.BodyVelocity.MaxForce">
             <summary>
@@ -1906,7 +1904,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Attachment.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Attachment.CFrame">
             <summary>
@@ -1954,7 +1952,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Attachment.op_Implicit(dEngine.Instances.Attachment)~BulletSharp.RigidBody">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Instances.Attachment.OnParentFilter(dEngine.Instances.Instance)">
             <inheritdoc />
@@ -1980,9 +1978,6 @@
             Base class for constraints.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.Constraint.op_Implicit(dEngine.Instances.Constraint)~BulletSharp.TypedConstraint">
-            <summary/>
-        </member>
         <member name="P:dEngine.Instances.Constraint.Attachment0">
             <summary>
             The <see cref="T:dEngine.Instances.Attachment" /> which is connected to <see cref="P:dEngine.Instances.Constraint.Attachment1" />.
@@ -1998,9 +1993,12 @@
             Toggles whether or not the constraint is enabled.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.Constraint.op_Implicit(dEngine.Instances.Constraint)~BulletSharp.TypedConstraint">
+            <summary />
+        </member>
         <member name="M:dEngine.Instances.Constraint.Validate">
             <summary>
-            Determines if both attachments have a valid <see cref="T:dEngine.Instances.Part"/>.
+            Determines if both attachments have a valid <see cref="T:dEngine.Instances.Part" />.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Constraint.RebuildConstraint">
@@ -2019,7 +2017,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.HingeConstraint.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.HingeConstraint.CurrentAngle">
             <summary>
@@ -2031,9 +2029,16 @@
             Determines whether the rotation is actuated and, if so, what kind of actutation.
             </summary>
         </member>
+        <member name="P:dEngine.Instances.HingeConstraint.LimitsEnabled">
+            <summary>
+            Determines whether the range of rotation should be limited.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.HingeConstraint.RebuildConstraint">
+            <summary />
+        </member>
         <member name="P:dEngine.Instances.HingeConstraint.AngularSpeed">
             <summary>
-            
             </summary>
         </member>
         <member name="P:dEngine.Instances.HingeConstraint.ServoMaxTorque">
@@ -2061,21 +2066,10 @@
             Summary
             </summary>
         </member>
-        <member name="P:dEngine.Instances.HingeConstraint.LimitsEnabled">
-            <summary>
-            Determines whether the range of rotation should be limited.
-            </summary>
-        </member>
-        <member name="M:dEngine.Instances.HingeConstraint.RebuildConstraint">
-            <summary/>
-        </member>
         <member name="T:dEngine.Instances.RodConstraint">
             <summary>
             Summary
             </summary>
-        </member>
-        <member name="M:dEngine.Instances.RodConstraint.#ctor">
-            <summary/>
         </member>
         <member name="P:dEngine.Instances.RodConstraint.CurrentDistance">
             <summary>
@@ -2088,15 +2082,12 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.RodConstraint.RebuildConstraint">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Instances.RopeConstraint">
             <summary>
             Summary
             </summary>
-        </member>
-        <member name="M:dEngine.Instances.RopeConstraint.#ctor">
-            <summary/>
         </member>
         <member name="P:dEngine.Instances.RopeConstraint.CurrentDistance">
             <summary>
@@ -2163,7 +2154,7 @@
             </remarks>
         </member>
         <member name="M:dEngine.Instances.SpringConstraint.RebuildConstraint">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Instances.BloomEffect">
             <summary>
@@ -2209,7 +2200,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.ColourCorrectionEffect.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.ColourCorrectionEffect.TintColour">
             <summary>
@@ -2237,7 +2228,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.DepthOfField.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Instances.GodRaysEffect">
             <summary>
@@ -2245,10 +2236,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.GodRaysEffect.#ctor">
-            <summary/>
-        </member>
-        <member name="M:dEngine.Instances.GodRaysEffect.Destroy">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.GodRaysEffect.Intensity">
             <summary>
@@ -2260,11 +2248,14 @@
             Determines how much the sun rays spread out.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.GodRaysEffect.Destroy">
+            <summary />
+        </member>
         <member name="M:dEngine.Instances.GodRaysEffect.UpdateSize(dEngine.Instances.Camera)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Instances.MotionBlurEffect.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Instances.PostEffect">
             <summary>
@@ -2343,7 +2334,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.LuaSourceContainer.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.LuaSourceContainer.IsRunning">
             <summary>
@@ -2356,10 +2347,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Seat.#ctor">
-            <summary/>
-        </member>
-        <member name="M:dEngine.Instances.Seat.Destroy">
-            <inheritdoc/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Seat.Occupant">
             <summary>
@@ -2374,6 +2362,9 @@
             <summary>
             Determines if this object can be occupied by touching it.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.Seat.Destroy">
+            <inheritdoc />
         </member>
         <member name="T:dEngine.Instances.VehicleSeat">
             <summary>
@@ -2412,7 +2403,7 @@
         </member>
         <member name="P:dEngine.Instances.VehicleSeat.Torque">
             <summary>
-            Determines how fast the vehicle is able to reach its <see cref="P:dEngine.Instances.VehicleSeat.MaxSpeed"/>.
+            Determines how fast the vehicle is able to reach its <see cref="P:dEngine.Instances.VehicleSeat.MaxSpeed" />.
             </summary>
         </member>
         <member name="P:dEngine.Instances.VehicleSeat.TurnSpeed">
@@ -2426,7 +2417,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Team.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Team.AutoAssignable">
             <summary>
@@ -2462,13 +2453,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Volume.#ctor">
-            <summary/>
-        </member>
-        <member name="M:dEngine.Instances.Volume.Destroy">
-            <inheritdoc/>
-        </member>
-        <member name="M:dEngine.Instances.Volume.OnWorldChanged(dEngine.Instances.IWorld,dEngine.Instances.IWorld)">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Volume.CFrame">
             <summary>
@@ -2495,6 +2480,12 @@
             Summary
             </summary>
         </member>
+        <member name="M:dEngine.Instances.Volume.Destroy">
+            <inheritdoc />
+        </member>
+        <member name="M:dEngine.Instances.Volume.OnWorldChanged(dEngine.Instances.IWorld,dEngine.Instances.IWorld)">
+            <summary />
+        </member>
         <member name="T:dEngine.Instances.TransvoxelTables">
             <summary>
             Contains the Lengyel Transvoxel Lookup Tables
@@ -2503,11 +2494,6 @@
         <member name="T:dEngine.Instances.Character">
             <summary>
             A character is an instance which can be controlled by players or AI.
-            </summary>
-        </member>
-        <member name="F:dEngine.Instances.Character.Died">
-            <summary>
-            Fired when <see cref="P:dEngine.Instances.Character.Health" /> reaches zero.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Character.#ctor">
@@ -2601,6 +2587,11 @@
             </summary>
             <param name="position">The position the teleport to.</param>
             <param name="lookVector">The direction to face.</param>
+        </member>
+        <member name="F:dEngine.Instances.Character.Died">
+            <summary>
+            Fired when <see cref="P:dEngine.Instances.Character.Health" /> reaches zero.
+            </summary>
         </member>
         <member name="T:dEngine.Instances.TextElement">
             <summary>
@@ -2880,12 +2871,15 @@
             </summary>
         </member>
         <member name="T:dEngine.Instances.Flex">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Instances.ArcHandles">
             <summary>
             An object which draws 3D handles around the axes of <see cref="P:dEngine.Instances.PVAdornment.Adornee" />.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.ArcHandles.#ctor">
+            <summary />
         </member>
         <member name="F:dEngine.Instances.ArcHandles.LeftMouseButtonDown">
             <summary>
@@ -2912,13 +2906,27 @@
             Fires when the left mouse button is pressed on a handle.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.ArcHandles.#ctor">
-            <summary/>
-        </member>
         <member name="T:dEngine.Instances.AxisHandles">
             <summary>
             An object which draws 3D handles around the axes of <see cref="P:dEngine.Instances.PVAdornment.Adornee" />.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.AxisHandles.#ctor">
+            <inheritdoc />
+        </member>
+        <member name="P:dEngine.Instances.AxisHandles.Style">
+            <summary>
+            The style for the handles.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.AxisHandles.ChangeRenderObject">
+            <inheritdoc />
+        </member>
+        <member name="M:dEngine.Instances.AxisHandles.OnAdorneeSet(dEngine.Instances.PVInstance,dEngine.Instances.PVInstance)">
+            <inheritdoc />
+        </member>
+        <member name="M:dEngine.Instances.AxisHandles.Destroy">
+            <inheritdoc />
         </member>
         <member name="F:dEngine.Instances.AxisHandles.MouseButton1Down">
             <summary>
@@ -2944,23 +2952,6 @@
             <summary>
             Fired when the mouse leaves a handle.
             </summary>
-        </member>
-        <member name="M:dEngine.Instances.AxisHandles.#ctor">
-            <inheritdoc />
-        </member>
-        <member name="P:dEngine.Instances.AxisHandles.Style">
-            <summary>
-            The style for the handles.
-            </summary>
-        </member>
-        <member name="M:dEngine.Instances.AxisHandles.ChangeRenderObject">
-            <inheritdoc />
-        </member>
-        <member name="M:dEngine.Instances.AxisHandles.OnAdorneeSet(dEngine.Instances.PVInstance,dEngine.Instances.PVInstance)">
-            <inheritdoc />
-        </member>
-        <member name="M:dEngine.Instances.AxisHandles.Destroy">
-            <inheritdoc />
         </member>
         <member name="T:dEngine.Instances.BaseHandles">
             <summary>
@@ -3103,7 +3094,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Instances.Decal.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Instances.Decal.Material">
             <summary>
@@ -3267,30 +3258,6 @@
             A building block.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.Part.op_Implicit(dEngine.Instances.Part)~BulletSharp.RigidBody">
-            <summary/>
-        </member>
-        <member name="F:dEngine.Instances.Part.Moved">
-            <summary>
-            Fired when <see cref="P:dEngine.Instances.Part.CFrame" /> is set or the part is moved in the physics engine.
-            </summary>
-        </member>
-        <member name="M:dEngine.Instances.Part.SetNetworkOwner(dEngine.Instances.Player)">
-            <summary>
-            Sets the player who should own this part.
-            </summary>
-            <remarks>
-            If `player` is set to null, the server will take ownership.
-            </remarks>
-        </member>
-        <member name="M:dEngine.Instances.Part.GetNetworkOwner">
-            <summary>
-            Returns the player that owns this part.
-            </summary>
-            <remarks>
-            If `nil` is returned it means the server is the owner.
-            </remarks>
-        </member>
         <member name="M:dEngine.Instances.Part.#ctor">
             <inheritdoc />
         </member>
@@ -3389,6 +3356,25 @@
         <member name="M:dEngine.Instances.Part.UpdateRenderData">
             <inheritdoc />
         </member>
+        <member name="M:dEngine.Instances.Part.op_Implicit(dEngine.Instances.Part)~BulletSharp.RigidBody">
+            <summary />
+        </member>
+        <member name="M:dEngine.Instances.Part.SetNetworkOwner(dEngine.Instances.Player)">
+            <summary>
+            Sets the player who should own this part.
+            </summary>
+            <remarks>
+            If `player` is set to null, the server will take ownership.
+            </remarks>
+        </member>
+        <member name="M:dEngine.Instances.Part.GetNetworkOwner">
+            <summary>
+            Returns the player that owns this part.
+            </summary>
+            <remarks>
+            If `nil` is returned it means the server is the owner.
+            </remarks>
+        </member>
         <member name="M:dEngine.Instances.Part.OnWorldChanged(dEngine.Instances.IWorld,dEngine.Instances.IWorld)">
             <inheritdoc />
         </member>
@@ -3442,6 +3428,11 @@
             <summary>
             Removes this part from the current <see cref="T:dEngine.Graphics.RenderObject" />, and, if <see cref="M:dEngine.Instances.Part.CanRender" />, adds it to a
             new one.
+            </summary>
+        </member>
+        <member name="F:dEngine.Instances.Part.Moved">
+            <summary>
+            Fired when <see cref="P:dEngine.Instances.Part.CFrame" /> is set or the part is moved in the physics engine.
             </summary>
         </member>
         <member name="F:dEngine.Instances.Part.Touched">
@@ -3842,9 +3833,6 @@
             <summary>
             A <see cref="T:dEngine.Instances.ValueContainer" /> for holding binary data.
             </summary>
-        </member>
-        <member name="M:dEngine.Instances.BinaryValue.#ctor">
-            <inheritdoc />
         </member>
         <member name="T:dEngine.Instances.Weld">
             <summary>
@@ -4344,16 +4332,6 @@
             A networked event.
             </summary>
         </member>
-        <member name="F:dEngine.Instances.RemoteEvent.OnClientEvent">
-            <summary>
-            Fired on the client when the server invokes this event.
-            </summary>
-        </member>
-        <member name="F:dEngine.Instances.RemoteEvent.OnServerEvent">
-            <summary>
-            Fired on the server when the client invokes this event.
-            </summary>
-        </member>
         <member name="M:dEngine.Instances.RemoteEvent.#ctor">
             <inheritdoc />
         </member>
@@ -4374,6 +4352,16 @@
             Fires <see cref="F:dEngine.Instances.RemoteEvent.OnServerEvent" /> for the server.
             </summary>
             <param name="args">The arguments to fire the event with.</param>
+        </member>
+        <member name="F:dEngine.Instances.RemoteEvent.OnClientEvent">
+            <summary>
+            Fired on the client when the server invokes this event.
+            </summary>
+        </member>
+        <member name="F:dEngine.Instances.RemoteEvent.OnServerEvent">
+            <summary>
+            Fired on the server when the client invokes this event.
+            </summary>
         </member>
         <member name="T:dEngine.Instances.RemoteFunction">
             <summary>
@@ -4422,33 +4410,18 @@
             The server creates this when a client connects.
             </remarks>
         </member>
+        <member name="M:dEngine.Instances.ServerReplicator.CloseConnection(System.String)">
+            <inheritdoc />
+        </member>
         <member name="F:dEngine.Instances.ServerReplicator.TicketProcessed">
             <summary>
             Fired when the player's authentication ticket is processed.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.ServerReplicator.CloseConnection(System.String)">
-            <inheritdoc />
-        </member>
         <member name="T:dEngine.Instances.Player">
             <summary>
             Represents a user in-game. A player object is added to the <see cref="T:dEngine.Services.Players" /> service when a player joins the
             server.
-            </summary>
-        </member>
-        <member name="F:dEngine.Instances.Player.CharacterAdded">
-            <summary>
-            Fired when the player's character has spawned.
-            </summary>
-        </member>
-        <member name="F:dEngine.Instances.Player.CharacterRemoving">
-            <summary>
-            Fired when the player's character is about to be removed.
-            </summary>
-        </member>
-        <member name="F:dEngine.Instances.Player.Disconnected">
-            <summary>
-            Fired when the player has been disconnected or kicked from the server.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Player.#ctor">
@@ -4520,6 +4493,21 @@
         <member name="M:dEngine.Instances.Player.Destroy">
             <inheritdoc />
         </member>
+        <member name="F:dEngine.Instances.Player.CharacterAdded">
+            <summary>
+            Fired when the player's character has spawned.
+            </summary>
+        </member>
+        <member name="F:dEngine.Instances.Player.CharacterRemoving">
+            <summary>
+            Fired when the player's character is about to be removed.
+            </summary>
+        </member>
+        <member name="F:dEngine.Instances.Player.Disconnected">
+            <summary>
+            Fired when the player has been disconnected or kicked from the server.
+            </summary>
+        </member>
         <member name="T:dEngine.Instances.Sky">
             <summary>
             An object which draws the sky.
@@ -4557,49 +4545,6 @@
             <summary>
             An instance which represents a single sound.
             </summary>
-        </member>
-        <member name="F:dEngine.Instances.Sound.Ended">
-            <summary>
-            Fired when the sound ends.
-            </summary>
-            <eventParam name="soundId" />
-        </member>
-        <member name="F:dEngine.Instances.Sound.Loaded">
-            <summary>
-            Fired when the sound has loaded.
-            </summary>
-            <eventParam name="soundId" />
-        </member>
-        <member name="F:dEngine.Instances.Sound.OnLoop">
-            <summary>
-            Fired every time the sound loops.
-            </summary>
-            <eventParam name="soundId" />
-            <eventParam name="loopCount" />
-        </member>
-        <member name="F:dEngine.Instances.Sound.Paused">
-            <summary>
-            Fired when the sound is paused.
-            </summary>
-            <eventParam name="soundId" />
-        </member>
-        <member name="F:dEngine.Instances.Sound.Played">
-            <summary>
-            Fired when the sound is played.
-            </summary>
-            <eventParam name="soundId" />
-        </member>
-        <member name="F:dEngine.Instances.Sound.Resumed">
-            <summary>
-            Fired when the sound is played after being paused.
-            </summary>
-            <eventParam name="soundId" />
-        </member>
-        <member name="F:dEngine.Instances.Sound.Stopped">
-            <summary>
-            Fired when the sound is stopped.
-            </summary>
-            <eventParam name="soundId" />
         </member>
         <member name="M:dEngine.Instances.Sound.#ctor">
             <summary />
@@ -4690,6 +4635,49 @@
             Stops the sound.
             </summary>
         </member>
+        <member name="F:dEngine.Instances.Sound.Ended">
+            <summary>
+            Fired when the sound ends.
+            </summary>
+            <eventParam name="soundId" />
+        </member>
+        <member name="F:dEngine.Instances.Sound.Loaded">
+            <summary>
+            Fired when the sound has loaded.
+            </summary>
+            <eventParam name="soundId" />
+        </member>
+        <member name="F:dEngine.Instances.Sound.OnLoop">
+            <summary>
+            Fired every time the sound loops.
+            </summary>
+            <eventParam name="soundId" />
+            <eventParam name="loopCount" />
+        </member>
+        <member name="F:dEngine.Instances.Sound.Paused">
+            <summary>
+            Fired when the sound is paused.
+            </summary>
+            <eventParam name="soundId" />
+        </member>
+        <member name="F:dEngine.Instances.Sound.Played">
+            <summary>
+            Fired when the sound is played.
+            </summary>
+            <eventParam name="soundId" />
+        </member>
+        <member name="F:dEngine.Instances.Sound.Resumed">
+            <summary>
+            Fired when the sound is played after being paused.
+            </summary>
+            <eventParam name="soundId" />
+        </member>
+        <member name="F:dEngine.Instances.Sound.Stopped">
+            <summary>
+            Fired when the sound is stopped.
+            </summary>
+            <eventParam name="soundId" />
+        </member>
         <member name="T:dEngine.Instances.PVInstance">
             <summary>
             A physical instance is an entity which occupies space in the 3D world.
@@ -4710,13 +4698,13 @@
             A <see cref="T:dEngine.Instances.ValueContainer" /> that holds a <see cref="T:System.String" />.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.StringValue.#ctor">
-            <inheritdoc />
-        </member>
         <member name="F:dEngine.Instances.StringValue.MaxLength">
             <summary>
-            The maximum length of <see cref="P:dEngine.Instances.StringValue.Value"/>.
+            The maximum length of <see cref="P:dEngine.Instances.StringValue.Value" />.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.StringValue.#ctor">
+            <inheritdoc />
         </member>
         <member name="P:dEngine.Instances.StringValue.Value">
             <summary>
@@ -4775,7 +4763,7 @@
             <seealso cref="T:dEngine.Instances.Folder" />
         </member>
         <member name="M:dEngine.Instances.Model.#ctor">
-            <inheritdoc/>
+            <inheritdoc />
         </member>
         <member name="P:dEngine.Instances.Model.PrimaryPart">
             <summary>
@@ -4872,7 +4860,7 @@
             <inheritdoc />
         </member>
         <member name="M:dEngine.Instances.ModuleScript.Destroy">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Instances.SourceContainer">
             <summary>
@@ -5040,12 +5028,6 @@
             <summary>
             Base class for all entities.
             </summary>
-        </member>
-        <member name="F:dEngine.Instances.Instance.Children">
-            <summary>
-            A collection of instances which are parented to this instance.
-            </summary>
-            <seealso cref="P:dEngine.Instances.Instance.Parent" />
         </member>
         <member name="M:dEngine.Instances.Instance.#ctor">
             <summary>
@@ -5280,6 +5262,12 @@
             Returns the instance from a weak reference.
             </summary>
         </member>
+        <member name="F:dEngine.Instances.Instance.Children">
+            <summary>
+            A collection of instances which are parented to this instance.
+            </summary>
+            <seealso cref="P:dEngine.Instances.Instance.Parent" />
+        </member>
         <member name="F:dEngine.Instances.Instance.AncestryChanged">
             <summary>
             Fired when the Parent property of the instance or its ancestors changes.
@@ -5409,6 +5397,9 @@
             A service for logging into a user account.
             </summary>
         </member>
+        <member name="M:dEngine.Services.LoginService.#ctor">
+            <summary />
+        </member>
         <member name="M:dEngine.Services.LoginService.IsLoggedIn">
             <summary>
             Determines if the client is currently logged in.
@@ -5416,24 +5407,9 @@
         </member>
         <member name="M:dEngine.Services.LoginService.GetUserId">
             <summary>
-            Used to get the user's ID when the <see cref="T:dEngine.Instances.Player"/> object is not available.
+            Used to get the user's ID when the <see cref="T:dEngine.Instances.Player" /> object is not available.
             </summary>
             <returns></returns>
-        </member>
-        <member name="M:dEngine.Services.LoginService.#ctor">
-            <summary/>
-        </member>
-        <member name="F:dEngine.Services.LoginService.LoginSucceeded">
-            <summary>
-            Fired when a login attempt is successful.
-            </summary>
-            <eventParam name="username"/>
-            <eventParam name="userId"/>
-        </member>
-        <member name="F:dEngine.Services.LoginService.LoginFailed">
-            <summary>
-            Fired when a login attempt fails.
-            </summary>
         </member>
         <member name="M:dEngine.Services.LoginService.TryLogin">
             <summary>
@@ -5444,6 +5420,18 @@
         <member name="M:dEngine.Services.LoginService.Logout">
             <summary>
             Logs out of the current account.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.LoginService.LoginSucceeded">
+            <summary>
+            Fired when a login attempt is successful.
+            </summary>
+            <eventParam name="username" />
+            <eventParam name="userId" />
+        </member>
+        <member name="F:dEngine.Services.LoginService.LoginFailed">
+            <summary>
+            Fired when a login attempt fails.
             </summary>
         </member>
         <member name="T:dEngine.Services.AnalyticsService">
@@ -5490,7 +5478,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Services.AchievementService.#ctor">
-            <inheritdoc/>
+            <inheritdoc />
         </member>
         <member name="M:dEngine.Services.AchievementService.IsValidAchievement(System.UInt32,System.String)">
             <summary>
@@ -5526,7 +5514,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Services.ClanService.#ctor">
-            <inheritdoc/>
+            <inheritdoc />
         </member>
         <member name="M:dEngine.Services.ClanService.GetClanInfoAsync(System.UInt32)">
             <summary>
@@ -5540,7 +5528,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Services.DataStoreService.#ctor">
-            <inheritdoc/>
+            <inheritdoc />
         </member>
         <member name="T:dEngine.Services.Debris">
             <summary>
@@ -5596,7 +5584,7 @@
         </member>
         <member name="T:dEngine.Services.PathfindingService">
             <summary>
-            A service used to calculate a <see cref="T:dEngine.Services.PathfindingService.Path"/> between two points.
+            A service used to calculate a <see cref="T:dEngine.Services.PathfindingService.Path" /> between two points.
             </summary>
         </member>
         <member name="T:dEngine.Services.PathfindingService.Path">
@@ -5605,7 +5593,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Services.PathfindingService.Path.#ctor(dEngine.PathStatus,dEngine.Vector3[])">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Services.PathfindingService.Path.Status">
             <summary>
@@ -5614,7 +5602,7 @@
         </member>
         <member name="M:dEngine.Services.PathfindingService.Path.GetPointCoordinates">
             <summary>
-            Returns a table of <see cref="T:dEngine.Vector3"/>s that comprise the path.
+            Returns a table of <see cref="T:dEngine.Vector3" />s that comprise the path.
             </summary>
             <returns></returns>
         </member>
@@ -5631,24 +5619,19 @@
         <member name="M:dEngine.Services.ScriptService.ScriptGlobal.OnIndex(System.Object)">
             <inheritdoc />
         </member>
-        <member name="M:dEngine.Services.ScriptService.ExecuteAsync(dEngine.Instances.Script,System.Object[])">
-            <summary>
-            Starts a script.
-            </summary>
-        </member>
         <member name="P:dEngine.Services.ScriptService.CurrentThread">
             <summary>
             Gets the coroutine that the accessing script is running on.
             </summary>
         </member>
+        <member name="M:dEngine.Services.ScriptService.ExecuteAsync(dEngine.Instances.Script,System.Object[])">
+            <summary>
+            Starts a script.
+            </summary>
+        </member>
         <member name="M:dEngine.Services.ScriptService.YieldThread">
             <summary>
             Yields the coroutine that the accessing script is running on.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.ScriptService.ScriptErrored">
-            <summary>
-            Fires when a script errors.
             </summary>
         </member>
         <member name="P:dEngine.Services.ScriptService.Lua">
@@ -5705,6 +5688,11 @@
             If true, an exception is thrown when the thread does not meet target identity.
             If false, an exception is thrown when the thread does the target identity.
             </param>
+        </member>
+        <member name="F:dEngine.Services.ScriptService.ScriptErrored">
+            <summary>
+            Fires when a script errors.
+            </summary>
         </member>
         <member name="T:dEngine.Services.Teams">
             <summary>
@@ -5813,7 +5801,7 @@
             <param name="disposing">True if Dispose() was invoked, False if destructor was invoked.</param>
         </member>
         <member name="T:dEngine.Services.CoreEnvironment">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Services.CoreEnvironment.FindPartOnRay(dEngine.Ray,System.Single)">
             <inheritdoc />
@@ -5827,21 +5815,6 @@
         <member name="T:dEngine.Services.HistoryService">
             <summary>
             A service for undo/redo.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.HistoryService.Redone">
-            <summary>
-            Fired when a waypoint is redone.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.HistoryService.Undone">
-            <summary>
-            Fired when a waypoint is undone.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.HistoryService.WaypointSet">
-            <summary>
-            Fired when a waypoint is set.
             </summary>
         </member>
         <member name="M:dEngine.Services.HistoryService.#ctor">
@@ -5878,6 +5851,21 @@
             Determines if <see cref="M:dEngine.Services.HistoryService.Redo" /> can be successfully called.
             </summary>
         </member>
+        <member name="F:dEngine.Services.HistoryService.Redone">
+            <summary>
+            Fired when a waypoint is redone.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.HistoryService.Undone">
+            <summary>
+            Fired when a waypoint is undone.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.HistoryService.WaypointSet">
+            <summary>
+            Fired when a waypoint is set.
+            </summary>
+        </member>
         <member name="T:dEngine.Services.InsertService">
             <summary>
             Service for inserting assets into the game.
@@ -5905,9 +5893,6 @@
             A replay is a stream of actions used to recreate game simulations. Checkpoints can be made, which contain the entire
             state at the time of the given frame.
             </remarks>
-        </member>
-        <member name="M:dEngine.Services.ReplayService.#ctor">
-            <inheritdoc />
         </member>
         <member name="P:dEngine.Services.ReplayService.IsRecording">
             <summary>
@@ -5950,16 +5935,6 @@
             A replay frame.
             </summary>
         </member>
-        <member name="F:dEngine.Services.ReplayService.ReplayFrame.Actions">
-            <summary>
-            A list of replay actions performed this frame.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.ReplayService.ReplayFrame.FrameNumber">
-            <summary>
-            The frame number.
-            </summary>
-        </member>
         <member name="F:dEngine.Services.ReplayService.ReplayFrame.IsCheckpoint">
             <summary>
             Determines if this frame is a checkpoint.
@@ -5971,14 +5946,19 @@
             </summary>
             <param name="frame"></param>
         </member>
+        <member name="F:dEngine.Services.ReplayService.ReplayFrame.Actions">
+            <summary>
+            A list of replay actions performed this frame.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.ReplayService.ReplayFrame.FrameNumber">
+            <summary>
+            The frame number.
+            </summary>
+        </member>
         <member name="T:dEngine.Services.ReplayService.ReplayAction">
             <summary>
             Base class for replay actions.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.ReplayService.ReplayAction.Perform">
-            <summary>
-            Performs the action.
             </summary>
         </member>
         <member name="M:dEngine.Services.ReplayService.ReplayAction.Load(System.IO.BinaryReader)">
@@ -5989,6 +5969,11 @@
         <member name="M:dEngine.Services.ReplayService.ReplayAction.Save(System.IO.BinaryWriter)">
             <summary>
             Writes the action from to a stream.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.ReplayService.ReplayAction.Perform">
+            <summary>
+            Performs the action.
             </summary>
         </member>
         <member name="T:dEngine.Services.ReplayService.InputAction">
@@ -6020,7 +6005,7 @@
         </member>
         <member name="F:dEngine.Services.Lighting.LightingChanged">
             <summary>
-            Fired when a property specific to <see cref="T:dEngine.Services.Lighting"/> is changed.
+            Fired when a property specific to <see cref="T:dEngine.Services.Lighting" /> is changed.
             </summary>
         </member>
         <member name="P:dEngine.Services.Lighting.AmbientColour">
@@ -6150,25 +6135,6 @@
             Service for handling networking and replication on the client.
             </summary>
         </member>
-        <member name="F:dEngine.Services.Networking.NetworkClient.Connected">
-            <summary>
-            Fired when <see cref="!:Connect(string, int, int)" />successfully connects to a server. Returns the ClientReplicator.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.Networking.NetworkClient.Disconnected">
-            <summary>
-            Fired if <see cref="!:Connect(string, int, int)" /> fails to connect to a server.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.Networking.NetworkClient.Rejected">
-            <summary>
-            Fired if <see cref="!:Connect(string, int, int)" /> connects to a server, but the request to join is rejected.
-            </summary>
-            <remarks>
-            This can happen if the client and server versions are mismatched, the player is banned from server, or ticket
-            authorization failed.
-            </remarks>
-        </member>
         <member name="M:dEngine.Services.Networking.NetworkClient.#ctor">
             <inheritdoc />
         </member>
@@ -6192,13 +6158,29 @@
             Disconnect this client from the server.
             </summary>
         </member>
+        <member name="F:dEngine.Services.Networking.NetworkClient.Connected">
+            <summary>
+            Fired when <see cref="!:Connect(string, int, int)" />successfully connects to a server. Returns the ClientReplicator.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.Networking.NetworkClient.Disconnected">
+            <summary>
+            Fired if <see cref="!:Connect(string, int, int)" /> fails to connect to a server.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.Networking.NetworkClient.Rejected">
+            <summary>
+            Fired if <see cref="!:Connect(string, int, int)" /> connects to a server, but the request to join is rejected.
+            </summary>
+            <remarks>
+            This can happen if the client and server versions are mismatched, the player is banned from server, or ticket
+            authorization failed.
+            </remarks>
+        </member>
         <member name="T:dEngine.Services.Networking.NetworkPeer">
             <summary>
             Base class for <see cref="T:dEngine.Services.Networking.NetworkClient" /> and <see cref="T:dEngine.Services.Networking.NetworkServer" />
             </summary>
-        </member>
-        <member name="M:dEngine.Services.Networking.NetworkPeer.#ctor">
-            <inheritdoc />
         </member>
         <member name="P:dEngine.Services.Networking.NetworkPeer.IsRunning">
             <summary>
@@ -6275,21 +6257,6 @@
         <member name="T:dEngine.Services.Players">
             <summary>
             A service for handling players. When a client joints the game, a <see cref="T:dEngine.Instances.Player" /> is parented to this service.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.Players.Chatted">
-            <summary>
-            Fired when a client sends a chat message to the server.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.Players.PlayerAdded">
-            <summary>
-            Fired when a player joins the game.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.Players.PlayerRemoved">
-            <summary>
-            Fired when a player leaves the game.
             </summary>
         </member>
         <member name="M:dEngine.Services.Players.#ctor">
@@ -6374,10 +6341,25 @@
             <param name="channel">The channel to send the message on. (0-255)</param>
         </member>
         <member name="M:dEngine.Services.Players.OnChildAdded(dEngine.Instances.Instance)">
-            <inheritdoc/>
+            <inheritdoc />
         </member>
         <member name="M:dEngine.Services.Players.OnChildRemoved(dEngine.Instances.Instance)">
-            <inheritdoc/>
+            <inheritdoc />
+        </member>
+        <member name="F:dEngine.Services.Players.Chatted">
+            <summary>
+            Fired when a client sends a chat message to the server.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.Players.PlayerAdded">
+            <summary>
+            Fired when a player joins the game.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.Players.PlayerRemoved">
+            <summary>
+            Fired when a player leaves the game.
+            </summary>
         </member>
         <member name="T:dEngine.Services.ReplicatedStorage">
             <summary>
@@ -6391,44 +6373,6 @@
             <summary>
             A service that handles the game logic loop.
             </summary>
-        </member>
-        <member name="F:dEngine.Services.RunService.SimulationEnded">
-            <summary>
-            Fired when simulation ends.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.RunService.SimulationPaused">
-            <summary>
-            Fired when simulation is paused.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.RunService.SimulationResumed">
-            <summary>
-            Fired when simulation is resumed.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.RunService.SimulationStarted">
-            <summary>
-            Fired when simulation starts.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.RunService.Heartbeat">
-            <summary>
-            Fired after every game thread frame.
-            </summary>
-            <eventParam name="step"/>
-        </member>
-        <member name="F:dEngine.Services.RunService.RenderStepped">
-            <summary>
-            Fired after every render thread frame.
-            </summary>
-            <eventParam name="step"/>
-        </member>
-        <member name="F:dEngine.Services.RunService.Stepped">
-            <summary>
-            Fired when the RunService is stepped, which is approximately every 1/30th of a second.
-            </summary>
-            <eventParam name="step"/>
         </member>
         <member name="M:dEngine.Services.RunService.#ctor">
             <inheritdoc />
@@ -6493,6 +6437,44 @@
             Returns true if the game is running from a level editor.
             </summary>
         </member>
+        <member name="F:dEngine.Services.RunService.SimulationEnded">
+            <summary>
+            Fired when simulation ends.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.RunService.SimulationPaused">
+            <summary>
+            Fired when simulation is paused.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.RunService.SimulationResumed">
+            <summary>
+            Fired when simulation is resumed.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.RunService.SimulationStarted">
+            <summary>
+            Fired when simulation starts.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.RunService.Heartbeat">
+            <summary>
+            Fired after every game thread frame.
+            </summary>
+            <eventParam name="step" />
+        </member>
+        <member name="F:dEngine.Services.RunService.RenderStepped">
+            <summary>
+            Fired after every render thread frame.
+            </summary>
+            <eventParam name="step" />
+        </member>
+        <member name="F:dEngine.Services.RunService.Stepped">
+            <summary>
+            Fired when the RunService is stepped, which is approximately every 1/30th of a second.
+            </summary>
+            <eventParam name="step" />
+        </member>
         <member name="F:dEngine.Services.RunService.Service">
             <summary>
             The service instance.
@@ -6517,21 +6499,6 @@
         <member name="T:dEngine.Services.SelectionService">
             <summary>
             A service for managing selection in level editors.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.SelectionService.Deselected">
-            <summary>
-            Fired for every item removed in a Deselect() call.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.SelectionService.Selected">
-            <summary>
-            Fired for every item added in a Select() call.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.SelectionService.SelectionChanged">
-            <summary>
-            Fired when the selection is changed.
             </summary>
         </member>
         <member name="M:dEngine.Services.SelectionService.#ctor">
@@ -6561,6 +6528,21 @@
             </summary>
             <param name="item">The item to deselect.</param>
             <param name="pushToHistory">Determines if an action is pushed to the <see cref="T:dEngine.Services.HistoryService" /></param>
+        </member>
+        <member name="F:dEngine.Services.SelectionService.Deselected">
+            <summary>
+            Fired for every item removed in a Deselect() call.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.SelectionService.Selected">
+            <summary>
+            Fired for every item added in a Select() call.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.SelectionService.SelectionChanged">
+            <summary>
+            Fired when the selection is changed.
+            </summary>
         </member>
         <member name="M:dEngine.Services.SelectionService.OfType``1">
             <summary>
@@ -6615,26 +6597,6 @@
         <member name="M:dEngine.Services.SoundService.#ctor">
             <summary />
         </member>
-        <member name="M:dEngine.Services.SoundService.GetRecordingDevices">
-            <summary>
-            Returns a list of active recording devices.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.SoundService.GetPlaybackDevices">
-            <summary>
-            Returns a list of active playback devices.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.SoundService.SetRecordingDevice(System.Int32)">
-            <summary>
-            Sets the device to record sound with.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.SoundService.SetPlaybackDevice(System.Int32)">
-            <summary>
-            Sets the device to output sound to.
-            </summary>
-        </member>
         <member name="P:dEngine.Services.SoundService.AmbientReverb">
             <summary>
             The global environment reverb type.
@@ -6653,6 +6615,26 @@
         <member name="P:dEngine.Services.SoundService.RolloffScale">
             <summary>
             Determines how fast sounds will drop off.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.SoundService.GetRecordingDevices">
+            <summary>
+            Returns a list of active recording devices.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.SoundService.GetPlaybackDevices">
+            <summary>
+            Returns a list of active playback devices.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.SoundService.SetRecordingDevice(System.Int32)">
+            <summary>
+            Sets the device to record sound with.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.SoundService.SetPlaybackDevice(System.Int32)">
+            <summary>
+            Sets the device to output sound to.
             </summary>
         </member>
         <member name="M:dEngine.Services.SoundService.SetListener(dEngine.Instances.IListenable)">
@@ -6701,7 +6683,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Services.HttpService.#ctor">
-            <inheritdoc/>
+            <inheritdoc />
         </member>
         <member name="M:dEngine.Services.HttpService.GenerateGuid(System.Boolean)">
             <summary>
@@ -6910,20 +6892,6 @@
             It will also execute all scripts that are parented to it when the game is running.
             </remarks>
         </member>
-        <member name="F:dEngine.Services.Workspace.CameraChanged">
-            <summary>
-            Fired when <see cref="P:dEngine.Services.Workspace.CurrentCamera" /> changes.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.Workspace.PlaceLoaded">
-            <summary>
-            Fired when a place is loaded.
-            </summary>
-            <seealso cref="M:dEngine.Services.Workspace.LoadPlace(System.String)"/>
-        </member>
-        <member name="M:dEngine.Services.Workspace.OnParentFilter(dEngine.Instances.Instance)">
-            <summary/>
-        </member>
         <member name="P:dEngine.Services.Workspace.Gravity">
             <summary>
             The gravity of the scene.
@@ -6939,6 +6907,12 @@
             The name of the currently loaded place.
             </summary>
         </member>
+        <member name="P:dEngine.Services.Workspace.DistributedGameTime">
+            <summary>
+            The amount of time in seconds that the simulation
+            has been running.
+            </summary>
+        </member>
         <member name="P:dEngine.Services.Workspace.IsLoaded">
             <summary>
             If true, the place has been loaded.
@@ -6950,11 +6924,8 @@
             is created.
             </remarks>
         </member>
-        <member name="P:dEngine.Services.Workspace.DistributedGameTime">
-            <summary>
-            The amount of time in seconds that the simulation
-             has been running.
-            </summary>
+        <member name="M:dEngine.Services.Workspace.OnParentFilter(dEngine.Instances.Instance)">
+            <summary />
         </member>
         <member name="M:dEngine.Services.Workspace.LoadRbxlx(System.String)">
             <summary>
@@ -6966,6 +6937,17 @@
             Loads the given level file. If called by the server, instructs connected clients to load map.
             </summary>
             <param name="placeName">The placeName of the level to load. If empty, unloads the place.</param>
+        </member>
+        <member name="F:dEngine.Services.Workspace.CameraChanged">
+            <summary>
+            Fired when <see cref="P:dEngine.Services.Workspace.CurrentCamera" /> changes.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.Workspace.PlaceLoaded">
+            <summary>
+            Fired when a place is loaded.
+            </summary>
+            <seealso cref="M:dEngine.Services.Workspace.LoadPlace(System.String)" />
         </member>
         <member name="P:dEngine.Services.Workspace.Physics">
             <inheritdoc />
@@ -6995,7 +6977,7 @@
             A service is a top-level singleton class.
             </summary>
             <remarks>
-            Services can be retrived by using the <see cref="M:dEngine.Instances.DataModel.GetService(System.String)"/> method.
+            Services can be retrived by using the <see cref="M:dEngine.Instances.DataModel.GetService(System.String)" /> method.
             </remarks>
         </member>
         <member name="M:dEngine.Services.Service.#ctor">
@@ -7059,11 +7041,6 @@
         <member name="T:dEngine.Settings.User.UserGameSettings">
             <summary>
             Game settings.
-            </summary>
-        </member>
-        <member name="F:dEngine.Settings.User.UserGameSettings.CustomSettingChanged">
-            <summary>
-            Fired when a custom setting is changed.
             </summary>
         </member>
         <member name="M:dEngine.Settings.User.UserGameSettings.#ctor">
@@ -7190,6 +7167,11 @@
         <member name="M:dEngine.Settings.User.UserGameSettings.RestoreDefaults">
             <inheritdoc />
         </member>
+        <member name="F:dEngine.Settings.User.UserGameSettings.CustomSettingChanged">
+            <summary>
+            Fired when a custom setting is changed.
+            </summary>
+        </member>
         <member name="T:dEngine.Settings.GenericSettings">
             <summary>
             Base class for settings containers.
@@ -7233,6 +7215,9 @@
             <summary>
             Debug settings.
             </summary>
+        </member>
+        <member name="M:dEngine.Settings.Global.DebugSettings.#ctor">
+            <summary />
         </member>
         <member name="P:dEngine.Settings.Global.DebugSettings.CpuName">
             <summary>
@@ -7359,9 +7344,6 @@
             The connection type of the current network adapter.
             </summary>
         </member>
-        <member name="M:dEngine.Settings.Global.DebugSettings.#ctor">
-            <summary/>
-        </member>
         <member name="M:dEngine.Settings.Global.DebugSettings.RestoreDefaults">
             <inheritdoc />
         </member>
@@ -7406,7 +7388,7 @@
         </member>
         <member name="P:dEngine.Settings.Global.NetworkSettings.UnreliableSizeBehaviour">
             <summary>
-            The behaviour of unreliable sends above <see cref="P:dEngine.Settings.Global.NetworkSettings.Mtu"/>.
+            The behaviour of unreliable sends above <see cref="P:dEngine.Settings.Global.NetworkSettings.Mtu" />.
             </summary>
         </member>
         <member name="P:dEngine.Settings.Global.NetworkSettings.SimulatedPacketLoss">
@@ -7536,7 +7518,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Settings.Global.PhysicsSettings.RestoreDefaults">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Settings.Global.SoundSettings">
             <summary>
@@ -7583,12 +7565,6 @@
             <summary>
             Settings for rendering.
             </summary>
-        </member>
-        <member name="M:dEngine.Settings.Global.RenderSettings.GetGpuTemps">
-            <summary>
-            Gets the tempature of the graphics card.
-            </summary>
-            <returns></returns>
         </member>
         <member name="P:dEngine.Settings.Global.RenderSettings.ShadowMapSize">
             <summary>
@@ -7721,6 +7697,12 @@
             Determines whether anti-aliasing is performed on GUI elements.
             </summary>
         </member>
+        <member name="M:dEngine.Settings.Global.RenderSettings.GetGpuTemps">
+            <summary>
+            Gets the tempature of the graphics card.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:dEngine.Settings.Global.RenderSettings.RestoreDefaults">
             <inheritdoc />
         </member>
@@ -7730,16 +7712,16 @@
             </summary>
         </member>
         <member name="M:dEngine.Settings.UserSettings.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="P:dEngine.Settings.UserSettings.UserGameSettings">
             <summary>
-            The <see cref="P:dEngine.Settings.UserSettings.UserGameSettings"/>.
+            The <see cref="P:dEngine.Settings.UserSettings.UserGameSettings" />.
             </summary>
         </member>
         <member name="P:dEngine.Settings.UserSettings.UserAnalyticsSettings">
             <summary>
-            The <see cref="P:dEngine.Settings.UserSettings.UserAnalyticsSettings"/>.
+            The <see cref="P:dEngine.Settings.UserSettings.UserAnalyticsSettings" />.
             </summary>
         </member>
         <member name="T:dEngine.Settings.Settings">
@@ -7789,23 +7771,23 @@
             </remarks>
         </member>
         <member name="M:dEngine.BinaryData.#ctor">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.BinaryData.#ctor(System.Byte[])">
             <summary>
-            Creates a <see cref="T:dEngine.BinaryData"/> from the given bytes.
+            Creates a <see cref="T:dEngine.BinaryData" /> from the given bytes.
             </summary>
         </member>
         <member name="M:dEngine.BinaryData.#ctor(System.IO.Stream)">
             <summary>
-            Creates a <see cref="T:dEngine.BinaryData"/> from the given stream.
+            Creates a <see cref="T:dEngine.BinaryData" /> from the given stream.
             </summary>
         </member>
         <member name="M:dEngine.BinaryData.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.BinaryData.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaAction">
             <summary>
@@ -7813,7 +7795,7 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction.#ctor(System.Delegate)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction.Invoke">
             <summary>
@@ -7821,16 +7803,16 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction.op_Implicit(dEngine.LuaAction)~System.Action">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction.op_Implicit(System.Action)~dEngine.LuaAction">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction.op_Implicit(System.Delegate)~dEngine.LuaAction">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction.op_Implicit(System.Func{Neo.IronLua.LuaResult})~dEngine.LuaAction">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaAction`1">
             <summary>
@@ -7838,7 +7820,7 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`1.#ctor(System.Delegate)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.Invoke(`0)">
             <summary>
@@ -7846,34 +7828,34 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(dEngine.LuaAction{`0})~System.Action{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(System.Delegate)~dEngine.LuaAction{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(System.MulticastDelegate)~dEngine.LuaAction{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(System.Func{Neo.IronLua.LuaResult})~dEngine.LuaAction{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(System.Func{System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(System.Func{System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(System.Func{System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`1.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaAction`2">
             <summary>
@@ -7881,7 +7863,7 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`2.#ctor(System.Delegate)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.Invoke(`0,`1)">
             <summary>
@@ -7889,34 +7871,34 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(dEngine.LuaAction{`0,`1})~System.Action{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(System.Delegate)~dEngine.LuaAction{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(System.MulticastDelegate)~dEngine.LuaAction{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(System.Func{Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(System.Func{System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(System.Func{System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(System.Func{System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`2.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaAction`3">
             <summary>
@@ -7924,7 +7906,7 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`3.#ctor(System.Delegate)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.Invoke(`0,`1,`2)">
             <summary>
@@ -7932,34 +7914,34 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(dEngine.LuaAction{`0,`1,`2})~System.Action{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(System.Delegate)~dEngine.LuaAction{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(System.MulticastDelegate)~dEngine.LuaAction{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(System.Func{Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(System.Func{System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(System.Func{System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(System.Func{System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`3.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaAction`4">
             <summary>
@@ -7967,7 +7949,7 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`4.#ctor(System.Delegate)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.Invoke(`0,`1,`2,`3)">
             <summary>
@@ -7975,34 +7957,34 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(dEngine.LuaAction{`0,`1,`2,`3})~System.Action{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(System.Delegate)~dEngine.LuaAction{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(System.MulticastDelegate)~dEngine.LuaAction{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(System.Func{Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(System.Func{System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(System.Func{System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(System.Func{System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`4.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaAction`5">
             <summary>
@@ -8010,7 +7992,7 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`5.#ctor(System.Delegate)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.Invoke(`0,`1,`2,`3,`4)">
             <summary>
@@ -8018,34 +8000,34 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(dEngine.LuaAction{`0,`1,`2,`3,`4})~System.Action{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(System.Delegate)~dEngine.LuaAction{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(System.MulticastDelegate)~dEngine.LuaAction{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(System.Func{Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(System.Func{System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(System.Func{System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(System.Func{System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`5.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaAction`6">
             <summary>
@@ -8053,7 +8035,7 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`6.#ctor(System.Delegate)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.Invoke(`0,`1,`2,`3,`4,`5)">
             <summary>
@@ -8061,34 +8043,34 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(dEngine.LuaAction{`0,`1,`2,`3,`4,`5})~System.Action{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(System.Delegate)~dEngine.LuaAction{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(System.MulticastDelegate)~dEngine.LuaAction{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(System.Func{Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(System.Func{System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(System.Func{System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(System.Func{System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`6.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaAction`7">
             <summary>
@@ -8096,7 +8078,7 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`7.#ctor(System.Delegate)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.Invoke(`0,`1,`2,`3,`4,`5,`6)">
             <summary>
@@ -8104,34 +8086,34 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6})~System.Action{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(System.Delegate)~dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(System.MulticastDelegate)~dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(System.Func{Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(System.Func{System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(System.Func{System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(System.Func{System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaAction`7.op_Implicit(System.Func{System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,Neo.IronLua.LuaResult})~dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`1">
             <summary>
@@ -8139,16 +8121,16 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`1.op_Implicit(dEngine.LuaTuple{`0})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`1.op_Implicit(dEngine.LuaTuple{`0})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`1.op_Implicit(dEngine.LuaTuple{`0})~System.Tuple{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`1.op_Implicit(System.Tuple{`0})~dEngine.LuaTuple{`0}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`2">
             <summary>
@@ -8156,16 +8138,16 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`2.op_Implicit(dEngine.LuaTuple{`0,`1})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`2.op_Implicit(dEngine.LuaTuple{`0,`1})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`2.op_Implicit(dEngine.LuaTuple{`0,`1})~System.Tuple{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`2.op_Implicit(System.Tuple{`0,`1})~dEngine.LuaTuple{`0,`1}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`3">
             <summary>
@@ -8173,16 +8155,16 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`3.op_Implicit(dEngine.LuaTuple{`0,`1,`2})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`3.op_Implicit(dEngine.LuaTuple{`0,`1,`2})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`3.op_Implicit(dEngine.LuaTuple{`0,`1,`2})~System.Tuple{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`3.op_Implicit(System.Tuple{`0,`1,`2})~dEngine.LuaTuple{`0,`1,`2}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`4">
             <summary>
@@ -8190,16 +8172,16 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`4.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`4.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`4.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3})~System.Tuple{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`4.op_Implicit(System.Tuple{`0,`1,`2,`3})~dEngine.LuaTuple{`0,`1,`2,`3}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`5">
             <summary>
@@ -8207,16 +8189,16 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`5.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`5.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`5.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4})~System.Tuple{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`5.op_Implicit(System.Tuple{`0,`1,`2,`3,`4})~dEngine.LuaTuple{`0,`1,`2,`3,`4}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`6">
             <summary>
@@ -8224,16 +8206,16 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`6.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`6.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`6.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5})~System.Tuple{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`6.op_Implicit(System.Tuple{`0,`1,`2,`3,`4,`5})~dEngine.LuaTuple{`0,`1,`2,`3,`4,`5}">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`7">
             <summary>
@@ -8241,10 +8223,10 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`7.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`7.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`8">
             <summary>
@@ -8252,10 +8234,10 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`8.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`8.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`9">
             <summary>
@@ -8263,10 +8245,10 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`9.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7,`8})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`9.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7,`8})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`10">
             <summary>
@@ -8274,10 +8256,10 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`10.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7,`8,`9})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`10.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7,`8,`9})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`11">
             <summary>
@@ -8285,10 +8267,10 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`11.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`11.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.LuaTuple`12">
             <summary>
@@ -8296,10 +8278,10 @@
             </summary>
         </member>
         <member name="M:dEngine.LuaTuple`12.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10,`11})~Neo.IronLua.LuaResult">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.LuaTuple`12.op_Implicit(dEngine.LuaTuple{`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10,`11})~`0">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.FontFamily">
             <summary>
@@ -8329,7 +8311,8 @@
         </member>
         <member name="T:dEngine.Utility.IOrderedDictionary`2">
             <summary>
-            A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
+            A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the
+            original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
             </summary>
             <typeparam name="TKey">The type of keys</typeparam>
             <typeparam name="TValue">The type of values</typeparam>
@@ -8359,9 +8342,10 @@
         </member>
         <member name="T:dEngine.Utility.OrderedDictionary`2">
             <summary>
-            A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
+            A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the
+            original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
             </summary>
-            <typeparam name="TKey">The type of keys. Musn't be <see cref="T:System.Int32"/></typeparam>
+            <typeparam name="TKey">The type of keys. Musn't be <see cref="T:System.Int32" /></typeparam>
             <typeparam name="TValue">The type of values.</typeparam>
         </member>
         <member name="F:dEngine.Utility.OrderedDictionary`2.fDictionary">
@@ -8376,7 +8360,8 @@
         </member>
         <member name="M:dEngine.Utility.OrderedDictionary`2.#ctor">
             <summary>
-            A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
+            A dictionary that remembers the order that keys were first inserted. If a new entry overwrites an existing entry, the
+            original insertion position is left unchanged. Deleting an entry and reinserting it will move it to the end.
             </summary>
         </member>
         <member name="P:dEngine.Utility.OrderedDictionary`2.Count">
@@ -8406,12 +8391,13 @@
         </member>
         <member name="P:dEngine.Utility.OrderedDictionary`2.Item(`0)">
             <summary>
-            The value under the given key. New entries are added at the end of the order. Updating an existing entry does not change its position.     
+            The value under the given key. New entries are added at the end of the order. Updating an existing entry does not
+            change its position.
             </summary>
         </member>
         <member name="M:dEngine.Utility.OrderedDictionary`2.IndexOf(`0)">
             <summary>
-             Find the position of an element by key. Returns -1 if the dictionary does not contain an element with the given key.
+            Find the position of an element by key. Returns -1 if the dictionary does not contain an element with the given key.
             </summary>
         </member>
         <member name="M:dEngine.Utility.OrderedDictionary`2.RemoveAt(System.Int32)">
@@ -8451,7 +8437,8 @@
         </member>
         <member name="M:dEngine.Utility.OrderedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
             <summary>
-            Remove a key-value pair from the dictionary. Return true if pair was successfully removed. Otherwise, if the pair was not found, return false.
+            Remove a key-value pair from the dictionary. Return true if pair was successfully removed. Otherwise, if the pair was
+            not found, return false.
             </summary>
         </member>
         <member name="M:dEngine.Utility.OrderedDictionary`2.Remove(`0)">
@@ -8475,7 +8462,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Utility.Extensions.BinaryArrayExtensions.ReverseForBigEndian(System.Byte[],System.Int32,System.Int32)">
-            <summary/>
+            <summary />
             <param name="byteArray">The source array to get reversed bytes for</param>
             <param name="startIndex">The index in the source array at which to begin the reverse</param>
             <param name="count">The number of bytes to reverse</param>
@@ -8692,31 +8679,6 @@
             Helper class for converting FBX files to dEngine assets.
             </summary>
         </member>
-        <member name="T:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod">
-            <summary>
-            Enum for normal import methods.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ComputeNormals">
-            <summary>
-            The importer will compute normals and tangents.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ComputeNormalsSmooth">
-            <summary>
-            The importer will compute smooth normals and tangents.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ImportNormals">
-            <summary>
-            The importer will import normals but compute tangents.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ImportNormalsAndTangents">
-            <summary>
-            The importer will import normals and tangents.
-            </summary>
-        </member>
         <member name="M:dEngine.Utility.FileFormats.Model.FBX.Import(System.IO.Stream,dEngine.Utility.FileFormats.Model.FBX.ImportSettings,System.String,System.String)">
             <summary>
             Imports an FBX file.
@@ -8775,6 +8737,31 @@
         <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.ImportMorphTargets">
             <summary>
             If enabled, morph target swill be imported from the FBX file.
+            </summary>
+        </member>
+        <member name="T:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod">
+            <summary>
+            Enum for normal import methods.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ComputeNormals">
+            <summary>
+            The importer will compute normals and tangents.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ComputeNormalsSmooth">
+            <summary>
+            The importer will compute smooth normals and tangents.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ImportNormals">
+            <summary>
+            The importer will import normals but compute tangents.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ImportNormalsAndTangents">
+            <summary>
+            The importer will import normals and tangents.
             </summary>
         </member>
         <member name="M:dEngine.Utility.InstanceHelper.Recurse(dEngine.Instances.Instance,System.Func{dEngine.Instances.Instance,System.SByte})">
@@ -8923,98 +8910,6 @@
             Creates a new exception.
             </summary>
         </member>
-        <member name="T:dEngine.Utility.RawInputDefinitions.RawInputType">
-            <summary>
-            Enumeration containing the type device the raw input is coming from.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawInputType.Mouse">
-            <summary>
-            Mouse input.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawInputType.Keyboard">
-            <summary>
-            Keyboard input.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawInputType.HID">
-            <summary>
-            Human interface device input.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawInputType.Other">
-            <summary>
-            Another device that is not the keyboard or the mouse.
-            </summary>
-        </member>
-        <member name="T:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags">
-            <summary>
-            Enumeration containing flags for raw keyboard input.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.KeyMake">
-            <summary></summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.KeyBreak">
-            <summary></summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.KeyE0">
-            <summary></summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.KeyE1">
-            <summary></summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.TerminalServerSetLED">
-            <summary></summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.TerminalServerShadow">
-            <summary></summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.TerminalServerVKPACKET">
-            <summary></summary>
-        </member>
-        <member name="T:dEngine.Utility.RawInputDefinitions.RawMouseButtons">
-            <summary>
-            Enumeration containing the button data for raw mouse input.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.None">
-            <summary>No button.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.LeftDown">
-            <summary>Left (button 1) down.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.LeftUp">
-            <summary>Left (button 1) up.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.RightDown">
-            <summary>Right (button 2) down.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.RightUp">
-            <summary>Right (button 2) up.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.MiddleDown">
-            <summary>Middle (button 3) down.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.MiddleUp">
-            <summary>Middle (button 3) up.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.Button4Down">
-            <summary>Button 4 down.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.Button4Up">
-            <summary>Button 4 up.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.Button5Down">
-            <summary>Button 5 down.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.Button5Up">
-            <summary>Button 5 up.</summary>
-        </member>
-        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.MouseWheel">
-            <summary>Mouse wheel moved.</summary>
-        </member>
         <member name="T:dEngine.Utility.RawInputDefinitions.RawInput">
             <summary>
             Contains the raw input from a device.
@@ -9153,6 +9048,98 @@
         <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboard.ExtraInformation">
             <summary>Extra information.</summary>
         </member>
+        <member name="T:dEngine.Utility.RawInputDefinitions.RawInputType">
+            <summary>
+            Enumeration containing the type device the raw input is coming from.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawInputType.Mouse">
+            <summary>
+            Mouse input.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawInputType.Keyboard">
+            <summary>
+            Keyboard input.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawInputType.HID">
+            <summary>
+            Human interface device input.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawInputType.Other">
+            <summary>
+            Another device that is not the keyboard or the mouse.
+            </summary>
+        </member>
+        <member name="T:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags">
+            <summary>
+            Enumeration containing flags for raw keyboard input.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.KeyMake">
+            <summary></summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.KeyBreak">
+            <summary></summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.KeyE0">
+            <summary></summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.KeyE1">
+            <summary></summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.TerminalServerSetLED">
+            <summary></summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.TerminalServerShadow">
+            <summary></summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawKeyboardFlags.TerminalServerVKPACKET">
+            <summary></summary>
+        </member>
+        <member name="T:dEngine.Utility.RawInputDefinitions.RawMouseButtons">
+            <summary>
+            Enumeration containing the button data for raw mouse input.
+            </summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.None">
+            <summary>No button.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.LeftDown">
+            <summary>Left (button 1) down.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.LeftUp">
+            <summary>Left (button 1) up.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.RightDown">
+            <summary>Right (button 2) down.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.RightUp">
+            <summary>Right (button 2) up.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.MiddleDown">
+            <summary>Middle (button 3) down.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.MiddleUp">
+            <summary>Middle (button 3) up.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.Button4Down">
+            <summary>Button 4 down.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.Button4Up">
+            <summary>Button 4 up.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.Button5Down">
+            <summary>Button 5 down.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.Button5Up">
+            <summary>Button 5 up.</summary>
+        </member>
+        <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.MouseWheel">
+            <summary>Mouse wheel moved.</summary>
+        </member>
         <member name="T:dEngine.Utility.UnitTestDetector">
             <summary>
             Detects if we are running inside a unit test.
@@ -9210,7 +9197,7 @@
         </member>
         <member name="T:dEngine.PathStatus">
             <summary>
-            Enum for the result of <see cref="M:dEngine.Services.PathfindingService.ComputeRawPathAsync(dEngine.Vector3,dEngine.Vector3,System.Single)"/>.
+            Enum for the result of <see cref="M:dEngine.Services.PathfindingService.ComputeRawPathAsync(dEngine.Vector3,dEngine.Vector3,System.Single)" />.
             </summary>
         </member>
         <member name="F:dEngine.PathStatus.Success">
@@ -9365,7 +9352,8 @@
         </member>
         <member name="F:dEngine.UnreliableSizeBehaviour.NormalFragmentation">
             <summary>
-            Use normal fragmentation for unreliable messages - if a fragment is dropped, memory for received fragments are never reclaimed.
+            Use normal fragmentation for unreliable messages - if a fragment is dropped, memory for received fragments are never
+            reclaimed.
             </summary>
         </member>
         <member name="F:dEngine.UnreliableSizeBehaviour.DropAboveMTU">
@@ -9395,19 +9383,19 @@
             </summary>
         </member>
         <member name="M:dEngine.ColourSequence.#ctor(dEngine.Colour)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.ColourSequence.#ctor(dEngine.Sequence{dEngine.Colour}.Keypoint[])">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.ColourSequence.#ctor(System.Collections.Generic.IEnumerable{dEngine.Sequence{dEngine.Colour}.Keypoint})">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.ColourSequence.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.ColourSequence.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.NumberRange">
             <summary>
@@ -9439,31 +9427,31 @@
         </member>
         <member name="M:dEngine.NumberRange.op_Equality(dEngine.NumberRange,dEngine.NumberRange)">
             <summary>
-            Determines if the min and max are equal for two <see cref="T:dEngine.NumberRange"/>s.
+            Determines if the min and max are equal for two <see cref="T:dEngine.NumberRange" />s.
             </summary>
         </member>
         <member name="M:dEngine.NumberRange.op_Inequality(dEngine.NumberRange,dEngine.NumberRange)">
             <summary>
-            Determines if the min and max are not equal for two <see cref="T:dEngine.NumberRange"/>s.
+            Determines if the min and max are not equal for two <see cref="T:dEngine.NumberRange" />s.
             </summary>
         </member>
         <member name="M:dEngine.NumberRange.Equals(dEngine.NumberRange)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.NumberRange.Equals(System.Object)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.NumberRange.GetHashCode">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.NumberRange.ToString">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.NumberRange.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.NumberRange.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.NumberSequence">
             <summary>
@@ -9471,10 +9459,10 @@
             </summary>
         </member>
         <member name="M:dEngine.NumberSequence.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.NumberSequence.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Plane">
             <summary>
@@ -9617,19 +9605,14 @@
             </summary>
         </member>
         <member name="M:dEngine.Plane.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Plane.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Sequence`1">
             <summary>
             Base class for sequences.
-            </summary>
-        </member>
-        <member name="P:dEngine.Sequence`1.Keypoints">
-            <summary>
-            The sequence values.
             </summary>
         </member>
         <member name="M:dEngine.Sequence`1.#ctor">
@@ -9642,11 +9625,6 @@
             Creates a sequence using two keypoints of the same value.
             </summary>
         </member>
-        <member name="M:dEngine.Sequence`1.NewKeypoint(System.Single,`0)">
-            <summary>
-            Creates a new keypoint.
-            </summary>
-        </member>
         <member name="M:dEngine.Sequence`1.#ctor(dEngine.Sequence{`0}.Keypoint[])">
             <summary>
             Creates a sequence from an array of keypoints.
@@ -9657,8 +9635,18 @@
             Creates a sequence from a table of keypoints.
             </summary>
         </member>
+        <member name="P:dEngine.Sequence`1.Keypoints">
+            <summary>
+            The sequence values.
+            </summary>
+        </member>
+        <member name="M:dEngine.Sequence`1.NewKeypoint(System.Single,`0)">
+            <summary>
+            Creates a new keypoint.
+            </summary>
+        </member>
         <member name="M:dEngine.Sequence`1.ToString">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Sequence`1.Keypoint">
             <summary>
@@ -10119,6 +10107,9 @@
             An object which describes an input action.
             </summary>
         </member>
+        <member name="M:dEngine.InputObject.#ctor">
+            <summary />
+        </member>
         <member name="P:dEngine.InputObject.Handled">
             <summary>
             Determines if this input has been handled.
@@ -10149,14 +10140,11 @@
             Describes the delta for mouse/stick movements.
             </summary>
         </member>
-        <member name="M:dEngine.InputObject.#ctor">
-            <summary/>
-        </member>
         <member name="M:dEngine.InputObject.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.InputObject.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.NormalId">
             <summary>
@@ -10532,7 +10520,8 @@
         </member>
         <member name="M:dEngine.CFrame.vectorToObjectSpace(dEngine.Vector3)">
             <summary>
-            Returns a <see cref="T:dEngine.Vector3" />  rotated from World to Object coordinates.Equivalent to `(CFrame - CFrame.p):inverse() * v3`
+            Returns a <see cref="T:dEngine.Vector3" />  rotated from World to Object coordinates.Equivalent to `(CFrame - CFrame.p):inverse()
+            * v3`
             </summary>
         </member>
         <member name="M:dEngine.CFrame.toWorldSpace(dEngine.Ray)">
@@ -10668,10 +10657,10 @@
             </summary>
         </member>
         <member name="M:dEngine.CFrame.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.CFrame.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Colour">
             <summary>
@@ -10856,10 +10845,10 @@
             </summary>
         </member>
         <member name="M:dEngine.Colour.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Colour.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Colour.fromHex(System.String)">
             <summary>
@@ -11035,7 +11024,7 @@
             </summary>
         </member>
         <member name="M:dEngine.Content`1.ToString">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Content`1.op_Implicit(dEngine.Content{`0})~System.String">
             <summary>
@@ -11290,10 +11279,10 @@
             </summary>
         </member>
         <member name="M:dEngine.DateTime.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.DateTime.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Faces">
             <summary>
@@ -11450,10 +11439,10 @@
             </summary>
         </member>
         <member name="M:dEngine.Region3.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Region3.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Region3int16">
             <summary>
@@ -11501,10 +11490,10 @@
             <inheritdoc />
         </member>
         <member name="M:dEngine.Region3int16.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Region3int16.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Tags">
             <summary>
@@ -11512,6 +11501,12 @@
             </summary>
         </member>
         <member name="M:dEngine.Tags.#ctor(System.String[])">
+            <summary />
+        </member>
+        <member name="M:dEngine.Tags.Load(System.IO.BinaryReader)">
+            <summary />
+        </member>
+        <member name="M:dEngine.Tags.Save(System.IO.BinaryWriter)">
             <summary />
         </member>
         <member name="M:dEngine.Tags.GetEnumerator">
@@ -11544,12 +11539,6 @@
             <summary>
             Returns the tags in a table.
             </summary>
-        </member>
-        <member name="M:dEngine.Tags.Load(System.IO.BinaryReader)">
-            <summary/>
-        </member>
-        <member name="M:dEngine.Tags.Save(System.IO.BinaryWriter)">
-            <summary/>
         </member>
         <member name="T:dEngine.TimeSpan">
             <summary>
@@ -11736,10 +11725,10 @@
             </summary>
         </member>
         <member name="M:dEngine.TimeSpan.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.TimeSpan.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Vector3int16">
             <summary>
@@ -11967,7 +11956,7 @@
         </member>
         <member name="F:dEngine.Ray.Zero">
             <summary>
-            A ray that uses <see cref="F:dEngine.Vector3.Zero"/> postion and direction.
+            A ray that uses <see cref="F:dEngine.Vector3.Zero" /> postion and direction.
             </summary>
         </member>
         <member name="M:dEngine.Ray.GetPoint(System.Single)">
@@ -11993,25 +11982,25 @@
             <inheritdoc />
         </member>
         <member name="M:dEngine.Ray.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Ray.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Ray.Equals(dEngine.Ray)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Ray.Equals(System.Object)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Ray.GetHashCode">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Ray.op_Equality(dEngine.Ray,dEngine.Ray)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Ray.op_Inequality(dEngine.Ray,dEngine.Ray)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Signal">
             <summary>
@@ -12049,16 +12038,21 @@
             A signal allows listener functions to be connected, which are called when the signal is fired.
             </summary>
         </member>
-        <member name="P:dEngine.Signal`1.Owner">
-            <summary>
-            The owner of this signal.
-            </summary>
-        </member>
         <member name="M:dEngine.Signal`1.#ctor(dEngine.Instances.Instance)">
             <summary>
             Initializes a new signal.
             </summary>
             <param name="host">The instance which this signal will be a member of.</param>
+        </member>
+        <member name="P:dEngine.Signal`1.Owner">
+            <summary>
+            The owner of this signal.
+            </summary>
+        </member>
+        <member name="M:dEngine.Signal`1.Dispose">
+            <summary>
+            Disconnects all connections and destroys the signal.
+            </summary>
         </member>
         <member name="M:dEngine.Signal`1.connect(dEngine.LuaAction{`0})">
             <summary>
@@ -12070,19 +12064,9 @@
             Yields the current thread until this signal next fires.
             </summary>
         </member>
-        <member name="M:dEngine.Signal`1.Dispose">
-            <summary>
-            Disconnects all connections and destroys the signal.
-            </summary>
-        </member>
         <member name="T:dEngine.Signal`2">
             <summary>
             A signal allows listener functions to be connected, which are called when the signal is fired.
-            </summary>
-        </member>
-        <member name="P:dEngine.Signal`2.Owner">
-            <summary>
-            The owner of this signal.
             </summary>
         </member>
         <member name="M:dEngine.Signal`2.#ctor(dEngine.Instances.Instance)">
@@ -12090,6 +12074,16 @@
             Initializes a new signal.
             </summary>
             <param name="host">The instance which this signal will be a member of.</param>
+        </member>
+        <member name="P:dEngine.Signal`2.Owner">
+            <summary>
+            The owner of this signal.
+            </summary>
+        </member>
+        <member name="M:dEngine.Signal`2.Dispose">
+            <summary>
+            Disconnects all connections and destroys the signal.
+            </summary>
         </member>
         <member name="M:dEngine.Signal`2.connect(dEngine.LuaAction{`0,`1})">
             <summary>
@@ -12101,19 +12095,9 @@
             Yields the current thread until this signal next fires.
             </summary>
         </member>
-        <member name="M:dEngine.Signal`2.Dispose">
-            <summary>
-            Disconnects all connections and destroys the signal.
-            </summary>
-        </member>
         <member name="T:dEngine.Signal`3">
             <summary>
             A signal allows listener functions to be connected, which are called when the signal is fired.
-            </summary>
-        </member>
-        <member name="P:dEngine.Signal`3.Owner">
-            <summary>
-            The owner of this signal.
             </summary>
         </member>
         <member name="M:dEngine.Signal`3.#ctor(dEngine.Instances.Instance)">
@@ -12121,6 +12105,16 @@
             Initializes a new signal.
             </summary>
             <param name="host">The instance which this signal will be a member of.</param>
+        </member>
+        <member name="P:dEngine.Signal`3.Owner">
+            <summary>
+            The owner of this signal.
+            </summary>
+        </member>
+        <member name="M:dEngine.Signal`3.Dispose">
+            <summary>
+            Disconnects all connections and destroys the signal.
+            </summary>
         </member>
         <member name="M:dEngine.Signal`3.connect(dEngine.LuaAction{`0,`1,`2})">
             <summary>
@@ -12132,19 +12126,9 @@
             Yields the current thread until this signal next fires.
             </summary>
         </member>
-        <member name="M:dEngine.Signal`3.Dispose">
-            <summary>
-            Disconnects all connections and destroys the signal.
-            </summary>
-        </member>
         <member name="T:dEngine.Signal`4">
             <summary>
             A signal allows listener functions to be connected, which are called when the signal is fired.
-            </summary>
-        </member>
-        <member name="P:dEngine.Signal`4.Owner">
-            <summary>
-            The owner of this signal.
             </summary>
         </member>
         <member name="M:dEngine.Signal`4.#ctor(dEngine.Instances.Instance)">
@@ -12152,6 +12136,16 @@
             Initializes a new signal.
             </summary>
             <param name="host">The instance which this signal will be a member of.</param>
+        </member>
+        <member name="P:dEngine.Signal`4.Owner">
+            <summary>
+            The owner of this signal.
+            </summary>
+        </member>
+        <member name="M:dEngine.Signal`4.Dispose">
+            <summary>
+            Disconnects all connections and destroys the signal.
+            </summary>
         </member>
         <member name="M:dEngine.Signal`4.connect(dEngine.LuaAction{`0,`1,`2,`3})">
             <summary>
@@ -12163,19 +12157,9 @@
             Yields the current thread until this signal next fires.
             </summary>
         </member>
-        <member name="M:dEngine.Signal`4.Dispose">
-            <summary>
-            Disconnects all connections and destroys the signal.
-            </summary>
-        </member>
         <member name="T:dEngine.Signal`5">
             <summary>
             A signal allows listener functions to be connected, which are called when the signal is fired.
-            </summary>
-        </member>
-        <member name="P:dEngine.Signal`5.Owner">
-            <summary>
-            The owner of this signal.
             </summary>
         </member>
         <member name="M:dEngine.Signal`5.#ctor(dEngine.Instances.Instance)">
@@ -12183,6 +12167,16 @@
             Initializes a new signal.
             </summary>
             <param name="host">The instance which this signal will be a member of.</param>
+        </member>
+        <member name="P:dEngine.Signal`5.Owner">
+            <summary>
+            The owner of this signal.
+            </summary>
+        </member>
+        <member name="M:dEngine.Signal`5.Dispose">
+            <summary>
+            Disconnects all connections and destroys the signal.
+            </summary>
         </member>
         <member name="M:dEngine.Signal`5.connect(dEngine.LuaAction{`0,`1,`2,`3,`4})">
             <summary>
@@ -12194,19 +12188,9 @@
             Yields the current thread until this signal next fires.
             </summary>
         </member>
-        <member name="M:dEngine.Signal`5.Dispose">
-            <summary>
-            Disconnects all connections and destroys the signal.
-            </summary>
-        </member>
         <member name="T:dEngine.Signal`6">
             <summary>
             A signal allows listener functions to be connected, which are called when the signal is fired.
-            </summary>
-        </member>
-        <member name="P:dEngine.Signal`6.Owner">
-            <summary>
-            The owner of this signal.
             </summary>
         </member>
         <member name="M:dEngine.Signal`6.#ctor(dEngine.Instances.Instance)">
@@ -12214,6 +12198,16 @@
             Initializes a new signal.
             </summary>
             <param name="host">The instance which this signal will be a member of.</param>
+        </member>
+        <member name="P:dEngine.Signal`6.Owner">
+            <summary>
+            The owner of this signal.
+            </summary>
+        </member>
+        <member name="M:dEngine.Signal`6.Dispose">
+            <summary>
+            Disconnects all connections and destroys the signal.
+            </summary>
         </member>
         <member name="M:dEngine.Signal`6.connect(dEngine.LuaAction{`0,`1,`2,`3,`4,`5})">
             <summary>
@@ -12225,19 +12219,9 @@
             Yields the current thread until this signal next fires.
             </summary>
         </member>
-        <member name="M:dEngine.Signal`6.Dispose">
-            <summary>
-            Disconnects all connections and destroys the signal.
-            </summary>
-        </member>
         <member name="T:dEngine.Signal`7">
             <summary>
             A signal allows listener functions to be connected, which are called when the signal is fired.
-            </summary>
-        </member>
-        <member name="P:dEngine.Signal`7.Owner">
-            <summary>
-            The owner of this signal.
             </summary>
         </member>
         <member name="M:dEngine.Signal`7.#ctor(dEngine.Instances.Instance)">
@@ -12245,6 +12229,16 @@
             Initializes a new signal.
             </summary>
             <param name="host">The instance which this signal will be a member of.</param>
+        </member>
+        <member name="P:dEngine.Signal`7.Owner">
+            <summary>
+            The owner of this signal.
+            </summary>
+        </member>
+        <member name="M:dEngine.Signal`7.Dispose">
+            <summary>
+            Disconnects all connections and destroys the signal.
+            </summary>
         </member>
         <member name="M:dEngine.Signal`7.connect(dEngine.LuaAction{`0,`1,`2,`3,`4,`5,`6})">
             <summary>
@@ -12254,11 +12248,6 @@
         <member name="M:dEngine.Signal`7.wait">
             <summary>
             Yields the current thread until this signal next fires.
-            </summary>
-        </member>
-        <member name="M:dEngine.Signal`7.Dispose">
-            <summary>
-            Disconnects all connections and destroys the signal.
             </summary>
         </member>
         <member name="T:dEngine.UDim2">
@@ -12594,10 +12583,10 @@
             </summary>
         </member>
         <member name="M:dEngine.Vector2.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Vector2.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.Vector3">
             <summary>
@@ -12870,10 +12859,10 @@
             </summary>
         </member>
         <member name="M:dEngine.Vector3.Load(System.IO.BinaryReader)">
-            <summary/>
+            <summary />
         </member>
         <member name="M:dEngine.Vector3.Save(System.IO.BinaryWriter)">
-            <summary/>
+            <summary />
         </member>
         <member name="T:dEngine.IDataType">
             <summary>
