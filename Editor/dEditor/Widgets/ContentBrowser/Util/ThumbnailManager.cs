@@ -57,7 +57,7 @@ namespace dEditor.Widgets.Assets
         {
             using (var stream = File.OpenRead(file))
             {
-                var contentType = Inst.PeekContent(stream);
+                var contentType = AssetBase.PeekContent(stream);
 
                 switch (contentType)
                 {

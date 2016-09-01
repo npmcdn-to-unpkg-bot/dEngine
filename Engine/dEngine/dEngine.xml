@@ -38,12 +38,20 @@
         <member name="M:dEngine.Data.TextSource.OnLoad(System.IO.BinaryReader)">
             <inheritdoc />
         </member>
+        <member name="M:dEngine.Data.TextSource.OnNonAsset(System.IO.BinaryReader)">
+            <inheritdoc />
+        </member>
         <member name="M:dEngine.Data.TextSource.Dispose(System.Boolean)">
             <inheritdoc />
         </member>
         <member name="T:dEngine.Data.AssetBase">
             <summary>
             Base class for assets.
+            </summary>
+        </member>
+        <member name="F:dEngine.Data.AssetBase._disposed">
+            <summary>
+            Determines whether the asset is disposed.
             </summary>
         </member>
         <member name="P:dEngine.Data.AssetBase.SourceFile">
@@ -76,6 +84,11 @@
             Disposes of the asset.
             </summary>
         </member>
+        <member name="M:dEngine.Data.AssetBase.PeekContent(System.IO.Stream)">
+            <summary>
+            Returns the content type of the given stream.
+            </summary>
+        </member>
         <member name="M:dEngine.Data.AssetBase.Save(System.IO.Stream)">
             <summary>
             Saves the asset to a stream.
@@ -85,6 +98,14 @@
             <summary>
             Loads the asset from a stream.
             </summary>
+        </member>
+        <member name="M:dEngine.Data.AssetBase.OnNonAsset(System.IO.BinaryReader)">
+            <summary>
+            Invoked when the stream header does not match the expected asset header.
+            </summary>
+            <returns>
+            A boolean determining if the file was successfully loaded.
+            </returns>
         </member>
         <member name="M:dEngine.Data.AssetBase.OnSave(System.IO.BinaryWriter)">
             <summary />
@@ -183,6 +204,17 @@
             Resizes an existing texture.
             </summary>
         </member>
+        <member name="T:dEngine.Data.Cubemap">
+            <summary>
+            A texture with 6 faces.
+            </summary>
+        </member>
+        <member name="P:dEngine.Data.Cubemap.ContentType">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.Cubemap.OnNonAsset(System.IO.BinaryReader)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Data.Geometry">
             <summary>
             Represents a geometry. Instances of a geometry are rendered with a <see cref="T:dEngine.Graphics.RenderObject" />.
@@ -273,6 +305,9 @@
             </summary>
         </member>
         <member name="M:dEngine.Data.Geometry.OnSave(System.IO.BinaryWriter)">
+            <summary />
+        </member>
+        <member name="M:dEngine.Data.Geometry.OnNonAsset(System.IO.BinaryReader)">
             <summary />
         </member>
         <member name="M:dEngine.Data.Geometry.OnLoad(System.IO.BinaryReader)">
@@ -5338,11 +5373,6 @@
             <param name="skipMagic"></param>
             <returns></returns>
         </member>
-        <member name="M:dEngine.Serializer.V1.Inst.PeekContent(System.IO.Stream)">
-            <summary>
-            Returns the content type of the given stream.
-            </summary>
-        </member>
         <member name="M:dEngine.Serializer.V1.Inst.CheckHeader(System.IO.Stream,System.Boolean)">
             <summary>
             Checks if the given stream is valid instance binary.
@@ -8472,6 +8502,14 @@
             <param name="magic"></param>
             <param name="resetPos">If true, the stream position will be set to 0.</param>
             <returns></returns>
+        </member>
+        <member name="T:dEngine.Utility.Extensions.StringExtensions">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Utility.Extensions.StringExtensions.ToByteArray(System.String)">
+            <summary>
+            Converts a string to an array of bytes.
+            </summary>
         </member>
         <member name="M:dEngine.Utility.Extensions.BinaryArrayExtensions.ReverseForBigEndian(System.Byte[],System.Int32,System.Int32)">
             <summary />

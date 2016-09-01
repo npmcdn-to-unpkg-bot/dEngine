@@ -207,14 +207,20 @@ namespace dEngine.Data
         }
 
         /// <summary />
-        protected override void OnLoad(BinaryReader reader)
+        protected override bool OnNonAsset(BinaryReader reader)
         {
             if (reader.BeginsWith(_robloxMeshVersion1)) // special case for roblox mesh
+            {
                 LoadRobloxMesh(reader.BaseStream);
+                return true;
+            }
 
-            reader.BaseStream.Position = 0;
-            base.OnLoad(reader);
+            return false;
+        }
 
+        /// <summary />
+        protected override void OnLoad(BinaryReader reader)
+        {
             var vertCount = reader.ReadInt32();
             Vertices = new Vertex[vertCount];
             for (var i = 0; i < vertCount; i++)

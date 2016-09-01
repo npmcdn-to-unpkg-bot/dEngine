@@ -299,6 +299,7 @@
     <Compile Include="Tools\StudioTool.cs" />
     <Compile Include="Utility\BrushConverter.cs" />
     <Compile Include="Utility\ColorHelper.cs" />
+    <Compile Include="Utility\DirectoryExtensions.cs" />
     <Compile Include="Widgets\AdvancedObjects\IAdvancedObjects.cs" />
     <Compile Include="Widgets\Chat\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
@@ -316,6 +317,10 @@
       <DependentUpon>FolderOptions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\ContentBrowser\IContentBrowser.cs" />
+    <Compile Include="Widgets\ContentBrowser\Instances\Directory.cs" />
+    <Compile Include="Widgets\ContentBrowser\Instances\File.cs" />
+    <Compile Include="Widgets\ContentBrowser\Instances\FileSystem.cs" />
+    <Compile Include="Widgets\ContentBrowser\UpDirectoryItem.cs" />
     <Compile Include="Widgets\Diagnostics\DiagnosticsView.xaml.cs">
       <DependentUpon>DiagnosticsView.xaml</DependentUpon>
     </Compile>

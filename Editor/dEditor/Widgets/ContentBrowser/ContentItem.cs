@@ -6,7 +6,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
 using Caliburn.Micro;
+using dEditor.Utility;
 using dEngine;
+using dEngine.Data;
 using dEngine.Serializer.V1;
 
 namespace dEditor.Widgets.ContentBrowser
@@ -14,6 +16,11 @@ namespace dEditor.Widgets.ContentBrowser
     public class ContentItem : PropertyChangedBase
     {
         private Uri _icon;
+
+        protected ContentItem()
+        {
+            UpdateIcon();
+        }
 
         public ContentItem(FileInfo file)
         {
@@ -23,7 +30,7 @@ namespace dEditor.Widgets.ContentBrowser
             UpdateIcon();
             using (var stream = file.Open(FileMode.Open, FileAccess.Read))
             {
-                Type = Inst.PeekContent(stream);
+                Type = AssetBase.PeekContent(stream);
             }
         }
 
@@ -61,48 +68,53 @@ namespace dEditor.Widgets.ContentBrowser
         public bool IsFolder => Directory != null;
         public bool IsContent => Type != null;
 
+        protected virtual void Open()
+        {
+            var contentBrowser = IoC.Get<IContentBrowser>();
+
+            if (IsFolder)
+                contentBrowser.SelectedDirectory =
+                    contentBrowser.GetDirectoryItem((item) => item.Directory.EqualsDir(Directory));
+            else
+                switch (Type)
+                {
+                    case ContentType.StaticMesh:
+                    case ContentType.SkeletalMesh:
+                    case ContentType.Model:
+                    case ContentType.Texture:
+                    case ContentType.Sound:
+                    case ContentType.Animation:
+                    case ContentType.Cubemap:
+                    case ContentType.Video:
+                    case ContentType.Material:
+                        throw new NotImplementedException();
+                    case ContentType.Unknown:
+                    case null:
+                        Process.Start(File.FullName);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+        }
+
         public void OnMouseLeftButtonDown(MouseButtonEventArgs args)
         {
             if (args.ClickCount == 2)
             {
-                var contentBrowser = IoC.Get<ContentBrowserViewModel>();
-
-                if (IsFolder)
-                    contentBrowser.SelectedDirectory =
-                        ContentBrowserViewModel.GetDirectoryItemFromContentItem(contentBrowser.RootDirectories, this);
-                else
-                    switch (Type)
-                    {
-                        case ContentType.StaticMesh:
-                        case ContentType.SkeletalMesh:
-                        case ContentType.Model:
-                        case ContentType.Texture:
-                        case ContentType.Sound:
-                        case ContentType.Animation:
-                        case ContentType.Cubemap:
-                        case ContentType.Video:
-                        case ContentType.Material:
-                            throw new NotImplementedException();
-                            break;
-                        case ContentType.Unknown:
-                        case null:
-                            Process.Start(File.FullName);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
+                Open();
             }
         }
 
-        public void UpdateIcon()
+        protected virtual string GetIconName()
         {
             string iconName;
 
-            // TODO: generate thumbnails
-
             if (IsFolder)
+            {
                 iconName = "Folder_256x";
+            }
             else
+            {
                 switch (Extension)
                 {
                     case "game":
@@ -145,10 +157,17 @@ namespace dEditor.Widgets.ContentBrowser
                         iconName = "Member_256x";
                         break;
                     default:
-                        iconName = "File.png";
+                        iconName = "File_256x";
                         break;
                 }
+            }
 
+            return iconName;
+        }
+
+        public void UpdateIcon()
+        {
+            string iconName = GetIconName();
             Icon = new Uri($"/dEditor;component/Content/Icons/Toolbar/{iconName}.png", UriKind.Relative);
         }
     }

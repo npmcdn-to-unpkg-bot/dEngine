@@ -15,19 +15,36 @@ using SharpDX.WIC;
 
 namespace dEngine.Data
 {
+    /// <summary>
+    /// A texture with 6 faces.
+    /// </summary>
     [TypeId(27)]
     public class Cubemap : AssetBase
     {
         internal Texture Texture;
 
+        /// <summary/>
         public override ContentType ContentType => ContentType.Cubemap;
+        
+        /// <summary/>
+        protected override bool OnNonAsset(BinaryReader reader)
+        {
+            try
+            {
+                OnLoad(reader);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         protected override void OnLoad(BinaryReader reader)
         {
             LoadTexture(reader.BaseStream, out Texture);
             IsLoaded = true;
         }
-
         protected override void OnSave(BinaryWriter writer)
         {
             base.OnSave(writer);
@@ -55,11 +72,6 @@ namespace dEngine.Data
             var magic = new byte[4];
             input.Read(magic, 0, 4);
             input.Position = 0;
-
-            var a = (char)magic[0];
-            var b = (char)magic[1];
-            var c = (char)magic[2];
-            var d = (char)magic[3];
 
             if (VisualC.CompareMemory(magic, DDSImage.MagicBytes, 4) == 0)
             {

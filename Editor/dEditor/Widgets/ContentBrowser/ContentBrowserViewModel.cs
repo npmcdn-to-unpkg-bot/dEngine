@@ -1,11 +1,14 @@
 ﻿// ContentBrowserViewModel.cs - dEditor
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using dEditor.Framework;
+using dEditor.Utility;
 
 namespace dEditor.Widgets.ContentBrowser
 {
@@ -14,7 +17,7 @@ namespace dEditor.Widgets.ContentBrowser
     {
         private List<ContentItem> _contents;
         private bool _directoryTreeVisible;
-        private List<DirectoryTreeItem> _rootDirectories;
+        private IEnumerable<DirectoryTreeItem> _rootDirectories;
         private IList<ContentItem> _selectedContents;
         private DirectoryTreeItem _selectedDirectory;
         private bool _showFolders;
@@ -33,7 +36,7 @@ namespace dEditor.Widgets.ContentBrowser
 
         public string FolderFilter { get; set; }
         public string FileFilter { get; set; }
-        
+
         public DirectoryTreeItem SelectedDirectory
         {
             get { return _selectedDirectory; }
@@ -63,12 +66,11 @@ namespace dEditor.Widgets.ContentBrowser
 
         public bool IsEnabled => Project.Current != null;
 
-        public List<DirectoryTreeItem> RootDirectories
+        public IEnumerable<DirectoryTreeItem> RootDirectories
         {
             get { return _rootDirectories; }
-            private set
+            set
             {
-                if (Equals(value, _rootDirectories)) return;
                 _rootDirectories = value;
                 NotifyOfPropertyChange();
             }
@@ -77,9 +79,8 @@ namespace dEditor.Widgets.ContentBrowser
         public List<ContentItem> Contents
         {
             get { return _contents; }
-            private set
+            set
             {
-                if (Equals(value, _contents)) return;
                 _contents = value;
                 NotifyOfPropertyChange();
             }
@@ -161,10 +162,9 @@ namespace dEditor.Widgets.ContentBrowser
                 return;
             }
 
-            RootDirectories = new List<DirectoryTreeItem>
-            {
-                new DirectoryTreeItem("Content", new DirectoryInfo(Project.Current.ContentPath))
-            };
+            var contentDir = new DirectoryTreeItem("Content", new DirectoryInfo(Project.Current.ContentPath));
+            RootDirectories = new List<DirectoryTreeItem> { contentDir };
+            SelectedDirectory = contentDir;
         }
 
         public void UpdateContents()
@@ -173,21 +173,28 @@ namespace dEditor.Widgets.ContentBrowser
                 return;
 
             var dir = SelectedDirectory.Directory;
+            var parentTreeItem = GetDirectoryItem(d => d.Directory.EqualsDir(dir.Parent));
 
-            Contents = null;
+            var contents = new List<ContentItem>();
+
+            if (parentTreeItem != null)
+                contents.Add(new UpDirectoryItem(parentTreeItem));
+
 
             if (ShowFolders)
-                Contents =
+                contents.AddRange(
                     dir.GetDirectories()
                         .Select(d => new ContentItem(d))
-                        .OrderBy(c => c.Name)
-                        .Concat(
-                            dir.GetFiles()
-                                .Select(f => new ContentItem(f))
-                                .Where(f => _showNonContent || f.IsContent || f.IsFolder)
-                                .OrderBy(c => c.Name)).ToList();
-            else
-                Contents = dir.GetFiles("*.*", SearchOption.AllDirectories).Select(f => new ContentItem(f)).ToList();
+                        .OrderBy(c => c.Name));
+
+            var filters = ShowNonContent
+                ? new[] { "*.*" }
+                : new[] { "*.model", "*.audio", "*.animation", "*.cubemap", "*.texture", "*.mesh" };
+
+            foreach (var filter in filters)
+                contents.AddRange(dir.GetFiles(filter, SearchOption.TopDirectoryOnly).Select(f => new ContentItem(f)));
+
+            Contents = contents;
         }
 
         public void ShowDirectoryTree()
@@ -200,17 +207,23 @@ namespace dEditor.Widgets.ContentBrowser
             IsDirectoryTreeVisible = false;
         }
 
-        public static DirectoryTreeItem GetDirectoryItemFromContentItem(IEnumerable<DirectoryTreeItem> collection,
-            ContentItem contentItem)
+        private DirectoryTreeItem GetDirectoryItem(IEnumerable<DirectoryTreeItem> collection, Func<DirectoryTreeItem, bool> predicate)
         {
             foreach (var item in collection)
             {
-                if (item.Directory.FullName == contentItem.Directory.FullName)
+                if (predicate(item))
                     return item;
-                return GetDirectoryItemFromContentItem(item.SubFolders, contentItem);
+                var childItem =  GetDirectoryItem(item.SubFolders, predicate);
+                if (childItem != null)
+                    return childItem;
             }
 
             return null;
+        }
+
+        public DirectoryTreeItem GetDirectoryItem(Func<DirectoryTreeItem, bool> predicate)
+        {
+            return GetDirectoryItem(_rootDirectories, predicate);
         }
     }
 }

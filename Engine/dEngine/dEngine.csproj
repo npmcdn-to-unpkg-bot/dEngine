@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
-    <Compile Include="Data\ProtectedSource.cs" />
+    <Compile Include="Data\TextSource.cs" />
     <Compile Include="Enums\ActuatorType.cs" />
     <Compile Include="Enums\AdapterConnection.cs" />
     <Compile Include="Enums\DownsampleSize.cs" />
@@ -120,6 +120,7 @@
     <Compile Include="Utility\Collections\OrderedDictionary.cs" />
     <Compile Include="Utility\Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Utility\Extensions\BoundingBoxExtensions.cs" />
+    <Compile Include="Utility\Extensions\StringExtensions.cs" />
     <Compile Include="Utility\SerializationAttributes.cs" />
     <Compile Include="Utility\Extensions\EnumExtensions.cs" />
     <Compile Include="Enums\FriendStatus.cs" />

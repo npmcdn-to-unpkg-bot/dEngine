@@ -1,6 +1,7 @@
 ﻿// AudioData.cs - dEngine
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
 using System;
 using System.IO;
 using CSCore;
@@ -112,6 +113,19 @@ namespace dEngine.Data
                 return new MediaFoundationDecoder(stream);
 
             throw new FormatException("The stream is an unsupported format.");
+        }
+
+        protected override bool OnNonAsset(BinaryReader reader)
+        {
+            try
+            {
+                OnLoad(reader);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         protected override void OnLoad(BinaryReader reader)

@@ -44,6 +44,20 @@ namespace dEngine.Data
 
         private Texture2D _nativeTexture;
 
+
+        protected override bool OnNonAsset(BinaryReader reader)
+        {
+            try
+            {
+                OnLoad(reader);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Creates an empty texture.
         /// </summary>

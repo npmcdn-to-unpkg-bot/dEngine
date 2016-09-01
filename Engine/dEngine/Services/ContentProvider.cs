@@ -145,7 +145,7 @@ namespace dEngine.Services
         private static void Cache(string contentUrl, Task<Stream> task)
         {
             var stream = task.Result;
-            var contentType = Inst.PeekContent(task.Result);
+            var contentType = AssetBase.PeekContent(task.Result);
 
             switch (contentType)
             {

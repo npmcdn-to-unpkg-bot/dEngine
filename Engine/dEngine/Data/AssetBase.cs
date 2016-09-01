@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 using System.Text;
-using dEngine.Utility.Native;
+using dEngine.Utility.Extensions;
 
 namespace dEngine.Data
 {
@@ -13,7 +13,10 @@ namespace dEngine.Data
     /// </summary>
     public abstract class AssetBase : IDisposable
     {
-        private static readonly char[] _assetHeader = "ASSETBIN".ToCharArray();
+        private static readonly byte[] _assetHeader = Encoding.UTF8.GetBytes("ASSETBIN");
+        /// <summary>
+        /// Determines whether the asset is disposed.
+        /// </summary>
         protected bool _disposed;
 
         /// <summary>
@@ -51,16 +54,32 @@ namespace dEngine.Data
         }
 
         /// <summary>
+        /// Returns the content type of the given stream.
+        /// </summary>
+        public static ContentType? PeekContent(Stream stream)
+        {
+            ContentType? type;
+            using (var reader = new BinaryReader(stream, Encoding.UTF8, true))
+            {
+                if (!reader.BeginsWith(_assetHeader))
+                    type = null;
+                else
+                    type = (ContentType)reader.ReadByte();
+            }
+            stream.Position = 0;
+            return type;
+        }
+
+        /// <summary>
         /// Saves the asset to a stream.
         /// </summary>
         internal void Save(Stream stream)
         {
             using (var writer = new BinaryWriter(stream, Encoding.UTF8, true))
             {
+                writer.Write(_assetHeader);
                 writer.Write(SourceFile ?? string.Empty);
-
                 Tags.Save(writer);
-
                 OnSave(writer);
             }
         }
@@ -72,23 +91,37 @@ namespace dEngine.Data
         {
             using (var reader = new BinaryReader(stream, Encoding.UTF8, true))
             {
-                OnLoad(reader);
+                var isAssetBin = reader.BeginsWith(_assetHeader);
+                if (isAssetBin)
+                {
+                    reader.BaseStream.Position += _assetHeader.Length;
+                    SourceFile = reader.ReadString();
+                    OnLoad(reader);
+                }
+                else if (!OnNonAsset(reader))
+                    throw new InvalidOperationException("Asset has invalid header.");
             }
+        }
+
+        /// <summary>
+        /// Invoked when the stream header does not match the expected asset header.
+        /// </summary>
+        /// <returns>
+        /// A boolean determining if the file was successfully loaded.
+        /// </returns>
+        protected virtual bool OnNonAsset(BinaryReader reader)
+        {
+            return false;
         }
 
         /// <summary />
         protected virtual void OnSave(BinaryWriter writer)
         {
-            writer.Write(_assetHeader);
-            writer.Write((byte)ContentType);
         }
 
         /// <summary />
         protected virtual void OnLoad(BinaryReader reader)
         {
-            var header = reader.ReadChars(_assetHeader.Length);
-            if (VisualC.CompareMemory(_assetHeader, header, header.Length) != 0)
-                throw new InvalidDataException("Could not load asset with invalid header.");
         }
 
         /// <summary />
@@ -102,8 +135,6 @@ namespace dEngine.Data
         /// </summary>
         /// <param name="disposing">Determines whether object was disposed or deconstructed.</param>
         protected abstract void Dispose(bool disposing);
-
-        public static readonly byte[] Magic = {(byte)'A', (byte)'S', (byte)'S', (byte)'E', (byte)'t'};
 
 #pragma warning disable 1591
         [InstBeforeSerialization]

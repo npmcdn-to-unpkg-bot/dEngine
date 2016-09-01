@@ -345,24 +345,6 @@ namespace dEngine.Serializer.V1
         }
 
         /// <summary>
-        /// Returns the content type of the given stream.
-        /// </summary>
-        public static ContentType? PeekContent(Stream stream)
-        {
-            ContentType? type;
-            using (var reader = new BinaryReader(stream, Encoding.UTF8, true))
-            {
-                var magic = reader.ReadBytes(4);
-                if (VisualC.CompareMemory(magic, AssetBase.Magic, 4) != 0)
-                    type = null;
-                else
-                    type = (ContentType)reader.ReadByte();
-            }
-            stream.Position = 0;
-            return type;
-        }
-
-        /// <summary>
         /// Checks if the given stream is valid instance binary.
         /// </summary>
         /// <param name="stream">The stream to check.</param>

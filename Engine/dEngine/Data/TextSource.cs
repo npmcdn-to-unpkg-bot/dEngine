@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 using System.IO;
 using dEngine.Instances.Attributes;
+using dEngine.Utility.Extensions;
 
 namespace dEngine.Data
 {
@@ -30,6 +31,13 @@ namespace dEngine.Data
         protected override void OnLoad(BinaryReader reader)
         {
             Text = new string(reader.ReadChars((int)reader.BaseStream.Length));
+        }
+
+        /// <inheritdoc />
+        protected override bool OnNonAsset(BinaryReader reader)
+        {
+            Text = reader.BaseStream.ReadString();
+            return true;
         }
 
         /// <inheritdoc />
