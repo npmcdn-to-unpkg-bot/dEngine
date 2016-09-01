@@ -54,13 +54,10 @@ namespace dEngine.Instances
         private void MakeFrustumCollisionShape(out CollisionShape shape)
             // TODO: this method doesn't take fov into account?
         {
-            CompoundShape frustumShape;
-
             var nearPlane = _clipNear;
             var farPlane = _clipFar;
 
             var planesFraction = farPlane/nearPlane;
-            var centralPlane = (farPlane - nearPlane)*0.5f;
             float left, right, bottom, top;
             var screenSize = _viewportSize;
             var aspect = AspectRatio;

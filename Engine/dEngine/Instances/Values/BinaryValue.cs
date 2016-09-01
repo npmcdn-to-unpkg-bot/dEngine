@@ -17,6 +17,7 @@ namespace dEngine.Instances
         [EditorVisible]
         internal BinaryData Value { get; set; }
 
+        /// <summary/>
         public BinaryData GetValue()
         {
             return Value;

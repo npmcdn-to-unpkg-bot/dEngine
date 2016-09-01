@@ -14,6 +14,7 @@ namespace dEngine.Instances
     [ToolboxGroup("3D GUI")]
     public abstract class GuiBase3D : GuiBase, ICameraUser
     {
+        /// <summary/>
         protected Colour _colour;
         private float _transparency;
         private bool _visible;

@@ -31,8 +31,10 @@ namespace dEngine.Instances
         private UDim2 _position;
         private float _rotation;
 
+        /// <summary/>
         protected RoundedRectangle _roundedRectangle;
         private int _shadowBlur;
+        /// <summary/>
         private DropShadowEffect _shadowEffect;
         private Vector2 _shadowOffset;
         private int _shadowWidth;
@@ -143,6 +145,7 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary/>
         public bool Focused { get; internal set; }
 
         /// <summary>

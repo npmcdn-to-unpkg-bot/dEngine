@@ -30,6 +30,7 @@ namespace dEngine.Instances
         private WordWrapping _wordWrapping;
         internal TextFormat _textFormat;
         internal TextLayout _textLayout;
+        /// <summary/>
         protected string _text;
         private readonly bool _textReady;
 
@@ -232,6 +233,7 @@ namespace dEngine.Instances
             TextBounds = new Vector2(_textLayout.Metrics.WidthIncludingTrailingWhitespace, _textLayout.Metrics.Height);
         }
 
+        /// <summary/>
         protected override void CreateResources()
         {
             base.CreateResources();

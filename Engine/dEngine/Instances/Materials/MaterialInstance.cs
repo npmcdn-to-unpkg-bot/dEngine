@@ -21,7 +21,10 @@ namespace dEngine.Instances.Materials
             Material = material;
             _parameters = new Dictionary<string, object>();
         }
-
+        
+        /// <summary>
+        /// The base material.
+        /// </summary>
         [InstMember(1)]
         public MaterialBase Material { get; internal set; }
 

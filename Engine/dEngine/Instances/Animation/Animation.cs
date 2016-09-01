@@ -15,6 +15,7 @@ namespace dEngine.Instances
     {
         private Content<AnimationData> _animationContent;
 
+        /// <summary/>
         public Animation()
         {
             _animationContent = new Content<AnimationData>();
@@ -34,6 +35,7 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary/>
         public void AdjustSpeed()
         {
         }

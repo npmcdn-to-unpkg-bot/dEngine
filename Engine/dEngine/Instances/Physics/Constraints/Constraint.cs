@@ -13,8 +13,11 @@ namespace dEngine.Instances
     [ToolboxGroup("Constraints")]
     public abstract class Constraint : Instance
     {
+        /// <summary/>
         protected Attachment _attachment0;
+        /// <summary/>
         protected Attachment _attachment1;
+        /// <summary/>
         protected TypedConstraint _constraint;
         private bool _enabled;
 

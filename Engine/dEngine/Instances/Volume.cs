@@ -127,6 +127,7 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary/>
         public LuaTable GetOverlappingParts()
         {
             var table = new LuaTable();
@@ -168,8 +169,14 @@ namespace dEngine.Instances
             OnWorldChanged(World, null);
         }
 
+        /// <summary>
+        /// Fired when a part enters the volume.
+        /// </summary>
         public static readonly Signal<Part> Entered;
 
+        /// <summary>
+        /// Fired when a part leaves the volume.
+        /// </summary>
         public static readonly Signal<Part> Left;
     }
 }

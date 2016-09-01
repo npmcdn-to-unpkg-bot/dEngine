@@ -3,6 +3,9 @@
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 namespace dEngine
 {
+    /// <summary>
+    /// Algorthims for balancing teams.
+    /// </summary>
     public enum TeamBalanceMethod
     {
         /// <summary>

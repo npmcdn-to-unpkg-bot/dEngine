@@ -195,8 +195,6 @@ namespace dEditor.Tools
             if (camera == null)
                 return;
 
-            return;
-
             var result = Game.Workspace.Physics.FindPartOnRay(camera.GetMouseRay());
             var hitObject = result.HitObject;
 

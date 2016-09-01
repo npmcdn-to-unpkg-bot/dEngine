@@ -21,11 +21,14 @@ namespace dEngine.Instances
         [InstMember(1)]
         public CFrame CFrame { get; set; }
 
+        
+        /// <summary/>
         public void SimulatePhysics(bool value)
         {
             _simulatePhysics = value;
         }
 
+        /// <summary/>
         public void SetPhysicsBlendWeight(float weight)
         {
             _physicsBlendWeight = weight;

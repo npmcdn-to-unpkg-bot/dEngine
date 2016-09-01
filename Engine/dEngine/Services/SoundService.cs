@@ -300,7 +300,7 @@ namespace dEngine.Services
                         var audioCycles = perfData.TotalCyclesSinceLastQuery;
 
                         CpuStats.Value = audioCycles;
-                        CpuStats.ValueString = (audioCycles/(long)totalCycles).ToString("P");
+                        CpuStats.ValueString = (audioCycles / (long)totalCycles).ToString("P");
 
                         VoiceStats.Value = perfData.TotalSourceVoiceCount;
                         VoiceActiveStats.Value = perfData.ActiveSourceVoiceCount;
@@ -367,13 +367,7 @@ namespace dEngine.Services
 
             var deviceDetails = XAudio2.GetDeviceDetails(_playbackDeviceIndex);
             DebugSettings.PlaybackDeviceName = deviceDetails.DisplayName;
-            try
-            {
-                MasteringVoice = XAudio2.CreateMasteringVoice(inputChannels, sampleRate);
-            }
-            catch (Exception e)
-            {
-            }
+            MasteringVoice = XAudio2.CreateMasteringVoice(inputChannels, sampleRate);
             X3DAudio = new X3DAudioCore(deviceDetails.OutputFormat.ChannelMask);
             UpdateMix();
         }
@@ -487,17 +481,17 @@ namespace dEngine.Services
 
         internal static float SemitonesToFrequencyRatio(float semitones)
         {
-            return Mathf.Pow(2, semitones/12);
+            return Mathf.Pow(2, semitones / 12);
         }
 
         internal static float FrequencyRatioToSemitones(float frequencyRatio)
         {
-            return (float)(Math.Log10(frequencyRatio)*12*Math.PI);
+            return (float)(Math.Log10(frequencyRatio) * 12 * Math.PI);
         }
 
         internal static float DecibelsToAmplitudeRatio(float decibels)
         {
-            return Mathf.Pow(10, decibels/20);
+            return Mathf.Pow(10, decibels / 20);
         }
 
         internal static void SetSound3D(Sound sound, bool is3D)

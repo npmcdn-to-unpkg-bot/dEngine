@@ -120,17 +120,17 @@ namespace dEngine.Services.Networking
         }
 
         /// <summary>
-        /// Fired when <see cref="Connect(string, int, int)" />successfully connects to a server. Returns the ClientReplicator.
+        /// Fired when <see cref="Connect(string, int)" />successfully connects to a server. Returns the ClientReplicator.
         /// </summary>
         public readonly Signal<ClientReplicator> Connected;
 
         /// <summary>
-        /// Fired if <see cref="Connect(string, int, int)" /> fails to connect to a server.
+        /// Fired if <see cref="Connect(string, int)" /> fails to connect to a server.
         /// </summary>
         public readonly Signal<string> Disconnected;
 
         /// <summary>
-        /// Fired if <see cref="Connect(string, int, int)" /> connects to a server, but the request to join is rejected.
+        /// Fired if <see cref="Connect(string, int)" /> connects to a server, but the request to join is rejected.
         /// </summary>
         /// <remarks>
         /// This can happen if the client and server versions are mismatched, the player is banned from server, or ticket

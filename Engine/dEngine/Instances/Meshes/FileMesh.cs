@@ -6,6 +6,7 @@ using dEngine.Instances.Attributes;
 
 namespace dEngine.Instances
 {
+    /// <summary/>
     [TypeId(26)]
     public abstract class FileMesh : Mesh
     {

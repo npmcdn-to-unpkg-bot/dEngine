@@ -166,6 +166,7 @@ namespace dEngine
             return new UDim2(left.Scale*right.Scale, left.Absolute*right.Absolute);
         }
 
+        /// <summary/>
         public void Load(BinaryReader reader)
         {
             _scaleX = reader.ReadSingle();
@@ -174,6 +175,7 @@ namespace dEngine
             _offsetY = reader.ReadInt32();
         }
 
+        /// <summary/>
         public void Save(BinaryWriter writer)
         {
             writer.Write(_scaleX);

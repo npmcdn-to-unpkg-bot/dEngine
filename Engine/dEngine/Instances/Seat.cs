@@ -14,6 +14,9 @@ namespace dEngine.Instances
     public class Seat : Part
     {
         private readonly Attachment _attachment;
+        /// <summary>
+        /// Determines if the seat is disabled.
+        /// </summary>
         protected bool _disabled;
         private bool _occupyOnTouch;
         private Character _occupant;

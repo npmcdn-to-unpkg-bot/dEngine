@@ -442,6 +442,7 @@ namespace dEngine.Instances
             ((IListenable)_cframe).UpdateListener(ref listener);
         }
 
+        /// <summary/>
         public bool IsLoaded => true;
 
         Camera IWorld.CurrentCamera

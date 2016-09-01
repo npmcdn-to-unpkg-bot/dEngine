@@ -91,6 +91,7 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary/>
         [InstMember(2)]
         [EditorVisible]
         public CFrame ModelInPrimary

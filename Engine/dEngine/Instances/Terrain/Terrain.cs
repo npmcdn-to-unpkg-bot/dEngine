@@ -11,6 +11,7 @@ using dEngine.Graphics.Structs;
 using dEngine.Instances.Attributes;
 using dEngine.Services;
 using dEngine.Utility;
+using JetBrains.Annotations;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -297,7 +298,7 @@ namespace dEngine.Instances
             }
 
             internal Vector3int16 Position { get; }
-            internal TriangleMesh PhysicsMesh { get; private set; }
+            internal TriangleMesh PhysicsMesh { get; [UsedImplicitly] private set; }
             internal int SizeInBytes => _vertexBuffer.Description.SizeInBytes + _indexBuffer.Description.SizeInBytes;
 
             internal Chunk NeighbourX
@@ -480,11 +481,12 @@ namespace dEngine.Instances
             internal readonly Cell[] _cells;
         }
 
+#pragma warning disable 1591
         public struct Cell
         {
             public readonly sbyte Density;
             public readonly CellMaterial Material;
-
+            
             public Cell(CellMaterial material, sbyte density)
             {
                 Material = material;
@@ -494,14 +496,13 @@ namespace dEngine.Instances
 
                 Density = density;
             }
-
-            /// <inheritdoc />
+            
             public override string ToString()
             {
                 return $"Cell ({Material}, {Density})";
             }
         }
-
+#pragma warning restore 1591
         #endregion
     }
 }

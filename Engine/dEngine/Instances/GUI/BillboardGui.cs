@@ -132,10 +132,14 @@ namespace dEngine.Instances
             internal set { throw new NotImplementedException(); }
         }
 
+        /// <summary/>
         public RenderObject RenderObject { get; set; }
+        /// <summary/>
         public int RenderIndex { get; set; }
+        /// <summary/>
         public InstanceRenderData RenderData { get; set; }
 
+        /// <summary/>
         public void UpdateRenderData()
         {
             throw new NotImplementedException();

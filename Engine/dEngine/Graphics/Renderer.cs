@@ -311,7 +311,7 @@ namespace dEngine.Graphics
                             Context.ClearDepthStencilView(camera.DepthStencilBuffer,
                                 DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1, 0);
                         }
-                        catch (SEHException e)
+                        catch (SEHException)
                         {
                             Debug.Assert(false);
                         }

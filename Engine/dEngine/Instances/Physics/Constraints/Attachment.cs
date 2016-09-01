@@ -206,10 +206,5 @@ namespace dEngine.Instances
                 throw new ParentException("Attachments must be parented to a Part.");
             return true;
         }
-
-        public BulletSharp.Math.Vector3 GetPivotPoint()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

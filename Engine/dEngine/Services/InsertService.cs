@@ -56,6 +56,6 @@ namespace dEngine.Services
     public partial class InsertService
     {
         // static methods
-        public static InsertService Service;
+        internal static InsertService Service;
     }
 }

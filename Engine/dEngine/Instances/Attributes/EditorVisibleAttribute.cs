@@ -16,7 +16,7 @@ namespace dEngine.Instances.Attributes
         /// </summary>
         /// <param name="group">The group name.</param>
         /// <param name="displayName">The name to display in the inspector.</param>
-        /// <param name="unknown"></param>
+        /// <param name="data"></param>
         public EditorVisibleAttribute(string group = "Data", string displayName = null, object data = null)
         {
             Group = group;
@@ -34,6 +34,7 @@ namespace dEngine.Instances.Attributes
         /// </summary>
         public string DisplayName { get; }
 
+        /// <summary/>
         public object Data { get; }
     }
 }

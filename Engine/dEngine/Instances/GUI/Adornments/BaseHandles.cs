@@ -57,6 +57,7 @@ namespace dEngine.Instances
 
         internal static bool IsMouseOverHandle => HeldHandles.Count > 0;
 
+        /// <summary/>
         protected override void OnAncestryChanged(Instance child, Instance parent)
         {
             base.OnAncestryChanged(child, parent);
@@ -105,6 +106,7 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary/>
         protected virtual void ChangeRenderObject()
         {
         }

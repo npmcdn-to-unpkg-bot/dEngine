@@ -18,6 +18,7 @@ namespace dEngine.Utility
                 .Any(a => a.FullName.StartsWith(testAssemblyName));
         }
 
+        /// <summary/>
         public static bool IsInUnitTest { get; private set; }
     }
 }

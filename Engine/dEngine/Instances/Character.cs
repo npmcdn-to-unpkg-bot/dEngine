@@ -288,6 +288,7 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary/>
         protected override void RebuildRigidBody()
         {
             lock (PhysicsSimulation.Locker)

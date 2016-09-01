@@ -122,9 +122,6 @@ namespace dEngine.Utility
                                 {
                                     var propertyName = prop.Attribute("name").Value;
 
-                                    if (propertyName == "ModelInPrimary")
-                                    ;
-
                                     if (propertyName == "CoordinateFrame") propertyName = "CFrame";
                                     if (propertyName == "size") propertyName = "Size";
                                     if (propertyName == "BrickColor") propertyName = "BrickColour";
@@ -174,9 +171,8 @@ namespace dEngine.Utility
                                                 if (propInfo.PropertyType == typeof(Material))
                                                     propInfo.SetValue(parentInst, RobloxMaterialDictionary[enumIndex]);
                                                 else if (!propInfo.PropertyType.IsEnum)
-                                                    //Logger.Warn(
-                                                    //	$"Roblox Enum \"{propInfo.PropertyType.Name}\" is not an enum in dEngine.");
-                                                ;
+                                                {
+                                                }
                                                 else
                                                     propInfo.SetValue(parentInst,
                                                         Enum.ToObject(propInfo.PropertyType, enumIndex));

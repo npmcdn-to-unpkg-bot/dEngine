@@ -30,7 +30,9 @@ namespace dEngine.Instances
         private readonly Dictionary<string, List<LuaThread>> _waitForChildList;
 
         private bool _archivable;
+        /// <summary/>
         protected bool _deserializing;
+        /// <summary/>
         protected bool _serializing;
         private string _instanceId = "";
         private string _name;

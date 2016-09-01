@@ -8,6 +8,9 @@ using SharpDX.Direct3D11;
 
 namespace dEngine.Instances
 {
+    /// <summary>
+    /// Colour correction effect.
+    /// </summary>
     [TypeId(176)]
     [ExplorerOrder(0)]
     public sealed class ColourCorrectionEffect : PostEffect

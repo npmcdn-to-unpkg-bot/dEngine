@@ -44,6 +44,7 @@ namespace dEngine.Instances
             base.Destroy();
         }
 
+        /// <summary/>
         protected override void OnStep(Part part)
         {
             part.RigidBody.ApplyCentralForceRef(ref _bulletForce);

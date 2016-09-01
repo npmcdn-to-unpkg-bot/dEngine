@@ -124,6 +124,7 @@ namespace dEngine.Instances
                 (kv as GuiElement)?.Measure();
         }
 
+        /// <summary/>
         protected override void OnAncestryChanged(Instance child, Instance parent)
         {
             base.OnAncestryChanged(child, parent);

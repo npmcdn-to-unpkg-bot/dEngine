@@ -15,6 +15,7 @@ namespace dEngine.Services.Networking
         internal NetPeer _peer;
         internal NetPeerConfiguration _peerConfig;
 
+        /// <summary/>
         protected double _accumulator;
 
         /// <summary>

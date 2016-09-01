@@ -7,6 +7,9 @@ using SharpDX.Direct3D11;
 
 namespace dEngine.Instances
 {
+    /// <summary>
+    /// Applies motion blur to fast-moving objects.
+    /// </summary>
     [TypeId(178)]
     [ExplorerOrder(0)]
     public sealed class MotionBlurEffect : PostEffect

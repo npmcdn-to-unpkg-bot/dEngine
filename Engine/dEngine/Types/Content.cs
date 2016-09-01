@@ -151,6 +151,7 @@ namespace dEngine
             return _contentId.GetHashCode();
         }
 
+        /// <summary/>
         public void RetryDownload()
         {
             ContentId = _contentId;

@@ -183,6 +183,7 @@ namespace dEngine
             return new Vector3int16((short)vector.x, (short)vector.y, (short)vector.z);
         }
 
+        /// <summary/>
         public void Load(BinaryReader reader)
         {
             x = reader.ReadInt16();
@@ -190,6 +191,7 @@ namespace dEngine
             z = reader.ReadInt16();
         }
 
+        /// <summary/>
         public void Save(BinaryWriter writer)
         {
             writer.Write(x);

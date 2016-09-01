@@ -18,8 +18,9 @@ namespace dEngine.Services
     [ToolboxGroup("Containers")]
     public sealed class ServerScriptService : Service
     {
-        public static ServerScriptService Service;
-
+        internal static ServerScriptService Service;
+        
+        /// <summary/>
         public ServerScriptService()
         {
             Service = this;

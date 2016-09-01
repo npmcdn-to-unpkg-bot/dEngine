@@ -104,6 +104,9 @@ namespace dEngine.Services
             }
         }
 
+        /// <summary>
+        /// The number of players in the game.
+        /// </summary>
         public int NumPlayers { get; private set; }
 
         /// <summary>

@@ -40,17 +40,21 @@ namespace dEngine.Data
             }
         }
 
+        /// <summary/>
         protected override void OnLoad(BinaryReader reader)
         {
             LoadTexture(reader.BaseStream, out Texture);
             IsLoaded = true;
         }
+
+        /// <summary/>
         protected override void OnSave(BinaryWriter writer)
         {
             base.OnSave(writer);
             throw new NotImplementedException();
         }
 
+        /// <summary/>
         protected override void Dispose(bool disposing)
         {
             if (_disposed)

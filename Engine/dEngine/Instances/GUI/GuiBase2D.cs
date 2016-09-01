@@ -12,7 +12,9 @@ namespace dEngine.Instances
     [ToolboxGroup("GUI")]
     public abstract class GuiBase2D : GuiBase
     {
+        /// <summary/>
         protected internal Vector2 _bbMax;
+        /// <summary/>
         protected internal Vector2 _bbMin;
 
         /// <summary>

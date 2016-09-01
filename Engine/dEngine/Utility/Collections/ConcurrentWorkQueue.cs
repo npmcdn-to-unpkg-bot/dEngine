@@ -52,13 +52,6 @@ namespace dEngine.Utility
             return _queue.ToArray();
         }
 
-        public event CollectionChangedHandler<T> CollectionChanged;
-        public event CollectionClearedHandler<T> CollectionCleared;
-        public event ItemsAddedHandler<T> ItemsAdded;
-        public event ItemInsertedHandler<T> ItemInserted;
-        public event ItemsRemovedHandler<T> ItemsRemoved;
-        public event ItemRemovedAtHandler<T> ItemRemovedAt;
-
         /// <summary>
         /// Adds an item to the end of the queue.
         /// </summary>

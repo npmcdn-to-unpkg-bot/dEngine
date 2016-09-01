@@ -19,6 +19,7 @@ namespace dEngine.Instances.Attributes
             Text = text;
         }
 
+        /// <summary/>
         public string Text { get; }
     }
 }

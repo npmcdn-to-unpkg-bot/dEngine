@@ -61,6 +61,7 @@ namespace dEngine.Settings.User
         /// </summary>
         public static string EngineVersion { get; internal set; }
 
+        /// <summary/>
         public override void RestoreDefaults()
         {
             Device = "Generic-PC";

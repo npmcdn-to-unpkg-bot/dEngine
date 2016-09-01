@@ -51,6 +51,7 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary/>
         [InstMember(3)]
         [EditorVisible("Limits")]
         public float UpperAngle
@@ -64,6 +65,7 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary/>
         protected override void RebuildConstraint()
         {
             DestroyConstraint();

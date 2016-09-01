@@ -152,11 +152,13 @@ namespace dEngine.Services
                 Actions = new List<ReplayAction>();
             }
 
+            /// <summary/>
             public void Load(BinaryReader reader)
             {
                 throw new NotImplementedException();
             }
 
+            /// <summary/>
             public void Save(BinaryWriter writer)
             {
                 writer.Write(FrameNumber);

@@ -11,6 +11,7 @@ namespace dEngine
     /// </summary>
     public abstract class Sequence<T> where T : struct
     {
+        /// <summary/>
         [InstMember(1)] protected Keypoint[] _keypoints;
 
         /// <summary>

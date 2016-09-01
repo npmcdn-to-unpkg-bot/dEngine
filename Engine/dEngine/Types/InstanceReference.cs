@@ -21,11 +21,13 @@ namespace dEngine
             InstanceId = instance.InstanceId;
         }
 
+        /// <summary/>
         public void Load(BinaryReader reader)
         {
             InstanceId = reader.ReadString();
         }
 
+        /// <summary/>
         public void Save(BinaryWriter writer)
         {
             writer.Write(InstanceId);

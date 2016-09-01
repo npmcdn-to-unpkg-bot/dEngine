@@ -451,7 +451,6 @@
     <Compile Include="Data\AnimationData.cs" />
     <Compile Include="Utility\FBX.cs" />
     <Compile Include="Types\InstanceId.cs" />
-    <Compile Include="Utility\Texture\WEBPImage.cs" />
     <Compile Include="Utility\Texture\HDRImage.cs" />
     <Compile Include="Utility\Texture\ITextureFormat.cs" />
     <Compile Include="Utility\InstanceHelper.cs" />

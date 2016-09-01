@@ -255,6 +255,10 @@ namespace dEngine
             /// </summary>
             public readonly Vector3 Position;
 
+            /// <summary>
+            /// Converts the result to a Lua tuple.
+            /// </summary>
+            /// <returns></returns>
             public LuaTuple<Part, Vector3, Vector3> ToTuple()
             {
                 return new LuaTuple<Part, Vector3, Vector3>(HitObject, Position, Normal);

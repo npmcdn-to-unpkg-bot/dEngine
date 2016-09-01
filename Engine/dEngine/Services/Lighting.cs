@@ -300,6 +300,9 @@ namespace dEngine.Services
             }
         }
 
+        /// <summary>
+        /// The intensity of the sky light.
+        /// </summary>
         [InstMember(7)]
         [EditorVisible("Appearance")]
         public float SkyLightIntensity
@@ -316,6 +319,9 @@ namespace dEngine.Services
             }
         }
 
+        /// <summary>
+        /// Determines whether the lower hemisphere of the environment map is set to black.
+        /// </summary>
         [InstMember(8)]
         [EditorVisible("Appearance")]
         public bool IsLowerHemisphereBlack

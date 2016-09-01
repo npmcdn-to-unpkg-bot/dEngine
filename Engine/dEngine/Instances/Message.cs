@@ -15,6 +15,7 @@ namespace dEngine.Instances
     public class Message : Instance
     {
         private static ScreenGui _messageScreen;
+        /// <summary/>
         protected readonly TextLabel _label;
 
         /// <summary />
@@ -67,6 +68,7 @@ namespace dEngine.Instances
                 _label.Parent = _messageScreen;
         }
 
+        /// <summary/>
         public override void Destroy()
         {
             base.Destroy();

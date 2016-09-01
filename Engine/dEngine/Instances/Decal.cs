@@ -78,7 +78,9 @@ namespace dEngine.Instances
             }
         }
 
+        /// <summary/>
         public override CFrame CFrame { get; set; }
+        /// <summary/>
         public override Vector3 Size { get; set; }
 
         /// <inheritdoc />

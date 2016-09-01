@@ -15,11 +15,13 @@ namespace dEngine.Data
         /// <inheritdoc />
         public override ContentType ContentType => ContentType.Animation;
 
+        /// <summary/>
         protected override void OnSave(BinaryWriter writer)
         {
             //base.OnSave(writer);
         }
 
+        /// <summary/>
         protected override void OnLoad(BinaryReader reader)
         {
             //base.OnLoad(reader);

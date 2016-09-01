@@ -7,6 +7,9 @@ using SharpDX.Direct3D11;
 
 namespace dEngine.Instances
 {
+    /// <summary>
+    /// Screen space reflection effect.
+    /// </summary>
     [TypeId(179)]
     [ExplorerOrder(0)]
     public sealed class ReflectionEffect : PostEffect
