@@ -177,10 +177,10 @@ namespace dEngine.Settings.User
         [EditorVisible("Controls", "Mouse Sensitivity (Vehicle)")]
         public static float MouseSensitivityVehicle
         {
-            get { return _mouseSensitivityThirdPerson; }
+            get { return _mouseSensitivityVehicle; }
             set
             {
-                _mouseSensitivityThirdPerson = value;
+                _mouseSensitivityVehicle = value;
                 NotifyChangedStatic();
             }
         }
@@ -414,5 +414,7 @@ namespace dEngine.Settings.User
         /// Fired when a custom setting is changed.
         /// </summary>
         public readonly Signal<string, string> CustomSettingChanged;
+
+        private static float _mouseSensitivityVehicle;
     }
 }
