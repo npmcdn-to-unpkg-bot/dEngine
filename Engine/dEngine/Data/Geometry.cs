@@ -11,11 +11,15 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using dEngine.Graphics;
 using dEngine.Graphics.Structs;
 using dEngine.Instances.Attributes;
 using dEngine.Instances.Materials;
+using dEngine.Utility.Extensions;
+using dEngine.Utility.FileFormats.Model;
 using dEngine.Utility.Native;
+using Microsoft.Scripting.Utils;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -29,7 +33,7 @@ namespace dEngine.Data
     [TypeId(21)]
     public class Geometry : AssetBase, IEquatable<Geometry>
     {
-        private static readonly char[] _robloxMeshVersion1 = "version 1.00".ToCharArray();
+        private static readonly byte[] _robloxMeshVersion1 = CollectionUtils.Select("version 1.00".ToCharArray(), Convert.ToByte).ToArray();
         private BoundingBox _boundingBox;
 
         /// <summary>
@@ -39,6 +43,7 @@ namespace dEngine.Data
         {
             Material = Material.Smooth;
             Vertices = new Vertex[0];
+            Weights = null;
             Indices = new int[0];
         }
 
@@ -86,12 +91,12 @@ namespace dEngine.Data
         /// <summary>
         /// The bone data.
         /// </summary>
-        internal WeightedVertex[] Weights { get; }
+        internal WeightedVertex[] Weights { get; private set; }
 
         /// <summary>
         /// The indices.
         /// </summary>
-        public int[] Indices { get; }
+        public int[] Indices { get; private set; }
 
         /// <summary>
         /// The primitive topology that this geometry renders with.
@@ -192,21 +197,32 @@ namespace dEngine.Data
         protected override void OnSave(BinaryWriter writer)
         {
             base.OnSave(writer);
+
             var vertCount = Vertices.Length;
             writer.Write(vertCount);
             for (var i = 0; i < vertCount; i++)
                 Vertices[i].Save(writer);
+
+            var vertWeightCount = Weights?.Length ?? 0;
+            writer.Write(vertWeightCount);
+            for (var i = 0; i < vertWeightCount; i++)
+                Weights?[i].Save(writer);
+
+            var indexCount = Indices.Length;
+            writer.Write(indexCount);
+            for (var i = 0; i < indexCount; i++)
+                writer.Write(Indices[i]);
         }
 
         /// <summary />
         protected override void OnLoad(BinaryReader reader)
         {
-            var header = reader.ReadChars(_robloxMeshVersion1.Length);
-            if (VisualC.CompareMemory(header, _robloxMeshVersion1, header.Length) == 0) // special case for roblox mesh
-                return;
+            if (reader.BeginsWith(_robloxMeshVersion1)) // special case for roblox mesh
+                LoadRobloxMesh(reader.BaseStream);
 
             reader.BaseStream.Position = 0;
             base.OnLoad(reader);
+
             var vertCount = reader.ReadInt32();
             Vertices = new Vertex[vertCount];
             for (var i = 0; i < vertCount; i++)
@@ -214,6 +230,22 @@ namespace dEngine.Data
                 var vert = new Vertex();
                 vert.Load(reader);
                 Vertices[i] = vert;
+            }
+
+            var vertWeightCount = reader.ReadInt32();
+            Weights = new WeightedVertex[vertWeightCount];
+            for (var i = 0; i < vertWeightCount; i++)
+            {
+                var vert = new WeightedVertex();
+                vert.Load(reader);
+                Weights[i] = vert;
+            }
+
+            var indexCount = reader.ReadInt32();
+            Indices = new int[indexCount];
+            for (var i = 0; i < indexCount; i++)
+            {
+                Indices[i] = reader.ReadInt32();
             }
         }
 

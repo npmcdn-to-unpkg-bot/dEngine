@@ -263,9 +263,14 @@
     <Compile Include="Framework\Converters\IgnoreLinebreaksConverter.cs" />
     <Compile Include="Framework\CustomCursors.cs" />
     <Compile Include="Framework\Dialog.cs" />
+    <Compile Include="Framework\IDocument.cs" />
+    <Compile Include="Framework\ILayoutItem.cs" />
+    <Compile Include="Framework\IWidget.cs" />
+    <Compile Include="Framework\IWindow.cs" />
     <Compile Include="Framework\KeyBindings\KeyBindings.cs" />
     <Compile Include="Framework\Project.cs" />
     <Compile Include="Framework\Services\FindService.cs" />
+    <Compile Include="Framework\Services\LayoutUtility.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Shell\CommandBar\CommandBarView.xaml.cs">
       <DependentUpon>CommandBarView.xaml</DependentUpon>
@@ -274,6 +279,7 @@
     <Compile Include="Shell\CommandBar\ICommandBar.cs" />
     <Compile Include="Shell\Commands\ExecuteScriptCommand.cs" />
     <Compile Include="Shell\Commands\PluginsFolderCommand.cs" />
+    <Compile Include="Shell\IShell.cs" />
     <Compile Include="Shell\StatusBar\IStatusBar.cs" />
     <Compile Include="Shell\StatusBar\StatusBarView.xaml.cs">
       <DependentUpon>StatusBarView.xaml</DependentUpon>
@@ -535,6 +541,7 @@
     </Compile>
     <Compile Include="Widgets\Properties\PropertiesViewModel.cs" />
     <Compile Include="Widgets\Properties\SimpleGridSplitter.cs" />
+    <Compile Include="Widgets\TeamExplorer\ITeamExplorer.cs" />
     <Compile Include="Widgets\TeamExplorer\TeamExplorerView.xaml.cs">
       <DependentUpon>TeamExplorerView.xaml</DependentUpon>
     </Compile>

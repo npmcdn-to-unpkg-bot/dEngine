@@ -5,16 +5,6 @@ It is currently in early development: there are no binaries, but you can downloa
 <a class="btn" href="https://github.com/DanDevPC/dEngine"><span>Visit on Github<img src="http://findicons.com/files/icons/2779/simple_icons/24/github_24_black.png"/></span></a>
 <p></p>
 
-The recommended setup:
-```plaintext
-mkdir Engine
-mkdir Editor
-git clone -b notready https://www.github.com/DanDevPC/dEngine.git Engine
-git clone https://www.github.com/DanDevPC/dEditor.git Editor
-
-
-```
-
 The following is documentation for dEngine classes.
 
 There are two types of classes in dEngine: Objects and DataTypes.

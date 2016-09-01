@@ -204,6 +204,11 @@ namespace dEngine
         public static Action<Stream> SaveGame { get; set; }
 
         /// <summary>
+        /// Fired after the <see cref="Shutdown"/> method has completed.
+        /// </summary>
+        public static event Action OnShutdown;
+
+        /// <summary>
         /// Fired when the application is closing.
         /// </summary>
         public static event EventHandler Exiting;
@@ -299,8 +304,7 @@ namespace dEngine
             CancelTokenSource.Cancel();
 
             Logger.Info("dEngine has been shutdown.");
-
-            Environment.Exit(0);
+            OnShutdown?.Invoke();
         }
 
         /// <summary>

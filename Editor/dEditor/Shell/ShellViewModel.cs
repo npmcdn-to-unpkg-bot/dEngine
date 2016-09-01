@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -30,17 +31,18 @@ using dEditor.Widgets.CodeEditor;
 using dEditor.Widgets.Viewport;
 using dEngine.Services;
 using Xceed.Wpf.AvalonDock.Layout;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
+using AvalonDockLayoutSerializer = Xceed.Wpf.AvalonDock.Layout.Serialization.XmlLayoutSerializer;
 
 namespace dEditor.Shell
 {
-    public class ShellViewModel : Conductor<Document>.Collection.OneActive
+    [Export(typeof(IShell))]
+    public class ShellViewModel : Conductor<IDocument>.Collection.OneActive, IShell
     {
-        private LayoutItem _activeLayoutItem;
+        private ILayoutItem _activeLayoutItem;
 
         public ShellViewModel()
         {
-            Widgets = new ObservableCollection<Widget>();
+            Widgets = new ObservableCollection<IWidget>();
             RecentCommands = new ObservableCollection<string>();
             LayourItemStatePersister = new LayourItemStatePersister();
 
@@ -77,13 +79,13 @@ namespace dEditor.Shell
 
         public IEnumerable<double> IncrementOptions { get; private set; }
 
-        public Document ActiveDocument
+        public IDocument ActiveDocument
         {
             get { return ActiveItem; }
             set { ActiveItem = value; }
         }
 
-        public ObservableCollection<Widget> Widgets { get; }
+        public ObservableCollection<IWidget> Widgets { get; }
         public ObservableCollection<string> RecentCommands { get; }
         public bool ShowFloatingWindowsInTaskbar { get; set; }
         public IEnumerable<object> FloatingWindows { get; internal set; }
@@ -102,7 +104,7 @@ namespace dEditor.Shell
             set { }
         }
 
-        public LayoutItem ActiveLayoutItem
+        public ILayoutItem ActiveLayoutItem
         {
             get { return _activeLayoutItem; }
             set
@@ -120,16 +122,16 @@ namespace dEditor.Shell
             }
         }
 
-        private void OnActiveDocumentChanging(Document document)
+        private void OnActiveDocumentChanging(IDocument document)
         {
             ContextActionService.SetState("viewportActive", document is ViewportViewModel);
             ContextActionService.SetState("scriptEditorActive", document is CodeEditorViewModel);
         }
 
-        public event Action<Document> ActiveDocumentChanging;
-        public event Action<Document> ActiveDocumentChanged;
+        public event Action<IDocument> ActiveDocumentChanging;
+        public event Action<IDocument> ActiveDocumentChanged;
 
-        public override void ActivateItem(Document item)
+        public override void ActivateItem(IDocument item)
         {
             ActiveDocumentChanging?.Invoke(item);
 
@@ -148,61 +150,13 @@ namespace dEditor.Shell
 
         internal void SaveLayout(Stream stream)
         {
-            var serializer = new XmlLayoutSerializer(View.DockingManager);
-            serializer.Serialize(stream);
+            LayoutUtility.SaveLayout(View.DockingManager, stream);
         }
 
-        internal void LoadLayout(Stream stream, Action<Widget> addToolCallback, Action<Document> addDocumentCallback,
-            Dictionary<string, LayoutItem> itemsState)
+        internal void LoadLayout(Stream stream, Action<IWidget> addToolCallback, Action<IDocument> addDocumentCallback,
+            Dictionary<string, ILayoutItem> itemsState)
         {
-            var serializer = new XmlLayoutSerializer(View.DockingManager);
-
-            serializer.LayoutSerializationCallback += (s, e) =>
-            {
-                LayoutItem item;
-
-                if (itemsState.TryGetValue(e.Model.ContentId, out item))
-                {
-                    e.Content = item;
-
-                    var tool = item as Widget;
-                    var anchorable = e.Model as LayoutAnchorable;
-
-                    var document = item as Document;
-                    var layoutDocument = e.Model as LayoutDocument;
-
-                    if ((tool != null) && (anchorable != null))
-                    {
-                        addToolCallback(tool);
-                        tool.IsVisible = anchorable.IsVisible;
-
-                        if (anchorable.IsActive)
-                            ((IActivate)tool).Activate();
-
-                        tool.IsSelected = e.Model.IsSelected;
-
-                        return;
-                    }
-
-                    if ((document != null) && (layoutDocument != null))
-                    {
-                        addDocumentCallback(document);
-
-                        // Nasty hack to get around issue that occurs if documents are loaded from state,
-                        // and more documents are opened programmatically.
-                        layoutDocument.GetType()
-                            .GetProperty("IsLastFocusedDocument")
-                            .SetValue(layoutDocument, false, null);
-
-                        document.IsSelected = layoutDocument.IsSelected;
-                        return;
-                    }
-                }
-
-                e.Cancel = true;
-            };
-
-            serializer.Deserialize(stream);
+            LayoutUtility.LoadLayout(View.DockingManager, stream, addDocumentCallback, addToolCallback, itemsState);
         }
 
         public void ShowProjectProperties()
@@ -237,7 +191,7 @@ namespace dEditor.Shell
         /// <summary>
         /// Shows an instance of a tool.
         /// </summary>
-        public void ShowTool(Widget tool)
+        public void ShowTool(IWidget tool)
         {
             if (tool.IsVisible)
                 throw new InvalidOperationException("Tool already shown.");
@@ -258,14 +212,14 @@ namespace dEditor.Shell
         /// <summary>
         /// Opens an instance of a document.
         /// </summary>
-        public void OpenDocument(Document document)
+        public void OpenDocument(IDocument document)
         {
             if (document.IsVisible)
                 throw new InvalidOperationException("Document already open.");
 
             Items.Add(document);
 
-            ActiveLayoutItem = document;
+            ActiveLayoutItem = (ILayoutItem)document;
 
             document.IsVisible = true;
         }
@@ -286,7 +240,7 @@ namespace dEditor.Shell
             CloseDocument(Viewport);
         }
 
-        public override void DeactivateItem(Document item, bool close)
+        public override void DeactivateItem(IDocument item, bool close)
         {
             ActiveDocumentChanging?.Invoke(item);
 
@@ -317,15 +271,15 @@ namespace dEditor.Shell
         {
             if (viewModelType == null) return;
 
-            Widget tool;
-            Document doc;
+            IWidget tool;
+            IDocument doc;
 
             // if the document/tool is already open, highlight it.
-            if (typeof(Document).IsAssignableFrom(viewModelType))
+            if (typeof(IDocument).IsAssignableFrom(viewModelType))
             {
                 if ((doc = Items.FirstOrDefault(x => x.GetType() == viewModelType)) != null)
                 {
-                    ActiveLayoutItem = doc;
+                    ActivateItem(doc);
                     return;
                 }
             }
@@ -339,8 +293,8 @@ namespace dEditor.Shell
             }
 
             var item = (LayoutItem)Activator.CreateInstance(viewModelType);
-            tool = item as Widget;
-            doc = item as Document;
+            tool = item as IWidget;
+            doc = item as IDocument;
             var dialog = item as Dialog;
 
             if (tool != null)

@@ -33,7 +33,7 @@ namespace dEditor.Framework.Services
                 {
                     stream = null;
 
-                    var itemStates = shell.Items.Concat(shell.Widgets.Cast<LayoutItem>());
+                    var itemStates = shell.Items.Concat<ILayoutItem>(shell.Widgets);
 
                     var itemCount = 0;
                     // reserve some space for items count, it'll be updated later
@@ -49,7 +49,7 @@ namespace dEditor.Framework.Services
                             .GetCustomAttributes(typeof(ExportAttribute), false)
                             .Cast<ExportAttribute>().ToList();
 
-                        var layoutType = typeof(LayoutItem);
+                        var layoutType = typeof(ILayoutItem);
                         // get exports with explicit types or names that inherit from ILayoutItem
                         var exportTypes = (from att in exportAttributes
                             // select the contract type if it is of type ILayoutitem. else null
@@ -144,14 +144,14 @@ namespace dEditor.Framework.Services
                 return null;
 
             var type = Type.GetType(typeName);
-            if ((type == null) || !typeof(LayoutItem).IsInstanceOfType(type))
+            if ((type == null) || !typeof(ILayoutItem).IsInstanceOfType(type))
                 return null;
             return type;
         }
 
         public void LoadState(ShellViewModel shell, ShellView shellView, string fileName)
         {
-            var layoutItems = new Dictionary<string, LayoutItem>();
+            var layoutItems = new Dictionary<string, ILayoutItem>();
 
             if (!File.Exists(fileName))
                 return;
@@ -180,7 +180,7 @@ namespace dEditor.Framework.Services
 
                         if (contentType != null)
                         {
-                            var contentInstance = IoC.GetInstance(contentType, null) as LayoutItem;
+                            var contentInstance = IoC.GetInstance(contentType, null) as ILayoutItem;
 
                             if (contentInstance != null)
                             {

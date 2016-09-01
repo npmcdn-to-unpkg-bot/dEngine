@@ -17,7 +17,7 @@ using Caliburn.Micro;
 
 namespace dEditor.Framework
 {
-    public abstract class LayoutItem : Screen
+    public abstract class LayoutItem : Screen, ILayoutItem
     {
         protected RelayCommand _closeCommand;
         private Guid _guid;

@@ -92,7 +92,7 @@ namespace dEditor.Framework.Plugins
                 NotifyOfPropertyChange(nameof(IsChecked));
         }
 
-        private void UpdateButtonEnabled(Document doc)
+        private void UpdateButtonEnabled(IDocument doc)
         {
             if ((doc?.IsActive == true) && doc is ViewportViewModel)
                 _button.IsEnabled = true;

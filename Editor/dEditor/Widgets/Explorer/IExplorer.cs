@@ -1,8 +1,9 @@
-﻿using dEngine.Instances;
+﻿using dEditor.Framework;
+using dEngine.Instances;
 
 namespace dEditor.Widgets.Explorer
 {
-    public interface IExplorer
+    public interface IExplorer : IWidget
     {
         Instance LastClickedInstance { get; set; }
         ExplorerItem RootItem { get; set; }

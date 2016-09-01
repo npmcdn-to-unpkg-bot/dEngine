@@ -9,9 +9,11 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+using dEditor.Framework;
+
 namespace dEditor.Widgets.ContentBrowser
 {
-    public interface IContentBrowser
+    public interface IContentBrowser : IWidget
     {
         bool IsDirectoryTreeVisible { get; set; }
         bool ShowFolders { get; set; }

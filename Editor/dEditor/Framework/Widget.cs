@@ -16,7 +16,7 @@ namespace dEditor.Framework
     /// <summary>
     /// A widget which can be docked to the shell.
     /// </summary>
-    public abstract class Widget : LayoutItem
+    public abstract class Widget : LayoutItem, IWidget
     {
         public abstract PaneLocation PreferredLocation { get; }
 
@@ -34,6 +34,11 @@ namespace dEditor.Framework
             base.TryClose(dialogResult);
 
             Editor.Current.Shell.Widgets.Remove(this);
+        }
+
+        public void Activate()
+        {
+            Editor.Current.Shell.ActiveLayoutItem = this;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace dEditor.Framework
     /// <summary>
     /// A document is a type of module which is docked in the middle of the window.
     /// </summary>
-    public abstract class Document : LayoutItem
+    public abstract class Document : LayoutItem, IDocument
     {
         protected Document()
         {

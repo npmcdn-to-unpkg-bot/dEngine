@@ -76,7 +76,34 @@
                             <Separator />
                             <MenuItem Header="Exit" cal:Message.Attach="[Click] = [TryClose(false)]" />
                         </MenuItem>
-                        <MenuItem Header="Edit" Style="{StaticResource {x:Type MenuItem}}" />
+                        <MenuItem Header="Edit" Style="{StaticResource {x:Type MenuItem}}">
+                            <MenuItem Header="Undo">
+                                <MenuItem.Icon>
+                                    <Image Source="/dEditor;component/Content/Icons/Toolbar/Arrow_UndoRevertRestore_16xLG_color.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Redo">
+                                <MenuItem.Icon>
+                                    <Image Source="/dEditor;component/Content/Icons/Toolbar/Arrow_RedoRetry_16xLG_color.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator/>
+                            <MenuItem Header="Cut">
+                                <MenuItem.Icon>
+                                    <Image Source="/dEditor;component/Content/Icons/Toolbar/Cut_6523.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Copy">
+                                <MenuItem.Icon>
+                                    <Image Source="/dEditor;component/Content/Icons/Toolbar/Copy_6524.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Paste">
+                                <MenuItem.Icon>
+                                    <Image Source="/dEditor;component/Content/Icons/Toolbar/clipboard_16xLG.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
                         <MenuItem Header="View" Style="{StaticResource {x:Type MenuItem}}">
                             <MenuItem Header="Start Page" cal:Message.Attach="[Click] = [OpenView($this.Tag)]">
                                 <MenuItem.Tag>
@@ -134,7 +161,6 @@
                                 </MenuItem.Tag>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Header="Insert" Style="{StaticResource {x:Type MenuItem}}" />
                         <MenuItem Header="Tools" Style="{StaticResource {x:Type MenuItem}}">
                             <MenuItem Header="Execute Script" Command="{Binding ExecuteScriptCommand}" />
                             <Separator />
@@ -154,7 +180,16 @@
                             <Separator />
                             <MenuItem Header="Settings..." cal:Message.Attach="[Click] = [OpenSettingsView()]" />
                         </MenuItem>
-                        <MenuItem Header="Help" Style="{StaticResource {x:Type MenuItem}}" />
+                        <MenuItem Header="Help" Style="{StaticResource {x:Type MenuItem}}">
+                            <MenuItem Header="About dEngine..." cal:Message.Attach="[Click] = [OpenAboutBox()]" />
+                            <MenuItem Header="View Help" cal:Message.Attach="[Click] = [OpenHelpPage()]" />
+                            <MenuItem Header="Customise Shortcuts" cal:Message.Attach="[Click] = [OpenShortcutsView()]" />
+                            <MenuItem Header="Object Browser" cal:Message.Attach="[Click] = [OpenView($this.Tag)]">
+                                <MenuItem.Tag>
+                                    <x:Type TypeName="objectBrowser:ObjectBrowserViewModel" />
+                                </MenuItem.Tag>
+                            </MenuItem>
+                        </MenuItem>
                     </Menu>
                     <Border BorderThickness="0, 1, 0, 1" BorderBrush="#CCC" Margin="0, 1, 0, 0">
                         <ToolBarTray x:Name="ToolBarTray" Background="White" VerticalAlignment="Center"

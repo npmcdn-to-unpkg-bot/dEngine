@@ -2744,7 +2744,7 @@
         </member>
         <member name="P:dEngine.Instances.FileMesh.MeshId">
             <summary>
-            The content ID of the skeletal mesh data.
+            The content ID of the mesh data.
             </summary>
         </member>
         <member name="T:dEngine.Instances.Mesh">
@@ -8461,6 +8461,18 @@
             Conditions that should be true at the end of every public method.
             </summary>
         </member>
+        <member name="T:dEngine.Utility.Extensions.BinaryReaderExtensions">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Utility.Extensions.BinaryReaderExtensions.BeginsWith(System.IO.BinaryReader,System.Byte[],System.Boolean)">
+            <summary>
+            Determines if the stream starts with the given magic bytes.
+            </summary>
+            <param name="reader"></param>
+            <param name="magic"></param>
+            <param name="resetPos">If true, the stream position will be set to 0.</param>
+            <returns></returns>
+        </member>
         <member name="M:dEngine.Utility.Extensions.BinaryArrayExtensions.ReverseForBigEndian(System.Byte[],System.Int32,System.Int32)">
             <summary />
             <param name="byteArray">The source array to get reversed bytes for</param>
@@ -10244,6 +10256,11 @@
         <member name="P:dEngine.Engine.SaveGame">
             <summary>
             A callback which is invoked when the game is saved.
+            </summary>
+        </member>
+        <member name="E:dEngine.Engine.OnShutdown">
+            <summary>
+            Fired after the <see cref="M:dEngine.Engine.Shutdown(System.Int32)"/> method has completed.
             </summary>
         </member>
         <member name="E:dEngine.Engine.Exiting">

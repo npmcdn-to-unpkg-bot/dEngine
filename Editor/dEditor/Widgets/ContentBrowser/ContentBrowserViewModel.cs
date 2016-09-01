@@ -41,8 +41,7 @@ namespace dEditor.Widgets.ContentBrowser
 
         public string FolderFilter { get; set; }
         public string FileFilter { get; set; }
-
-
+        
         public DirectoryTreeItem SelectedDirectory
         {
             get { return _selectedDirectory; }
@@ -132,6 +131,20 @@ namespace dEditor.Widgets.ContentBrowser
                 UpdateContents();
                 NotifyOfPropertyChange();
             }
+        }
+
+        public override void SaveState(BinaryWriter writer)
+        {
+            writer.Write(ShowFolders);
+            writer.Write(ShowNonContent);
+            writer.Write(IsDirectoryTreeVisible);
+        }
+
+        public override void LoadState(BinaryReader reader)
+        {
+            ShowFolders = reader.ReadBoolean();
+            ShowNonContent = reader.ReadBoolean();
+            IsDirectoryTreeVisible = reader.ReadBoolean();
         }
 
         protected override void OnDeactivate(bool close)

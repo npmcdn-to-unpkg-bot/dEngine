@@ -26,7 +26,7 @@ namespace dEngine.Instances
         }
 
         /// <summary>
-        /// The content ID of the skeletal mesh data.
+        /// The content ID of the mesh data.
         /// </summary>
         [InstMember(1)]
         [EditorVisible]

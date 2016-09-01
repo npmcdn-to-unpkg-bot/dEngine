@@ -9,9 +9,11 @@
 // You should have received a copy of the GNU General Public
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+using dEditor.Framework;
+
 namespace dEditor.Widgets.Output
 {
-    public interface IOutput
+    public interface IOutput : IWidget
     {
         bool WordWrap { get; set; }
     }
