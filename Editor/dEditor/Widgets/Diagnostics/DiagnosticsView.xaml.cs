@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿// DiagnosticsView.xaml.cs - dEditor
+// Copyright © https://github.com/DanDevPC/
+// This file is subject to the terms and conditions defined in the 'LICENSE' file.
+using System.Windows.Controls;
 using dEditor.Widgets.Diagnostics.SharpTreeView;
 
 namespace dEditor.Widgets.Diagnostics

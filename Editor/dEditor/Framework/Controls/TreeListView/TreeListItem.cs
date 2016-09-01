@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿// TreeListItem.cs - dEditor
+// Copyright © https://github.com/DanDevPC/
+// This file is subject to the terms and conditions defined in the 'LICENSE' file.
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 

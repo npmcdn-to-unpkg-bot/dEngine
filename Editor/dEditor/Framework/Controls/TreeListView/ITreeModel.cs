@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// ITreeModel.cs - dEditor
+// Copyright © https://github.com/DanDevPC/
+// This file is subject to the terms and conditions defined in the 'LICENSE' file.
+using System.Collections;
 
 namespace dEditor.Framework.Controls.TreeListView
 {
