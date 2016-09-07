@@ -10,7 +10,7 @@ namespace dEngine.Data
     /// Container class for animation data;
     /// </summary>
     [TypeId(23)]
-    public class AnimationData : AssetBase
+    public sealed class AnimationData : AssetBase
     {
         /// <inheritdoc />
         public override ContentType ContentType => ContentType.Animation;

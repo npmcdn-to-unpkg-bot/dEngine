@@ -40,7 +40,7 @@ namespace dEditor.Widgets.Properties.Inspectors.Number
         private void UIElement_OnGotFocus(object sender, RoutedEventArgs e)
         {
             dynamic vm = DataContext;
-            CurrentConverter.DecimalCount = vm.IsRanged ? 4 : 18;
+            CurrentConverter.DecimalCount = vm.IsRanged ? 4 : 6;
             vm.NotifyOfPropertyChange("DoubleValue");
         }
 

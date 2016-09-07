@@ -1,21 +1,24 @@
 ﻿// ContentItem.cs - dEditor
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
 using dEditor.Utility;
+using dEditor.Widgets.ContentBrowser.ContextMenus;
 using dEngine;
 using dEngine.Data;
-using dEngine.Serializer.V1;
 
 namespace dEditor.Widgets.ContentBrowser
 {
     public class ContentItem : PropertyChangedBase
     {
         private Uri _icon;
+        private ContextMenu _contextMenu;
 
         protected ContentItem()
         {
@@ -32,6 +35,7 @@ namespace dEditor.Widgets.ContentBrowser
             {
                 Type = AssetBase.PeekContent(stream);
             }
+            ContextMenu = new FileContextMenu();
         }
 
         public ContentItem(DirectoryInfo directory)
@@ -40,11 +44,23 @@ namespace dEditor.Widgets.ContentBrowser
             Directory = directory;
             UpdateIcon();
             Type = null;
+            ContextMenu = new FolderContextMenu();
         }
 
         public ContentItem(string name)
         {
             Name = name;
+        }
+
+        public ContextMenu ContextMenu
+        {
+            get { return _contextMenu; }
+            set
+            {
+                if (Equals(value, _contextMenu)) return;
+                _contextMenu = value;
+                NotifyOfPropertyChange();
+            }
         }
 
         public string Name { get; private set; }
@@ -74,7 +90,7 @@ namespace dEditor.Widgets.ContentBrowser
 
             if (IsFolder)
                 contentBrowser.SelectedDirectory =
-                    contentBrowser.GetDirectoryItem((item) => item.Directory.EqualsDir(Directory));
+                    contentBrowser.GetDirectoryItem(item => item.Directory.EqualsDir(Directory));
             else
                 switch (Type)
                 {
@@ -100,9 +116,7 @@ namespace dEditor.Widgets.ContentBrowser
         public void OnMouseLeftButtonDown(MouseButtonEventArgs args)
         {
             if (args.ClickCount == 2)
-            {
                 Open();
-            }
         }
 
         protected virtual string GetIconName()
@@ -110,64 +124,57 @@ namespace dEditor.Widgets.ContentBrowser
             string iconName;
 
             if (IsFolder)
-            {
                 iconName = "Folder_256x";
-            }
             else
-            {
                 switch (Extension)
                 {
-                    case "game":
+                    case ".game":
                         iconName = "dEngine_256x";
                         break;
-                    case "place":
+                    case ".place":
                         iconName = "Web_256x";
                         break;
-                    case "stmesh":
+                    case ".mesh":
                         iconName = "3DScene_256x";
                         break;
-                    case "skmesh":
-                        iconName = "3DScene_256x";
-                        break;
-                    case "model":
+                    case ".model":
                         iconName = "Bricks_256x";
                         break;
-                    case "texture":
+                    case ".texture":
                         iconName = "Image_256x";
                         break;
-                    case "sound":
+                    case ".sound":
                         iconName = "SoundFile_256x";
                         break;
-                    case "anim":
+                    case ".animation":
                         iconName = "UseCaseDiagram_256x";
                         break;
-                    case "script":
+                    case ".script":
                         iconName = "LuaFile_256x";
                         break;
-                    case "cubemap":
+                    case ".cubemap":
                         iconName = "ResourceTemplate_256x";
                         break;
-                    case "video":
+                    case ".video":
                         iconName = "PlayVideo_256x";
                         break;
-                    case "skeleton":
+                    case ".skeleton":
                         iconName = "UseCaseDiagram_256x";
                         break;
-                    case "material":
+                    case ".material":
                         iconName = "Member_256x";
                         break;
                     default:
                         iconName = "File_256x";
                         break;
                 }
-            }
 
             return iconName;
         }
 
         public void UpdateIcon()
         {
-            string iconName = GetIconName();
+            var iconName = GetIconName();
             Icon = new Uri($"/dEditor;component/Content/Icons/Toolbar/{iconName}.png", UriKind.Relative);
         }
     }

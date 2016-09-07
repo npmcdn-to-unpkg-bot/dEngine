@@ -5,7 +5,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Assimp;
 using dEngine.Utility;
 using SharpDX;
 
@@ -207,14 +206,7 @@ namespace dEngine
             var vals = s.Split(',').Select(float.Parse).ToArray();
             return new Vector3(vals[0], vals[1], vals[2]);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static explicit operator Vector3(Vector3D v)
-        {
-            return new Vector3(v.X, v.Y, v.Z);
-        }
-
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator Vector3(System.Numerics.Vector3 v)
         {

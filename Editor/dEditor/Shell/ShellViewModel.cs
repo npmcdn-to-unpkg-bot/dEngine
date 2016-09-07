@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
+using dEditor.Dialogs.ModelImport;
 using dEditor.Dialogs.ProjectProperties;
 using dEditor.Dialogs.Settings;
 using dEditor.Framework;
@@ -20,10 +21,9 @@ using dEditor.Shell.StatusBar;
 using dEditor.Tools;
 using dEditor.Tools.Building;
 using dEditor.Widgets.CodeEditor;
+using dEditor.Widgets.ContentBrowser.Util;
 using dEditor.Widgets.Viewport;
 using dEngine.Services;
-using Xceed.Wpf.AvalonDock.Layout;
-using AvalonDockLayoutSerializer = Xceed.Wpf.AvalonDock.Layout.Serialization.XmlLayoutSerializer;
 
 namespace dEditor.Shell
 {
@@ -34,6 +34,7 @@ namespace dEditor.Shell
 
         public ShellViewModel()
         {
+            RegisterCommands();
             Widgets = new ObservableCollection<IWidget>();
             RecentCommands = new ObservableCollection<string>();
             LayourItemStatePersister = new LayourItemStatePersister();
@@ -163,7 +164,7 @@ namespace dEditor.Shell
         /// <summary>
         /// Shows an instance of a dialog.
         /// </summary>
-        public void ShowDialog(Dialog dialog)
+        public void ShowDialog(IDialog dialog)
         {
             Editor.Current.WindowManager.ShowDialog(dialog, null, new Dictionary<string, object>
             {
@@ -211,7 +212,7 @@ namespace dEditor.Shell
 
             Items.Add(document);
 
-            ActiveLayoutItem = (ILayoutItem)document;
+            ActiveLayoutItem = document;
 
             document.IsVisible = true;
         }
@@ -265,6 +266,7 @@ namespace dEditor.Shell
 
             IWidget tool;
             IDocument doc;
+            IDialog dialog;
 
             // if the document/tool is already open, highlight it.
             if (typeof(IDocument).IsAssignableFrom(viewModelType))
@@ -287,7 +289,7 @@ namespace dEditor.Shell
             var item = (LayoutItem)Activator.CreateInstance(viewModelType);
             tool = item as IWidget;
             doc = item as IDocument;
-            var dialog = item as Dialog;
+            dialog = item as IDialog;
 
             if (tool != null)
                 ShowTool(tool);
@@ -297,6 +299,19 @@ namespace dEditor.Shell
                 ShowDialog(dialog);
             else
                 throw new ArgumentOutOfRangeException();
+        }
+
+        public void RegisterCommands()
+        {
+            ContextActionService.Register("csg.union", () => UnionCommand.Execute(null));
+            ContextActionService.Register("csg.negate", () => NegateCommand.Execute(null));
+            ContextActionService.Register("csg.seperate", () => SeparateCommand.Execute(null));
+
+            ContextActionService.Register("project.save", () => SaveProjectCommand.Execute(null));
+            ContextActionService.Register("project.open", () => OpenProjectCommand.Execute(null));
+            ContextActionService.Register("project.new", () => NewProjectCommand.Execute(null));
+            ContextActionService.Register("project.newPlace", () => NewPlaceCommand.Execute(null));
+            ContextActionService.Register("executeScript", () => ExecuteScriptCommand.Execute(null));
         }
 
         #region Commands
@@ -329,9 +344,8 @@ namespace dEditor.Shell
 
         public ExecuteScriptCommand ExecuteScriptCommand { get; } = new ExecuteScriptCommand();
 
-        public CommandBarViewModel CommandBar { get; set; } = new CommandBarViewModel();
-        public StatusBarViewModel StatusBar { get; set; } = new StatusBarViewModel();
-
+        public CommandBarViewModel CommandBar { get; set; } = (CommandBarViewModel)IoC.Get<ICommandBar>();
+        public StatusBarViewModel StatusBar { get; set; } = (StatusBarViewModel)IoC.Get<IStatusBar>();
         #endregion
     }
 }

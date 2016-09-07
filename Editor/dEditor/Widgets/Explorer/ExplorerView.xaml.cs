@@ -138,7 +138,7 @@ namespace dEditor.Widgets.Explorer
 
             Script script;
             if ((script = item.Instance as Script) != null)
-                CodeEditorViewModel.TryOpenScript(script);
+                EditorProvider.Open(script);
         }
     }
 }

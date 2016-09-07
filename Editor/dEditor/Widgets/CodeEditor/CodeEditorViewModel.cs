@@ -22,8 +22,9 @@ using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
 namespace dEditor.Widgets.CodeEditor
 {
-    [Export(typeof(ICodeEditor))]
-    public class CodeEditorViewModel : Document, ICodeEditor
+    [Export(typeof(CodeEditorViewModel))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class CodeEditorViewModel : Document
     {
         private FontFamily _fontFamily;
         private float _fontSize;
@@ -171,16 +172,23 @@ namespace dEditor.Widgets.CodeEditor
             callback(true);
         }
 
-        public static void TryOpenScript(LuaSourceContainer script, int lineNumber = 0)
-        {
-            var editor = IoC.Get<ICodeEditor>(script.InstanceId);
-            Editor.Current.Shell.ActiveDocument = (CodeEditorViewModel)editor;
-        }
-
         public static readonly DependencyProperty ZoomInCommandProperty = DependencyProperty.Register("ZoomInCommand",
             typeof(ICommand), typeof(CodeEditorViewModel));
 
         public static readonly DependencyProperty ZoomOutCommandProperty = DependencyProperty.Register("ZoomOutCommand",
             typeof(ICommand), typeof(CodeEditorViewModel));
+
+        public void ScrollTo(int lineNumber)
+        {
+            var editor = TextEditor;
+            if (editor != null)
+            {
+                editor.ScrollToLine(lineNumber);
+            }
+            else
+            {
+                ViewAttached += (s, e) => editor.ScrollToLine(lineNumber);
+            }
+        }
     }
 }

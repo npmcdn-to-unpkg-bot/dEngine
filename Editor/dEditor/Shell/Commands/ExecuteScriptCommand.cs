@@ -14,7 +14,6 @@ namespace dEditor.Shell.Commands
     {
         public override string Name { get; } = "Execute Script";
         public override string Text { get; } = "Executes a script from a file.";
-        public override KeyGesture KeyGesture { get; } = new KeyGesture(Key.None);
 
         public override bool CanExecute(object parameter)
         {

@@ -19,7 +19,7 @@ namespace dEngine.Data
     /// A texture with 6 faces.
     /// </summary>
     [TypeId(27)]
-    public class Cubemap : AssetBase
+    public sealed class Cubemap : AssetBase
     {
         internal Texture Texture;
 

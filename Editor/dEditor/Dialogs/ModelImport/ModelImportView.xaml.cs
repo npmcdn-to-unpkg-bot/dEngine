@@ -3,14 +3,14 @@
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 using System.Windows.Controls;
 
-namespace dEditor.Widgets.Assets
+namespace dEditor.Dialogs.ModelImport
 {
     /// <summary>
     /// Interaction logic for FBXImportView.xaml
     /// </summary>
-    public partial class FBXImportView : UserControl
+    public partial class ModelImportView : UserControl
     {
-        public FBXImportView()
+        public ModelImportView()
         {
             InitializeComponent();
         }

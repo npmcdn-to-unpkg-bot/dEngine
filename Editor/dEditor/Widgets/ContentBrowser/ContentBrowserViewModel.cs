@@ -7,8 +7,11 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using Caliburn.Micro;
 using dEditor.Framework;
+using dEditor.Framework.Services;
 using dEditor.Utility;
+using Microsoft.Win32;
 
 namespace dEditor.Widgets.ContentBrowser
 {
@@ -195,6 +198,40 @@ namespace dEditor.Widgets.ContentBrowser
                 contents.AddRange(dir.GetFiles(filter, SearchOption.TopDirectoryOnly).Select(f => new ContentItem(f)));
 
             Contents = contents;
+        }
+
+        public void ShowImportFileDialog()
+        {
+            var filter = "";
+
+            foreach (var kv in ContentManager.Formats)
+            {
+                var formatsComma = "";
+                var formatsColon = "";
+
+                foreach (var format in kv.Value)
+                {
+                    formatsComma += $"*{format}, ";
+                    formatsColon += $"*{format}; ";
+                }
+
+                formatsComma = formatsComma.Substring(0, formatsColon.Length - 2);
+                formatsColon = formatsColon.Substring(0, formatsColon.Length - 2);
+
+                filter += $"{kv.Key} ({formatsComma})|{formatsColon}|";
+            }
+
+            filter = filter.Substring(0, filter.Length-1);
+
+            var dialog = new OpenFileDialog
+            {
+                Filter = filter
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                ContentManager.Import(dialog.FileNames, SelectedDirectory.Path);
+            }
         }
 
         public void ShowDirectoryTree()

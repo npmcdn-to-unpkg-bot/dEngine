@@ -14,7 +14,6 @@ namespace dEditor.Widgets.Explorer
     {
         public override string Name => "Make Plugin";
         public override string Text => "Saves the selected container as a plugin.";
-        public override KeyGesture KeyGesture { get; }
 
         public override bool CanExecute(object parameter)
         {

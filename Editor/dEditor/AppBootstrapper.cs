@@ -4,18 +4,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.ReflectionModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
@@ -24,10 +21,7 @@ using dEditor.Framework.Services;
 using dEditor.Instances;
 using dEditor.Shell;
 using dEditor.Shell.Client;
-using dEditor.Shell.CommandBar;
-using dEditor.Shell.StatusBar;
 using dEditor.Tools;
-using dEditor.Widgets.CodeEditor;
 using dEditor.Widgets.StartPage;
 using dEngine;
 using dEngine.Instances;
@@ -40,18 +34,12 @@ namespace dEditor
 {
     public class AppBootstrapper : BootstrapperBase
     {
-        private static readonly Assembly _externalBaml =
-            Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "dEditor.exe"));
-
         internal DispatcherTimer AutoSaveTimer;
         private List<Assembly> _priorityAssemblies;
 
         protected CompositionContainer Container { get; set; }
 
-        internal IList<Assembly> PriorityAssemblies
-        {
-            get { return _priorityAssemblies; }
-        }
+        internal IList<Assembly> PriorityAssemblies => _priorityAssemblies;
 
         public AppBootstrapper()
         {
@@ -80,9 +68,9 @@ namespace dEditor
                 }
             };
 
-            ContentProvider.CustomFetchHandler = CustomFetchHandler;
-            Engine.Start(EngineMode.LevelEditor);
-            Engine.OnShutdown += () => Editor.Current.Dispatcher.Invoke(() => Editor.Current.Shutdown());
+            ContentManager.RegisterProtocols();
+            Engine.Start(EngineMode.LevelEditor, "dEditor");
+            Engine.Exiting += () => Editor.Current.Dispatcher.Invoke(() => Editor.Current.Shutdown());
 
             DataModel.SetStartupArguments(new Dictionary<string, string> {{"IsEditor", "true"}});
             InputService.MouseInputApi = InputApi.Windows;
@@ -92,16 +80,16 @@ namespace dEditor
             KeyBindings.Init();
             FindService.Init();
 
-            //InstTest();
-
             ToolManager.SelectTool.IsEquipped = true;
 
             AutoSaveTimer = new DispatcherTimer(TimeSpan.FromMinutes(EditorSettings.AutosaveInterval),
                 DispatcherPriority.Background, PerformAutoSave, Editor.Current.Dispatcher);
         }
         
-        protected virtual void PreInitialize()
+        protected void PreInitialize()
         {
+            // converts fbx to engine binary format
+            //ContentManager.ConvertPrimitivesToGeometry();
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
@@ -153,40 +141,13 @@ namespace dEditor
 
         protected override object GetInstance(Type serviceType, string key)
         {
-            /*
-            if (service == typeof(IWindowManager))
-                service = typeof(WindowManager);
-
-            if (service == typeof(ICommandBar))
-                return Editor.Current.Shell.CommandBar;
-            if (service == typeof(IStatusBar))
-                return Editor.Current.Shell.StatusBar;
-            if (service == typeof(ICodeEditor))
-            {
-                var existing = Editor.Current.Shell?.Items.OfType<CodeEditorViewModel>()
-                    .FirstOrDefault(w => w.LuaSourceContainer.InstanceId.Equals(key));
-                if (existing != null)
-                    return existing;
-
-                WeakReference<Instance> obj;
-                Game.Instances.TryGetValue(key, out obj);
-                var editor = new CodeEditorViewModel((LuaSourceContainer)obj);
-                Editor.Current.Shell?.OpenDocument(editor);
-                return editor;
-            }
-
-            var item = Editor.Current.Shell?.Widgets.FirstOrDefault(service.IsInstanceOfType);
-
-            if (item != null)
-                return item;
-
-            return base.GetInstance(service, key);
-            */
-            string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
+            var contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
             var exports = Container.GetExports<object>(contract);
 
-            if (exports.Any())
-                return exports.First().Value;
+            var export = exports.FirstOrDefault();
+
+            if (export != null)
+                return export.Value;
 
             throw new Exception($"Could not locate any instances of contract {contract}.");
         }
@@ -198,35 +159,6 @@ namespace dEditor
             if (typeof(Widget).IsAssignableFrom(service))
                 return Editor.Current.Shell?.Widgets.Where(w => w.GetType() == service) ?? Enumerable.Empty<object>();
             return new[] {service.FastConstruct()};
-        }
-
-        private static Stream CustomFetchHandler(string protocol, string path)
-        {
-            switch (protocol)
-            {
-                case "places":
-                    return File.OpenRead(Path.Combine(Project.Current.ProjectPath, "Places", path + ".place"));
-                case "content":
-                    return File.OpenRead(Path.Combine(Project.Current.ContentPath, path));
-                case "editor":
-                    var editorPath = $"content/{path.ToLower()}";
-                    var resourceStream =
-                        _externalBaml.GetManifestResourceStream(_externalBaml.GetName().Name + ".g.resources");
-                    using (var reader = new ResourceReader(resourceStream))
-                    {
-                        foreach (DictionaryEntry entry in reader)
-                        {
-                            var test = entry.Key.ToString().Contains("json");
-                            if (test)
-                            ;
-                            if (entry.Key.ToString() == editorPath)
-                                return (Stream)entry.Value;
-                        }
-                    }
-                    throw new NotSupportedException($"No file found in editor manifest resource.");
-                default:
-                    return null;
-            }
         }
 
         private static void PerformAutoSave(object sender, EventArgs e)

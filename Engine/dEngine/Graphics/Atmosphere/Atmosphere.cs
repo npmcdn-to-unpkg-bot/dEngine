@@ -119,7 +119,7 @@ namespace dEngine.Graphics.Atmosphere
                 UpdateRayleigh();
                 var context = Renderer.Context;
 
-                context.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
+                context.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList;
 
                 _constants.Data = new PrecomputeConstantData {BetaR = _finalBetaR, ResR = (int)InscatterAltitudeSample};
                 _constants.Update(ref context);

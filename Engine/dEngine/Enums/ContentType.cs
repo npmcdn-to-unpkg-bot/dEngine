@@ -21,6 +21,6 @@ namespace dEngine
         Cubemap,
         Video,
         Material,
-        Instance
+        Instance,
     }
 }

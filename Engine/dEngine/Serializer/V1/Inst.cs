@@ -161,6 +161,10 @@ namespace dEngine.Serializer.V1
             }
         }
 
+        public static TInstance Deserialize<TInstance>(Stream input, Instance existing = null, bool skipMagic = false) where TInstance : Instance
+        {
+            return (TInstance)Deserialize(input, existing, skipMagic);
+        }
 
         /// <summary>
         /// </summary>
@@ -846,7 +850,7 @@ namespace dEngine.Serializer.V1
             public CachedType(Type type)
             {
                 Type = type;
-                TypeId = type.GetCustomAttribute<TypeIdAttribute>().Id;
+                TypeId = type.GetCustomAttribute<TypeIdAttribute>()?.Id ?? -1;
                 Properties = new List<CachedProperty>();
                 TaggedProperties = new Dictionary<int, CachedProperty>();
 
@@ -1006,6 +1010,7 @@ namespace dEngine.Serializer.V1
 
             public void FastSet(object o, object val)
             {
+                val = Dynamic.CoerceConvert(val, PropertyType);
                 Set.FastDynamicInvoke(o, val);
             }
 

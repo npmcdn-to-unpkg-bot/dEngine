@@ -55,13 +55,13 @@ namespace dEditor.Dialogs.FindAndReplace
         public bool UseRegex { get; set; }
         public bool AppendResults { get; set; }
 
-        private ICodeEditor GetCurrentDocumentAsCodeEditor()
+        private CodeEditorViewModel GetCurrentDocumentAsCodeEditor()
         {
-            var codeEditor = Editor.Current.Shell.ActiveDocument as ICodeEditor;
+            var codeEditor = Editor.Current.Shell.ActiveDocument as CodeEditorViewModel;
             return codeEditor;
         }
 
-        private string GetSelection(ICodeEditor editor)
+        private string GetSelection(CodeEditorViewModel editor)
         {
             return editor?.CurrentSelection;
         }

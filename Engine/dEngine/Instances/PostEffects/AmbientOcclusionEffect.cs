@@ -44,7 +44,7 @@ namespace dEngine.Instances
         static AmbientOcclusionEffect()
         {
             Renderer.InvokeResourceDependent(
-                () => { _noiseTexture = CacheableContentProvider<Texture>.Get("internal://textures/noise.png"); });
+                () => { _noiseTexture = CacheableContentProvider<Texture>.Get(new Uri("internal://textures/noise.png")); });
         }
 
         public AmbientOcclusionEffect()

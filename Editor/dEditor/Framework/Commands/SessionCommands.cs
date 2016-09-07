@@ -25,7 +25,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Play";
         public override string Text => "Simulate the game as a player.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.F5);
 
         public override bool CanExecute(object parameter)
         {
@@ -42,7 +41,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Run";
         public override string Text => "Simulate the game without a player.";
-        public override KeyGesture KeyGesture { get; } = null;
 
         public override bool CanExecute(object parameter)
         {
@@ -59,7 +57,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Pause";
         public override string Text => "Pauses the simulation.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.F5);
 
         public override bool CanExecute(object parameter)
         {
@@ -76,7 +73,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Stop";
         public override string Text => "Stops the simulation and resets the scene.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.F5, ModifierKeys.Shift);
 
         public override bool CanExecute(object parameter)
         {

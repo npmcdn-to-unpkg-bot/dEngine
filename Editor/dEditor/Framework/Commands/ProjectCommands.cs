@@ -2,11 +2,14 @@
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using dEditor.Dialogs.NewPlace;
 using dEditor.Dialogs.NewProject;
 using dEditor.Shell;
+using dEditor.Shell.StatusBar;
 using Microsoft.Win32;
 
 namespace dEditor.Framework.Commands
@@ -15,7 +18,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "New Place";
         public override string Text => "Creates a new place from a template.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.None);
 
         public override bool CanExecute(object parameter)
         {
@@ -33,7 +35,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "New Project";
         public override string Text => "Opens a dialog for creating projects.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.O, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -52,8 +53,11 @@ namespace dEditor.Framework.Commands
                 {"ShowInTaskbar", false}
             };
 
-            var newProjectVm = new NewProjectViewModel();
-            Editor.Current.WindowManager.ShowDialog(newProjectVm, null, newProjectVm.GetDialogSettings());
+            Editor.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var newProjectVm = new NewProjectViewModel();
+                Editor.Current.WindowManager.ShowDialog(newProjectVm, null, newProjectVm.GetDialogSettings());
+            });
         }
     }
 
@@ -67,7 +71,6 @@ namespace dEditor.Framework.Commands
 
         public override string Name => $"Save Project";
         public override string Text => $"Saves the current project.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.S, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -76,7 +79,12 @@ namespace dEditor.Framework.Commands
 
         public override void Execute(object parameter)
         {
+            var statusBar = IoC.Get<IStatusBar>();
+            statusBar.Text = "Saving Project";
+            statusBar.IsFrozen = true;
             Editor.Current.Project.Save();
+            statusBar.Text = "Project Saved";
+            statusBar.IsFrozen = false;
             /*
             try
 			{
@@ -98,7 +106,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => $"Open Project";
         public override string Text => $"Opens a project.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.O, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -120,7 +127,8 @@ namespace dEditor.Framework.Commands
 
             var dialog = new OpenFileDialog
             {
-                Filter = "Project File|*.dproj;"
+                Filter = "Project File|*.dproj;",
+                InitialDirectory = Path.Combine(Editor.Current.EditorDocumentsPath, "Projects"),
             };
 
             if (dialog.ShowDialog() != true)

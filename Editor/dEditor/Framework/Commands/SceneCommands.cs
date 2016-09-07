@@ -15,7 +15,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Insert";
         public override string Text => "Inserts an object.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.None);
 
         public override bool CanExecute(object parameter)
         {
@@ -36,7 +35,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Select Children";
         public override string Text => "Selects the children of this object.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.None);
 
         public override bool CanExecute(object parameter)
         {
@@ -58,7 +56,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Group";
         public override string Text => "Groups the selection into a model.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.G, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -75,7 +72,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Ungroup";
         public override string Text => "Ungroups the selected model.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.U, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -92,7 +88,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Zoom to";
         public override string Text => "Moves the camera to fit the selection.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.F);
 
         public override bool CanExecute(object parameter)
         {

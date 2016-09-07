@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Assimp;
 using NLog;
 
 namespace dEngine.Utility.Extensions
@@ -59,19 +58,6 @@ namespace dEngine.Utility.Extensions
             var bytes = new byte[(int)stream.Length];
             stream.Read(bytes, 0, (int)stream.Length);
             return bytes;
-        }
-
-        public static Vector2[] GetTexCoords(this Mesh mesh)
-        {
-            var uvs = new Vector2[mesh.VertexCount];
-
-            for (var i = 0; i < mesh.VertexCount; i++)
-                if (i >= mesh.TextureCoordinateChannels[0].Count)
-                    uvs[i] = Vector2.Zero;
-                else
-                    uvs[i] = new Vector2(mesh.TextureCoordinateChannels[0][i].X, mesh.TextureCoordinateChannels[0][i].Y);
-
-            return uvs;
         }
 
         public static string ReadString(this Stream stream)

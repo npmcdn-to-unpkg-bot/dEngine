@@ -329,7 +329,7 @@ namespace dEngine.Instances
         }
 
         /// <summary>
-        /// Determines whether this element is ingored by hit tests.
+        /// Determines whether this element is ignored by hit tests.
         /// </summary>
         [InstMember(15)]
         [EditorVisible("Behaviour")]
@@ -345,63 +345,6 @@ namespace dEngine.Instances
             }
         }
 
-        /// <summary />
-        [EditorVisible("Appearance")]
-        public Vector2 ShadowOffset
-        {
-            get { return _shadowOffset; }
-            set
-            {
-                if (value == _shadowOffset)
-                    return;
-
-                _shadowOffset = value;
-
-                if (_shadowEffect != null)
-                    _shadowEffect.Offset = value;
-
-                NotifyChanged(nameof(ShadowOffset));
-            }
-        }
-
-        /// <summary />
-        [EditorVisible("Appearance")]
-        public int ShadowWidth
-        {
-            get { return _shadowWidth; }
-            set
-            {
-                if (value == _shadowWidth)
-                    return;
-
-                _shadowWidth = value;
-
-                if (_shadowEffect != null)
-                    _shadowEffect.WideningRadius = value;
-
-                NotifyChanged(nameof(ShadowWidth));
-            }
-        }
-
-        /// <summary />
-        [EditorVisible("Appearance")]
-        public int ShadowBlur
-        {
-            get { return _shadowBlur; }
-            set
-            {
-                if (value == _shadowBlur)
-                    return;
-
-                _shadowBlur = value;
-
-                if (_shadowEffect != null)
-                    _shadowEffect.BlurSize = value;
-
-                NotifyChanged(nameof(ShadowBlur));
-            }
-        }
-
         /// <summary>
         /// The container that this element is a descendant of.
         /// </summary>
@@ -414,22 +357,14 @@ namespace dEngine.Instances
                 if (value == _container)
                     return;
 
-                if (_container != null)
-                    lock (_container)
-                    {
-                        _container.ZIndexedElements.Remove(this);
-                    }
+                _container?.RemoveZIndexed(this);
 
                 _container = value;
 
-                if (value != null)
-                    if (ZIndex > 0)
-                        lock (_container)
-                        {
-                            value.ZIndexedElements.Add(this);
-                        }
+                if (_zIndex > 0)
+                    value?.ZIndexedElements.Add(this);
 
-                NotifyChanged(nameof(Container));
+                NotifyChanged();
             }
         }
 
@@ -543,7 +478,7 @@ namespace dEngine.Instances
             else if (_alignmentX == AlignmentX.Center)
             {
                 xScaleOffset = 0.5f;
-                xAbsoluteOffset = (int)-AbsoluteSize.X/2;
+                xAbsoluteOffset = (int)-AbsoluteSize.X / 2;
             }
 
             if (_alignmentY == AlignmentY.Bottom)
@@ -555,11 +490,11 @@ namespace dEngine.Instances
             else if (_alignmentY == AlignmentY.Middle)
             {
                 yScaleOffset = 0.5f;
-                yAbsoluteOffset = (int)-AbsoluteSize.Y/2;
+                yAbsoluteOffset = (int)-AbsoluteSize.Y / 2;
             }
 
-            position = new UDim2(xScaleOffset + position.Scale.X*xMult, xAbsoluteOffset + position.Absolute.X*xMult,
-                yScaleOffset + position.Scale.Y*xMult, yAbsoluteOffset + position.Absolute.Y*yMult);
+            position = new UDim2(xScaleOffset + position.Scale.X * xMult, xAbsoluteOffset + position.Absolute.X * xMult,
+                yScaleOffset + position.Scale.Y * xMult, yAbsoluteOffset + position.Absolute.Y * yMult);
 
             AbsolutePosition = (parentPosition + position.toAbsolute(parentSize)).round();
 
@@ -580,8 +515,8 @@ namespace dEngine.Instances
         public virtual void Arrange()
         {
             LayoutRect = new RectangleF(AbsolutePosition.x, AbsolutePosition.y, AbsoluteSize.x, AbsoluteSize.y);
-            RenderRect = new RectangleF(-AbsoluteSize.x/2, -AbsoluteSize.y/2, AbsoluteSize.x, AbsoluteSize.y);
-            var borderRect = new RectangleF(-AbsoluteSize.x/2 - .5f, -AbsoluteSize.y/2 - .5f, AbsoluteSize.x,
+            RenderRect = new RectangleF(-AbsoluteSize.x / 2, -AbsoluteSize.y / 2, AbsoluteSize.x, AbsoluteSize.y);
+            var borderRect = new RectangleF(-AbsoluteSize.x / 2 - .5f, -AbsoluteSize.y / 2 - .5f, AbsoluteSize.x,
                 AbsoluteSize.y);
 
             _roundedRectangle = new RoundedRectangle
@@ -629,7 +564,7 @@ namespace dEngine.Instances
                 var context = Renderer.Context2D;
 
                 if ((_borderThickness > 0) && (_borderColour.a > 0))
-                    context.DrawRoundedRectangle(_borderRectangle, _borderBrush, _borderThickness*2);
+                    context.DrawRoundedRectangle(_borderRectangle, _borderBrush, _borderThickness * 2);
 
                 if (_cornerRadius > 0)
                     context.FillRoundedRectangle(_roundedRectangle, _backgroundBrush);

@@ -26,7 +26,7 @@ namespace dEngine
         {
             Instances = new ConcurrentDictionary<string, WeakReference<Instance>>(StringComparer.Ordinal);
             Worlds = new ConcurrentDictionary<IWorld, byte>();
-            DataModel = new DataModel();
+            DataModel = new DataModel {Name = Engine.GameName ?? nameof(DataModel)};
             Stats = new DebugStats {Parent = DataModel, ParentLocked = true};
         }
 

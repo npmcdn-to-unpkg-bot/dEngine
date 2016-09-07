@@ -75,6 +75,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AssimpNet, Version=3.3.1.0, Culture=neutral, PublicKeyToken=0d51b391f59f42a6, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AssimpNet.3.3.1\lib\net45\AssimpNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Caliburn.Micro, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Caliburn.Micro.Core.3.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
       <Private>True</Private>
@@ -234,6 +238,7 @@
     </Compile>
     <Compile Include="Dialogs\FindAndReplace\FindAndReplaceViewModel.cs" />
     <Compile Include="Dialogs\FindAndReplace\IFindAndReplace.cs" />
+    <Compile Include="Dialogs\ModelImport\IMeshImport.cs" />
     <Compile Include="Editor.xaml.cs">
       <DependentUpon>Editor.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -242,6 +247,13 @@
     <Compile Include="Framework\Behaviours\ListBoxSelectedItemsBehavior.cs" />
     <Compile Include="Framework\Behaviours\StackPanelReverseZIndex.cs" />
     <Compile Include="Framework\BoundPropertyInfo.cs" />
+    <Compile Include="Framework\Content\AudioImporter.cs" />
+    <Compile Include="Framework\Content\MeshImporter.cs" />
+    <Compile Include="Framework\Content\Protocols\ContentProtocol.cs" />
+    <Compile Include="Framework\Content\Protocols\EditorProtocol.cs" />
+    <Compile Include="Framework\Content\Protocols\PlaceProtocol.cs" />
+    <Compile Include="Framework\Content\TextureImporter.cs" />
+    <Compile Include="Framework\Content\VideoImporter.cs" />
     <Compile Include="Framework\Controls\ColourPicker\ColourPicker.xaml.cs">
       <DependentUpon>ColourPicker.xaml</DependentUpon>
     </Compile>
@@ -262,13 +274,13 @@
     <Compile Include="Framework\Converters\GridLengthConverter.cs" />
     <Compile Include="Framework\Converters\IgnoreLinebreaksConverter.cs" />
     <Compile Include="Framework\CustomCursors.cs" />
-    <Compile Include="Framework\Dialog.cs" />
     <Compile Include="Framework\IDocument.cs" />
     <Compile Include="Framework\ILayoutItem.cs" />
     <Compile Include="Framework\IWidget.cs" />
     <Compile Include="Framework\IWindow.cs" />
     <Compile Include="Framework\KeyBindings\KeyBindings.cs" />
     <Compile Include="Framework\Project.cs" />
+    <Compile Include="Framework\Services\ContentManager.cs" />
     <Compile Include="Framework\Services\FindService.cs" />
     <Compile Include="Framework\Services\LayoutUtility.cs" />
     <Compile Include="Properties\Annotations1.cs" />
@@ -306,12 +318,18 @@
     </Compile>
     <Compile Include="Widgets\Chat\IChat.cs" />
     <Compile Include="Widgets\Chat\ChatViewModel.cs" />
-    <Compile Include="Widgets\CodeEditor\ICodeEditor.cs" />
+    <Compile Include="Widgets\CodeEditor\EditorProvider.cs" />
     <Compile Include="Widgets\ContentBrowser\ContentBrowserView.xaml.cs">
       <DependentUpon>ContentBrowserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widgets\ContentBrowser\ContentBrowserViewModel.cs" />
     <Compile Include="Widgets\ContentBrowser\ContentItem.cs" />
+    <Compile Include="Widgets\ContentBrowser\ContextMenus\FileContextMenu.xaml.cs">
+      <DependentUpon>FileContextMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Widgets\ContentBrowser\ContextMenus\FolderContextMenu.xaml.cs">
+      <DependentUpon>FolderContextMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Widgets\ContentBrowser\DirectoryTreeItem.cs" />
     <Compile Include="Widgets\ContentBrowser\FolderOptions.xaml.cs">
       <DependentUpon>FolderOptions.xaml</DependentUpon>
@@ -422,10 +440,10 @@
     </Compile>
     <Compile Include="Widgets\AdvancedObjects\ObjectEntry.cs" />
     <Compile Include="Widgets\ContentBrowser\Util\ThumbnailManager.cs" />
-    <Compile Include="Widgets\ContentBrowser\Util\FBXImportView.xaml.cs">
-      <DependentUpon>FBXImportView.xaml</DependentUpon>
+    <Compile Include="Dialogs\ModelImport\ModelImportView.xaml.cs">
+      <DependentUpon>ModelImportView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\ContentBrowser\Util\FBXImportViewModel.cs" />
+    <Compile Include="Dialogs\ModelImport\ModelImportViewModel.cs" />
     <Compile Include="Tools\Building\RotateTool.cs" />
     <Compile Include="Tools\Building\ScaleTool.cs" />
     <Compile Include="Tools\SelectTool.cs" />
@@ -686,11 +704,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Widgets\ContentBrowser\ContextMenus\FileContextMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Widgets\ContentBrowser\ContextMenus\FolderContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Widgets\ContentBrowser\FolderOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\ContentBrowser\Util\FBXImportView.xaml">
+    <Page Include="Dialogs\ModelImport\ModelImportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1331,6 +1357,11 @@
     <Resource Include="Content\Icons\Objects\timeline_marker.png" />
     <Resource Include="Content\Icons\Objects\user_key.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assimp64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
@@ -1354,6 +1385,13 @@ rd zh-Hant /s /q
 rd ../DumpAPI
 rd ../x86</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\..\packages\AssimpNet.3.3.1\build\AssimpNet.targets" Condition="Exists('..\..\packages\AssimpNet.3.3.1\build\AssimpNet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\AssimpNet.3.3.1\build\AssimpNet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\AssimpNet.3.3.1\build\AssimpNet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

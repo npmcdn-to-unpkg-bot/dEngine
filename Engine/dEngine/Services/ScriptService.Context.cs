@@ -82,12 +82,12 @@ namespace dEngine.Services
                 foreach (var t in typeof(IDataType).GetDescendantTypes())
                     RegisterPackage(t.Name, t);
 
-                var pprintSource = ContentProvider.DownloadStream("internal://scripts/pprint.lua").Result.ReadString();
+                var pprintSource = ContentProvider.DownloadStream(new Uri("internal://scripts/pprint.lua")).Result.ReadString();
                 var pprint = ScriptService.Lua.CompileChunk(pprintSource, "pprint", new LuaCompileOptions());
                 this["pprint"] = DoChunk(pprint).Values[0];
 
                 var middleclassSource =
-                    ContentProvider.DownloadStream("internal://scripts/pprint.lua").Result.ReadString();
+                    ContentProvider.DownloadStream(new Uri("internal://scripts/pprint.lua")).Result.ReadString();
                 var middleclass = ScriptService.Lua.CompileChunk(middleclassSource, "middleclass",
                     new LuaCompileOptions());
                 this["class"] = DoChunk(middleclass).Values[0];

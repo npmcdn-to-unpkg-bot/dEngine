@@ -7,6 +7,7 @@ using System.Windows;
 using System.Xml.Serialization;
 using Caliburn.Micro;
 using dEditor.Dialogs.NewPlace;
+using dEditor.Shell.StatusBar;
 using dEditor.Widgets.Viewport;
 using dEngine;
 using dEngine.Instances;
@@ -171,7 +172,12 @@ namespace dEditor.Framework
         /// </summary>
         public void Open()
         {
+            var statusBar = IoC.Get<IStatusBar>();
+            statusBar.Text = $"Opening {Name}.dproj";
+            statusBar.IsFrozen = true;
+
             IsOpen = true;
+            
             Editor.Current.Shell.Viewport?.TryClose();
             Editor.Current.Project = this;
 
@@ -187,17 +193,22 @@ namespace dEditor.Framework
 
                 Game.Workspace.LoadPlace(StartupPlace);
             }
-#if !DEBUG
             catch (Exception e)
             {
+                statusBar.Text = $"Project could not be opened. ({e.GetType().Name})";
+                Editor.Logger.Error(e);
+#if DEBUG
+                throw;
+#else
                 MessageBox.Show($"Could not load project:\n\n{e.Message}", "Open Project", MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 Close();
+#endif
                 return;
             }
-#endif
             finally
             {
+                statusBar.IsFrozen = false;
             }
 
             Editor.Current.Shell.Viewport = _viewportVm = new ViewportViewModel();

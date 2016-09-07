@@ -31,7 +31,7 @@ namespace dEngine.Services
         /// </summary>
         public Instance LoadAsset(string contentId)
         {
-            using (var stream = ContentProvider.DownloadStream(contentId).Result)
+            using (var stream = ContentProvider.DownloadStream(new Uri(contentId)).Result)
             {
                 if (stream == null)
                     throw new InvalidOperationException($"Failed to load asset: could not fetch. ({contentId})");

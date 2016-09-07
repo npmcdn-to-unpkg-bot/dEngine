@@ -48,6 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
+    <Compile Include="Data\RawAsset.cs" />
     <Compile Include="Data\TextSource.cs" />
     <Compile Include="Enums\ActuatorType.cs" />
     <Compile Include="Enums\AdapterConnection.cs" />
@@ -64,12 +65,14 @@
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\MaterialDomain.cs" />
     <Compile Include="Enums\InOut.cs" />
+    <Compile Include="Enums\PrimitiveTopology.cs" />
     <Compile Include="Enums\SampleCount.cs" />
     <Compile Include="Enums\ShadingModel.cs" />
     <Compile Include="Enums\ShadowFormat.cs" />
     <Compile Include="Enums\ShadowMode.cs" />
     <Compile Include="Graphics\Atmosphere\Atmosphere.cs" />
     <Compile Include="Graphics\Shadows.cs" />
+    <Compile Include="IContentProtocol.cs" />
     <Compile Include="Instances\Attributes\IValueAttribute.cs" />
     <Compile Include="Instances\Attributes\NodeSlotAttribute.cs" />
     <Compile Include="Instances\Attributes\WarningAttribute.cs" />
@@ -100,6 +103,7 @@
     <Compile Include="Instances\Values\RayValue.cs" />
     <Compile Include="Instances\Values\Vector4Value.cs" />
     <Compile Include="Serializer\V1\Inst.cs" />
+    <Compile Include="Services\ContentProvider.Protocols.cs" />
     <Compile Include="Services\ContextActionService.cs" />
     <Compile Include="Services\LoginService.cs" />
     <Compile Include="Settings\User\UserAnalyticsSettings.cs" />
@@ -449,7 +453,6 @@
     <Compile Include="Utility\Comments.cs" />
     <Compile Include="Utility\Extensions\BinaryArrayExtensions.cs" />
     <Compile Include="Data\AnimationData.cs" />
-    <Compile Include="Utility\FBX.cs" />
     <Compile Include="Types\InstanceId.cs" />
     <Compile Include="Utility\Texture\HDRImage.cs" />
     <Compile Include="Utility\Texture\ITextureFormat.cs" />
@@ -487,14 +490,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content\githead.txt" />
-    <None Include=".native64\CSteamworks.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Content\NativeLibraries\CSteamworks.dll" />
     <EmbeddedResource Include="Content\Textures\sky512.png" />
     <EmbeddedResource Include="Content\Textures\sun.png" />
     <EmbeddedResource Include="Content\Textures\Bokeh_Circle.dds" />
     <EmbeddedResource Include="Content\Textures\Bokeh_Hex.dds" />
-    <EmbeddedResource Include="Content\Meshes\primitives.fbx" />
     <EmbeddedResource Include="Content\Scripts\pprint.lua" />
     <None Include="App.config" />
     <EmbeddedResource Include="Graphics\Shaders\Common.shader" />
@@ -502,8 +502,7 @@
     <EmbeddedResource Include="Graphics\Shaders\PCFKernels.shader" />
     <EmbeddedResource Include="Graphics\Shaders\DeferredCommon.shader" />
     <EmbeddedResource Include="Graphics\Shaders\IrradianceMapper.shader" />
-    <EmbeddedResource Include="Content\Meshes\capsule.fbx" />
-    <None Include="Content\Scripts\middleclass.lua" />
+    <EmbeddedResource Include="Content\Scripts\middleclass.lua" />
     <EmbeddedResource Include="Graphics\Shaders\SMAA.shader" />
     <EmbeddedResource Include="Graphics\Shaders\SSAO.shader" />
     <EmbeddedResource Include="Graphics\Shaders\ShadowMapping.shader" />
@@ -517,9 +516,7 @@
     <EmbeddedResource Include="Graphics\Shaders\Standard.shader" />
     <EmbeddedResource Include="Content\Textures\missing.png" />
     <EmbeddedResource Include="Content\Textures\noise2.png" />
-    <None Include=".native64\libbulletc.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Content\NativeLibraries\libbulletc.dll" />
     <Content Include="Types\LuaAction.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LuaAction.cs</LastGenOutput>
@@ -537,13 +534,14 @@
       <LastGenOutput>Signal.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="Content\Textures\noise.png" />
-    <None Include=".native64\steam_api64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Content\NativeLibraries\steam_api64.dll" />
+    <EmbeddedResource Include="Content\Meshes\Primitives\Cone.mesh" />
+    <EmbeddedResource Include="Content\Meshes\Primitives\Cube.mesh" />
+    <EmbeddedResource Include="Content\Meshes\Primitives\Cylinder.mesh" />
+    <EmbeddedResource Include="Content\Meshes\Primitives\Plane.mesh" />
+    <EmbeddedResource Include="Content\Meshes\Primitives\Sphere.mesh" />
+    <EmbeddedResource Include="Content\Meshes\Primitives\Wedge.mesh" />
     <None Include="FodyWeavers.xml" />
-    <None Include=".native64\Assimp64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <EmbeddedResource Include="Graphics\Shaders\Atmosphere.shader" />
     <None Include="packages.config" />
     <None Include="PreBuild.ps1" />
@@ -552,10 +550,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="AssimpNet, Version=3.3.1.0, Culture=neutral, PublicKeyToken=0d51b391f59f42a6, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AssimpNet.3.3.1\lib\net45\AssimpNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="BulletSharp">
       <HintPath>..\..\packages\BulletSharp.0.8\lib\net40-client\BulletSharp.dll</HintPath>
       <Private>True</Private>
@@ -706,6 +700,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
@@ -717,7 +712,6 @@
   </PropertyGroup>
   <Import Project="..\packages\BulletSharp.0.8\build\net40-client\BulletSharp.targets" Condition="Exists('..\packages\BulletSharp.0.8\build\net40-client\BulletSharp.targets')" />
   <Import Project="..\..\packages\BulletSharp.0.8\build\net40-client\BulletSharp.targets" Condition="Exists('..\..\packages\BulletSharp.0.8\build\net40-client\BulletSharp.targets')" />
-  <Import Project="..\..\packages\AssimpNet.3.3.1\build\AssimpNet.targets" Condition="Exists('..\..\packages\AssimpNet.3.3.1\build\AssimpNet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

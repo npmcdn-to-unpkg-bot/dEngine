@@ -1,4 +1,17 @@
 [
+  // Project
+  {
+    "key": "ctrl+o",
+    "command": "project.open",
+  },
+  {
+    "key": "ctrl+n",
+    "command": "project.new",
+  },
+  {
+    "key": "ctrl+s",
+    "command": "project.save",
+  },
   // Tools
   {
     "key": "ctrl+1",
@@ -59,6 +72,16 @@
     "key": "ctrl+u",
     "command": "ungroupSelection",
     "when": "viewportActive && !selectionEmpty"
+  },
+  {
+    "key": "ctrl+shift+g",
+    "command": "csg.union",
+    "when": "viewportFocus"
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "csg.negate",
+    "when": "viewportFocus"
   },
   // History
   {

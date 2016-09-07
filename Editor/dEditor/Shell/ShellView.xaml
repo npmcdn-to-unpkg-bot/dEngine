@@ -239,7 +239,7 @@
                                 </Button>
                             </ToolBar>
                             <ToolBar Template="{StaticResource ToolBarTemplate}">
-                                <Button Command="{Binding PlayCommand}" Style="{StaticResource ToolBarButtonStyle}">
+                                <Button Command="{Binding RunCommand}" Style="{StaticResource ToolBarButtonStyle}">
                                     <Image Source="/dEditor;component/Content/Icons/Toolbar/arrow_run_16xLG.png" />
                                 </Button>
                                 <Button Command="{Binding PauseCommand}" Style="{StaticResource ToolBarButtonStyle}">

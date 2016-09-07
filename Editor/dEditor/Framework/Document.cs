@@ -30,5 +30,10 @@ namespace dEditor.Framework
         {
             return Task.FromResult(true);
         }
+
+        public void Activate()
+        {
+            Editor.Current.Shell.ActiveLayoutItem = this;
+        }
     }
 }

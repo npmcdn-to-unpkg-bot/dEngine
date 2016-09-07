@@ -42,11 +42,6 @@ namespace dEditor.Framework
             ContextActionService.DefineState("textSelectionEmpty");
         }
 
-        internal static void RegisterAction(string name, Action action)
-        {
-            ContextActionService.Register(name, action);
-        }
-
         public static void Init()
         {
             // load custom shortcuts first
@@ -62,7 +57,7 @@ namespace dEditor.Framework
             };
             _watcher.Changed += (s, e) => ReloadKeymap();
 
-            _defaultShortcutsJson = ContentProvider.DownloadString("editor://KeyboardShortcuts.json");
+            _defaultShortcutsJson = ContentProvider.DownloadString(new Uri("editor://KeyboardShortcuts.json"));
             ReloadKeymap();
         }
 
@@ -195,7 +190,7 @@ namespace dEditor.Framework
         {
             [JsonProperty("key")] public string Key;
 
-            [JsonProperty("Command")] public string Command;
+            [JsonProperty("command")] public string Command;
 
             [JsonProperty("when")] public string When;
         }

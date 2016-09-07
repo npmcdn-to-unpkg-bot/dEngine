@@ -91,7 +91,8 @@ namespace dEditor.Widgets.Properties
             {
                 DeselectItem(value);
                 _target = value;
-                SelectItems(new[] {value});
+                if (value != null)
+                    SelectItems(new[] { value });
             }
         }
 

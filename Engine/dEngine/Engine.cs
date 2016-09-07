@@ -17,6 +17,7 @@ using dEngine.Settings.User;
 using dEngine.Utility;
 using dEngine.Utility.Extensions;
 using dEngine.Utility.Native;
+using JetBrains.Annotations;
 using Microsoft.VisualBasic.Devices;
 
 // ReSharper disable UnusedVariable
@@ -35,13 +36,15 @@ namespace dEngine
         private static bool _isWindowFocused;
         private static bool _isViewportActive;
 
+        [CanBeNull]
+        public static string GameName { get; private set; }
+
         static Engine()
         {
             Logger = LogService.GetLogger();
 
             // ReSharper disable once AssignNullToNotNullAttribute
-            Kernel32.SetDllDirectory(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                ".native64"));
+            UnpackNativeLibraries();
 
             Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Commit = Assembly.GetExecutingAssembly().GetCustomAttribute<CommitIdAttribute>().CommitId;
@@ -57,6 +60,23 @@ namespace dEngine
             Settings.Load();
 
             UserAnalyticsSettings.SessionCount++;
+        }
+
+        private static void UnpackNativeLibraries()
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            var names = asm.GetManifestResourceNames();
+            foreach (var name in names)
+            {
+                if (!name.Contains(".NativeLibraries.")) continue;
+                var fileName = name.Substring(name.LastIndexOf(".", name.LastIndexOf(".", StringComparison.Ordinal) - 1, StringComparison.Ordinal)+1);
+
+                using (var dll = File.Create(fileName))
+                {
+                    var stream = asm.GetManifestResourceStream(name);
+                    stream?.CopyTo(dll);
+                }
+            }
         }
 
         internal static ILogger Logger { get; }
@@ -151,8 +171,7 @@ namespace dEngine
                     InputService.Service?.WindowFocusReleased.Fire();
             }
         }
-
-        internal static bool IsDebug { get; private set; }
+        
         internal static IntPtr Handle { get; private set; }
 
         /// <summary>
@@ -164,6 +183,11 @@ namespace dEngine
         /// Gets the path to a temporary directory, which is deleted on engine shutdown.
         /// </summary>
         public static string TempPath { get; private set; }
+
+        /// <summary>
+        /// Gets the path to a game directory in the user's documents folder.
+        /// </summary>
+        public static string DocumentsPath { get; private set; }
 
         /// <summary>
         /// The user settings container.
@@ -196,23 +220,16 @@ namespace dEngine
         public static Action<Stream> SaveGame { get; set; }
 
         /// <summary>
-        /// Fired after the <see cref="Shutdown"/> method has completed.
-        /// </summary>
-        public static event Action OnShutdown;
-
-        /// <summary>
         /// Fired when the application is closing.
         /// </summary>
-        public static event EventHandler Exiting;
+        public static event Action Exiting;
 
         /// <summary>
         /// Fires up the engine. And then it makes noise.
         /// </summary>
-        public static void Start(EngineMode engineMode)
+        public static void Start(EngineMode engineMode, string gameName = null)
         {
-#if DEBUG
-            IsDebug = true;
-#endif
+            GameName = gameName;
             AppId = 480;
             Mode = engineMode;
 
@@ -221,6 +238,9 @@ namespace dEngine
             Process = Process.GetCurrentProcess();
             PlatformId = PlatformId.Windows;
             PlatformType = PlatformType.Desktop;
+
+            DocumentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), gameName);
+            Directory.CreateDirectory(DocumentsPath);
 
             TempPath = Path.Combine(Path.GetTempPath(), "dEngine");
             if (Directory.Exists(TempPath))
@@ -276,27 +296,15 @@ namespace dEngine
             ContentProvider.DeleteDirectory(TempPath);
 
             IsExiting = true;
-
-            var dataModel = Game.DataModel;
-
-            try
-            {
-                dataModel.OnClose();
-            }
-            catch (Exception)
-            {
-                Logger.Error("DataModel OnClose callback errored.");
-            }
-
+            
+            Game.DataModel.OnClose();
             Settings.Save();
             UserSettings.Save();
 
-            Exiting?.Invoke(null, null);
-
             CancelTokenSource.Cancel();
-
-            Logger.Info("dEngine has been shutdown.");
-            OnShutdown?.Invoke();
+            
+            Logger.Info("Engine has shutdown.");
+            Exiting?.Invoke();
         }
 
         /// <summary>

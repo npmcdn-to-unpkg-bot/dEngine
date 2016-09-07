@@ -19,6 +19,20 @@
             Dumps the API as a string.
             </summary>
         </member>
+        <member name="T:dEngine.Data.RawAsset">
+            <summary>
+            A raw binary asset.
+            </summary>
+        </member>
+        <member name="P:dEngine.Data.RawAsset.ContentType">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.RawAsset.Dispose(System.Boolean)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.RawAsset.op_Implicit(dEngine.Data.RawAsset)~System.IO.Stream">
+            <summary/>
+        </member>
         <member name="T:dEngine.Data.TextSource">
             <summary>
             Asset that contains a text string.
@@ -215,6 +229,15 @@
         <member name="M:dEngine.Data.Cubemap.OnNonAsset(System.IO.BinaryReader)">
             <summary/>
         </member>
+        <member name="M:dEngine.Data.Cubemap.OnLoad(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.Cubemap.OnSave(System.IO.BinaryWriter)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.Cubemap.Dispose(System.Boolean)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Data.Geometry">
             <summary>
             Represents a geometry. Instances of a geometry are rendered with a <see cref="T:dEngine.Graphics.RenderObject" />.
@@ -225,7 +248,7 @@
             Creates an empty geometry.
             </summary>
         </member>
-        <member name="M:dEngine.Data.Geometry.#ctor(System.String,dEngine.Graphics.Structs.Vertex[],System.Int32[],dEngine.Graphics.Structs.WeightedVertex[],SharpDX.Direct3D.PrimitiveTopology,dEngine.Instances.Materials.Material)">
+        <member name="M:dEngine.Data.Geometry.#ctor(System.String,dEngine.Graphics.Structs.Vertex[],System.Int32[],dEngine.Graphics.Structs.WeightedVertex[],dEngine.PrimitiveTopology,dEngine.Instances.Materials.Material)">
             <summary>
             Creates a new geometry.
             </summary>
@@ -304,10 +327,10 @@
             Fired when the buffers are rebuilt.
             </summary>
         </member>
-        <member name="M:dEngine.Data.Geometry.OnSave(System.IO.BinaryWriter)">
+        <member name="M:dEngine.Data.Geometry.OnNonAsset(System.IO.BinaryReader)">
             <summary />
         </member>
-        <member name="M:dEngine.Data.Geometry.OnNonAsset(System.IO.BinaryReader)">
+        <member name="M:dEngine.Data.Geometry.OnSave(System.IO.BinaryWriter)">
             <summary />
         </member>
         <member name="M:dEngine.Data.Geometry.OnLoad(System.IO.BinaryReader)">
@@ -333,12 +356,23 @@
         <member name="P:dEngine.Data.AnimationData.ContentType">
             <inheritdoc />
         </member>
+        <member name="M:dEngine.Data.AnimationData.OnSave(System.IO.BinaryWriter)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.AnimationData.OnLoad(System.IO.BinaryReader)">
+            <summary/>
+        </member>
         <member name="M:dEngine.Data.AnimationData.Dispose(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="T:dEngine.AdapterConnection">
+            <summary>
+            Types of adapters.
+            </summary>
+        </member>
         <member name="T:dEngine.BlurMode">
             <summary>
-            Blurring methods to use in <see cref="!:AmbientOcclusionEffect" />.
+            Blurring methods to use in <see cref="T:dEngine.Instances.AmbientOcclusionEffect" />.
             </summary>
         </member>
         <member name="T:dEngine.EngineMode">
@@ -687,6 +721,22 @@
             <summary>
             </summary>
         </member>
+        <member name="T:dEngine.IContentProtocol">
+            <summary>
+            Interface for custom content protocols.
+            </summary>
+        </member>
+        <member name="M:dEngine.IContentProtocol.Fetch(System.Uri)">
+            <summary>
+            Return a stream from the given content path.
+            </summary>
+        </member>
+        <member name="T:dEngine.Instances.Attributes.IValueAttribute">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.Attributes.IValueAttribute.GetValue">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.Attributes.WarningAttribute">
             <summary>
             An attribute which defines a warning in the documentation.
@@ -694,6 +744,9 @@
         </member>
         <member name="M:dEngine.Instances.Attributes.WarningAttribute.#ctor(System.String)">
             <summary />
+        </member>
+        <member name="P:dEngine.Instances.Attributes.WarningAttribute.Text">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Attributes.RangeAttribute">
             <summary>
@@ -782,7 +835,7 @@
             </summary>
             <param name="group">The group name.</param>
             <param name="displayName">The name to display in the inspector.</param>
-            <param name="unknown"></param>
+            <param name="data"></param>
         </member>
         <member name="P:dEngine.Instances.Attributes.EditorVisibleAttribute.Group">
             <summary>
@@ -793,6 +846,9 @@
             <summary>
             The group name.
             </summary>
+        </member>
+        <member name="P:dEngine.Instances.Attributes.EditorVisibleAttribute.Data">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Attributes.ToolboxGroupAttribute">
             <summary>
@@ -911,6 +967,9 @@
             <summary>
             The aspect ratio of the <see cref="P:dEngine.Instances.Camera.ViewportSize" />.
             </summary>
+        </member>
+        <member name="P:dEngine.Instances.Camera.IsLoaded">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.Camera.OnChildAdded(dEngine.Instances.Instance)">
             <inheritdoc />
@@ -1172,6 +1231,11 @@
             An instance of a <see cref="P:dEngine.Instances.Materials.MaterialInstance.Material" /> which can be used to modify paramaters on the fly.
             </summary>
         </member>
+        <member name="P:dEngine.Instances.Materials.MaterialInstance.Material">
+            <summary>
+            The base material.
+            </summary>
+        </member>
         <member name="P:dEngine.Instances.Materials.MaterialInstance.Domain">
             <summary>
             The <see cref="T:dEngine.MaterialDomain" /> of the parent material.
@@ -1219,6 +1283,9 @@
             <summary>
             Fired when a slot is connected.
             </summary>
+        </member>
+        <member name="T:dEngine.Instances.Materials.Nodes.ParameterNode">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Materials.Nodes.FinalNode">
             <summary>
@@ -1320,6 +1387,9 @@
             Fills the entire screen with a semi-transparent grey background, and centered text in the middle of the screen.
             </summary>
         </member>
+        <member name="F:dEngine.Instances.Message._label">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.Message.#ctor">
             <summary />
         </member>
@@ -1330,6 +1400,9 @@
         </member>
         <member name="M:dEngine.Instances.Message.OnWorldChanged(dEngine.Instances.IWorld,dEngine.Instances.IWorld)">
             <summary />
+        </member>
+        <member name="M:dEngine.Instances.Message.Destroy">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.LensFlareEffect">
             <summary>
@@ -1438,6 +1511,12 @@
             The transform of the bone relative to <see cref="P:dEngine.Instances.Skeleton.RootBone" />.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.Bone.SimulatePhysics(System.Boolean)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.Bone.SetPhysicsBlendWeight(System.Single)">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.Bone.ToString">
             <inheritdoc />
         </member>
@@ -1446,10 +1525,16 @@
             An animation for a <see cref="T:dEngine.Instances.SkeletalMesh" />.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.Animation.#ctor">
+            <summary/>
+        </member>
         <member name="P:dEngine.Instances.Animation.AnimationId">
             <summary>
             The content id for the animation data.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.Animation.AdjustSpeed">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.CanvasWin32">
             <summary>
@@ -1503,6 +1588,14 @@
             <summary>
             Returns the velocity of the subject for use by the sound listener.
             </summary>
+        </member>
+        <member name="T:dEngine.Instances.IListenable">
+            <summary>
+            Interface for objects which can be used an audio listener.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.IListenable.UpdateListener(CSCore.XAudio2.X3DAudio.Listener@)">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.PlaneMesh">
             <summary>
@@ -1629,6 +1722,12 @@
         </member>
         <member name="M:dEngine.Instances.ScrollFrame.Measure">
             <inheritdoc />
+        </member>
+        <member name="T:dEngine.Instances.IAnchorable">
+            <summary/>
+        </member>
+        <member name="P:dEngine.Instances.IAnchorable.Anchored">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Fire">
             <summary>
@@ -1794,6 +1893,9 @@
             The maximum amount of torque that can be applied.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.BodyGyro.OnStep(dEngine.Instances.Part)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.BodyPosition">
             <summary>
             Applies a force on its parent to move towards a position.
@@ -1822,6 +1924,9 @@
             Determines how aggressively the object tries to reach its goal.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.BodyPosition.OnStep(dEngine.Instances.Part)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.BodyThrust">
             <summary>
             Applies a force on its parent towards a direction.
@@ -1836,6 +1941,9 @@
             <summary>
             The offset from the center of the part where force is applied.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.BodyThrust.OnStep(dEngine.Instances.Part)">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.BodyVelocity">
             <summary>
@@ -1933,6 +2041,9 @@
             Makes the rocket fly towards its target.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.RocketPropulsion.OnStep(dEngine.Instances.Part)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.Attachment">
             <summary>
             An attachment represents an offset relative to the object it is parented to.
@@ -2008,10 +2119,25 @@
             <see cref="P:dEngine.Instances.BallSocketConstraint.UpperAngle" />.
             </summary>
         </member>
+        <member name="P:dEngine.Instances.BallSocketConstraint.UpperAngle">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.BallSocketConstraint.RebuildConstraint">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.Constraint">
             <summary>
             Base class for constraints.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.Constraint._attachment0">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.Constraint._attachment1">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.Constraint._constraint">
+            <summary/>
         </member>
         <member name="P:dEngine.Instances.Constraint.Attachment0">
             <summary>
@@ -2139,6 +2265,9 @@
             Summary
             </summary>
         </member>
+        <member name="M:dEngine.Instances.RopeConstraint.RebuildConstraint">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.SpringConstraint">
             <summary>
             A spring applies a force to its <see cref="T:dEngine.Instances.Attachment" />s based on spring and damper behaviour.
@@ -2234,6 +2363,11 @@
             Summary
             </summary>
         </member>
+        <member name="T:dEngine.Instances.ColourCorrectionEffect">
+            <summary>
+            Colour correction effect.
+            </summary>
+        </member>
         <member name="M:dEngine.Instances.ColourCorrectionEffect.#ctor">
             <summary />
         </member>
@@ -2288,6 +2422,11 @@
         </member>
         <member name="M:dEngine.Instances.GodRaysEffect.UpdateSize(dEngine.Instances.Camera)">
             <summary />
+        </member>
+        <member name="T:dEngine.Instances.MotionBlurEffect">
+            <summary>
+            Applies motion blur to fast-moving objects.
+            </summary>
         </member>
         <member name="M:dEngine.Instances.MotionBlurEffect.#ctor">
             <summary />
@@ -2353,6 +2492,11 @@
             The falloff of the effect beyond <see cref="P:dEngine.Instances.AmbientOcclusionEffect.MaxDistance" />.
             </summary>
         </member>
+        <member name="T:dEngine.Instances.ReflectionEffect">
+            <summary>
+            Screen space reflection effect.
+            </summary>
+        </member>
         <member name="T:dEngine.Instances.VignetteEffect">
             <summary>
             Darkens the corners of the screen.
@@ -2379,6 +2523,11 @@
         <member name="T:dEngine.Instances.Seat">
             <summary>
             A brick which can be occupied by a <see cref="T:dEngine.Instances.Character" />.
+            </summary>
+        </member>
+        <member name="F:dEngine.Instances.Seat._disabled">
+            <summary>
+            Determines if the seat is disabled.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Seat.#ctor">
@@ -2521,6 +2670,19 @@
         <member name="M:dEngine.Instances.Volume.OnWorldChanged(dEngine.Instances.IWorld,dEngine.Instances.IWorld)">
             <summary />
         </member>
+        <member name="M:dEngine.Instances.Volume.GetOverlappingParts">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.Volume.Entered">
+            <summary>
+            Fired when a part enters the volume.
+            </summary>
+        </member>
+        <member name="F:dEngine.Instances.Volume.Left">
+            <summary>
+            Fired when a part leaves the volume.
+            </summary>
+        </member>
         <member name="T:dEngine.Instances.TransvoxelTables">
             <summary>
             Contains the Lengyel Transvoxel Lookup Tables
@@ -2596,6 +2758,9 @@
             </summary>
             <param name="amount">The amount of health to give.</param>
         </member>
+        <member name="M:dEngine.Instances.Character.RebuildRigidBody">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.Character.Destroy">
             <inheritdoc />
         </member>
@@ -2632,6 +2797,9 @@
             <summary>
             Base class for text elements.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.TextElement._text">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.TextElement.#ctor">
             <inheritdoc />
@@ -2685,6 +2853,9 @@
             <summary>
             The colour of the text stroke.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.TextElement.CreateResources">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.TextElement.Arrange">
             <inheritdoc />
@@ -2773,6 +2944,9 @@
         </member>
         <member name="M:dEngine.Instances.CylinderMesh.#ctor">
             <inheritdoc />
+        </member>
+        <member name="T:dEngine.Instances.FileMesh">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.FileMesh.#ctor">
             <inheritdoc />
@@ -2872,6 +3046,9 @@
         <member name="M:dEngine.Instances.BodyForce.Destroy">
             <inheritdoc />
         </member>
+        <member name="M:dEngine.Instances.BodyForce.OnStep(dEngine.Instances.Part)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.BodyMover">
             <summary>
             Base class for physics force-related objects.
@@ -2906,6 +3083,9 @@
             </summary>
         </member>
         <member name="T:dEngine.Instances.Flex">
+            <summary />
+        </member>
+        <member name="M:dEngine.Instances.Flex.#ctor">
             <summary />
         </member>
         <member name="T:dEngine.Instances.ArcHandles">
@@ -2997,6 +3177,12 @@
             <summary>
             Determines whether any handles are blocking the mouse.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.BaseHandles.OnAncestryChanged(dEngine.Instances.Instance,dEngine.Instances.Instance)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.BaseHandles.ChangeRenderObject">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Stack">
             <summary>
@@ -3141,6 +3327,12 @@
             Comment
             </summary>
         </member>
+        <member name="P:dEngine.Instances.Decal.CFrame">
+            <summary/>
+        </member>
+        <member name="P:dEngine.Instances.Decal.Size">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.Decal.OnAncestryChanged(dEngine.Instances.Instance,dEngine.Instances.Instance)">
             <inheritdoc />
         </member>
@@ -3197,6 +3389,18 @@
         <member name="P:dEngine.Instances.BillboardGui.AbsoluteSize">
             <inheritdoc />
         </member>
+        <member name="P:dEngine.Instances.BillboardGui.RenderObject">
+            <summary/>
+        </member>
+        <member name="P:dEngine.Instances.BillboardGui.RenderIndex">
+            <summary/>
+        </member>
+        <member name="P:dEngine.Instances.BillboardGui.RenderData">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.BillboardGui.UpdateRenderData">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.BillboardGui.Destroy">
             <inheritdoc />
         </member>
@@ -3209,6 +3413,12 @@
             <summary>
             The base class of all gui screens and elements.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.GuiBase2D._bbMax">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.GuiBase2D._bbMin">
+            <summary/>
         </member>
         <member name="P:dEngine.Instances.GuiBase2D.AbsolutePosition">
             <summary>
@@ -3229,6 +3439,9 @@
             <summary>
             Base class for 3D GUI objects.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.GuiBase3D._colour">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.GuiBase3D.#ctor">
             <inheritdoc />
@@ -3269,6 +3482,9 @@
             <summary>
             Determines if the container and its elements are visible/usable.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.LayerCollector.OnAncestryChanged(dEngine.Instances.Instance,dEngine.Instances.Instance)">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.LayerCollector.HitTest(System.Single,System.Single)">
             <summary>
@@ -3851,9 +4067,6 @@
             Sets all cells in the chunk to air.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.Terrain.Cell.ToString">
-            <inheritdoc />
-        </member>
         <member name="T:dEngine.Instances.TerrainRegion">
             <summary>
             A TerrainRegion stores the data for a region of <see cref="T:dEngine.Instances.Terrain" />.
@@ -3868,6 +4081,9 @@
             <summary>
             A <see cref="T:dEngine.Instances.ValueContainer" /> for holding binary data.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.BinaryValue.GetValue">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Weld">
             <summary>
@@ -4007,6 +4223,12 @@
             Base class for all 2D GUI elements.
             </summary>
         </member>
+        <member name="F:dEngine.Instances.GuiElement._roundedRectangle">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.GuiElement._shadowEffect">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.GuiElement.#ctor">
             <inheritdoc />
         </member>
@@ -4034,6 +4256,9 @@
             <summary>
             The size of the element.
             </summary>
+        </member>
+        <member name="P:dEngine.Instances.GuiElement.Focused">
+            <summary/>
         </member>
         <member name="P:dEngine.Instances.GuiElement.CornerRadius">
             <summary>
@@ -4087,17 +4312,8 @@
         </member>
         <member name="P:dEngine.Instances.GuiElement.IsHitTestVisible">
             <summary>
-            Determines whether this element is ingored by hit tests.
+            Determines whether this element is ignored by hit tests.
             </summary>
-        </member>
-        <member name="P:dEngine.Instances.GuiElement.ShadowOffset">
-            <summary />
-        </member>
-        <member name="P:dEngine.Instances.GuiElement.ShadowWidth">
-            <summary />
-        </member>
-        <member name="P:dEngine.Instances.GuiElement.ShadowBlur">
-            <summary />
         </member>
         <member name="P:dEngine.Instances.GuiElement.Container">
             <summary>
@@ -4805,6 +5021,9 @@
             The child part which represents the 'primary' part of this model.
             </summary>
         </member>
+        <member name="P:dEngine.Instances.Model.ModelInPrimary">
+            <summary/>
+        </member>
         <member name="P:dEngine.Instances.Model.CFrame">
             <summary>
             The transform of the model.
@@ -5063,6 +5282,12 @@
             <summary>
             Base class for all entities.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.Instance._deserializing">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.Instance._serializing">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.Instance.#ctor">
             <summary>
@@ -5389,6 +5614,62 @@
             <summary>
             A list of cached properties.
             </summary>
+        </member>
+        <member name="T:dEngine.Services.ContentProvider">
+            <summary>
+            A service for managing content.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.ContentProvider.SupportedImageFormats">
+            <summary>Image Format string for file dialogs.</summary>
+        </member>
+        <member name="F:dEngine.Services.ContentProvider.SupportedAudioFormats">
+            <summary>Audio Format string for file dialogs.</summary>
+        </member>
+        <member name="F:dEngine.Services.ContentProvider.SupportedMeshFormats">
+            <summary>RenderMesh Format string for file dialogs.</summary>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.#ctor">
+            <summary />
+        </member>
+        <member name="P:dEngine.Services.ContentProvider.CacheMaxItemSize">
+            <summary>
+            If an item exceeds this size, it will not be cached.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.SetSoundcloudClientId(System.String)">
+            <summary>
+            Sets the client ID for the Soundcloud API.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.PreloadAsync(Neo.IronLua.LuaTable)">
+            <summary>
+            Yields untill all the given content urls have been downloaded.
+            </summary>
+            <param name="contentUrls">A table of content URLs to download.</param>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.Preload(System.String)">
+            <summary>
+            Preloads content from the given url.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.DownloadString(System.Uri)">
+            <summary>
+            Returns a stream of data from the given content id.
+            </summary>
+            <param name="contentId">The content id url.</param>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.DownloadStream(System.Uri)">
+            <summary>
+            Returns a stream of data from the given content id.
+            </summary>
+            <param name="contentId">The content URI.</param>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.RefreshResource(System.String)">
+            <summary>
+            Forces a cached resource to be redownloaded.
+            </summary>
+            <param name="resourceName"></param>
         </member>
         <member name="T:dEngine.Services.ContextActionService">
             <summary>
@@ -5768,27 +6049,26 @@
             Deserializes the given stream into an asset.
             </summary>
         </member>
-        <member name="M:dEngine.Services.CacheableContentProvider`1.RefreshResource(System.String)">
+        <member name="M:dEngine.Services.CacheableContentProvider`1.RefreshResource(System.Uri)">
             <summary>
             Redownloads the resource for the given content ID.
             </summary>
-            <param name="contentId"></param>
         </member>
-        <member name="M:dEngine.Services.CacheableContentProvider`1.GetAsync(System.String)">
+        <member name="M:dEngine.Services.CacheableContentProvider`1.GetAsync(System.Uri)">
             <summary>
             Returns a reference without waiting for the resource to load.
             </summary>
         </member>
-        <member name="M:dEngine.Services.CacheableContentProvider`1.Get(System.String)">
+        <member name="M:dEngine.Services.CacheableContentProvider`1.Get(System.Uri)">
             <summary>
             Returns a reference after waiting for the resource to load.
             </summary>
         </member>
-        <member name="M:dEngine.Services.CacheableContentProvider`1.Resource.#ctor(System.String)">
+        <member name="M:dEngine.Services.CacheableContentProvider`1.Resource.#ctor(System.Uri)">
             <summary>
             Creates a new resource.
             </summary>
-            <param name="contentId">The content id url.</param>
+            <param name="contentUri">The content id url.</param>
         </member>
         <member name="M:dEngine.Services.CacheableContentProvider`1.Resource.Dispose">
             <summary>
@@ -5976,6 +6256,12 @@
             </summary>
             <param name="frame"></param>
         </member>
+        <member name="M:dEngine.Services.ReplayService.ReplayFrame.Load(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Services.ReplayService.ReplayFrame.Save(System.IO.BinaryWriter)">
+            <summary/>
+        </member>
         <member name="F:dEngine.Services.ReplayService.ReplayFrame.Actions">
             <summary>
             A list of replay actions performed this frame.
@@ -6068,6 +6354,16 @@
             The darkest outdoor colour.
             </summary>
         </member>
+        <member name="P:dEngine.Services.Lighting.SkyLightIntensity">
+            <summary>
+            The intensity of the sky light.
+            </summary>
+        </member>
+        <member name="P:dEngine.Services.Lighting.IsLowerHemisphereBlack">
+            <summary>
+            Determines whether the lower hemisphere of the environment map is set to black.
+            </summary>
+        </member>
         <member name="P:dEngine.Services.Lighting.SunVector">
             <summary>
             A unit vector of the direction the sun is facing.
@@ -6092,72 +6388,6 @@
         <member name="M:dEngine.Services.Lighting.CalculateSunPosition(dEngine.DateTime,System.Double,System.Double)">
             <summary>
             Returns the Position of the sun at the given time and location in altitude and azimuth.
-            </summary>
-        </member>
-        <member name="T:dEngine.Services.ContentProvider">
-            <summary>
-            A service for managing content.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.#ctor">
-            <summary />
-        </member>
-        <member name="P:dEngine.Services.ContentProvider.CacheMaxItemSize">
-            <summary>
-            If an item exceeds this size, it will not be cached.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.SetSoundcloudClientId(System.String)">
-            <summary>
-            Sets the client ID for the Soundcloud API.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.PreloadAsync(Neo.IronLua.LuaTable)">
-            <summary>
-            Yields untill all the given content urls have been downloaded.
-            </summary>
-            <param name="contentUrls">A table of content URLs to download.</param>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.Preload(System.String)">
-            <summary>
-            Preloads content from the given url.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.ContentProvider.SupportedImageFormats">
-            <summary>Image Format string for file dialogs.</summary>
-        </member>
-        <member name="F:dEngine.Services.ContentProvider.SupportedAudioFormats">
-            <summary>Audio Format string for file dialogs.</summary>
-        </member>
-        <member name="F:dEngine.Services.ContentProvider.SupportedMeshFormats">
-            <summary>RenderMesh Format string for file dialogs.</summary>
-        </member>
-        <member name="P:dEngine.Services.ContentProvider.CustomFetchHandler">
-            <summary>
-            Allows the host application to add support for custom content uri protocols.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.DownloadString(System.String)">
-            <summary>
-            Returns a stream of data from the given content id.
-            </summary>
-            <param name="contentId">The content id url.</param>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.DownloadStream(System.String)">
-            <summary>
-            Returns a stream of data from the given content id.
-            </summary>
-            <param name="contentId">The content id url.</param>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.RefreshResource(System.String)">
-            <summary>
-            Forces a cached resource to be redownloaded.
-            </summary>
-            <param name="resourceName"></param>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.IsMeshImportFormatSupported(System.String)">
-            <summary>
-            Returns true if the given format is a supported mesh format.
             </summary>
         </member>
         <member name="T:dEngine.Services.Networking.NetworkClient">
@@ -6190,17 +6420,17 @@
         </member>
         <member name="F:dEngine.Services.Networking.NetworkClient.Connected">
             <summary>
-            Fired when <see cref="!:Connect(string, int, int)" />successfully connects to a server. Returns the ClientReplicator.
+            Fired when <see cref="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32)" />successfully connects to a server. Returns the ClientReplicator.
             </summary>
         </member>
         <member name="F:dEngine.Services.Networking.NetworkClient.Disconnected">
             <summary>
-            Fired if <see cref="!:Connect(string, int, int)" /> fails to connect to a server.
+            Fired if <see cref="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32)" /> fails to connect to a server.
             </summary>
         </member>
         <member name="F:dEngine.Services.Networking.NetworkClient.Rejected">
             <summary>
-            Fired if <see cref="!:Connect(string, int, int)" /> connects to a server, but the request to join is rejected.
+            Fired if <see cref="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32)" /> connects to a server, but the request to join is rejected.
             </summary>
             <remarks>
             This can happen if the client and server versions are mismatched, the player is banned from server, or ticket
@@ -6211,6 +6441,9 @@
             <summary>
             Base class for <see cref="T:dEngine.Services.Networking.NetworkClient" /> and <see cref="T:dEngine.Services.Networking.NetworkServer" />
             </summary>
+        </member>
+        <member name="F:dEngine.Services.Networking.NetworkPeer._accumulator">
+            <summary/>
         </member>
         <member name="P:dEngine.Services.Networking.NetworkPeer.IsRunning">
             <summary>
@@ -6313,6 +6546,11 @@
         <member name="P:dEngine.Services.Players.MaxPlayers">
             <summary>
             The maximum amount of players.
+            </summary>
+        </member>
+        <member name="P:dEngine.Services.Players.NumPlayers">
+            <summary>
+            The number of players in the game.
             </summary>
         </member>
         <member name="M:dEngine.Services.Players.CreateLocalPlayer">
@@ -6602,6 +6840,9 @@
             Objects stored in this container will not be baked into the client.
             </remarks>
             <seealso cref="T:dEngine.Services.Workspace" />
+        </member>
+        <member name="M:dEngine.Services.ServerScriptService.#ctor">
+            <summary/>
         </member>
         <member name="T:dEngine.Services.ServerStorage">
             <summary>
@@ -7067,6 +7308,9 @@
             <summary>
             The engine version, including the name.
             </summary>
+        </member>
+        <member name="M:dEngine.Settings.User.UserAnalyticsSettings.RestoreDefaults">
+            <summary/>
         </member>
         <member name="T:dEngine.Settings.User.UserGameSettings">
             <summary>
@@ -8724,96 +8968,6 @@
             Tries to get the comment for the given key.
             </summary>
         </member>
-        <member name="T:dEngine.Utility.FileFormats.Model.FBX">
-            <summary>
-            Helper class for converting FBX files to dEngine assets.
-            </summary>
-        </member>
-        <member name="M:dEngine.Utility.FileFormats.Model.FBX.Import(System.IO.Stream,dEngine.Utility.FileFormats.Model.FBX.ImportSettings,System.String,System.String)">
-            <summary>
-            Imports an FBX file.
-            </summary>
-            <param name="stream">The FBX stream.</param>
-            <param name="settings">An import settings object.</param>
-            <param name="format">The filetype of the mesh.</param>
-            <param name="filePath">The path to the file.</param>
-            <returns>An <see cref="T:dEngine.Utility.FileFormats.Model.FBX.ImportResult" /> object.</returns>
-        </member>
-        <member name="T:dEngine.Utility.FileFormats.Model.FBX.ImportResult">
-            <summary>
-            The result of the import.
-            </summary>
-        </member>
-        <member name="T:dEngine.Utility.FileFormats.Model.FBX.ImportSettings">
-            <summary>
-            FBX import settings.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.ImportAsSkeletal">
-            <summary>
-            Determines if the mesh should be treated a a Sketal or Static mesh.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.KeepOverlappingVertices">
-            <summary>
-            Determines whether or not duplicate vertices will be removed.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.NormalImportMethod">
-            <summary>
-            Determines whether or not duplicate vertices will be removed.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.MergeMeshes">
-            <summary>
-            Determines if meshes should be merged.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.Skeleton">
-            <summary>
-            The existing skeleton to use for this mesh. If none is provided, the skeleton will be imported from the file.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.UpdateReferencePose">
-            <summary>
-            Determines if the skeleton reference pose should be updated.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.UseFirstFrameAsReferencePose">
-            <summary>
-            Determines if the first frame should be used as the reference pose.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.ImportMorphTargets">
-            <summary>
-            If enabled, morph target swill be imported from the FBX file.
-            </summary>
-        </member>
-        <member name="T:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod">
-            <summary>
-            Enum for normal import methods.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ComputeNormals">
-            <summary>
-            The importer will compute normals and tangents.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ComputeNormalsSmooth">
-            <summary>
-            The importer will compute smooth normals and tangents.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ImportNormals">
-            <summary>
-            The importer will import normals but compute tangents.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ImportNormalsAndTangents">
-            <summary>
-            The importer will import normals and tangents.
-            </summary>
-        </member>
         <member name="M:dEngine.Utility.InstanceHelper.Recurse(dEngine.Instances.Instance,System.Func{dEngine.Instances.Instance,System.SByte})">
             <summary>
             Calls func on the descendants of root.
@@ -9195,6 +9349,9 @@
             Detects if we are running inside a unit test.
             </summary>
         </member>
+        <member name="P:dEngine.Utility.UnitTestDetector.IsInUnitTest">
+            <summary/>
+        </member>
         <member name="T:dEngine.FriendStatus">
             <summary>
             Enumeration for friend status.
@@ -9373,6 +9530,11 @@
         <member name="T:dEngine.SpeakerType">
             <summary>
             Speaker types.
+            </summary>
+        </member>
+        <member name="T:dEngine.TeamBalanceMethod">
+            <summary>
+            Algorthims for balancing teams.
             </summary>
         </member>
         <member name="F:dEngine.TeamBalanceMethod.Random">
@@ -9665,6 +9827,9 @@
             Base class for sequences.
             </summary>
         </member>
+        <member name="F:dEngine.Sequence`1._keypoints">
+            <summary/>
+        </member>
         <member name="M:dEngine.Sequence`1.#ctor">
             <summary>
             Empty constructor.
@@ -9818,6 +9983,12 @@
             <summary>
             The hit position.
             </summary>
+        </member>
+        <member name="M:dEngine.PhysicsSimulation.RayCastResult.ToTuple">
+            <summary>
+            Converts the result to a Lua tuple.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:dEngine.CascadePartitionMode">
             <summary>
@@ -10125,7 +10296,7 @@
         </member>
         <member name="T:dEngine.CollisionFidelity">
             <summary>
-            Determines how the collision models of a <see cref="!:CSGOperation" /> behave.
+            Determines how the collision models of a <see cref="T:dEngine.Instances.PartOperation" /> behave.
             </summary>
         </member>
         <member name="F:dEngine.CollisionFidelity.ConvexHull">
@@ -10266,6 +10437,11 @@
             Gets the path to a temporary directory, which is deleted on engine shutdown.
             </summary>
         </member>
+        <member name="P:dEngine.Engine.DocumentsPath">
+            <summary>
+            Gets the path to a game directory in the user's documents folder.
+            </summary>
+        </member>
         <member name="P:dEngine.Engine.UserSettings">
             <summary>
             The user settings container.
@@ -10296,17 +10472,12 @@
             A callback which is invoked when the game is saved.
             </summary>
         </member>
-        <member name="E:dEngine.Engine.OnShutdown">
-            <summary>
-            Fired after the <see cref="M:dEngine.Engine.Shutdown(System.Int32)"/> method has completed.
-            </summary>
-        </member>
         <member name="E:dEngine.Engine.Exiting">
             <summary>
             Fired when the application is closing.
             </summary>
         </member>
-        <member name="M:dEngine.Engine.Start(dEngine.EngineMode)">
+        <member name="M:dEngine.Engine.Start(dEngine.EngineMode,System.String)">
             <summary>
             Fires up the engine. And then it makes noise.
             </summary>
@@ -10851,9 +11022,6 @@
         <member name="M:dEngine.Colour.op_Implicit(dEngine.Colour)~SharpDX.Color">
             <summary />
         </member>
-        <member name="M:dEngine.Colour.op_Implicit(Assimp.Color4D)~dEngine.Colour">
-            <summary />
-        </member>
         <member name="M:dEngine.Colour.lerp(dEngine.Colour,System.Single)">
             <summary>
             Returns a linear interpolation between the two colours.
@@ -11096,6 +11264,9 @@
         </member>
         <member name="M:dEngine.Content`1.GetHashCode">
             <inheritdoc />
+        </member>
+        <member name="M:dEngine.Content`1.RetryDownload">
+            <summary/>
         </member>
         <member name="T:dEngine.Shape">
             <summary>
@@ -11353,6 +11524,12 @@
             <summary>
             The id of the instance to reference.
             </summary>
+        </member>
+        <member name="M:dEngine.InstanceReference.Load(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.InstanceReference.Save(System.IO.BinaryWriter)">
+            <summary/>
         </member>
         <member name="M:dEngine.Matrix3.Equals(dEngine.Matrix3)">
             <summary />
@@ -11887,6 +12064,12 @@
             Converts a <see cref="T:dEngine.Vector3" /> to a <see cref="T:dEngine.Vector3int16" />.
             </summary>
         </member>
+        <member name="M:dEngine.Vector3int16.Load(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Vector3int16.Save(System.IO.BinaryWriter)">
+            <summary/>
+        </member>
         <member name="T:dEngine.InstanceId">
             <summary>
             A GUID for an <see cref="T:dEngine.Instances.Instance" />.
@@ -12391,6 +12574,12 @@
         </member>
         <member name="M:dEngine.UDim2.op_Multiply(dEngine.UDim2,dEngine.UDim2)">
             <summary />
+        </member>
+        <member name="M:dEngine.UDim2.Load(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.UDim2.Save(System.IO.BinaryWriter)">
+            <summary/>
         </member>
         <member name="T:dEngine.Vector2">
             <summary>
