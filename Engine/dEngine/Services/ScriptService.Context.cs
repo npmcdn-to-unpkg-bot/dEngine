@@ -132,7 +132,7 @@ namespace dEngine.Services
 
             public static GlobalSettings Settings()
             {
-                return Engine.Settings;
+                return Engine.GlobalSettings;
             }
 
             public static UserSettings UserSettings()

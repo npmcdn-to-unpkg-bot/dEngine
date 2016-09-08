@@ -441,7 +441,7 @@ namespace dEngine.Settings.Global
 
         private static void NotifyChangedStatic([CallerMemberName] string propertyName = null)
         {
-            Engine.Settings?.RenderSettings?.NotifyChanged(propertyName);
+            Engine.GlobalSettings?.RenderSettings?.NotifyChanged(propertyName);
         }
 
         /// <inheritdoc />

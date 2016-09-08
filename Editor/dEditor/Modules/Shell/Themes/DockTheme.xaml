@@ -96,17 +96,18 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor31}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}" />
                 <Setter Property="Background"
-                        Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor10}" />
+                        Value="{StaticResource BackgroundPrimary}" />
             </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor31}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}" />
                 <Setter Property="Background"
-                        Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor10}" />
+                        Value="{StaticResource BackgroundPrimary}" />
             </Trigger>
         </Style.Triggers>
     </Style>
+
 
     <Style x:Key="AvalonDock_ThemeMetro_ButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
@@ -137,7 +138,7 @@
     <!--DocumentPaneControlStyle-->
     <Style x:Key="AvalonDock_ThemeMetro_DocumentPaneControlStyle"
            TargetType="{x:Type avalonDockControls:LayoutDocumentPaneControl}">
-        <Setter Property="Background" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor33}" />
+        <Setter Property="Background" Value="{StaticResource BackgroundPrimary}" />
         <Setter Property="BorderBrush" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -262,10 +263,10 @@
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="BorderBrush" Value="Transparent" />
-                    <Setter Property="Foreground" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor5}" />
+                    <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}" />
                     <Setter Property="ToolTip" Value="{Binding ToolTip}" />
                     <Setter Property="Padding" Value="3, 3" />
-                    <Setter Property="Margin" Value="-1, 0, 0, -1" />
+                    <Setter Property="Margin" Value="-1, 0, 0, -2" />
                     <Setter Property="Height" Value="25" />
                     <Setter Property="Template">
                         <Setter.Value>
@@ -292,7 +293,7 @@
                                     <Trigger Property="Selector.IsSelected"
                                              Value="true">
                                         <Setter Property="Background"
-                                                Value="White" />
+                                                Value="{StaticResource BackgroundPrimary}" />
                                         <Setter Property="Panel.ZIndex"
                                                 Value="1" />
                                         <Setter Property="BorderThickness"
@@ -494,8 +495,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Background="White"
-                            BorderBrush="{DynamicResource dEditorTheme_BorderBrush}"
+                    <Border Background="{StaticResource BackgroundPrimary}"
+                            BorderBrush="{StaticResource BorderPrimary}"
                             BorderThickness="1, 1, 1, 0"
                             Padding="6, 4">
                         <Grid>
@@ -569,7 +570,7 @@
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Model.IsActive, RelativeSource={RelativeSource Mode=Self}}"
                                      Value="True">
-                            <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor3}" />
+                            <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}" />
                             <Setter Property="BorderThickness" Value="0,3,0,0" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Model.IsActive, RelativeSource={RelativeSource Mode=Self}}"
@@ -661,10 +662,10 @@
                     <Condition Property="IsMouseOver" Value="true" />
                     <Condition Property="Selector.IsSelected" Value="false" />
                 </MultiTrigger.Conditions>
-                <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor4}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}" />
             </MultiTrigger>
             <DataTrigger Binding="{Binding Model.IsActive, RelativeSource={RelativeSource Mode=Self}}" Value="true">
-                <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor3}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}" />
             </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -962,7 +963,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type avalonDock:DockingManager}">
                     <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderBrush="{StaticResource BorderPrimary}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -996,7 +997,7 @@
     <!--LayoutGridResizerControl-->
     <Style x:Key="{x:Type avalonDockControls:LayoutGridResizerControl}"
            TargetType="{x:Type avalonDockControls:LayoutGridResizerControl}">
-        <Setter Property="Background" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor7}" />
+        <Setter Property="Background" Value="{StaticResource BackgroundSecondary}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type avalonDockControls:LayoutGridResizerControl}">
@@ -1010,8 +1011,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type avalonDockControls:LayoutDocumentControl}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
+                    <Border Background="{StaticResource BackgroundPrimary}"
+                            BorderBrush="{StaticResource BorderPrimary}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Margin="0, 0, -1, 0">
                         <ContentPresenter
@@ -1029,8 +1030,8 @@
                     <avalonDockControls:DropDownControlArea
                         DropDownContextMenu="{Binding Root.Manager.DocumentContextMenu}"
                         DropDownContextMenuDataContext="{Binding LayoutItem, RelativeSource={RelativeSource TemplatedParent}}">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
+                        <Border Background="Transparent"
+                                BorderBrush="{StaticResource BorderPrimary}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="0,2,0,1">
                             <Grid>
@@ -1064,6 +1065,9 @@
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding Path=IsSelected}" Value="true">
                             <Setter Property="Visibility" Value="Visible" TargetName="DocumentCloseButton" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsSelected}" Value="false">
+                            <Setter Property="Opacity" Value="0.7" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=IsLastFocusedDocument}" Value="true">
                             <Setter Property="Visibility" Value="Visible" TargetName="DocumentCloseButton" />
@@ -1101,8 +1105,8 @@
                     <avalonDockControls:DropDownControlArea
                         DropDownContextMenu="{Binding Root.Manager.AnchorableContextMenu}"
                         DropDownContextMenuDataContext="{Binding LayoutItem, RelativeSource={RelativeSource TemplatedParent}}">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
+                        <Border Background="{StaticResource BackgroundPrimary}"
+                                BorderBrush="{StaticResource BorderPrimary}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
                             <Grid>
                                 <ContentPresenter
@@ -1127,8 +1131,8 @@
                 <ControlTemplate TargetType="{x:Type avalonDockControls:LayoutAnchorableControl}">
                     <Border
                         x:Name="Bd"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Background="{StaticResource BackgroundPrimary}"
+                        BorderBrush="{StaticResource BorderPrimary}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -1136,7 +1140,7 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Border x:Name="Header"
-                                    Background="{DynamicResource AvalonDock_ThemeMetro_BaseColor16}">
+                                    Background="{StaticResource BackgroundPrimary}">
                                 <avalonDockControls:AnchorablePaneTitle
                                     Model="{Binding Model, RelativeSource={RelativeSource TemplatedParent}}" />
                             </Border>
@@ -1173,7 +1177,7 @@
     <Style x:Key="{x:Type avalonDockControls:LayoutDocumentFloatingWindowControl}"
            TargetType="{x:Type avalonDockControls:LayoutDocumentFloatingWindowControl}">
         <Setter Property="Background" Value="White" />
-        <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor6}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}" />
         <Setter Property="shell:WindowChrome.WindowChrome">
             <Setter.Value>
                 <shell:WindowChrome
@@ -1189,7 +1193,7 @@
                 <ControlTemplate TargetType="{x:Type avalonDockControls:LayoutDocumentFloatingWindowControl}">
                     <Grid>
                         <Border x:Name="WindowBorder"
-                                Background="White"
+                                Background="{StaticResource BackgroundPrimary}"
                                 BorderBrush="#CCC"
                                 BorderThickness="1">
                             <Grid>
@@ -1202,11 +1206,11 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
-                                <Border x:Name="bd" Width="5" VerticalAlignment="Stretch" Background="White" />
+                                <Border x:Name="bd" Width="5" VerticalAlignment="Stretch" Background="{StaticResource BackgroundPrimary}" />
 
                                 <Border x:Name="Header"
                                         Padding="2,0,2,0"
-                                        Background="White"
+                                        Background="{StaticResource BackgroundPrimary}"
                                         Grid.Column="1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -1298,15 +1302,15 @@
                             <Setter
                                 TargetName="bd"
                                 Property="Background"
-                                Value="White" />
+                                Value="{StaticResource BackgroundPrimary}" />
                             <Setter
                                 TargetName="Header"
                                 Property="Background"
-                                Value="White" />
+                                Value="{StaticResource BackgroundPrimary}" />
                             <Setter
                                 TargetName="Header"
                                 Property="TextElement.Foreground"
-                                Value="Black" />
+                                Value="{StaticResource TextColourPrimary}" />
                         </DataTrigger>
 
                         <Trigger Property="IsMouseOver" SourceName="ContextMenuDropdownButton" Value="True">
@@ -1356,7 +1360,7 @@
                     <Grid>
                         <Border x:Name="WindowBorder"
                                 BorderThickness="1"
-                                Background="White"
+                                Background="{StaticResource BackgroundPrimary}"
                                 BorderBrush="#CCC">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -1368,7 +1372,7 @@
                                         BorderBrush="#CCC"
                                         BorderThickness="0, 0, 0, 1"
                                         TextElement.Foreground="Black"
-                                        Background="White">
+                                        Background="{StaticResource BackgroundPrimary}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -1473,7 +1477,7 @@
                         <DataTrigger
                             Binding="{Binding RelativeSource={RelativeSource Self}, Path=Model.SinglePane.SelectedContent.IsActive}"
                             Value="True">
-                            <Setter Property="Background" Value="White" TargetName="Header" />
+                            <Setter Property="Background" Value="{StaticResource BackgroundPrimary}" TargetName="Header" />
                             <Setter Property="TextElement.Foreground" Value="Black" TargetName="Header" />
                             <Setter Property="Source" TargetName="PART_ImgPinClose"
                                     Value="/dEditor;component/Content/Icons/AvalonDock/PinClose_Dark.png" />
@@ -1659,9 +1663,9 @@
                                 </Grid>
 
                                 <Border Grid.Row="1"
-                                        BorderBrush="{DynamicResource AvalonDock_ThemeMetro_BaseColor11}"
+                                        BorderBrush="{StaticResource BorderPrimary}"
                                         BorderThickness="0,1,0,0"
-                                        Background="{DynamicResource AvalonDock_ThemeMetro_BaseColor7}"
+                                        Background="{StaticResource BackgroundSecondary}"
                                         MinHeight="200">
                                     <Grid Margin="5">
                                         <Grid.ColumnDefinitions>

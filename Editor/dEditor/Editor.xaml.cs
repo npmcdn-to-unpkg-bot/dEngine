@@ -6,11 +6,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Baml2006;
 using System.Windows.Threading;
+using System.Xaml;
 using Caliburn.Micro;
 using dEditor.Framework;
 using dEditor.Framework.Plugins;
 using dEditor.Modules.Shell;
+using dEditor.Styles;
 using dEditor.Utility;
 using dEngine;
 using dEngine.Instances;
@@ -30,7 +33,7 @@ namespace dEditor
         public Editor()
         {
             Current = this;
-
+            
             Logger = LogService.GetLogger();
 
             Plugins = new List<Plugin>();
@@ -175,6 +178,34 @@ namespace dEditor
 
             Engine.Shutdown();
             //Environment.Exit(0);
+        }
+
+        public static void LoadTheme()
+        {
+            try
+            {
+                /*
+                var stream =
+                    ContentProvider.DownloadStream(new Uri($"editor://Styles/Accents/{EditorSettings.Theme}.xaml"))
+                        .Result;
+                var reader = new Baml2006Reader(stream);
+                var writer = new XamlObjectWriter(reader.SchemaContext);
+                while (reader.Read())
+                    writer.WriteNode(reader);
+                    */
+                if (EditorSettings.Theme == Theme.Light)
+                {
+                    Current.Resources.MergedDictionaries.RemoveAt(0);
+                }
+                else
+                {
+                    Current.Resources.MergedDictionaries.RemoveAt(1);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, "Could not load theme.");
+            }
         }
     }
 }

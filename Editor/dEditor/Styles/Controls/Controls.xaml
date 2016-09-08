@@ -16,13 +16,13 @@
                               IsEnabled="{TemplateBinding HasOverflowItems}">
                     <ToggleButton.Style>
                         <Style TargetType="{x:Type ToggleButton}">
-                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Background" Value="{StaticResource BackgroundPrimary}" />
                             <Setter Property="MinHeight" Value="0" />
                             <Setter Property="MinWidth" Value="0" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                        <Border x:Name="Bd" Background="White" CornerRadius="0,3,3,0"
+                                        <Border x:Name="Bd" Background="{StaticResource BackgroundPrimary}" CornerRadius="0,3,3,0"
                                                 SnapsToDevicePixels="True">
                                             <Canvas HorizontalAlignment="Right" Height="7" Margin="7,2,2,2"
                                                     SnapsToDevicePixels="True" VerticalAlignment="Bottom" Width="6">
@@ -36,7 +36,7 @@
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter Property="Background" TargetName="Bd"
                                                         Value="{StaticResource AccentPrimary}" />
-                                                <Setter Property="Foreground" Value="White" />
+                                                <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}" />
                                             </Trigger>
                                             <Trigger Property="IsKeyboardFocused" Value="True">
                                                 <Setter Property="Background" TargetName="Bd" Value="#210080FF" />
@@ -65,7 +65,7 @@
                         <Grid.Effect>
                             <DropShadowEffect />
                         </Grid.Effect>
-                        <Border x:Name="ToolBarSubMenuBorder" BorderBrush="#CCC" BorderThickness="1" Background="White"
+                        <Border x:Name="ToolBarSubMenuBorder" BorderBrush="#CCC" BorderThickness="1" Background="{StaticResource BackgroundPrimary}"
                                 RenderOptions.ClearTypeHint="Enabled">
                             <ToolBarOverflowPanel x:Name="PART_ToolBarOverflowPanel"
                                                   KeyboardNavigation.DirectionalNavigation="Cycle"
@@ -77,7 +77,7 @@
                 </Popup>
             </Grid>
             <Border x:Name="MainPanelBorder" BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}" Background="White"
+                    BorderThickness="{TemplateBinding BorderThickness}" Background="{StaticResource BackgroundPrimary}"
                     Padding="{TemplateBinding Padding}">
                 <Border.Style>
                     <Style TargetType="{x:Type Border}">
@@ -106,7 +106,7 @@
                                                                       ViewboxUnits="Absolute">
                                                             <DrawingBrush.Drawing>
                                                                 <DrawingGroup>
-                                                                    <GeometryDrawing Brush="White"
+                                                                    <GeometryDrawing Brush="{StaticResource BackgroundPrimary}"
                                                                                      Geometry="M1,1L1,3 3,3 3,1z" />
                                                                     <GeometryDrawing Brush="#FF6D6D6D"
                                                                                      Geometry="M0,0L0,2 2,2 2,0z" />
@@ -157,7 +157,7 @@
                 <Setter Property="Style" TargetName="OverflowButton">
                     <Setter.Value>
                         <Style TargetType="{x:Type ToggleButton}">
-                            <Setter Property="Background" Value="#FFEEF5FD" />
+                            <Setter Property="Background" Value="{StaticResource BackgroundPrimary}" />
                             <Setter Property="MinHeight" Value="0" />
                             <Setter Property="MinWidth" Value="0" />
                             <Setter Property="Template">
@@ -167,9 +167,9 @@
                                                 CornerRadius="0,0,3,3" SnapsToDevicePixels="True">
                                             <Canvas HorizontalAlignment="Right" Height="6" Margin="2,7,2,2"
                                                     SnapsToDevicePixels="True" VerticalAlignment="Bottom" Width="7">
-                                                <Path Data="M1.5,1L1.5,6" Stroke="White" />
+                                                <Path Data="M1.5,1L1.5,6" Stroke="{StaticResource BackgroundPrimary}" />
                                                 <Path Data="M0.5,0L0.5,5" Stroke="{TemplateBinding Foreground}" />
-                                                <Path Data="M3.5,0.5L7,3.5 4,6.5z" Fill="White" />
+                                                <Path Data="M3.5,0.5L7,3.5 4,6.5z" Fill="{StaticResource BackgroundPrimary}" />
                                                 <Path Data="M3,-0.5L6,2.5 3,5.5z" Fill="{TemplateBinding Foreground}" />
                                             </Canvas>
                                         </Border>
@@ -181,7 +181,7 @@
                                                 <Setter Property="Background" TargetName="Bd" Value="#210080FF" />
                                             </Trigger>
                                             <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Foreground" Value="#FF6D6D6D" />
+                                                <Setter Property="Opacity" Value="0.5"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -211,14 +211,14 @@
                 <Setter Property="Background" Value="#FFEEF5FD" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                <Setter Property="Opacity" Value="0.5" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{DynamicResource BorderPrimary}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}" />
         <Setter Property="Padding" Value="4,4,4,4" />
     </Style>
 
@@ -230,8 +230,8 @@
                         <AdornerDecorator.CacheMode>
                             <BitmapCache SnapsToDevicePixels="True" EnableClearType="True" />
                         </AdornerDecorator.CacheMode>
-                        <Border CornerRadius="0" BorderThickness="1" BorderBrush="{DynamicResource BorderPrimary}"
-                                Background="{DynamicResource BackgroundPrimary}" Margin="0, 3">
+                        <Border CornerRadius="0" BorderThickness="1" BorderBrush="{StaticResource BorderPrimary}"
+                                Background="{StaticResource BackgroundPrimary}" Margin="0, 3">
                             <Border>
                                 <ScrollViewer
                                     Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}"
@@ -438,8 +438,8 @@
                             <Setter Property="Visibility" TargetName="IconWrapper" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="IsHighlighted" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource AccentPrimary}" />
-                            <Setter TargetName="HeaderPresenter" Property="TextBlock.Foreground" Value="White" />
+                            <Setter Property="Background" Value="{StaticResource BackgroundSecondary}" />
+                            <Setter TargetName="HeaderPresenter" Property="TextBlock.Foreground" Value="{StaticResource TextColourPrimary}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value=".56" />
@@ -476,10 +476,10 @@
                         <Grid>
                             <Border x:Name="MouseOverBorder"
                                     Opacity="0"
-                                    Background="{DynamicResource AccentPrimary}" />
+                                    Background="{DynamicResource BackgroundSecondary}" />
                             <Border x:Name="SelectedBorder"
                                     Opacity="0"
-                                    Background="{DynamicResource AccentPrimary}" />
+                                    Background="{DynamicResource BackgroundSecondary}" />
                             <materialDesign:Ripple Feedback="White"
                                                    Focusable="False"
                                                    Content="{TemplateBinding Content}"
@@ -495,11 +495,11 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="SelectedBorder" Property="Opacity" Value="1" />
-                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="MouseOverBorder" Property="Opacity" Value="1" />
-                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

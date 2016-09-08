@@ -12,8 +12,8 @@
              x:Name="Root"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{x:Type newPlace:NewPlaceViewModel}">
     <Grid>
-        <StackPanel Background="#EEE">
-            <ListBox ItemsSource="{Binding Templates}" SelectedItem="{Binding SelectedTemplate}" Background="White">
+        <StackPanel Background="{StaticResource BackgroundSecondary}">
+            <ListBox ItemsSource="{Binding Templates}" SelectedItem="{Binding SelectedTemplate}" Background="{StaticResource BackgroundPrimary}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource CustomListBoxItem}">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -34,12 +34,12 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ListBox>
-            <TextBlock Foreground="DarkGray" Margin="5, 4, 4, 0" FontSize="12" FontWeight="Normal"
+            <TextBlock Foreground="{StaticResource TextColourPrimary}" Opacity="0.7" Margin="5, 4, 4, 0" FontSize="12" FontWeight="Normal"
                        VerticalAlignment="Top" HorizontalAlignment="Left">
                 Project Name
             </TextBlock>
             <TextBox Margin="4, 4, 4, 2" Text="{Binding ElementName=Root, Path=DataContext.PlaceName}" />
-            <TextBlock Foreground="DarkGray" Margin="5, 4, 4, 0" FontSize="12" FontWeight="Normal"
+            <TextBlock Foreground="{StaticResource TextColourPrimary}" Opacity="0.7" Margin="5, 4, 4, 0" FontSize="12" FontWeight="Normal"
                        VerticalAlignment="Top" HorizontalAlignment="Left">
                 Description
             </TextBlock>
@@ -47,7 +47,7 @@
                      Height="64" TextWrapping="Wrap" AcceptsReturn="True" />
         </StackPanel>
 
-        <Border BorderThickness="0, 1, 0, 0" BorderBrush="#CCC" Background="White" VerticalAlignment="Bottom"
+        <Border BorderThickness="0, 1, 0, 0" BorderBrush="#CCC" Background="{StaticResource BackgroundPrimary}" VerticalAlignment="Bottom"
                 Height="42">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Margin="4" FontSize="12" cal:Message.Attach="[Click] = [Create()]"

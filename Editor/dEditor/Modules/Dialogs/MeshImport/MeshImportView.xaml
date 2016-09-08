@@ -6,20 +6,20 @@
              xmlns:local="clr-namespace:dEditor.Modules.Dialogs.MeshImport"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-               d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:MeshImportViewModel}" Background="White">
+               d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance local:MeshImportViewModel}" Background="{StaticResource BackgroundPrimary}">
     <Grid Margin="6">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="32" />
         </Grid.RowDefinitions>
-        <DockPanel x:Name="DockPanel" LastChildFill="True" Background="White" Grid.Row="0">
+        <DockPanel x:Name="DockPanel" LastChildFill="True" Background="{StaticResource BackgroundPrimary}" Grid.Row="0">
             <Grid DockPanel.Dock="Top">
                 <ListBox x:Name="Categories" SelectedItem="{Binding SelectedCategory}"
                          ItemsSource="{Binding SettingsItems}" BorderThickness="0" Width="273"
-                         HorizontalAlignment="Left" FontFamily="Segoe Ui" FontSize="14.667" />
-                <StackPanel Orientation="Horizontal">
-                    <Label FontWeight="500">Current File:</Label>
-                    <Label Content="{Binding FilePath}" />
+                         HorizontalAlignment="Left" FontFamily="Segoe Ui" FontSize="14.667" Background="{StaticResource BackgroundPrimary}"/>
+                <StackPanel Orientation="Horizontal" >
+                    <Label FontWeight="Medium" Foreground="{StaticResource TextColourPrimary}">Current File:</Label>
+                    <Label Content="{Binding FilePath}" Foreground="{StaticResource TextColourPrimary}" />
                 </StackPanel>
             </Grid>
             <ContentControl x:Name="ActiveItem" />

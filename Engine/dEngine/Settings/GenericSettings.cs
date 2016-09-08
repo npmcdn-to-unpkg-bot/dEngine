@@ -107,7 +107,7 @@ namespace dEngine.Settings
         /// </summary>
         public void Load()
         {
-            var file = $"{Name}.ini";
+            var file = Path.Combine(Engine.DocumentsPath, $"{Name}.ini");
             if (!File.Exists(file))
             {
                 Logger.Warn($"No INI file found for {Name} - creating one.");

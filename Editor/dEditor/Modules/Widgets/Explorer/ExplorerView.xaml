@@ -160,7 +160,7 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </UserControl.Resources>
-    <Grid x:Name="Grid" Background="White">
+    <Grid x:Name="Grid" Background="{StaticResource BackgroundPrimary}">
         <TreeView x:Name="TreeView" ItemsSource="{Binding Path=RootItem.Items}"
                   VirtualizingPanel.IsVirtualizing="True"
                   VirtualizingPanel.VirtualizationMode="Recycling"
@@ -220,7 +220,7 @@
                                                 <Setter Property="Foreground" Value="White" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsSelected}" Value="False">
-                                                <Setter Property="Foreground" Value="Black" />
+                                                <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

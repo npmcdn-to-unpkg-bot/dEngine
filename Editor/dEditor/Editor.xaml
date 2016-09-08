@@ -8,6 +8,9 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Styles/Accents/Dark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Styles/Accents/Light.xaml"/>
+                
                 <ResourceDictionary>
                     <local:AppBootstrapper x:Key="bootstrapper" />
                     <converters:BooleanToVisibilityConverter x:Key="BoolToVisConverter" True="Visible"
@@ -34,78 +37,38 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/TabControl.xaml" />
 
-                <ResourceDictionary Source="pack://application:,,,/dEditor;component/Styles/Colours.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/dEditor;component/Styles/Accents/Light.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/dEditor;component/Styles/Font.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/dEditor;component/Styles/Accents/Light.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-                <Setter Property="Padding" Value="2" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type ToggleButton}">
-                            <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
-                                    SnapsToDevicePixels="True">
-                                <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                  Content="{TemplateBinding Content}"
-                                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter Property="BorderBrush" Value="#80DADADA" />
-                                    <Setter Property="Background" Value="#400080FF" />
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="BorderBrush" Value="#80DADADA" />
-                                    <Setter Property="Background" Value="#210080FF" />
-                                </Trigger>
-                                <Trigger Property="IsKeyboardFocused" Value="True">
-                                    <Setter Property="BorderBrush" Value="#80DADADA" />
-                                    <Setter Property="Background" Value="#210080FF" />
-                                </Trigger>
-                                <MultiTrigger>
-                                    <MultiTrigger.Conditions>
-                                        <Condition Property="IsMouseOver" Value="True" />
-                                        <Condition Property="IsChecked" Value="True" />
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="BorderBrush" Value="#90006CD9" />
-                                    <Setter Property="Background" Value="#400080FF" />
-                                </MultiTrigger>
-                                <MultiTrigger>
-                                    <MultiTrigger.Conditions>
-                                        <Condition Property="IsKeyboardFocused" Value="True" />
-                                        <Condition Property="IsChecked" Value="True" />
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="BorderBrush" Value="#90006CD9" />
-                                    <Setter Property="Background" Value="#400080FF" />
-                                </MultiTrigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="BorderBrush" Value="#90006CD9" />
-                                    <Setter Property="Background" Value="#400080FF" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Foreground"
-                                            Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+                <ResourceDictionary>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
+                        <Setter Property="FontFamily" Value="Roboto" />
+                    </Style>
+                    <Style TargetType="Label">
+                        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
+                        <Setter Property="FontFamily" Value="Roboto" />
+                    </Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}"/>
+                    </Style>
+                    <Style TargetType="ListBox">
+                        <Setter Property="Background" Value="{StaticResource BackgroundPrimary}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                    <Style TargetType="Window">
+                        <Setter Property="FontFamily" Value="Roboto" />
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
+                        <Setter Property="FontFamily" Value="Roboto" />
+                    </Style>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Background" Value="{StaticResource BackgroundPrimary}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}"/>
+                        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
+                    </Style>
+                </ResourceDictionary>
 
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

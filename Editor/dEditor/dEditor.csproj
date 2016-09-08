@@ -317,6 +317,7 @@
     <Compile Include="Modules\Widgets\ContentBrowser\ContextMenus\FolderContextMenu.xaml.cs">
       <DependentUpon>FolderContextMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Styles\Theme.cs" />
     <Compile Include="TeamBuild.cs" />
     <Compile Include="Tools\StudioTool.cs" />
     <Compile Include="Utility\BrushConverter.cs" />
@@ -908,19 +909,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Colours.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\Controls\Controls.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Controls\TabControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Font.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -975,7 +968,7 @@
     <Resource Include="Content\Icons\Toolbar\ViewTop.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Content\Icons\logo_small.png" />
+    <Resource Include="Content\Icons\logo-small.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Content\Icons\Objects\application.png" />
@@ -1151,7 +1144,7 @@
     <Resource Include="Content\Icons\Objects\pictures.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Content\Icons\default-place-icon.png" />
+    <Resource Include="Content\Icons\default-place.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Content\Icons\Toolbar\RotateTool.png" />
@@ -1381,6 +1374,9 @@
     <None Include="Assimp64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Content\Icons\logo-small-invert.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

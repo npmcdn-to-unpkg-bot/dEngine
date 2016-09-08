@@ -21,7 +21,7 @@ namespace dEditor.Modules.Dialogs.Settings
             Properties.FilteredCategories.Add("Behaviour");
 
             Settings =
-                Engine.Settings.Children.OfType<dEngine.Settings.Settings>()
+                Engine.GlobalSettings.Children.OfType<dEngine.Settings.Settings>()
                     .Concat(Engine.UserSettings.Children.OfType<dEngine.Settings.Settings>());
         }
 
@@ -39,7 +39,7 @@ namespace dEditor.Modules.Dialogs.Settings
 
         public void ResetAllSettings()
         {
-            Engine.Settings.RestoreDefaults();
+            Engine.GlobalSettings.RestoreDefaults();
         }
 
         public void ApplyAndClose()
@@ -53,7 +53,7 @@ namespace dEditor.Modules.Dialogs.Settings
 
             if (dialogResult == true)
             {
-                Engine.Settings.Save();
+                Engine.GlobalSettings.Save();
                 Engine.UserSettings.Save();
             }
         }

@@ -12,7 +12,6 @@
                       BorderThickness="1"
                       BorderBrush="#CCC"
                       VerticalAlignment="Top"
-                      Background="White"
                       Margin="4,0,4,4"
                       PreviewKeyDown="ComboBox_KeyDown" Style="{DynamicResource ComboBoxStyle1}">
         <ComboBox.ItemContainerStyle>

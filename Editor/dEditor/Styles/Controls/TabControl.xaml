@@ -1,24 +1,25 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:dEditor.Styles.Controls">
+                    xmlns:local="clr-namespace:dEditor.Styles.Controls"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <Style x:Key="dgFocusVisualStyte" >
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border x:Name="FocusStyle" Background="#4433b4ed" />
+                    <!--<Border x:Name="FocusStyle" Background="{StaticResource AccentPrimary}" />-->
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="TabControlStyle" TargetType="{x:Type TabControl}">
+    <Style TargetType="{x:Type TabControl}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">
-                    <Grid KeyboardNavigation.TabNavigation="Local">
+                    <Grid KeyboardNavigation.TabNavigation="Local" Background="{StaticResource BackgroundPrimary}" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -32,8 +33,8 @@
                               Background="Transparent" />
                         <Border x:Name="Border"
                             Grid.Row="1"
-                            BorderThickness="2"
-                            CornerRadius="2"
+                            BorderThickness="0"
+                            CornerRadius="0"
                             KeyboardNavigation.TabNavigation="Local"
                             KeyboardNavigation.DirectionalNavigation="Contained"
                             KeyboardNavigation.TabIndex="2"
@@ -45,24 +46,23 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="TabItemStyle" TargetType="{x:Type TabItem}">
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="#FF474747"/>
+
+    <Style TargetType="{x:Type TabItem}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource dgFocusVisualStyte}" />
+        <Setter Property="materialDesign:RippleAssist.Feedback" Value="{StaticResource AccentPrimary}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabItem}">
                     <ControlTemplate.Resources>
                         <Storyboard x:Key="StartAction">
-                            <DoubleAnimation Storyboard.TargetName="Border1Highlited" Storyboard.TargetProperty="(UIElement.Opacity)" From="0" To="1" Duration="0:0:0.5"/>
-                            <DoubleAnimation Storyboard.TargetName="Border2Highlited" Storyboard.TargetProperty="(UIElement.Opacity)" From="0" To="1" Duration="0:0:0.5"/>
+                            <DoubleAnimation Storyboard.TargetName="BorderHighlighted" Storyboard.TargetProperty="(UIElement.Opacity)" From="0" To="1" Duration="0:0:0.5"/>
                         </Storyboard>
 
                         <Storyboard x:Key="ExitAction">
-                            <DoubleAnimation Storyboard.TargetName="Border1Highlited" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.3" />
-                            <DoubleAnimation Storyboard.TargetName="Border2Highlited" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.3" />
+                            <DoubleAnimation Storyboard.TargetName="BorderHighlighted" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.3" />
                         </Storyboard>
                     </ControlTemplate.Resources>
 
@@ -73,31 +73,26 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
-                            <RowDefinition Height="6" />
-                            <RowDefinition Height="2" />
+                            <RowDefinition Height="1" />
                         </Grid.RowDefinitions>
-                        <Border x:Name="Border"  Margin="0,0,-1,0" Background="#ededed">
-                            <ContentPresenter x:Name="ContentSite"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"
-                                          ContentSource="Header"
-                                          Margin="30,10,30,4"
-                                          RecognizesAccessKey="True" />
+                        <Border x:Name="Border" Margin="0,0,-1,0">
+                            <materialDesign:Ripple x:Name="ContentSite"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Content="{TemplateBinding Header}"
+                                    ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                    ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                                    ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                    Padding="20,10"
+                                    RecognizesAccessKey="True" />
                         </Border>
-                        <Border Grid.Column="1" Margin="0,10,0,4" Background="#d6d6d6" />
-
-                        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#ededed"/>
-                        <Border Grid.Row="1" Grid.ColumnSpan="2" Name="Border1Highlited" Background="Transparent"/>
-
-                        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="#c9c9c9"/>
-                        <Border Grid.Row="2" Grid.ColumnSpan="2" Name="Border2Highlited" Background="Transparent"/>
-
+                        <Border Grid.Column="1" Margin="0,10,0,4"/>
+                        <Border Grid.Row="1" Grid.ColumnSpan="2" Name="BorderHighlighted" Background="Transparent"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Panel.ZIndex" Value="100" />
-                            <Setter TargetName="Border1Highlited" Property="Background" Value="#33b4ed" />
-                            <Setter TargetName="Border2Highlited" Property="Background" Value="#009de2" />
+                            <Setter TargetName="BorderHighlighted" Property="Background" Value="{StaticResource AccentPrimary}" />
                             <Trigger.EnterActions>
                                 <BeginStoryboard Storyboard="{StaticResource StartAction}"/>
                             </Trigger.EnterActions>
@@ -106,7 +101,7 @@
                             </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="#cccccc" />
+                            <Setter Property="Foreground" Value="{StaticResource TextColourSecondary}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

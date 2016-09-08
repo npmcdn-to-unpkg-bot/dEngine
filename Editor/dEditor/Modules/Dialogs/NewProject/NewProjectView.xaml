@@ -8,7 +8,7 @@
              d:DesignHeight="621" d:DesignWidth="939">
     <DockPanel LastChildFill="True">
 
-        <Grid Background="White" DockPanel.Dock="Bottom" Height="156">
+        <Grid Background="{StaticResource BackgroundPrimary}" DockPanel.Dock="Bottom" Height="156">
             <DockPanel LastChildFill="True" Margin="4, 4, 300, 0">
                 <Button FontWeight="Normal" Style="{DynamicResource MaterialDesignFlatButton}" DockPanel.Dock="Right"
                         Margin="0, 0, 0, 53" cal:Message.Attach="[Click] = [Browse()]" VerticalAlignment="Center"
@@ -45,7 +45,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <ListView BorderThickness="1, 0, 1, 1" BorderBrush="#CCC" Background="#EEE"
+                <ListView BorderThickness="1, 0, 1, 1" BorderBrush="{StaticResource BorderPrimary}" Background="{StaticResource BackgroundSecondary}"
                           ItemsSource="{Binding Templates}" SelectedItem="{Binding SelectedTemplate}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -60,7 +60,7 @@
                 </ListView>
             </Grid>
 
-            <Border Grid.Column="1" BorderThickness="0" BorderBrush="White">
+            <Border Grid.Column="1" BorderThickness="0" BorderBrush="{StaticResource BorderPrimary}" Background="{StaticResource BackgroundPrimary}">
                 <StackPanel Margin="12">
                     <Label Margin="-4, 0, 0, 0" FontFamily="Roboto Light" FontSize="20" HorizontalAlignment="Left"
                            Content="{Binding Path=SelectedTemplate.Name}" />

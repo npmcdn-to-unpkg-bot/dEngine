@@ -60,7 +60,7 @@ namespace dEngine.Settings.Global
 
         private static void NotifyChangedStatic([CallerMemberName] string propertyName = null)
         {
-            Engine.Settings?.LuaSettings?.NotifyChanged(propertyName);
+            Engine.GlobalSettings?.LuaSettings?.NotifyChanged(propertyName);
         }
 
         /// <inheritdoc />

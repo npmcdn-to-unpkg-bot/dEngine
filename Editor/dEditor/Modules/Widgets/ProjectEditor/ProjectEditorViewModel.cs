@@ -8,6 +8,7 @@ namespace dEditor.Modules.Widgets.ProjectEditor
 {
     public class ProjectEditorViewModel : Document, IProjectEditor
     {
-        
+        public override string DisplayName => Project.Name;
+        public Project Project => Project.Current;
     }
 }

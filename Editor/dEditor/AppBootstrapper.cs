@@ -68,14 +68,15 @@ namespace dEditor
                 }
             };
 
+
+            InputService.MouseInputApi = InputApi.Windows;
             ContentManager.RegisterProtocols();
+            DataModel.SetStartupArguments(new Dictionary<string, string> { { "IsEditor", "true" } });
             Engine.Start(EngineMode.LevelEditor, "dEditor");
             Engine.Exiting += () => Editor.Current.Dispatcher.Invoke(() => Editor.Current.Shutdown());
 
-            DataModel.SetStartupArguments(new Dictionary<string, string> {{"IsEditor", "true"}});
-            InputService.MouseInputApi = InputApi.Windows;
-            Editor.Current.Settings = new EditorSettings {Name = "Editor", Parent = Engine.Settings};
-            Engine.Settings.Load();
+            Editor.Current.Settings = new EditorSettings { Name = "Editor", Parent = Engine.GlobalSettings };
+            Editor.LoadTheme();
 
             KeyBindings.Init();
             FindService.Init();

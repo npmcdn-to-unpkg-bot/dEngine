@@ -26,7 +26,7 @@ namespace TeamBuildServer
         {
             Engine.SaveGame = SaveGame;
 
-            Engine.Start(EngineMode.Server);
+            Engine.Start(EngineMode.Server, "dEditor");
 
             var networkServer = Game.NetworkServer = DataModel.GetService<NetworkServer>();
             networkServer.CustomMessageHandler = (typeId, message) => { return false; };

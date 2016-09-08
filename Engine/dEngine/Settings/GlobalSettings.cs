@@ -36,7 +36,7 @@ namespace dEngine.Settings
 
         internal static object GetExisting()
         {
-            return Engine.Settings;
+            return Engine.GlobalSettings;
         }
     }
 }

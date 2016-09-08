@@ -163,7 +163,7 @@ namespace dEngine.Settings.Global
 
         private static void NotifyChangedStatic([CallerMemberName] string propertyName = null)
         {
-            Engine.Settings?.PhysicsSettings?.NotifyChanged(propertyName);
+            Engine.GlobalSettings?.PhysicsSettings?.NotifyChanged(propertyName);
         }
 
         private static void UpdateDisplay()

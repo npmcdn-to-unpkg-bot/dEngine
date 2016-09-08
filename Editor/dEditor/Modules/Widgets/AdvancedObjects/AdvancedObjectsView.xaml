@@ -18,7 +18,7 @@
                     <TextBlock>Search objects</TextBlock>
                 </services:WatermarkService.Watermark>
             </TextBox>
-            <Border Background="White" BorderBrush="#CCC" DockPanel.Dock="Bottom" BorderThickness="0, 1, 0, 0">
+            <Border Background="{StaticResource BackgroundPrimary}" BorderBrush="{StaticResource BorderPrimary}" DockPanel.Dock="Bottom" BorderThickness="0, 1, 0, 0">
                 <CheckBox Margin="4" IsChecked="{Binding SelectInsertedObject}">Select inserted object</CheckBox>
             </Border>
             <ListBox x:Name="ListBox" TextSearch.TextPath="Name" BorderThickness="0" DockPanel.Dock="Top" Background="Transparent"
@@ -28,7 +28,7 @@
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="Height" Value="24" />
                         <Setter Property="Padding" Value="4" />
-                        <Setter Property="Background" Value="White" />
+                        <Setter Property="Background" Value="{StaticResource BackgroundPrimary}" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>

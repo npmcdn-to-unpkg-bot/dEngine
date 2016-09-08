@@ -1,5 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:dEditor.Styles.Accents">
-
+                    xmlns:local="clr-namespace:dEditor.Styles.Accents"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <SolidColorBrush x:Key="BackgroundPrimary" Color="#505050" />
+    <SolidColorBrush x:Key="BackgroundSecondary" Color="#323232" />
+    <SolidColorBrush x:Key="TextColourPrimary" Color="White" />
+    <SolidColorBrush x:Key="TextColourPrimaryInverse" Color="Black" />
+    <SolidColorBrush x:Key="TextColourSecondary" Color="Gray" />
+    <SolidColorBrush x:Key="BorderPrimary" Color="Black" />
+    <SolidColorBrush x:Key="AccentPrimary" Color="#4281F4" />
+    <SolidColorBrush x:Key="HighlightInactiveBrush" Color="#9DBEFF" />
+    <SolidColorBrush x:Key="MouseOverBrush" Color="#EEE" />
+    <ImageSource x:Key="LogoSource">/dEditor;component/Content/Icons/logo-small-invert.png</ImageSource>
 </ResourceDictionary>

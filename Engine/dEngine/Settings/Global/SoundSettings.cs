@@ -61,7 +61,7 @@ namespace dEngine.Settings.Global
 
         private static void NotifyChangedStatic([CallerMemberName] string propertyName = null)
         {
-            Engine.Settings?.SoundSettings?.NotifyChanged(propertyName);
+            Engine.GlobalSettings?.SoundSettings?.NotifyChanged(propertyName);
         }
 
         /// <inheritdoc />

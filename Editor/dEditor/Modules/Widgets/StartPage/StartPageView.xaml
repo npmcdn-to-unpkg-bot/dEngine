@@ -27,13 +27,13 @@
     </UserControl.Resources>
     <ScrollViewer>
         <DockPanel LastChildFill="True">
-            <Grid Background="#EEE" Width="330">
+            <Grid Background="{StaticResource BackgroundSecondary}" Width="330">
                 <Grid Margin="22, 36, 22, 0">
-                    <Image Source="/dEditor;component/Content/Icons/logo_small.png" VerticalAlignment="Top"
+                    <Image Source="{StaticResource LogoSource}" VerticalAlignment="Top"
                            HorizontalAlignment="Left" Width="130" />
 
                     <StackPanel Margin="0, 20">
-                        <Label FontSize="16" Margin="0, 52, 0, 0">Start</Label>
+                        <Label FontSize="16" Margin="0, 52, 0, 0" Opacity="0.7">Start</Label>
                         <Button Style="{StaticResource HyperlinkButton}">
                             <Hyperlink FontSize="13.333"
                                        Command="{Binding ElementName=UserControl, Path=DataContext.NewProjectCommand}">
@@ -52,8 +52,8 @@
                                 Connect to TeamBuild
                             </Hyperlink>
                         </Button>
-                        <Label FontSize="16" Margin="0, 52, 0, 0">Recent</Label>
-                        <Label x:Name="NoRecentProjectsLabel"
+                        <Label FontSize="16" Margin="0, 52, 0, 0" Opacity="0.7">Recent</Label>
+                        <Label x:Name="NoRecentProjectsLabel" Opacity="0.5"
                                Visibility="{Binding NoRecentProjects, Converter={StaticResource BoolToVis}, FallbackValue=Visible}">
                             No recent projects.
                         </Label>
@@ -74,7 +74,7 @@
                     </StackPanel>
                 </Grid>
             </Grid>
-            <Grid Background="{DynamicResource WhiteBrush}" />
+            <Grid Background="{StaticResource BackgroundPrimary}" />
         </DockPanel>
     </ScrollViewer>
 </UserControl>

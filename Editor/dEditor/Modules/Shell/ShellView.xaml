@@ -27,19 +27,19 @@
     x:Class="dEditor.Modules.Shell.ShellView"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="800"
-    Background="White" x:Name="ShellControl"
+    Background="{StaticResource BackgroundPrimary}" x:Name="ShellControl"
     d:DataContext="{d:DesignInstance shell:ShellViewModel}">
     <UserControl.Resources>
         <converters:NullableValueConverter x:Key="NullableValueConverter" />
     </UserControl.Resources>
-    <Grid Background="#eee">
+    <Grid Background="{StaticResource BackgroundSecondary}">
         <DockPanel>
             <Grid x:Name="Navigation" DockPanel.Dock="Top" Background="White">
                 <StackPanel>
                     <i:Interaction.Behaviors>
                         <behaviours:StackPanelReverseZIndex />
                     </i:Interaction.Behaviors>
-                    <Menu x:Name="FileMenu" IsMainMenu="False" Background="White" Foreground="Black"
+                    <Menu x:Name="FileMenu" IsMainMenu="False" Background="{StaticResource BackgroundPrimary}"  Foreground="{StaticResource TextColourPrimary}"
                           HorizontalAlignment="Left" Margin="0, 2, 0, -1">
                         <Menu.Style>
                             <Style TargetType="{x:Type Menu}">
@@ -49,7 +49,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type Menu}">
-                                            <Border Background="White" BorderThickness="1, 1, 1, 0" BorderBrush="#CCC"
+                                            <Border Background="{StaticResource BackgroundPrimary}" BorderThickness="1, 1, 1, 0" BorderBrush="{StaticResource BorderPrimary}"
                                                     Height="26" Margin="2, 0, 0, -1">
                                                 <StackPanel ClipToBounds="True" Orientation="Horizontal"
                                                             IsItemsHost="True" />
@@ -190,8 +190,8 @@
                             </MenuItem>
                         </MenuItem>
                     </Menu>
-                    <Border BorderThickness="0, 1, 0, 1" BorderBrush="#CCC" Margin="0, 1, 0, 0">
-                        <ToolBarTray x:Name="ToolBarTray" Background="White" VerticalAlignment="Center"
+                    <Border BorderThickness="0, 1, 0, 1" BorderBrush="{StaticResource BorderPrimary}" Margin="0, 1, 0, 0">
+                        <ToolBarTray x:Name="ToolBarTray" Background="{StaticResource BackgroundPrimary}" VerticalAlignment="Center"
                                      RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True"
                                      UseLayoutRounding="True">
                             <ToolBar Template="{StaticResource ToolBarTemplate}">
@@ -280,6 +280,8 @@
                                 </ToggleButton>
                                 <ComboBox Width="64" IsEnabled="{Binding IsBuildTool}"
                                           SelectedValue="{Binding ToolIncrement}"
+                                          Background="{StaticResource BackgroundSecondary}"
+                                          BorderBrush="{StaticResource BorderPrimary}"
                                           ItemsSource="{Binding Path=IncrementOptions}" />
                                 <Separator />
                             </ToolBar>
@@ -307,7 +309,8 @@
                     <statusBar:StatusBarView cal:View.Model="{Binding StatusBar}" DockPanel.Dock="Bottom" />
                     <commandBar:CommandBarView cal:View.Model="{Binding CommandBar}" DockPanel.Dock="Bottom" />
                     <ad:DockingManager x:Name="DockingManager"
-                                       Background="#EEE"
+                                       Background="{StaticResource BackgroundSecondary}"
+                                       BorderBrush="{StaticResource BorderPrimary}"
                                        DocumentsSource="{Binding Items}"
                                        AnchorablesSource="{Binding Widgets}"
                                        LayoutUpdated="OnManagerLayoutUpdated"

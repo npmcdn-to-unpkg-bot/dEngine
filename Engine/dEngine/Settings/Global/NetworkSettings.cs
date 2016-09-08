@@ -367,7 +367,7 @@ namespace dEngine.Settings.Global
 
         private static void NotifyChangedStatic([CallerMemberName] string propertyName = null)
         {
-            Engine.Settings?.NetworkSettings?.NotifyChanged(propertyName);
+            Engine.GlobalSettings?.NetworkSettings?.NotifyChanged(propertyName);
         }
     }
 }

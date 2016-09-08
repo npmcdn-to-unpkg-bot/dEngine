@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Caliburn.Micro;
 using dEditor.Modules.Widgets.CodeEditor;
+using dEditor.Styles;
 using dEngine;
 using dEngine.Instances.Attributes;
 using dEngine.Settings;
@@ -38,6 +39,7 @@ namespace dEditor
         private static float _cameraSpeed;
         private static bool _turnTabsIntoSpaces;
         private static bool _showDeprecated;
+        private static Theme _theme;
 
         #region Output
 
@@ -58,6 +60,20 @@ namespace dEditor
         #endregion
 
         #region Properties
+
+        [EditorVisible("Appearance")]
+        public static Theme Theme
+        {
+            get
+            {
+                return _theme;
+            }
+            set
+            {
+                _theme = value;
+                NotifyChangedStatic();
+            }
+        }
 
         /// <summary>
         /// Shows deprecated/obsolete properties.
@@ -91,6 +107,8 @@ namespace dEditor
 
         public override void RestoreDefaults()
         {
+            Theme = Theme.Light;
+
             MaxOutputLines = 200;
 
             ShowDeprecated = true;

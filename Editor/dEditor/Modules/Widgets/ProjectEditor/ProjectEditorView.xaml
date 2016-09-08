@@ -3,15 +3,67 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:services="clr-namespace:dEditor.Framework.Services"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <TabControl>
-            <TabItem Header="PROJECT">
-                <Button>Test</Button>
-            </TabItem>
-            <TabItem Header="PLACES"></TabItem>
-            <TabItem Header="ASSETS"></TabItem>
-        </TabControl>
+             d:DesignHeight="600" d:DesignWidth="900">
+    <UserControl.Resources>
+        <Storyboard x:Key="UploadIconStoryboardEnter">
+            <DoubleAnimation Duration="0:0:0.1" From="0" To="1" Storyboard.TargetProperty="Opacity"/>
+        </Storyboard>
+        <Storyboard x:Key="UploadIconStoryboardLeave">
+            <DoubleAnimation Duration="0:0:0.1" From="1" To="0" Storyboard.TargetProperty="Opacity"/>
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid Background="{StaticResource BackgroundPrimary}">
+        <DockPanel>
+            <StackPanel Margin="8, 8" Orientation="Horizontal" DockPanel.Dock="Top">
+                <Grid x:Name="ProjectIcon">
+                    <Image x:Name="ProjectImage" Width="48" Height="48" Source="/dEditor;component/Content/Icons/default-place-icon2.png"/>
+                    <Grid Opacity="0" PreviewMouseLeftButtonDown="ImageUploader_OnPreviewMouseLeftButtonDown" x:Name="ImageUploader" Background="#7F000000">
+                         <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard Storyboard="{StaticResource UploadIconStoryboardEnter}"/>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard Storyboard="{StaticResource UploadIconStoryboardLeave}"/>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                        <Viewbox Width="24" Height="24">
+                            <Canvas Width="24" Height="24">
+                                <Path Opacity="0.8" Fill="White" Data="M21,17H7V3H21M21,1H7A2,2 0 0,0 5,3V17A2,2 0 0,0 7,19H21A2,2 0 0,0 23,17V3A2,2 0 0,0 21,1M3,5H1V21A2,2 0 0,0 3,23H19V21H3M15.96,10.29L13.21,13.83L11.25,11.47L8.5,15H19.5L15.96,10.29Z" />
+                            </Canvas>
+                        </Viewbox>
+                    </Grid>
+                </Grid>
+                <TextBox Background="Transparent" MaxLength="25" Focusable="True" VerticalAlignment="Center" x:Name="ProjectTitle" Text="{Binding Path=Project.Name}" LostKeyboardFocus="ProjectTitle_OnLostKeyboardFocus" BorderThickness="0" IsReadOnly="true" Margin="8, 0" FontWeight="Normal" FontSize="24"  services:InputBindingManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
+                <Button x:Name="EditTitleButton" PreviewMouseLeftButtonDown="EditTitleButton_OnMouseLeftButtonDown" VerticalAlignment="Center" Margin="0, 0, 0, 0" Style="{StaticResource ToolBarButtonStyle}">
+                    <Image Opacity="0.5" Width="24" Height="24" Stretch="None" Source="/dEditor;component/Content/Icons/Toolbar/PencilAngled_16xMD.png">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="False">
+                                        <Trigger.Setters>
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                        </Trigger.Setters>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+
+                </Button>
+            </StackPanel>
+            <TabControl DockPanel.Dock="Bottom">
+                <TabItem Header="PROJECT">
+                    <Button>Test</Button>
+                </TabItem>
+                <TabItem Header="PLACES"></TabItem>
+                <TabItem Header="ASSETS"></TabItem>
+            </TabControl>
+        </DockPanel>
     </Grid>
 </UserControl>

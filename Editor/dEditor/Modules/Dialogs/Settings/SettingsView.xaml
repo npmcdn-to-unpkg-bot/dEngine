@@ -8,7 +8,7 @@
              xmlns:settings="clr-namespace:dEngine.Settings;assembly=dEngine"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="860">
-    <Grid Background="White">
+    <Grid Background="{StaticResource BackgroundPrimary}">
         <DockPanel Margin="10" LastChildFill="True">
             <DockPanel DockPanel.Dock="Bottom" LastChildFill="True">
                 <Button DockPanel.Dock="Left" Style="{DynamicResource MaterialDesignFlatButton}" FontWeight="Normal"
@@ -20,16 +20,16 @@
                         HorizontalAlignment="Right" cal:Message.Attach="[Click] = [ApplyAndClose()]" Foreground="Black">
                     Apply
                 </Button>
-                <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13" Opacity="0.4">Some changes will not take effect until you restart the editor.</Label>
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13" Opacity="0.5">Some changes will not take effect until you restart the editor.</Label>
             </DockPanel>
-            <Border DockPanel.Dock="Top" Background="White" BorderThickness="0" BorderBrush="#CCC" Margin="0, 0, 0, 10">
-                <Grid Background="White">
+            <Border DockPanel.Dock="Top" BorderThickness="0" BorderBrush="#CCC" Margin="0, 0, 0, 10">
+                <Grid Background="{StaticResource BackgroundPrimary}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="4" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <ListBox ItemContainerStyle="{StaticResource CustomListBoxItem}" Grid.Column="0" BorderBrush="#CCC"
+                    <ListBox ItemContainerStyle="{StaticResource CustomListBoxItem}" Grid.Column="0"
                              BorderThickness="1" x:Name="Categories" SelectedItem="{Binding SelectedSettings}"
                              ItemsSource="{Binding Settings}" FontFamily="Segoe Ui" FontSize="14.667">
                         <ListBox.ItemTemplate>
@@ -39,7 +39,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <GridSplitter Grid.Column="1" />
-                    <Border Grid.Column="2" BorderBrush="#CCC" BorderThickness="1">
+                    <Border Grid.Column="2" BorderThickness="1">
                         <ContentControl x:Name="ActiveItem" />
                     </Border>
                 </Grid>

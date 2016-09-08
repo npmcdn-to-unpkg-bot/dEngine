@@ -266,7 +266,7 @@ namespace dEngine.Settings.Global
 
         private static void NotifyChangedStatic([CallerMemberName] string propertyName = null)
         {
-            Engine.Settings?.DebugSettings?.NotifyChanged(propertyName);
+            Engine.GlobalSettings?.DebugSettings?.NotifyChanged(propertyName);
         }
 
         /// <inheritdoc />

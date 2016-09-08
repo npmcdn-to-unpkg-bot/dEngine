@@ -53,13 +53,6 @@ namespace dEngine
                 Assembly.GetExecutingAssembly()
                     .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                     .InformationalVersion;
-
-            UserSettings = new UserSettings();
-            UserSettings.Load();
-            Settings = new GlobalSettings();
-            Settings.Load();
-
-            UserAnalyticsSettings.SessionCount++;
         }
 
         private static void UnpackNativeLibraries()
@@ -192,12 +185,12 @@ namespace dEngine
         /// <summary>
         /// The user settings container.
         /// </summary>
-        public static UserSettings UserSettings { get; }
+        public static UserSettings UserSettings { get; private set; }
 
         /// <summary>
         /// The global settings container.
         /// </summary>
-        public static GlobalSettings Settings { get; }
+        public static GlobalSettings GlobalSettings { get; private set; }
 
         /// <summary>
         /// The mode to run the engine }
@@ -227,28 +220,35 @@ namespace dEngine
         /// <summary>
         /// Fires up the engine. And then it makes noise.
         /// </summary>
-        public static void Start(EngineMode engineMode, string gameName = null)
+        public static void Start(EngineMode engineMode, string gameName)
         {
             GameName = gameName;
             AppId = 480;
             Mode = engineMode;
 
             LogService.ConfigureLoggers();
+            Logger.Info("Log opened.");
 
             Process = Process.GetCurrentProcess();
             PlatformId = PlatformId.Windows;
             PlatformType = PlatformType.Desktop;
-
+            
             DocumentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), gameName);
+            Logger.Info($"Documents path: {DocumentsPath}");
             Directory.CreateDirectory(DocumentsPath);
 
             TempPath = Path.Combine(Path.GetTempPath(), "dEngine");
+            Logger.Info($"Temp path: {TempPath}");
             if (Directory.Exists(TempPath))
                 ContentProvider.DeleteDirectory(TempPath);
-            // otherwise DeleteDirectory won't get called when stop debugging in VS.
             Directory.CreateDirectory(TempPath);
+            
+            UserSettings = new UserSettings();
+            UserSettings.Load();
+            GlobalSettings = new GlobalSettings();
+            GlobalSettings.Load();
+            UserAnalyticsSettings.SessionCount++;
 
-            Logger.Info("Log opened.");
             Logger.Info($"Command line args: {string.Join(" ", Environment.GetCommandLineArgs().Skip(1))})");
             Logger.Info($"Base directory: {Environment.CurrentDirectory}");
 
@@ -298,7 +298,7 @@ namespace dEngine
             IsExiting = true;
             
             Game.DataModel.OnClose();
-            Settings.Save();
+            GlobalSettings.Save();
             UserSettings.Save();
 
             CancelTokenSource.Cancel();

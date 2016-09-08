@@ -10447,7 +10447,7 @@
             The user settings container.
             </summary>
         </member>
-        <member name="P:dEngine.Engine.Settings">
+        <member name="P:dEngine.Engine.GlobalSettings">
             <summary>
             The global settings container.
             </summary>

@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style x:Key="MaterialDesignScrollBarButton" TargetType="{x:Type RepeatButton}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
-        <Setter Property="BorderBrush" Value="#CCC" />
-        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}" />
+        <Setter Property="Background" Value="{StaticResource BackgroundPrimary}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -57,7 +57,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Rectangle x:Name="rectangle" Fill="White" Stroke="#CCC" Height="{TemplateBinding Height}"
+                    <Rectangle x:Name="rectangle" Fill="{StaticResource BackgroundPrimary}" Stroke="#CCC" Height="{TemplateBinding Height}"
                                SnapsToDevicePixels="True" Width="{TemplateBinding Width}" />
                     <ControlTemplate.Triggers>
                         <!--
@@ -100,7 +100,7 @@
     <Style TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-        <Setter Property="Background" Value="White" />
+        <Setter Property="Background" Value="{StaticResource BackgroundPrimary}" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource MaterialDesignSelection}" />
         <Setter Property="BorderThickness" Value="1,0" />
