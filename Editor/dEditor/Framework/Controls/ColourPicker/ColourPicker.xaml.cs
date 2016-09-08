@@ -6,8 +6,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using dEditor.Modules.Widgets.Properties.Inspectors.Colour;
 using dEditor.Properties;
-using dEditor.Widgets.Properties.Inspectors.Colour;
 using dEngine;
 
 namespace dEditor.Framework.Controls.ColourPicker
@@ -177,8 +177,7 @@ namespace dEditor.Framework.Controls.ColourPicker
         {
             _mouseDown = false;
         }
-
-        [NotifyPropertyChangedInvocator]
+        
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

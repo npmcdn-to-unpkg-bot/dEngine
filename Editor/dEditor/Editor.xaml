@@ -16,7 +16,7 @@
                                                              False="Visible" />
                     <converters:NumberTextConverter x:Key="NumToTextConverter" DecimalCount="20" />
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Shell/Themes/DockTheme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Modules/Shell/Themes/DockTheme.xaml" />
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary
@@ -30,6 +30,8 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/ScrollBar.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/ComboBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/Expander.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/Controls/Ripple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/Controls/Button.xaml" />
 
                 <ResourceDictionary Source="pack://application:,,,/dEditor;component/Styles/Colours.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/dEditor;component/Styles/Accents/Light.xaml" />

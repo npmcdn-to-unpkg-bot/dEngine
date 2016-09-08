@@ -3,7 +3,7 @@
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 using System;
 using System.Linq;
-using dEditor.Widgets.CodeEditor;
+using dEditor.Modules.Widgets.CodeEditor;
 using dEngine;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;

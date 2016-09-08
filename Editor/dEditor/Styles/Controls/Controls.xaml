@@ -6,7 +6,7 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
-                    xmlns:explorer="clr-namespace:dEditor.Widgets.Explorer">
+                    xmlns:explorer="clr-namespace:dEditor.Modules.Widgets.Explorer">
 
     <ControlTemplate x:Key="ToolBarTemplate" TargetType="{x:Type ToolBar}">
         <Grid x:Name="Grid" Margin="3,1,1,1" SnapsToDevicePixels="True">
@@ -215,14 +215,6 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-
-    <Style x:Key="ToolBarButtonStyle" TargetType="{x:Type Button}">
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.5" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
 
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="BorderThickness" Value="1" />

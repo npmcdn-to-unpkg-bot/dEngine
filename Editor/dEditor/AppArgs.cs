@@ -8,7 +8,6 @@ namespace dEditor
 {
     public class AppArgs
     {
-        public bool UseClientShell { get; set; }
         public string API { get; set; }
 
         public static AppArgs Parse(string[] args)

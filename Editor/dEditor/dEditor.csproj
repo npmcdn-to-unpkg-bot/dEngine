@@ -228,12 +228,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppArgs.cs" />
-    <Compile Include="Dialogs\FindAndReplace\FindAndReplaceResult.cs" />
-    <Compile Include="Dialogs\FindAndReplace\FindAndReplaceView.xaml.cs">
+    <Compile Include="Modules\Dialogs\FindAndReplace\FindAndReplaceResult.cs" />
+    <Compile Include="Modules\Dialogs\FindAndReplace\FindAndReplaceView.xaml.cs">
       <DependentUpon>FindAndReplaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\FindAndReplace\FindAndReplaceViewModel.cs" />
-    <Compile Include="Dialogs\FindAndReplace\IFindAndReplace.cs" />
+    <Compile Include="Modules\Dialogs\FindAndReplace\FindAndReplaceViewModel.cs" />
+    <Compile Include="Modules\Dialogs\FindAndReplace\IFindAndReplace.cs" />
     <Compile Include="Editor.xaml.cs">
       <DependentUpon>Editor.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -271,25 +271,24 @@
     <Compile Include="Framework\Project.cs" />
     <Compile Include="Framework\Services\FindService.cs" />
     <Compile Include="Framework\Services\LayoutUtility.cs" />
-    <Compile Include="Properties\Annotations1.cs" />
-    <Compile Include="Shell\CommandBar\CommandBarView.xaml.cs">
+    <Compile Include="Modules\Shell\CommandBar\CommandBarView.xaml.cs">
       <DependentUpon>CommandBarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shell\CommandBar\CommandBarViewModel.cs" />
-    <Compile Include="Shell\CommandBar\ICommandBar.cs" />
-    <Compile Include="Shell\Commands\ExecuteScriptCommand.cs" />
-    <Compile Include="Shell\Commands\PluginsFolderCommand.cs" />
-    <Compile Include="Shell\IShell.cs" />
-    <Compile Include="Shell\StatusBar\IStatusBar.cs" />
-    <Compile Include="Shell\StatusBar\StatusBarView.xaml.cs">
+    <Compile Include="Modules\Shell\CommandBar\CommandBarViewModel.cs" />
+    <Compile Include="Modules\Shell\CommandBar\ICommandBar.cs" />
+    <Compile Include="Modules\Shell\Commands\ExecuteScriptCommand.cs" />
+    <Compile Include="Modules\Shell\Commands\PluginsFolderCommand.cs" />
+    <Compile Include="Modules\Shell\IShell.cs" />
+    <Compile Include="Modules\Shell\StatusBar\IStatusBar.cs" />
+    <Compile Include="Modules\Shell\StatusBar\StatusBarView.xaml.cs">
       <DependentUpon>StatusBarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shell\StatusBar\StatusBarViewModel.cs" />
-    <Compile Include="Shell\Client\ClientShellView.xaml.cs">
+    <Compile Include="Modules\Shell\StatusBar\StatusBarViewModel.cs" />
+    <Compile Include="Modules\Shell\Client\ClientShellView.xaml.cs">
       <DependentUpon>ClientShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shell\Client\ClientShellViewModel.cs" />
-    <Compile Include="Shell\ComboBoxEx.cs" />
+    <Compile Include="Modules\Shell\Client\ClientShellViewModel.cs" />
+    <Compile Include="Modules\Shell\ComboBoxEx.cs" />
     <Compile Include="Framework\Plugins\Button.cs" />
     <Compile Include="Framework\Plugins\Plugin.cs" />
     <Compile Include="Framework\Plugins\PluginItemBase.cs" />
@@ -300,132 +299,137 @@
     <Compile Include="Utility\BrushConverter.cs" />
     <Compile Include="Utility\ColorHelper.cs" />
     <Compile Include="Utility\DirectoryExtensions.cs" />
-    <Compile Include="Widgets\AdvancedObjects\IAdvancedObjects.cs" />
-    <Compile Include="Widgets\Chat\ChatView.xaml.cs">
+    <Compile Include="Modules\Widgets\AdvancedObjects\IAdvancedObjects.cs" />
+    <Compile Include="Modules\Widgets\Chat\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Chat\IChat.cs" />
-    <Compile Include="Widgets\Chat\ChatViewModel.cs" />
-    <Compile Include="Widgets\CodeEditor\ICodeEditor.cs" />
-    <Compile Include="Widgets\ContentBrowser\ContentBrowserView.xaml.cs">
+    <Compile Include="Modules\Widgets\Chat\IChat.cs" />
+    <Compile Include="Modules\Widgets\Chat\ChatViewModel.cs" />
+    <Compile Include="Modules\Widgets\CodeEditor\ICodeEditor.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\ContentBrowserView.xaml.cs">
       <DependentUpon>ContentBrowserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\ContentBrowser\ContentBrowserViewModel.cs" />
-    <Compile Include="Widgets\ContentBrowser\ContentItem.cs" />
-    <Compile Include="Widgets\ContentBrowser\DirectoryTreeItem.cs" />
-    <Compile Include="Widgets\ContentBrowser\FolderOptions.xaml.cs">
+    <Compile Include="Modules\Widgets\ContentBrowser\ContentBrowserViewModel.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\ContentItem.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\DirectoryTreeItem.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\FolderOptions.xaml.cs">
       <DependentUpon>FolderOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\ContentBrowser\IContentBrowser.cs" />
-    <Compile Include="Widgets\ContentBrowser\Instances\Directory.cs" />
-    <Compile Include="Widgets\ContentBrowser\Instances\File.cs" />
-    <Compile Include="Widgets\ContentBrowser\Instances\FileSystem.cs" />
-    <Compile Include="Widgets\ContentBrowser\UpDirectoryItem.cs" />
-    <Compile Include="Widgets\Diagnostics\DiagnosticsView.xaml.cs">
+    <Compile Include="Modules\Widgets\ContentBrowser\IContentBrowser.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\Instances\Directory.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\Instances\File.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\Instances\FileSystem.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\UpDirectoryItem.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\DiagnosticsView.xaml.cs">
       <DependentUpon>DiagnosticsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Diagnostics\DiagnosticsViewModel.cs" />
-    <Compile Include="Widgets\Diagnostics\IDiagnostics.cs" />
-    <Compile Include="Widgets\Diagnostics\StatsItemTreeNode.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\EditTextBox.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\FlatListTreeNode.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\GeneralAdorner.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\InsertMarker.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\LinesRenderer.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\SharpGridView.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\SharpTreeNode.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\SharpTreeNodeCollection.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\SharpTreeNodeView.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\SharpTreeView.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\SharpTreeViewItem.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\TreeFlattener.cs" />
-    <Compile Include="Widgets\Diagnostics\SharpTreeView\TreeTraversal.cs" />
-    <Compile Include="Widgets\Explorer\ExplorerItem.cs" />
-    <Compile Include="Widgets\Explorer\ExplorerView.xaml.cs">
+    <Compile Include="Modules\Widgets\Diagnostics\DiagnosticsViewModel.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\IDiagnostics.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\StatsItemTreeNode.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\EditTextBox.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\FlatListTreeNode.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\GeneralAdorner.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\InsertMarker.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\LinesRenderer.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\SharpGridView.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\SharpTreeNode.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\SharpTreeNodeCollection.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\SharpTreeNodeView.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\SharpTreeView.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\SharpTreeViewItem.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\TreeFlattener.cs" />
+    <Compile Include="Modules\Widgets\Diagnostics\SharpTreeView\TreeTraversal.cs" />
+    <Compile Include="Modules\Widgets\Explorer\ExplorerItem.cs" />
+    <Compile Include="Modules\Widgets\Explorer\ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Explorer\ExplorerViewModel.cs" />
-    <Compile Include="Widgets\Explorer\IExplorer.cs" />
-    <Compile Include="Widgets\Explorer\InsertObjectMenuItem.xaml.cs">
+    <Compile Include="Modules\Widgets\Explorer\ExplorerViewModel.cs" />
+    <Compile Include="Modules\Widgets\Explorer\IExplorer.cs" />
+    <Compile Include="Modules\Widgets\Explorer\InsertObjectMenuItem.xaml.cs">
       <DependentUpon>InsertObjectMenuItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Explorer\InsertPartCommand.cs" />
-    <Compile Include="Widgets\Explorer\MakePluginCommand.cs" />
-    <Compile Include="Widgets\MaterialEditor\BezierLine.cs" />
-    <Compile Include="Widgets\MaterialEditor\ConnectionLine.cs" />
-    <Compile Include="Widgets\MaterialEditor\InOutToAlignmentConverter.cs" />
-    <Compile Include="Widgets\MaterialEditor\MaterialEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Explorer\InsertPartCommand.cs" />
+    <Compile Include="Modules\Widgets\Explorer\MakePluginCommand.cs" />
+    <Compile Include="Modules\Widgets\MaterialEditor\BezierLine.cs" />
+    <Compile Include="Modules\Widgets\MaterialEditor\ConnectionLine.cs" />
+    <Compile Include="Modules\Widgets\MaterialEditor\InOutToAlignmentConverter.cs" />
+    <Compile Include="Modules\Widgets\MaterialEditor\MaterialEditorView.xaml.cs">
       <DependentUpon>MaterialEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\MaterialEditor\MaterialEditorViewModel.cs" />
-    <Compile Include="Widgets\MaterialEditor\Nodes\Views\MainNodeView.xaml.cs">
+    <Compile Include="Modules\Widgets\MaterialEditor\MaterialEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\MaterialEditor\Nodes\Views\MainNodeView.xaml.cs">
       <DependentUpon>MainNodeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\MaterialEditor\Nodes\NodePin.xaml.cs">
+    <Compile Include="Modules\Widgets\MaterialEditor\Nodes\NodePin.xaml.cs">
       <DependentUpon>NodePin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\MaterialEditor\Nodes\NodeContent.cs" />
-    <Compile Include="Widgets\MaterialEditor\Nodes\NodeView.xaml.cs">
+    <Compile Include="Modules\Widgets\MaterialEditor\Nodes\NodeContent.cs" />
+    <Compile Include="Modules\Widgets\MaterialEditor\Nodes\NodeView.xaml.cs">
       <DependentUpon>NodeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\MaterialEditor\Nodes\NodeViewModel.cs" />
-    <Compile Include="Widgets\MaterialEditor\Nodes\Views\TextureNodeView.xaml.cs">
+    <Compile Include="Modules\Widgets\MaterialEditor\Nodes\NodeViewModel.cs" />
+    <Compile Include="Modules\Widgets\MaterialEditor\Nodes\Views\TextureNodeView.xaml.cs">
       <DependentUpon>TextureNodeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Output\CollapsibleOutputItem.cs" />
-    <Compile Include="Widgets\Output\LinkOutputItem.cs" />
-    <Compile Include="Widgets\Output\OutputItem.cs" />
-    <Compile Include="Widgets\Properties\ILabelled.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\ColourSequence\ColourSequenceEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Output\CollapsibleOutputItem.cs" />
+    <Compile Include="Modules\Widgets\Output\LinkOutputItem.cs" />
+    <Compile Include="Modules\Widgets\Output\OutputItem.cs" />
+    <Compile Include="Modules\Widgets\ProjectEditor\IProjectEditor.cs" />
+    <Compile Include="Modules\Widgets\ProjectEditor\ProjectEditorView.xaml.cs">
+      <DependentUpon>ProjectEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Widgets\ProjectEditor\ProjectEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\ILabelled.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\ColourSequence\ColourSequenceEditorView.xaml.cs">
       <DependentUpon>ColourSequenceEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\ColourSequence\ColourSequenceEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Content\ContentEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\ColourSequence\ColourSequenceEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Content\ContentEditorView.xaml.cs">
       <DependentUpon>ContentEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Content\ContentEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\CurveDialogView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Content\ContentEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\CurveDialogView.xaml.cs">
       <DependentUpon>CurveDialogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\CurveDialogViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\FontFamily\FontFamilyEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\CurveDialogViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\FontFamily\FontFamilyEditorView.xaml.cs">
       <DependentUpon>FontFamilyEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\FontFamily\FontFamilyEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\NumberRange\NumberRangeEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\FontFamily\FontFamilyEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\NumberRange\NumberRangeEditorView.xaml.cs">
       <DependentUpon>NumberRangeEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\NumberRange\NumberRangeEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\SequenceEditorBase.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Time\TimeEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\NumberRange\NumberRangeEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\SequenceEditorBase.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Time\TimeEditorView.xaml.cs">
       <DependentUpon>TimeEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Time\TimeEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Type\TypeEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Time\TimeEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Type\TypeEditorView.xaml.cs">
       <DependentUpon>TypeEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Type\TypeEditorViewModel.cs" />
-    <Compile Include="Widgets\ObjectBrowser\Entry.cs" />
-    <Compile Include="Widgets\ObjectBrowser\EnumItemEntry.cs" />
-    <Compile Include="Widgets\ObjectBrowser\ObjectTypeEntry.cs" />
-    <Compile Include="Widgets\ObjectBrowser\MemberEntry.cs" />
-    <Compile Include="Dialogs\NewPlace\NewPlaceView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Type\TypeEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\ObjectBrowser\Entry.cs" />
+    <Compile Include="Modules\Widgets\ObjectBrowser\EnumItemEntry.cs" />
+    <Compile Include="Modules\Widgets\ObjectBrowser\ObjectTypeEntry.cs" />
+    <Compile Include="Modules\Widgets\ObjectBrowser\MemberEntry.cs" />
+    <Compile Include="Modules\Dialogs\NewPlace\NewPlaceView.xaml.cs">
       <DependentUpon>NewPlaceView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NewPlace\NewPlaceViewModel.cs" />
-    <Compile Include="Dialogs\ProjectProperties\PlaceItem.cs" />
-    <Compile Include="Dialogs\ProjectProperties\TemplateItem.cs" />
+    <Compile Include="Modules\Dialogs\NewPlace\NewPlaceViewModel.cs" />
+    <Compile Include="Modules\Dialogs\ProjectProperties\PlaceItem.cs" />
+    <Compile Include="Modules\Dialogs\ProjectProperties\TemplateItem.cs" />
     <Compile Include="Framework\Services\WatermarkService.cs" />
-    <Compile Include="Widgets\AdvancedObjects\AdvancedObjectsViewModel.cs" />
-    <Compile Include="Widgets\AdvancedObjects\AdvancedObjectsView.xaml.cs">
+    <Compile Include="Modules\Widgets\AdvancedObjects\AdvancedObjectsViewModel.cs" />
+    <Compile Include="Modules\Widgets\AdvancedObjects\AdvancedObjectsView.xaml.cs">
       <DependentUpon>AdvancedObjectsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\AdvancedObjects\ObjectEntry.cs" />
-    <Compile Include="Widgets\ContentBrowser\Util\ThumbnailManager.cs" />
-    <Compile Include="Widgets\ContentBrowser\Util\FBXImportView.xaml.cs">
+    <Compile Include="Modules\Widgets\AdvancedObjects\ObjectEntry.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\Util\ThumbnailManager.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\Util\FBXImportView.xaml.cs">
       <DependentUpon>FBXImportView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\ContentBrowser\Util\FBXImportViewModel.cs" />
+    <Compile Include="Modules\Widgets\ContentBrowser\Util\FBXImportViewModel.cs" />
     <Compile Include="Tools\Building\RotateTool.cs" />
     <Compile Include="Tools\Building\ScaleTool.cs" />
     <Compile Include="Tools\SelectTool.cs" />
@@ -452,118 +456,117 @@
     <Compile Include="Framework\Services\IconProvider.cs" />
     <Compile Include="Framework\Services\InputBindingManager.cs" />
     <Compile Include="Framework\Services\LayourItemStatePersister.cs" />
-    <Compile Include="Widgets\CodeEditor\BreakpointMargin.cs" />
-    <Compile Include="Widgets\CodeEditor\CodeEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\CodeEditor\BreakpointMargin.cs" />
+    <Compile Include="Modules\Widgets\CodeEditor\CodeEditorView.xaml.cs">
       <DependentUpon>CodeEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\CodeEditor\CodeEditorViewModel.cs" />
-    <Compile Include="Widgets\CodeEditor\AvalonEditBehaviour.cs" />
-    <Compile Include="Widgets\CodeEditor\Commands\InsertBreakpointCommand.cs" />
+    <Compile Include="Modules\Widgets\CodeEditor\CodeEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\CodeEditor\AvalonEditBehaviour.cs" />
+    <Compile Include="Modules\Widgets\CodeEditor\Commands\InsertBreakpointCommand.cs" />
     <Compile Include="Framework\Commands\SceneCommands.cs" />
-    <Compile Include="Widgets\Properties\BoundPropertyDescriptor.cs" />
-    <Compile Include="Widgets\Properties\IProperties.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Checkbox\CheckboxEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\BoundPropertyDescriptor.cs" />
+    <Compile Include="Modules\Widgets\Properties\IProperties.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Checkbox\CheckboxEditorView.xaml.cs">
       <DependentUpon>CheckboxEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Checkbox\CheckboxEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\CollapsibleGroupView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Checkbox\CheckboxEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\CollapsibleGroupView.xaml.cs">
       <DependentUpon>CollapsibleGroupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\CollapsibleGroupViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Colour\ColourEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\CollapsibleGroupViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Colour\ColourEditorView.xaml.cs">
       <DependentUpon>ColourEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Colour\ColourEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Enum\EnumEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Colour\ColourEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Enum\EnumEditorView.xaml.cs">
       <DependentUpon>EnumEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Enum\EnumEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\IEditor.cs" />
-    <Compile Include="Widgets\Properties\InspectorBase.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Instance\InstanceEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Enum\EnumEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\IEditor.cs" />
+    <Compile Include="Modules\Widgets\Properties\InspectorBase.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Instance\InstanceEditorView.xaml.cs">
       <DependentUpon>InstanceEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Instance\InstanceEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Number\NumberEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Instance\InstanceEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Number\NumberEditorView.xaml.cs">
       <DependentUpon>NumberEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Number\NumberEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Number\NumberEditorViewModel.cs" />
     <Compile Include="Framework\Converters\NumberTextConverter.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\UDim2\UDim2EditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\UDim2\UDim2EditorView.xaml.cs">
       <DependentUpon>UDim2EditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Vector2\Vector2EditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Vector2\Vector2EditorView.xaml.cs">
       <DependentUpon>Vector2EditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Vector4\Vector4EditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Vector4\Vector4EditorView.xaml.cs">
       <DependentUpon>Vector4EditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\Vector3\Vector3EditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Vector3\Vector3EditorView.xaml.cs">
       <DependentUpon>Vector3EditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\UDim2\UDim2EditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Vector2\Vector2EditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Vector4\Vector4EditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\Vector3\Vector3EditorViewModel.cs" />
-    <Compile Include="Widgets\ObjectBrowser\ObjectBrowserView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\UDim2\UDim2EditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Vector2\Vector2EditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Vector4\Vector4EditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\Vector3\Vector3EditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\ObjectBrowser\ObjectBrowserView.xaml.cs">
       <DependentUpon>ObjectBrowserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\ObjectBrowser\ObjectBrowserViewModel.cs" />
-    <Compile Include="Widgets\Output\IOutput.cs" />
-    <Compile Include="Widgets\Output\OutputView.xaml.cs">
+    <Compile Include="Modules\Widgets\ObjectBrowser\ObjectBrowserViewModel.cs" />
+    <Compile Include="Modules\Widgets\Output\IOutput.cs" />
+    <Compile Include="Modules\Widgets\Output\OutputView.xaml.cs">
       <DependentUpon>OutputView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Output\OutputViewModel.cs" />
-    <Compile Include="Dialogs\ProjectProperties\ProjectViewModel.cs" />
-    <Compile Include="Dialogs\ProjectProperties\ProjectView.xaml.cs">
+    <Compile Include="Modules\Widgets\Output\OutputViewModel.cs" />
+    <Compile Include="Modules\Dialogs\ProjectProperties\ProjectViewModel.cs" />
+    <Compile Include="Modules\Dialogs\ProjectProperties\ProjectView.xaml.cs">
       <DependentUpon>ProjectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\StartPage\IStartPage.cs" />
-    <Compile Include="Dialogs\Settings\SettingsView.xaml.cs">
+    <Compile Include="Modules\Widgets\StartPage\IStartPage.cs" />
+    <Compile Include="Modules\Dialogs\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\Settings\SettingsViewModel.cs" />
+    <Compile Include="Modules\Dialogs\Settings\SettingsViewModel.cs" />
     <Compile Include="Framework\Commands\ClipboardCommands.cs" />
     <Compile Include="Framework\Commands\CsgCommands.cs" />
     <Compile Include="Framework\Commands\ProjectCommands.cs" />
     <Compile Include="Framework\Commands\SessionCommands.cs" />
-    <Compile Include="Shell\Themes\DockTheme.cs" />
-    <Compile Include="Dialogs\NewProject\NewProjectView.xaml.cs">
+    <Compile Include="Modules\Shell\Themes\DockTheme.cs" />
+    <Compile Include="Modules\Dialogs\NewProject\NewProjectView.xaml.cs">
       <DependentUpon>NewProjectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NewProject\NewProjectViewModel.cs" />
-    <Compile Include="Widgets\StartPage\ProjectTemplate.cs" />
+    <Compile Include="Modules\Dialogs\NewProject\NewProjectViewModel.cs" />
+    <Compile Include="Modules\Widgets\StartPage\ProjectTemplate.cs" />
     <Compile Include="Framework\Widget.cs" />
-    <Compile Include="Widgets\Properties\InspectorGrid.cs" />
-    <Compile Include="Widgets\Properties\InspectorItemTemplateSelector.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\EditorBase.cs" />
-    <Compile Include="Widgets\Properties\Inspectors\TextBox\TextBoxEditorView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\InspectorGrid.cs" />
+    <Compile Include="Modules\Widgets\Properties\InspectorItemTemplateSelector.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\EditorBase.cs" />
+    <Compile Include="Modules\Widgets\Properties\Inspectors\TextBox\TextBoxEditorView.xaml.cs">
       <DependentUpon>TextBoxEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\Inspectors\TextBox\TextBoxEditorViewModel.cs" />
-    <Compile Include="Widgets\Properties\PropertiesView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\Inspectors\TextBox\TextBoxEditorViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\PropertiesView.xaml.cs">
       <DependentUpon>PropertiesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Properties\PropertiesViewModel.cs" />
-    <Compile Include="Widgets\Properties\SimpleGridSplitter.cs" />
-    <Compile Include="Widgets\TeamExplorer\ITeamExplorer.cs" />
-    <Compile Include="Widgets\TeamExplorer\TeamExplorerView.xaml.cs">
+    <Compile Include="Modules\Widgets\Properties\PropertiesViewModel.cs" />
+    <Compile Include="Modules\Widgets\Properties\SimpleGridSplitter.cs" />
+    <Compile Include="Modules\Widgets\TeamExplorer\ITeamExplorer.cs" />
+    <Compile Include="Modules\Widgets\TeamExplorer\TeamExplorerView.xaml.cs">
       <DependentUpon>TeamExplorerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\TeamExplorer\TeamExplorerViewModel.cs" />
-    <Compile Include="Widgets\Viewport\ViewportView.xaml.cs">
+    <Compile Include="Modules\Widgets\TeamExplorer\TeamExplorerViewModel.cs" />
+    <Compile Include="Modules\Widgets\Viewport\ViewportView.xaml.cs">
       <DependentUpon>ViewportView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\Viewport\ViewportViewModel.cs" />
-    <Compile Include="Widgets\Viewport\SelectablePanel.cs">
+    <Compile Include="Modules\Widgets\Viewport\ViewportViewModel.cs" />
+    <Compile Include="Modules\Widgets\Viewport\SelectablePanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Shell\LayoutInitializer.cs" />
-    <Compile Include="Shell\ShellView.xaml.cs">
+    <Compile Include="Modules\Shell\LayoutInitializer.cs" />
+    <Compile Include="Modules\Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shell\ShellViewModel.cs" />
-    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Modules\Shell\ShellViewModel.cs" />
     <Compile Include="Framework\Behaviours\BindableFocusBehavior.cs" />
     <Compile Include="Framework\Behaviours\BindableSelectedItemBehavior.cs" />
     <Compile Include="Framework\Converters\BooleanConverter.cs" />
@@ -578,10 +581,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="Widgets\StartPage\StartPageView.xaml.cs">
+    <Compile Include="Modules\Widgets\StartPage\StartPageView.xaml.cs">
       <DependentUpon>StartPageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Widgets\StartPage\StartPageViewModel.cs" />
+    <Compile Include="Modules\Widgets\StartPage\StartPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -626,7 +629,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\FindAndReplace\FindAndReplaceView.xaml">
+    <Page Include="Modules\Dialogs\FindAndReplace\FindAndReplaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -650,15 +653,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Shell\CommandBar\CommandBarView.xaml">
+    <Page Include="Modules\Shell\CommandBar\CommandBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\StatusBar\StatusBarView.xaml">
+    <Page Include="Modules\Shell\StatusBar\StatusBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\Client\ClientShellView.xaml">
+    <Page Include="Modules\Shell\Client\ClientShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Controls\Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -670,191 +677,199 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\Controls\Ripple.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Controls\ScrollBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\AdvancedObjects\AdvancedObjectsView.xaml">
+    <Page Include="Modules\Widgets\AdvancedObjects\AdvancedObjectsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Chat\ChatView.xaml">
+    <Page Include="Modules\Widgets\Chat\ChatView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\ContentBrowser\ContentBrowserView.xaml">
+    <Page Include="Modules\Widgets\ContentBrowser\ContentBrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\ContentBrowser\FolderOptions.xaml">
+    <Page Include="Modules\Widgets\ContentBrowser\FolderOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\ContentBrowser\Util\FBXImportView.xaml">
+    <Page Include="Modules\Widgets\ContentBrowser\Util\FBXImportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\CodeEditor\CodeEditorView.xaml">
+    <Page Include="Modules\Widgets\CodeEditor\CodeEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Diagnostics\DiagnosticsView.xaml">
+    <Page Include="Modules\Widgets\Diagnostics\DiagnosticsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Explorer\ExplorerView.xaml">
+    <Page Include="Modules\Widgets\Explorer\ExplorerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Explorer\InsertObjectMenuItem.xaml">
+    <Page Include="Modules\Widgets\Explorer\InsertObjectMenuItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\MaterialEditor\MaterialEditorView.xaml">
+    <Page Include="Modules\Widgets\MaterialEditor\MaterialEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\MaterialEditor\Nodes\Views\MainNodeView.xaml">
+    <Page Include="Modules\Widgets\MaterialEditor\Nodes\Views\MainNodeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\MaterialEditor\Nodes\NodePin.xaml">
+    <Page Include="Modules\Widgets\MaterialEditor\Nodes\NodePin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\MaterialEditor\Nodes\NodeView.xaml">
+    <Page Include="Modules\Widgets\MaterialEditor\Nodes\NodeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\MaterialEditor\Nodes\Views\TextureNodeView.xaml">
+    <Page Include="Modules\Widgets\MaterialEditor\Nodes\Views\TextureNodeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\Checkbox\CheckboxEditorView.xaml">
+    <Page Include="Modules\Widgets\ProjectEditor\ProjectEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\CollapsibleGroupView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\Checkbox\CheckboxEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\ColourSequence\ColourSequenceEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\CollapsibleGroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\Colour\ColourEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\ColourSequence\ColourSequenceEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\Content\ContentEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\Colour\ColourEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\CurveDialogView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\Content\ContentEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\Enum\EnumEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\CurveDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\FontFamily\FontFamilyEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\Enum\EnumEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\Instance\InstanceEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\FontFamily\FontFamilyEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\NumberRange\NumberRangeEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\Instance\InstanceEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\Number\NumberEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\NumberRange\NumberRangeEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\TextBox\TextBoxEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\Number\NumberEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\Time\TimeEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\TextBox\TextBoxEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\Type\TypeEditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\Time\TimeEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\UDim2\UDim2EditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\Type\TypeEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Inspectors\Vector2\Vector2EditorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Widgets\Properties\Inspectors\Vector4\Vector4EditorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Widgets\Properties\Inspectors\Vector3\Vector3EditorView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\UDim2\UDim2EditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\PropertiesView.xaml">
+    <Page Include="Modules\Widgets\Properties\Inspectors\Vector2\Vector2EditorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Widgets\Properties\Inspectors\Vector4\Vector4EditorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Widgets\Properties\Inspectors\Vector3\Vector3EditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Properties\Resources.xaml">
+    <Page Include="Modules\Widgets\Properties\PropertiesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\MaterialEditor\Resources.xaml">
+    <Page Include="Modules\Widgets\Properties\Resources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\ObjectBrowser\ObjectBrowserView.xaml">
+    <Page Include="Modules\Widgets\MaterialEditor\Resources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Output\OutputView.xaml">
+    <Page Include="Modules\Widgets\ObjectBrowser\ObjectBrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\NewPlace\NewPlaceView.xaml">
+    <Page Include="Modules\Widgets\Output\OutputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\ProjectProperties\ProjectView.xaml">
+    <Page Include="Modules\Dialogs\NewPlace\NewPlaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\TeamExplorer\TeamExplorerView.xaml">
+    <Page Include="Modules\Dialogs\ProjectProperties\ProjectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\Viewport\ViewportView.xaml">
+    <Page Include="Modules\Widgets\TeamExplorer\TeamExplorerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\Settings\SettingsView.xaml">
+    <Page Include="Modules\Widgets\Viewport\ViewportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\ShellView.xaml">
+    <Page Include="Modules\Dialogs\Settings\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shell\Themes\DockTheme.xaml">
+    <Page Include="Modules\Shell\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\NewProject\NewProjectView.xaml">
+    <Page Include="Modules\Shell\Themes\DockTheme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Widgets\StartPage\StartPageView.xaml">
+    <Page Include="Modules\Dialogs\NewProject\NewProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Widgets\StartPage\StartPageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1083,7 +1098,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Icons\Thumbs\" />
-    <Folder Include="Widgets\Properties\Inspectors\NumberSequence\" />
+    <Folder Include="Modules\Widgets\Properties\Inspectors\NumberSequence\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Content\Icons\Objects\style.png" />

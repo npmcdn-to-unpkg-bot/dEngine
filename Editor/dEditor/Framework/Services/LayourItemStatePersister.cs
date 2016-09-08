@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using Caliburn.Micro;
-using dEditor.Shell;
+using dEditor.Modules.Shell;
 
 namespace dEditor.Framework.Services
 {

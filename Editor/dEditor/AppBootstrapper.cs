@@ -1,34 +1,28 @@
 ﻿// AppBootstrapper.cs - dEditor
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.ReflectionModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using dEditor.Framework;
 using dEditor.Framework.Services;
-using dEditor.Instances;
-using dEditor.Shell;
-using dEditor.Shell.Client;
-using dEditor.Shell.CommandBar;
-using dEditor.Shell.StatusBar;
+using dEditor.Modules.Shell;
+using dEditor.Modules.Widgets.ProjectEditor;
+using dEditor.Modules.Widgets.StartPage;
 using dEditor.Tools;
-using dEditor.Widgets.CodeEditor;
-using dEditor.Widgets.StartPage;
 using dEngine;
 using dEngine.Instances;
 using dEngine.Services;
@@ -45,13 +39,6 @@ namespace dEditor
 
         internal DispatcherTimer AutoSaveTimer;
         private List<Assembly> _priorityAssemblies;
-
-        protected CompositionContainer Container { get; set; }
-
-        internal IList<Assembly> PriorityAssemblies
-        {
-            get { return _priorityAssemblies; }
-        }
 
         public AppBootstrapper()
         {
@@ -99,14 +86,18 @@ namespace dEditor
             AutoSaveTimer = new DispatcherTimer(TimeSpan.FromMinutes(EditorSettings.AutosaveInterval),
                 DispatcherPriority.Background, PerformAutoSave, Editor.Current.Dispatcher);
         }
-        
-        protected virtual void PreInitialize()
+
+        protected CompositionContainer Container { get; set; }
+
+        internal IList<Assembly> PriorityAssemblies => _priorityAssemblies;
+
+        protected void PreInitialize()
         {
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
         {
-            return new[] { Assembly.GetEntryAssembly() };
+            return new[] {Assembly.GetEntryAssembly()};
         }
 
         protected override void Configure()
@@ -153,42 +144,15 @@ namespace dEditor
 
         protected override object GetInstance(Type serviceType, string key)
         {
-            /*
-            if (service == typeof(IWindowManager))
-                service = typeof(WindowManager);
-
-            if (service == typeof(ICommandBar))
-                return Editor.Current.Shell.CommandBar;
-            if (service == typeof(IStatusBar))
-                return Editor.Current.Shell.StatusBar;
-            if (service == typeof(ICodeEditor))
-            {
-                var existing = Editor.Current.Shell?.Items.OfType<CodeEditorViewModel>()
-                    .FirstOrDefault(w => w.LuaSourceContainer.InstanceId.Equals(key));
-                if (existing != null)
-                    return existing;
-
-                WeakReference<Instance> obj;
-                Game.Instances.TryGetValue(key, out obj);
-                var editor = new CodeEditorViewModel((LuaSourceContainer)obj);
-                Editor.Current.Shell?.OpenDocument(editor);
-                return editor;
-            }
-
-            var item = Editor.Current.Shell?.Widgets.FirstOrDefault(service.IsInstanceOfType);
-
-            if (item != null)
-                return item;
-
-            return base.GetInstance(service, key);
-            */
-            string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
+            var contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
             var exports = Container.GetExports<object>(contract);
 
-            if (exports.Any())
-                return exports.First().Value;
+            var export = exports.FirstOrDefault()?.Value;
 
-            throw new Exception($"Could not locate any instances of contract {contract}.");
+            if (export == null)
+                throw new Exception($"Could not locate any instances of contract {contract}.");
+
+            return export;
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
@@ -212,13 +176,11 @@ namespace dEditor
                     var editorPath = $"content/{path.ToLower()}";
                     var resourceStream =
                         _externalBaml.GetManifestResourceStream(_externalBaml.GetName().Name + ".g.resources");
+                    Debug.Assert(resourceStream != null, "resourceStream != null");
                     using (var reader = new ResourceReader(resourceStream))
                     {
                         foreach (DictionaryEntry entry in reader)
                         {
-                            var test = entry.Key.ToString().Contains("json");
-                            if (test)
-                            ;
                             if (entry.Key.ToString() == editorPath)
                                 return (Stream)entry.Value;
                         }
@@ -278,45 +240,39 @@ namespace dEditor
                 {"MinHeight", 700}
             };
 
-            if (args.UseClientShell)
-            {
-                DisplayRootViewFor<ClientShellViewModel>(settings);
-            }
-            else
-            {
-                DisplayRootViewFor<IShell>(settings);
+            DisplayRootViewFor<IShell>(settings);
 
-                var shell = Editor.Current.Shell;
+            var shell = Editor.Current.Shell;
 
-                if (!File.Exists(Editor.Current.LayoutFileName))
+            if (!File.Exists(Editor.Current.LayoutFileName))
+            {
+                var defaultLayoutStream = Assembly.GetExecutingAssembly()
+                    .GetManifestResourceStream("dEditor.Content.DefaultLayout.xaml");
+
+                Debug.Assert(defaultLayoutStream != null);
+
+                using (var layoutFile = File.Create(Editor.Current.LayoutFileName))
                 {
-                    var defaultLayoutStream = Assembly.GetExecutingAssembly()
-                        .GetManifestResourceStream("dEditor.Content.DefaultLayout.xaml");
-
-                    Debug.Assert(defaultLayoutStream != null);
-
-                    using (var layoutFile = File.Create(Editor.Current.LayoutFileName))
-                    {
-                        defaultLayoutStream.CopyTo(layoutFile);
-                    }
+                    defaultLayoutStream.CopyTo(layoutFile);
                 }
-
-                shell.LayourItemStatePersister.LoadState(shell, shell.View, Editor.Current.LayoutFileName);
-
-                shell.OpenDocument(new StartPageViewModel());
-
-                // TODO: remove test autoload
-                //var p = Project.Load(@"C:\Users\Dan\Documents\dEditor\Projects\MyGame\MyGame.dproj");
-                //p.Open();
-
-                /*
-                var mat = new Material();
-                var tex = new TextureParamaterNode();
-                mat.AddNode(tex);
-                tex.RGB.ConnectTo(((FinalNode)mat.FinalNode).BaseColour);
-                shell.OpenDocument(new MaterialEditorViewModel(mat));
-                */
             }
+
+            shell.LayourItemStatePersister.LoadState(shell, shell.View, Editor.Current.LayoutFileName);
+
+            shell.OpenDocument(new StartPageViewModel());
+
+            // TODO: remove test autoload
+            var p = Project.Load(@"C:\Users\Dan\Documents\dEditor\Projects\\BoundingBoxTest\BoundingBoxTest.dproj");
+            p.Open();
+
+            shell.OpenDocument(new ProjectEditorViewModel());
+            /*
+            var mat = new Material();
+            var tex = new TextureParamaterNode();
+            mat.AddNode(tex);
+            tex.RGB.ConnectTo(((FinalNode)mat.FinalNode).BaseColour);
+            shell.OpenDocument(new MaterialEditorViewModel(mat));
+            */
         }
 
         protected override void OnExit(object sender, EventArgs e)

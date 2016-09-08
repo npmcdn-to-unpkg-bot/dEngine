@@ -215,6 +215,15 @@
         <member name="M:dEngine.Data.Cubemap.OnNonAsset(System.IO.BinaryReader)">
             <summary/>
         </member>
+        <member name="M:dEngine.Data.Cubemap.OnLoad(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.Cubemap.OnSave(System.IO.BinaryWriter)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.Cubemap.Dispose(System.Boolean)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Data.Geometry">
             <summary>
             Represents a geometry. Instances of a geometry are rendered with a <see cref="T:dEngine.Graphics.RenderObject" />.
@@ -333,12 +342,23 @@
         <member name="P:dEngine.Data.AnimationData.ContentType">
             <inheritdoc />
         </member>
+        <member name="M:dEngine.Data.AnimationData.OnSave(System.IO.BinaryWriter)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.AnimationData.OnLoad(System.IO.BinaryReader)">
+            <summary/>
+        </member>
         <member name="M:dEngine.Data.AnimationData.Dispose(System.Boolean)">
             <inheritdoc />
         </member>
+        <member name="T:dEngine.AdapterConnection">
+            <summary>
+            Types of adapters.
+            </summary>
+        </member>
         <member name="T:dEngine.BlurMode">
             <summary>
-            Blurring methods to use in <see cref="!:AmbientOcclusionEffect" />.
+            Blurring methods to use in <see cref="T:dEngine.Instances.AmbientOcclusionEffect" />.
             </summary>
         </member>
         <member name="T:dEngine.EngineMode">
@@ -687,6 +707,12 @@
             <summary>
             </summary>
         </member>
+        <member name="T:dEngine.Instances.Attributes.IValueAttribute">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.Attributes.IValueAttribute.GetValue">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.Attributes.WarningAttribute">
             <summary>
             An attribute which defines a warning in the documentation.
@@ -694,6 +720,9 @@
         </member>
         <member name="M:dEngine.Instances.Attributes.WarningAttribute.#ctor(System.String)">
             <summary />
+        </member>
+        <member name="P:dEngine.Instances.Attributes.WarningAttribute.Text">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Attributes.RangeAttribute">
             <summary>
@@ -782,7 +811,7 @@
             </summary>
             <param name="group">The group name.</param>
             <param name="displayName">The name to display in the inspector.</param>
-            <param name="unknown"></param>
+            <param name="data"></param>
         </member>
         <member name="P:dEngine.Instances.Attributes.EditorVisibleAttribute.Group">
             <summary>
@@ -793,6 +822,9 @@
             <summary>
             The group name.
             </summary>
+        </member>
+        <member name="P:dEngine.Instances.Attributes.EditorVisibleAttribute.Data">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Attributes.ToolboxGroupAttribute">
             <summary>
@@ -911,6 +943,9 @@
             <summary>
             The aspect ratio of the <see cref="P:dEngine.Instances.Camera.ViewportSize" />.
             </summary>
+        </member>
+        <member name="P:dEngine.Instances.Camera.IsLoaded">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.Camera.OnChildAdded(dEngine.Instances.Instance)">
             <inheritdoc />
@@ -1172,6 +1207,11 @@
             An instance of a <see cref="P:dEngine.Instances.Materials.MaterialInstance.Material" /> which can be used to modify paramaters on the fly.
             </summary>
         </member>
+        <member name="P:dEngine.Instances.Materials.MaterialInstance.Material">
+            <summary>
+            The base material.
+            </summary>
+        </member>
         <member name="P:dEngine.Instances.Materials.MaterialInstance.Domain">
             <summary>
             The <see cref="T:dEngine.MaterialDomain" /> of the parent material.
@@ -1219,6 +1259,9 @@
             <summary>
             Fired when a slot is connected.
             </summary>
+        </member>
+        <member name="T:dEngine.Instances.Materials.Nodes.ParameterNode">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Materials.Nodes.FinalNode">
             <summary>
@@ -1320,6 +1363,9 @@
             Fills the entire screen with a semi-transparent grey background, and centered text in the middle of the screen.
             </summary>
         </member>
+        <member name="F:dEngine.Instances.Message._label">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.Message.#ctor">
             <summary />
         </member>
@@ -1330,6 +1376,9 @@
         </member>
         <member name="M:dEngine.Instances.Message.OnWorldChanged(dEngine.Instances.IWorld,dEngine.Instances.IWorld)">
             <summary />
+        </member>
+        <member name="M:dEngine.Instances.Message.Destroy">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.LensFlareEffect">
             <summary>
@@ -1438,6 +1487,12 @@
             The transform of the bone relative to <see cref="P:dEngine.Instances.Skeleton.RootBone" />.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.Bone.SimulatePhysics(System.Boolean)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.Bone.SetPhysicsBlendWeight(System.Single)">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.Bone.ToString">
             <inheritdoc />
         </member>
@@ -1446,10 +1501,16 @@
             An animation for a <see cref="T:dEngine.Instances.SkeletalMesh" />.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.Animation.#ctor">
+            <summary/>
+        </member>
         <member name="P:dEngine.Instances.Animation.AnimationId">
             <summary>
             The content id for the animation data.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.Animation.AdjustSpeed">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.CanvasWin32">
             <summary>
@@ -1503,6 +1564,14 @@
             <summary>
             Returns the velocity of the subject for use by the sound listener.
             </summary>
+        </member>
+        <member name="T:dEngine.Instances.IListenable">
+            <summary>
+            Interface for objects which can be used an audio listener.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.IListenable.UpdateListener(CSCore.XAudio2.X3DAudio.Listener@)">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.PlaneMesh">
             <summary>
@@ -1629,6 +1698,12 @@
         </member>
         <member name="M:dEngine.Instances.ScrollFrame.Measure">
             <inheritdoc />
+        </member>
+        <member name="T:dEngine.Instances.IAnchorable">
+            <summary/>
+        </member>
+        <member name="P:dEngine.Instances.IAnchorable.Anchored">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Fire">
             <summary>
@@ -1794,6 +1869,9 @@
             The maximum amount of torque that can be applied.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.BodyGyro.OnStep(dEngine.Instances.Part)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.BodyPosition">
             <summary>
             Applies a force on its parent to move towards a position.
@@ -1822,6 +1900,9 @@
             Determines how aggressively the object tries to reach its goal.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.BodyPosition.OnStep(dEngine.Instances.Part)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.BodyThrust">
             <summary>
             Applies a force on its parent towards a direction.
@@ -1836,6 +1917,9 @@
             <summary>
             The offset from the center of the part where force is applied.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.BodyThrust.OnStep(dEngine.Instances.Part)">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.BodyVelocity">
             <summary>
@@ -1933,6 +2017,9 @@
             Makes the rocket fly towards its target.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.RocketPropulsion.OnStep(dEngine.Instances.Part)">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.Attachment">
             <summary>
             An attachment represents an offset relative to the object it is parented to.
@@ -2008,10 +2095,25 @@
             <see cref="P:dEngine.Instances.BallSocketConstraint.UpperAngle" />.
             </summary>
         </member>
+        <member name="P:dEngine.Instances.BallSocketConstraint.UpperAngle">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.BallSocketConstraint.RebuildConstraint">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.Constraint">
             <summary>
             Base class for constraints.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.Constraint._attachment0">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.Constraint._attachment1">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.Constraint._constraint">
+            <summary/>
         </member>
         <member name="P:dEngine.Instances.Constraint.Attachment0">
             <summary>
@@ -2139,6 +2241,9 @@
             Summary
             </summary>
         </member>
+        <member name="M:dEngine.Instances.RopeConstraint.RebuildConstraint">
+            <summary/>
+        </member>
         <member name="T:dEngine.Instances.SpringConstraint">
             <summary>
             A spring applies a force to its <see cref="T:dEngine.Instances.Attachment" />s based on spring and damper behaviour.
@@ -2234,6 +2339,11 @@
             Summary
             </summary>
         </member>
+        <member name="T:dEngine.Instances.ColourCorrectionEffect">
+            <summary>
+            Colour correction effect.
+            </summary>
+        </member>
         <member name="M:dEngine.Instances.ColourCorrectionEffect.#ctor">
             <summary />
         </member>
@@ -2288,6 +2398,11 @@
         </member>
         <member name="M:dEngine.Instances.GodRaysEffect.UpdateSize(dEngine.Instances.Camera)">
             <summary />
+        </member>
+        <member name="T:dEngine.Instances.MotionBlurEffect">
+            <summary>
+            Applies motion blur to fast-moving objects.
+            </summary>
         </member>
         <member name="M:dEngine.Instances.MotionBlurEffect.#ctor">
             <summary />
@@ -2353,6 +2468,11 @@
             The falloff of the effect beyond <see cref="P:dEngine.Instances.AmbientOcclusionEffect.MaxDistance" />.
             </summary>
         </member>
+        <member name="T:dEngine.Instances.ReflectionEffect">
+            <summary>
+            Screen space reflection effect.
+            </summary>
+        </member>
         <member name="T:dEngine.Instances.VignetteEffect">
             <summary>
             Darkens the corners of the screen.
@@ -2379,6 +2499,11 @@
         <member name="T:dEngine.Instances.Seat">
             <summary>
             A brick which can be occupied by a <see cref="T:dEngine.Instances.Character" />.
+            </summary>
+        </member>
+        <member name="F:dEngine.Instances.Seat._disabled">
+            <summary>
+            Determines if the seat is disabled.
             </summary>
         </member>
         <member name="M:dEngine.Instances.Seat.#ctor">
@@ -2521,6 +2646,19 @@
         <member name="M:dEngine.Instances.Volume.OnWorldChanged(dEngine.Instances.IWorld,dEngine.Instances.IWorld)">
             <summary />
         </member>
+        <member name="M:dEngine.Instances.Volume.GetOverlappingParts">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.Volume.Entered">
+            <summary>
+            Fired when a part enters the volume.
+            </summary>
+        </member>
+        <member name="F:dEngine.Instances.Volume.Left">
+            <summary>
+            Fired when a part leaves the volume.
+            </summary>
+        </member>
         <member name="T:dEngine.Instances.TransvoxelTables">
             <summary>
             Contains the Lengyel Transvoxel Lookup Tables
@@ -2596,6 +2734,9 @@
             </summary>
             <param name="amount">The amount of health to give.</param>
         </member>
+        <member name="M:dEngine.Instances.Character.RebuildRigidBody">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.Character.Destroy">
             <inheritdoc />
         </member>
@@ -2632,6 +2773,9 @@
             <summary>
             Base class for text elements.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.TextElement._text">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.TextElement.#ctor">
             <inheritdoc />
@@ -2685,6 +2829,9 @@
             <summary>
             The colour of the text stroke.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.TextElement.CreateResources">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.TextElement.Arrange">
             <inheritdoc />
@@ -2773,6 +2920,9 @@
         </member>
         <member name="M:dEngine.Instances.CylinderMesh.#ctor">
             <inheritdoc />
+        </member>
+        <member name="T:dEngine.Instances.FileMesh">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.FileMesh.#ctor">
             <inheritdoc />
@@ -2871,6 +3021,9 @@
         </member>
         <member name="M:dEngine.Instances.BodyForce.Destroy">
             <inheritdoc />
+        </member>
+        <member name="M:dEngine.Instances.BodyForce.OnStep(dEngine.Instances.Part)">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.BodyMover">
             <summary>
@@ -2997,6 +3150,12 @@
             <summary>
             Determines whether any handles are blocking the mouse.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.BaseHandles.OnAncestryChanged(dEngine.Instances.Instance,dEngine.Instances.Instance)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.BaseHandles.ChangeRenderObject">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Stack">
             <summary>
@@ -3141,6 +3300,12 @@
             Comment
             </summary>
         </member>
+        <member name="P:dEngine.Instances.Decal.CFrame">
+            <summary/>
+        </member>
+        <member name="P:dEngine.Instances.Decal.Size">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.Decal.OnAncestryChanged(dEngine.Instances.Instance,dEngine.Instances.Instance)">
             <inheritdoc />
         </member>
@@ -3197,6 +3362,18 @@
         <member name="P:dEngine.Instances.BillboardGui.AbsoluteSize">
             <inheritdoc />
         </member>
+        <member name="P:dEngine.Instances.BillboardGui.RenderObject">
+            <summary/>
+        </member>
+        <member name="P:dEngine.Instances.BillboardGui.RenderIndex">
+            <summary/>
+        </member>
+        <member name="P:dEngine.Instances.BillboardGui.RenderData">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Instances.BillboardGui.UpdateRenderData">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.BillboardGui.Destroy">
             <inheritdoc />
         </member>
@@ -3209,6 +3386,12 @@
             <summary>
             The base class of all gui screens and elements.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.GuiBase2D._bbMax">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.GuiBase2D._bbMin">
+            <summary/>
         </member>
         <member name="P:dEngine.Instances.GuiBase2D.AbsolutePosition">
             <summary>
@@ -3229,6 +3412,9 @@
             <summary>
             Base class for 3D GUI objects.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.GuiBase3D._colour">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.GuiBase3D.#ctor">
             <inheritdoc />
@@ -3269,6 +3455,9 @@
             <summary>
             Determines if the container and its elements are visible/usable.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.LayerCollector.OnAncestryChanged(dEngine.Instances.Instance,dEngine.Instances.Instance)">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.LayerCollector.HitTest(System.Single,System.Single)">
             <summary>
@@ -3851,9 +4040,6 @@
             Sets all cells in the chunk to air.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.Terrain.Cell.ToString">
-            <inheritdoc />
-        </member>
         <member name="T:dEngine.Instances.TerrainRegion">
             <summary>
             A TerrainRegion stores the data for a region of <see cref="T:dEngine.Instances.Terrain" />.
@@ -3868,6 +4054,9 @@
             <summary>
             A <see cref="T:dEngine.Instances.ValueContainer" /> for holding binary data.
             </summary>
+        </member>
+        <member name="M:dEngine.Instances.BinaryValue.GetValue">
+            <summary/>
         </member>
         <member name="T:dEngine.Instances.Weld">
             <summary>
@@ -4007,6 +4196,12 @@
             Base class for all 2D GUI elements.
             </summary>
         </member>
+        <member name="F:dEngine.Instances.GuiElement._roundedRectangle">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.GuiElement._shadowEffect">
+            <summary/>
+        </member>
         <member name="M:dEngine.Instances.GuiElement.#ctor">
             <inheritdoc />
         </member>
@@ -4034,6 +4229,9 @@
             <summary>
             The size of the element.
             </summary>
+        </member>
+        <member name="P:dEngine.Instances.GuiElement.Focused">
+            <summary/>
         </member>
         <member name="P:dEngine.Instances.GuiElement.CornerRadius">
             <summary>
@@ -4805,6 +5003,9 @@
             The child part which represents the 'primary' part of this model.
             </summary>
         </member>
+        <member name="P:dEngine.Instances.Model.ModelInPrimary">
+            <summary/>
+        </member>
         <member name="P:dEngine.Instances.Model.CFrame">
             <summary>
             The transform of the model.
@@ -5063,6 +5264,12 @@
             <summary>
             Base class for all entities.
             </summary>
+        </member>
+        <member name="F:dEngine.Instances.Instance._deserializing">
+            <summary/>
+        </member>
+        <member name="F:dEngine.Instances.Instance._serializing">
+            <summary/>
         </member>
         <member name="M:dEngine.Instances.Instance.#ctor">
             <summary>
@@ -5976,6 +6183,12 @@
             </summary>
             <param name="frame"></param>
         </member>
+        <member name="M:dEngine.Services.ReplayService.ReplayFrame.Load(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Services.ReplayService.ReplayFrame.Save(System.IO.BinaryWriter)">
+            <summary/>
+        </member>
         <member name="F:dEngine.Services.ReplayService.ReplayFrame.Actions">
             <summary>
             A list of replay actions performed this frame.
@@ -6066,6 +6279,16 @@
         <member name="P:dEngine.Services.Lighting.OutdoorAmbient">
             <summary>
             The darkest outdoor colour.
+            </summary>
+        </member>
+        <member name="P:dEngine.Services.Lighting.SkyLightIntensity">
+            <summary>
+            The intensity of the sky light.
+            </summary>
+        </member>
+        <member name="P:dEngine.Services.Lighting.IsLowerHemisphereBlack">
+            <summary>
+            Determines whether the lower hemisphere of the environment map is set to black.
             </summary>
         </member>
         <member name="P:dEngine.Services.Lighting.SunVector">
@@ -6190,17 +6413,17 @@
         </member>
         <member name="F:dEngine.Services.Networking.NetworkClient.Connected">
             <summary>
-            Fired when <see cref="!:Connect(string, int, int)" />successfully connects to a server. Returns the ClientReplicator.
+            Fired when <see cref="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32)" />successfully connects to a server. Returns the ClientReplicator.
             </summary>
         </member>
         <member name="F:dEngine.Services.Networking.NetworkClient.Disconnected">
             <summary>
-            Fired if <see cref="!:Connect(string, int, int)" /> fails to connect to a server.
+            Fired if <see cref="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32)" /> fails to connect to a server.
             </summary>
         </member>
         <member name="F:dEngine.Services.Networking.NetworkClient.Rejected">
             <summary>
-            Fired if <see cref="!:Connect(string, int, int)" /> connects to a server, but the request to join is rejected.
+            Fired if <see cref="M:dEngine.Services.Networking.NetworkClient.Connect(System.String,System.Int32)" /> connects to a server, but the request to join is rejected.
             </summary>
             <remarks>
             This can happen if the client and server versions are mismatched, the player is banned from server, or ticket
@@ -6211,6 +6434,9 @@
             <summary>
             Base class for <see cref="T:dEngine.Services.Networking.NetworkClient" /> and <see cref="T:dEngine.Services.Networking.NetworkServer" />
             </summary>
+        </member>
+        <member name="F:dEngine.Services.Networking.NetworkPeer._accumulator">
+            <summary/>
         </member>
         <member name="P:dEngine.Services.Networking.NetworkPeer.IsRunning">
             <summary>
@@ -6313,6 +6539,11 @@
         <member name="P:dEngine.Services.Players.MaxPlayers">
             <summary>
             The maximum amount of players.
+            </summary>
+        </member>
+        <member name="P:dEngine.Services.Players.NumPlayers">
+            <summary>
+            The number of players in the game.
             </summary>
         </member>
         <member name="M:dEngine.Services.Players.CreateLocalPlayer">
@@ -6602,6 +6833,9 @@
             Objects stored in this container will not be baked into the client.
             </remarks>
             <seealso cref="T:dEngine.Services.Workspace" />
+        </member>
+        <member name="M:dEngine.Services.ServerScriptService.#ctor">
+            <summary/>
         </member>
         <member name="T:dEngine.Services.ServerStorage">
             <summary>
@@ -7067,6 +7301,9 @@
             <summary>
             The engine version, including the name.
             </summary>
+        </member>
+        <member name="M:dEngine.Settings.User.UserAnalyticsSettings.RestoreDefaults">
+            <summary/>
         </member>
         <member name="T:dEngine.Settings.User.UserGameSettings">
             <summary>
@@ -9195,6 +9432,9 @@
             Detects if we are running inside a unit test.
             </summary>
         </member>
+        <member name="P:dEngine.Utility.UnitTestDetector.IsInUnitTest">
+            <summary/>
+        </member>
         <member name="T:dEngine.FriendStatus">
             <summary>
             Enumeration for friend status.
@@ -9373,6 +9613,11 @@
         <member name="T:dEngine.SpeakerType">
             <summary>
             Speaker types.
+            </summary>
+        </member>
+        <member name="T:dEngine.TeamBalanceMethod">
+            <summary>
+            Algorthims for balancing teams.
             </summary>
         </member>
         <member name="F:dEngine.TeamBalanceMethod.Random">
@@ -9665,6 +9910,9 @@
             Base class for sequences.
             </summary>
         </member>
+        <member name="F:dEngine.Sequence`1._keypoints">
+            <summary/>
+        </member>
         <member name="M:dEngine.Sequence`1.#ctor">
             <summary>
             Empty constructor.
@@ -9818,6 +10066,12 @@
             <summary>
             The hit position.
             </summary>
+        </member>
+        <member name="M:dEngine.PhysicsSimulation.RayCastResult.ToTuple">
+            <summary>
+            Converts the result to a Lua tuple.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:dEngine.CascadePartitionMode">
             <summary>
@@ -10125,7 +10379,7 @@
         </member>
         <member name="T:dEngine.CollisionFidelity">
             <summary>
-            Determines how the collision models of a <see cref="!:CSGOperation" /> behave.
+            Determines how the collision models of a <see cref="T:dEngine.Instances.PartOperation" /> behave.
             </summary>
         </member>
         <member name="F:dEngine.CollisionFidelity.ConvexHull">
@@ -11097,6 +11351,9 @@
         <member name="M:dEngine.Content`1.GetHashCode">
             <inheritdoc />
         </member>
+        <member name="M:dEngine.Content`1.RetryDownload">
+            <summary/>
+        </member>
         <member name="T:dEngine.Shape">
             <summary>
             Enum for primitive shapes.
@@ -11353,6 +11610,12 @@
             <summary>
             The id of the instance to reference.
             </summary>
+        </member>
+        <member name="M:dEngine.InstanceReference.Load(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.InstanceReference.Save(System.IO.BinaryWriter)">
+            <summary/>
         </member>
         <member name="M:dEngine.Matrix3.Equals(dEngine.Matrix3)">
             <summary />
@@ -11887,6 +12150,12 @@
             Converts a <see cref="T:dEngine.Vector3" /> to a <see cref="T:dEngine.Vector3int16" />.
             </summary>
         </member>
+        <member name="M:dEngine.Vector3int16.Load(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Vector3int16.Save(System.IO.BinaryWriter)">
+            <summary/>
+        </member>
         <member name="T:dEngine.InstanceId">
             <summary>
             A GUID for an <see cref="T:dEngine.Instances.Instance" />.
@@ -12391,6 +12660,12 @@
         </member>
         <member name="M:dEngine.UDim2.op_Multiply(dEngine.UDim2,dEngine.UDim2)">
             <summary />
+        </member>
+        <member name="M:dEngine.UDim2.Load(System.IO.BinaryReader)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.UDim2.Save(System.IO.BinaryWriter)">
+            <summary/>
         </member>
         <member name="T:dEngine.Vector2">
             <summary>

@@ -1,16 +1,17 @@
 ﻿// EditorSettings.cs - dEditor
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
 using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Caliburn.Micro;
-using dEditor.Widgets.CodeEditor;
+using dEditor.Modules.Widgets.CodeEditor;
 using dEngine;
 using dEngine.Instances.Attributes;
 using dEngine.Settings;
 
-namespace dEditor.Instances
+namespace dEditor
 {
     [TypeId(301)]
     internal class EditorSettings : Settings

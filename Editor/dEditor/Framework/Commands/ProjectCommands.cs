@@ -4,9 +4,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
-using dEditor.Dialogs.NewPlace;
-using dEditor.Dialogs.NewProject;
-using dEditor.Shell;
+using dEditor.Modules.Dialogs.NewPlace;
+using dEditor.Modules.Dialogs.NewProject;
+using dEditor.Modules.Shell;
 using Microsoft.Win32;
 
 namespace dEditor.Framework.Commands
