@@ -287,6 +287,15 @@ namespace dEngine.Services
                 return false;
             }
 
+            for (var i = 0; i < _deleteQueue.Count; i++)
+            {
+                XAudio2Voice _voice;
+                if (_deleteQueue.TryDequeue(out _voice))
+                {
+                    _voice.DestroyVoice();
+                }
+            }
+
             if (DebugSettings.ProfilingEnabled)
                 if (_stopwatch.Elapsed.TotalSeconds > StatsUpdateRate)
                 {
@@ -514,7 +523,7 @@ namespace dEngine.Services
             if (string.IsNullOrEmpty(clientId))
                 throw new InvalidOperationException("Soundcloud client ID was not set.");
             var url = $"http://api.soundcloud.com/tracks/{trackId}?client_id={clientId}";
-            var track = HttpService.Get(url, true, new Dictionary<string, object>()).Result.ReadString();
+            var track = HttpService.Get(new Uri(url), true, new Dictionary<string, object>()).Result.ReadString();
             var table = HttpService.Service.JsonDecode(track);
             return table;
         }

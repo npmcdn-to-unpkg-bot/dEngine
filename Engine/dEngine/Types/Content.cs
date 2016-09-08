@@ -53,17 +53,25 @@ namespace dEngine
 
                 _contentId = value;
 
-                _reference = CacheableContentProvider<TAsset>.GetAsync(value);
-
-                if (_reference.Resource.IsDownloaded)
+                if (string.IsNullOrWhiteSpace(value))
                 {
+                    _reference = CacheableContentProvider<TAsset>.EmptyReference();
                     OnResourceDownloaded();
-
-                    if (_reference.Resource.Content == null)
-                        _reference.Resource.Download();
                 }
                 else
-                    _reference.Resource.Downloaded += OnResourceDownloaded;
+                {
+                    _reference = CacheableContentProvider<TAsset>.GetAsync(new Uri(value));
+
+                    if (_reference.Resource.IsDownloaded)
+                    {
+                        OnResourceDownloaded();
+
+                        if (_reference.Resource.Content == null)
+                            _reference.Resource.Download();
+                    }
+                    else
+                        _reference.Resource.Downloaded += OnResourceDownloaded;
+                }
             }
         }
 
@@ -110,7 +118,7 @@ namespace dEngine
 
         private void OnResourceDownloaded()
         {
-            _onGot?.Invoke(_reference.Resource.Id, _reference);
+            _onGot?.Invoke(_reference.Resource.Uri.AbsoluteUri, _reference);
             IsLoaded = true;
         }
 

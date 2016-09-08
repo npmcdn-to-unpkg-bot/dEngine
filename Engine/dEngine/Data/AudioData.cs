@@ -21,7 +21,7 @@ using dEngine.Utility.Native;
 namespace dEngine.Data
 {
     [TypeId(20)]
-    public class AudioData : AssetBase
+    public sealed class AudioData : AssetBase
     {
         private static readonly byte[] _mp3Magic = {(byte)'I', (byte)'D', (byte)'3'};
         private static readonly byte[] _mp3Magic2 = {0xFF, 0xFB};

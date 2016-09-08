@@ -13,7 +13,7 @@ namespace dEditor.Framework.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((double)value).ToString("0." + new string('#', DecimalCount));
+            return ((double)value).ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -6,7 +6,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Assimp;
 using dEngine.Utility;
 using SharpDX;
 using SharpDX.Mathematics.Interop;
@@ -352,12 +351,6 @@ namespace dEngine
         public static implicit operator Color(Colour colour)
         {
             return new Color(colour.r, colour.g, colour.b, colour.a);
-        }
-
-        /// <summary />
-        public static implicit operator Colour(Color4D colour)
-        {
-            return new Colour(colour.R, colour.G, colour.B, colour.A);
         }
 
         #endregion

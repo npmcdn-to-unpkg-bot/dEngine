@@ -19,10 +19,11 @@ using System.Windows.Threading;
 using Caliburn.Micro;
 using dEditor.Framework;
 using dEditor.Framework.Services;
-using dEditor.Modules.Shell;
-using dEditor.Modules.Widgets.ProjectEditor;
-using dEditor.Modules.Widgets.StartPage;
+using dEditor.Instances;
+using dEditor.Shell;
+using dEditor.Shell.Client;
 using dEditor.Tools;
+using dEditor.Widgets.StartPage;
 using dEngine;
 using dEngine.Instances;
 using dEngine.Services;
@@ -34,11 +35,12 @@ namespace dEditor
 {
     public class AppBootstrapper : BootstrapperBase
     {
-        private static readonly Assembly _externalBaml =
-            Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "dEditor.exe"));
-
         internal DispatcherTimer AutoSaveTimer;
         private List<Assembly> _priorityAssemblies;
+
+        protected CompositionContainer Container { get; set; }
+
+        internal IList<Assembly> PriorityAssemblies => _priorityAssemblies;
 
         public AppBootstrapper()
         {
@@ -67,9 +69,9 @@ namespace dEditor
                 }
             };
 
-            ContentProvider.CustomFetchHandler = CustomFetchHandler;
-            Engine.Start(EngineMode.LevelEditor);
-            Engine.OnShutdown += () => Editor.Current.Dispatcher.Invoke(() => Editor.Current.Shutdown());
+            ContentManager.RegisterProtocols();
+            Engine.Start(EngineMode.LevelEditor, "dEditor");
+            Engine.Exiting += () => Editor.Current.Dispatcher.Invoke(() => Editor.Current.Shutdown());
 
             DataModel.SetStartupArguments(new Dictionary<string, string> {{"IsEditor", "true"}});
             InputService.MouseInputApi = InputApi.Windows;
@@ -79,20 +81,16 @@ namespace dEditor
             KeyBindings.Init();
             FindService.Init();
 
-            //InstTest();
-
             ToolManager.SelectTool.IsEquipped = true;
 
             AutoSaveTimer = new DispatcherTimer(TimeSpan.FromMinutes(EditorSettings.AutosaveInterval),
                 DispatcherPriority.Background, PerformAutoSave, Editor.Current.Dispatcher);
         }
-
-        protected CompositionContainer Container { get; set; }
-
-        internal IList<Assembly> PriorityAssemblies => _priorityAssemblies;
-
-        protected void PreInitialize()
+        
+        protected virtual void PreInitialize()
         {
+            // converts fbx to engine binary format
+            //ContentManager.ConvertPrimitivesToGeometry();
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
@@ -162,33 +160,6 @@ namespace dEditor
             if (typeof(Widget).IsAssignableFrom(service))
                 return Editor.Current.Shell?.Widgets.Where(w => w.GetType() == service) ?? Enumerable.Empty<object>();
             return new[] {service.FastConstruct()};
-        }
-
-        private static Stream CustomFetchHandler(string protocol, string path)
-        {
-            switch (protocol)
-            {
-                case "places":
-                    return File.OpenRead(Path.Combine(Project.Current.ProjectPath, "Places", path + ".place"));
-                case "content":
-                    return File.OpenRead(Path.Combine(Project.Current.ContentPath, path));
-                case "editor":
-                    var editorPath = $"content/{path.ToLower()}";
-                    var resourceStream =
-                        _externalBaml.GetManifestResourceStream(_externalBaml.GetName().Name + ".g.resources");
-                    Debug.Assert(resourceStream != null, "resourceStream != null");
-                    using (var reader = new ResourceReader(resourceStream))
-                    {
-                        foreach (DictionaryEntry entry in reader)
-                        {
-                            if (entry.Key.ToString() == editorPath)
-                                return (Stream)entry.Value;
-                        }
-                    }
-                    throw new NotSupportedException($"No file found in editor manifest resource.");
-                default:
-                    return null;
-            }
         }
 
         private static void PerformAutoSave(object sender, EventArgs e)

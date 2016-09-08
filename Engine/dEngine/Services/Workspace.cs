@@ -205,7 +205,7 @@ namespace dEngine.Services
         [Obsolete("For testing purposes")]
         public void LoadRbxlx(string contentId)
         {
-            var stream = ContentProvider.DownloadStream(contentId).Result;
+            var stream = ContentProvider.DownloadStream(new Uri(contentId)).Result;
             if (stream == null)
                 throw new InvalidOperationException("Could not load RBXLX: could not download file.");
             Rbxlx.Load(Game.Workspace, stream);
@@ -232,25 +232,21 @@ namespace dEngine.Services
 
                 Logger.Trace($"Loading place. ({placeName})");
                 var placeId = $"places://{placeName}";
-                var stream = ContentProvider.DownloadStream(placeId).Result;
+                var stream = ContentProvider.DownloadStream(new Uri(placeId)).Result;
 
                 if (stream == null)
                     throw new InvalidDataException($"Failed to load place \"{placeId}\": could not fetch.");
-#if !DEBUG
                 try
                 {
-#endif
                     Inst.Deserialize(stream, this);
-#if !DEBUG
                 }
                 catch (Exception e)
                 {
                     Logger.Error($"A serialization error occured while loading a place. ({placeName})");
                     ClearChildren();
                     PlaceId = "";
-                    throw;
+                    return;
                 }
-#endif
             }
 
             Logger.Trace($"Loaded place. ({placeName})");
@@ -269,7 +265,7 @@ namespace dEngine.Services
         /// <seealso cref="LoadPlace" />
         public readonly Signal<string> PlaceLoaded;
 
-        #region IWorld
+#region IWorld
 
         /// <inheritdoc />
         public PhysicsSimulation Physics { get; }
@@ -304,6 +300,6 @@ namespace dEngine.Services
             return Physics.FindPartOnRay(ray, part => filterFunc.Invoke(part), maxLength).ToTuple();
         }
 
-        #endregion
+#endregion
     }
 }

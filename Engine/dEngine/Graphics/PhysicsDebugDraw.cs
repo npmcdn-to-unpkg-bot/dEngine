@@ -110,11 +110,11 @@ namespace dEngine.Graphics
                 }
 
                 LinePass.Use(ref context);
-                context.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineList;
+                context.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.LineList;
                 context.InputAssembler.SetVertexBuffers(0, _lineBufferBinding);
                 context.Draw(_lineCount*2, _points.Offset);
 
-                context.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList; // reset topology
+                context.InputAssembler.PrimitiveTopology = SharpDX.Direct3D.PrimitiveTopology.TriangleList; // reset topology
                 _points.Clear();
                 _lineCount = 0;
             }

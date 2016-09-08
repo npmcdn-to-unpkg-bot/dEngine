@@ -56,7 +56,7 @@ namespace dEditor.Framework.Plugins
         public void OpenScript(LuaSourceContainer script, int lineNumber = 0)
         {
             ScriptService.AssertIdentity(ScriptIdentity.Plugin);
-            CodeEditorViewModel.TryOpenScript(script, lineNumber);
+            EditorProvider.Open(script, lineNumber);
         }
 
         public override void Destroy()

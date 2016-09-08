@@ -83,7 +83,7 @@ namespace dEngine.Services
         {
             string result = null;
             var thread = ScriptService.CurrentThread;
-            Task.Run(() => Get(url, noCache, headers))
+            Task.Run(() => Get(new Uri(url), noCache, headers))
                 .ContinueWith(t =>
                 {
                     result = t.Result.ReadString();
@@ -165,13 +165,11 @@ namespace dEngine.Services
             }
         }
 
-        internal static async Task<MemoryStream> Get(string url, bool noCache = false,
+        internal static async Task<MemoryStream> Get(Uri uri, bool noCache = false,
             Dictionary<string, object> headers = null)
         {
             try
             {
-                var uri = new Uri(url);
-
                 var cookieContainer = new CookieContainer();
 
                 if (uri.Host == "www.roblox.com")
@@ -224,7 +222,7 @@ namespace dEngine.Services
             }
             catch (Exception e)
             {
-                _logger.Error(e, $"HTTP GET request failed for \"{url}\": {e.Message}");
+                _logger.Error(e, $"HTTP GET request failed for \"{uri}\": {e.Message}");
                 InternalLogger.Error(e);
                 return null;
             }

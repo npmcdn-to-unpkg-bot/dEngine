@@ -2,9 +2,9 @@
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 using System;
+using System.Diagnostics;
 using dEngine.Data;
 using dEngine.Services;
-using dEngine.Utility.FileFormats.Model;
 
 namespace dEngine.Graphics
 {
@@ -29,25 +29,26 @@ namespace dEngine.Graphics
         }
         */
 
+        private static Geometry ImportPrimitiveMesh(string name)
+        {
+            var data = ContentProvider.DownloadStream(new Uri($"internal://content/meshes/primitives/{name}.mesh")).Result;
+            Debug.Assert(data != null, $"{name} stream != null");
+            var geometry = new Geometry();
+            geometry.Load(data);
+            return geometry;
+        }
+
         /// <summary>
         /// Loads primitive geometry.
         /// </summary>
         internal static void Load()
         {
-            var primitiveStream = ContentProvider.DownloadStream("internal://content/meshes/primitives.fbx").Result;
-
-            var primitives = FBX.Import(primitiveStream, new FBX.ImportSettings
-            {
-                MergeMeshes = false,
-                NormalImportMethod = FBX.NormalImportMethod.ImportNormals
-            }, "fbx", "primitives");
-
-            CubeGeometry = primitives.Meshes["Cube_Main"];
-            ConeGeometry = primitives.Meshes["Cone_Main"];
-            WedgeGeometry = primitives.Meshes["Wedge_Main"];
-            SphereGeometry = primitives.Meshes["Sphere_Main"];
-            CylinderGeometry = primitives.Meshes["Cylinder_Main"];
-            PlaneGeometry = primitives.Meshes["Plane_Main"];
+            CubeGeometry = ImportPrimitiveMesh("Cube");
+            ConeGeometry = ImportPrimitiveMesh("Cone");
+            WedgeGeometry = ImportPrimitiveMesh("Wedge");
+            SphereGeometry = ImportPrimitiveMesh("Sphere");
+            CylinderGeometry = ImportPrimitiveMesh("Cylinder");
+            PlaneGeometry = ImportPrimitiveMesh("Plane");
 
             _primitivesLoaded = true;
         }

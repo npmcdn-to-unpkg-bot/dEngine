@@ -11,7 +11,6 @@ namespace dEditor.Framework
         public abstract string Name { get; }
         public abstract string Text { get; }
         public virtual Uri IconSource => null;
-        public abstract KeyGesture KeyGesture { get; }
 
         public event EventHandler CanExecuteChanged;
 

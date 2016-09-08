@@ -27,7 +27,7 @@ namespace dEngine.Data
     /// A 2D texture.
     /// </summary>
     [TypeId(22)]
-    public class Texture : AssetBase
+    public sealed class Texture : AssetBase
     {
         // .PNG
         internal const uint MagicPNG = 0x89 | ('P' << 8) | ('N' << 16) | ('G' << 24);

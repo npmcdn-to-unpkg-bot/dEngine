@@ -134,8 +134,7 @@ namespace dEngine.Graphics
 
             Factory = new FactoryDXGI();
             ImagingFactory = new FactoryWIC();
-            Factory2D = new FactoryD2D(FactoryType.MultiThreaded,
-                Engine.IsDebug ? DebugLevel.Error : DebugLevel.None);
+            Factory2D = new FactoryD2D(FactoryType.MultiThreaded, DebugLevel.None);
             DirectWriteFactory = new FactoryDW(SharpDX.DirectWrite.FactoryType.Shared);
 
             CreateDevices(RenderSettings.GraphicsAdapter);

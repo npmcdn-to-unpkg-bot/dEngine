@@ -188,10 +188,9 @@ namespace dEngine.Graphics
 
             if (pix) PixHelper.BeginEvent(Color.Red, Name);
 
-            var newTopology = Geometry.PrimitiveTopology;
-
+            var newTopology = (SharpDX.Direct3D.PrimitiveTopology)Geometry.PrimitiveTopology;
             if (newTopology != context.InputAssembler.PrimitiveTopology)
-                context.InputAssembler.PrimitiveTopology = Geometry.PrimitiveTopology;
+                context.InputAssembler.PrimitiveTopology = newTopology;
 
             context.InputAssembler.SetVertexBuffers(0, Bindings);
             context.InputAssembler.SetIndexBuffer(Geometry.IndexBuffer, Format.R32_UInt, 0);

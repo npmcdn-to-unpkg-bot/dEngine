@@ -1,21 +1,19 @@
 ﻿// ContentProvider.cs - dEngine
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Assimp;
 using dEngine.Data;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
-using dEngine.Serializer.V1;
 using dEngine.Utility.Extensions;
 using Dynamitey;
 using Neo.IronLua;
-using Steamworks;
 
 namespace dEngine.Services
 {
@@ -26,6 +24,32 @@ namespace dEngine.Services
     [ExplorerOrder(-1)]
     public partial class ContentProvider : Service
     {
+        internal const int TimeoutMiliseconds = 30*1000;
+
+        /// <summary>Image Format string for file dialogs.</summary>
+        public const string SupportedImageFormats =
+            "Supported Formats (*.png;*.tiff;*.bmp*.jpg;*.jpeg;*.gif)|*.png;*.tiff;*.bmp*.jpg;*.jpeg;*.gif|All files (*.*)|*.*";
+
+        /// <summary>Audio Format string for file dialogs.</summary>
+        public const string SupportedAudioFormats =
+            "Supported Formats (*.mp3;*.mpeg3;*.wav;*.wave;*.flac;*.fla;*.aiff;*aif;*.aifc;*.aac;*.adt;*.adts;*.m2ts;*.mp2;*.3g2;*.3gp2;*.m4a;*.mp4v;*.mp4v;*.mp4;*.mov;*.asf;*.wm;*.wmv;*.wma;*.mp1;*.avi*.ac3;*.ec3;*.cue;*.m3u;*.pls)|*.mp3;*.mpeg3;*.wav;*.wave;*.flac;*.fla;*.aiff;*aif;*.aifc;*.aac;*.adt;*.adts;*.m2ts;*.mp2;*.3g2;*.3gp2;*.m4a;*.mp4v;*.mp4v;*.mp4;*.mov;*.asf;*.wm;*.wmv;*.wma;*.mp1;*.avi*.ac3;*.ec3;*.cue;*.m3u;*.pls;|All files (*.*)|*.*";
+
+        /// <summary>RenderMesh Format string for file dialogs.</summary>
+        public const string SupportedMeshFormats =
+            "Supported Formats (*.3d;*.3ds;*.ac;*.ac3d;*.acc;*.ase;*.ask;*.b3d;*.blend;*.bvh;*.cob;*.csm;*.dae;*.dxf;*.enff;*.fbx;*.hmp;*.ifc;*.ifczip;*.irr;*.irrmesh;*.lwo;*.lws;*.lxo;*.md2;*.md3;*.md5anim;*.md5camera;*.md5mesh;*.mdc;*.mdl;*.mesh;*.RenderMesh.xml;*.mot;*.ms3d;*.ndo;*.nff;*.obj;*.off;*.pk3;*.ply;*.prj;*.q3o;*.q3s;*.raw;*.scn;*.smd;*.stl;*.ter;*.uc;*.vta;*.x;*.xgl;*.xml;*.zgl;)|*.3d;*.3ds;*.ac;*.ac3d;*.acc;*.ase;*.ask;*.b3d;*.blend;*.bvh;*.cob;*.csm;*.dae;*.dxf;*.enff;*.fbx;*.hmp;*.ifc;*.ifczip;*.irr;*.irrmesh;*.lwo;*.lws;*.lxo;*.md2;*.md3;*.md5anim;*.md5camera;*.md5mesh;*.mdc;*.mdl;*.RenderMesh;*.RenderMesh.xml;*.mot;*.ms3d;*.ndo;*.nff;*.obj;*.off;*.pk3;*.ply;*.prj;*.q3o;*.q3s;*.raw;*.scn;*.smd;*.stl;*.ter;*.uc;*.vta;*.task;*.xgl;*.xml;*.zgl;|All files (*.*)|*.*";
+
+        internal static ContentProvider Service;
+
+        private static readonly IEnumerable<Type> _assetTypes = typeof(AssetBase).GetDescendantTypes();
+        private static long _cacheMaxItemSize;
+        private static Dictionary<string, IContentProtocol> _protocols;
+
+        static ContentProvider()
+        {
+            LoggerInternal = LogService.GetLogger();
+            RegisterProtocols();
+        }
+
         /// <summary />
         public ContentProvider()
         {
@@ -41,6 +65,13 @@ namespace dEngine.Services
             get { return (int)_cacheMaxItemSize; }
             set { _cacheMaxItemSize = value; }
         }
+
+        internal static ILogger LoggerInternal { get; }
+
+        internal static string SoundcloudClientId { get; set; }
+
+        internal static Dictionary<string, IContentProtocol> Protocols
+            => _protocols ?? (_protocols = new Dictionary<string, IContentProtocol>());
 
         /// <summary>
         /// Sets the client ID for the Soundcloud API.
@@ -67,7 +98,7 @@ namespace dEngine.Services
 
             for (var i = 0; i < count; i++)
             {
-                var contentUrl = (string)contentUrls[count];
+                var contentUrl = new Uri((string)contentUrls[count]);
                 tasks[i] = DownloadStream(contentUrl).ContinueWith(t => Cache(contentUrl, t));
             }
 
@@ -78,50 +109,11 @@ namespace dEngine.Services
         /// <summary>
         /// Preloads content from the given url.
         /// </summary>
-        public void Preload(string contentUrl)
+        public void Preload(string contentId)
         {
-            DownloadStream(contentUrl)
-                .ContinueWith(x => Cache(contentUrl, x), TaskContinuationOptions.ExecuteSynchronously);
+            var uri = new Uri(contentId);
+            DownloadStream(uri).ContinueWith(x => Cache(uri, x));
         }
-    }
-
-    public partial class ContentProvider
-    {
-        internal const int TimeoutMiliseconds = 30*1000;
-
-        /// <summary>Image Format string for file dialogs.</summary>
-        public const string SupportedImageFormats =
-            "Supported Formats (*.png;*.tiff;*.bmp*.jpg;*.jpeg;*.gif)|*.png;*.tiff;*.bmp*.jpg;*.jpeg;*.gif|All files (*.*)|*.*";
-
-        /// <summary>Audio Format string for file dialogs.</summary>
-        public const string SupportedAudioFormats =
-            "Supported Formats (*.mp3;*.mpeg3;*.wav;*.wave;*.flac;*.fla;*.aiff;*aif;*.aifc;*.aac;*.adt;*.adts;*.m2ts;*.mp2;*.3g2;*.3gp2;*.m4a;*.mp4v;*.mp4v;*.mp4;*.mov;*.asf;*.wm;*.wmv;*.wma;*.mp1;*.avi*.ac3;*.ec3;*.cue;*.m3u;*.pls)|*.mp3;*.mpeg3;*.wav;*.wave;*.flac;*.fla;*.aiff;*aif;*.aifc;*.aac;*.adt;*.adts;*.m2ts;*.mp2;*.3g2;*.3gp2;*.m4a;*.mp4v;*.mp4v;*.mp4;*.mov;*.asf;*.wm;*.wmv;*.wma;*.mp1;*.avi*.ac3;*.ec3;*.cue;*.m3u;*.pls;|All files (*.*)|*.*";
-
-        /// <summary>RenderMesh Format string for file dialogs.</summary>
-        public const string SupportedMeshFormats =
-            "Supported Formats (*.3d;*.3ds;*.ac;*.ac3d;*.acc;*.ase;*.ask;*.b3d;*.blend;*.bvh;*.cob;*.csm;*.dae;*.dxf;*.enff;*.fbx;*.hmp;*.ifc;*.ifczip;*.irr;*.irrmesh;*.lwo;*.lws;*.lxo;*.md2;*.md3;*.md5anim;*.md5camera;*.md5mesh;*.mdc;*.mdl;*.mesh;*.RenderMesh.xml;*.mot;*.ms3d;*.ndo;*.nff;*.obj;*.off;*.pk3;*.ply;*.prj;*.q3o;*.q3s;*.raw;*.scn;*.smd;*.stl;*.ter;*.uc;*.vta;*.x;*.xgl;*.xml;*.zgl;)|*.3d;*.3ds;*.ac;*.ac3d;*.acc;*.ase;*.ask;*.b3d;*.blend;*.bvh;*.cob;*.csm;*.dae;*.dxf;*.enff;*.fbx;*.hmp;*.ifc;*.ifczip;*.irr;*.irrmesh;*.lwo;*.lws;*.lxo;*.md2;*.md3;*.md5anim;*.md5camera;*.md5mesh;*.mdc;*.mdl;*.RenderMesh;*.RenderMesh.xml;*.mot;*.ms3d;*.ndo;*.nff;*.obj;*.off;*.pk3;*.ply;*.prj;*.q3o;*.q3s;*.raw;*.scn;*.smd;*.stl;*.ter;*.uc;*.vta;*.task;*.xgl;*.xml;*.zgl;|All files (*.*)|*.*";
-
-        internal static ContentProvider Service;
-
-        private static readonly IEnumerable<Type> _assetTypes = typeof(AssetBase).GetDescendantTypes();
-        private static long _cacheMaxItemSize;
-
-        static ContentProvider()
-        {
-            LoggerInternal = LogService.GetLogger();
-            AssimpContext = new AssimpContext();
-        }
-
-        /// <summary>
-        /// Allows the host application to add support for custom content uri protocols.
-        /// </summary>
-        [LevelEditorRelated]
-        public static Func<string, string, Stream> CustomFetchHandler { get; set; }
-
-        internal static ILogger LoggerInternal { get; }
-        internal static AssimpContext AssimpContext { get; }
-
-        internal static string SoundcloudClientId { get; set; }
 
         internal static void DeleteDirectory(string path)
         {
@@ -142,7 +134,7 @@ namespace dEngine.Services
             }
         }
 
-        private static void Cache(string contentUrl, Task<Stream> task)
+        private static void Cache(Uri uri, Task<Stream> task)
         {
             var stream = task.Result;
             var contentType = AssetBase.PeekContent(task.Result);
@@ -151,20 +143,20 @@ namespace dEngine.Services
             {
                 case ContentType.StaticMesh:
                 case ContentType.SkeletalMesh:
-                    CacheableContentProvider<Geometry>.Cache(contentUrl, stream);
+                    CacheableContentProvider<Geometry>.Cache(uri, stream);
                     break;
                 case ContentType.Video:
                 case ContentType.Texture:
-                    CacheableContentProvider<Texture>.Cache(contentUrl, stream);
+                    CacheableContentProvider<Texture>.Cache(uri, stream);
                     break;
                 case ContentType.Sound:
-                    CacheableContentProvider<AudioData>.Cache(contentUrl, stream);
+                    CacheableContentProvider<AudioData>.Cache(uri, stream);
                     break;
                 case ContentType.Animation:
-                    CacheableContentProvider<AnimationData>.Cache(contentUrl, stream);
+                    CacheableContentProvider<AnimationData>.Cache(uri, stream);
                     break;
                 case ContentType.Cubemap:
-                    CacheableContentProvider<Cubemap>.Cache(contentUrl, stream);
+                    CacheableContentProvider<Cubemap>.Cache(uri, stream);
                     break;
             }
         }
@@ -173,7 +165,7 @@ namespace dEngine.Services
         /// Returns a stream of data from the given content id.
         /// </summary>
         /// <param name="contentId">The content id url.</param>
-        internal static string DownloadString(string contentId)
+        internal static string DownloadString(Uri contentId)
         {
             return DownloadStream(contentId).Result.ReadString();
         }
@@ -181,81 +173,20 @@ namespace dEngine.Services
         /// <summary>
         /// Returns a stream of data from the given content id.
         /// </summary>
-        /// <param name="contentId">The content id url.</param>
-        internal static async Task<Stream> DownloadStream(string contentId)
+        /// <param name="contentId">The content URI.</param>
+        internal static async Task<Stream> DownloadStream(Uri contentId)
         {
-            if (string.IsNullOrWhiteSpace(contentId))
-                return null;
-
             return await Task.Factory.StartNew(() =>
             {
-                var slashes = contentId.IndexOf("://", StringComparison.Ordinal);
-                var scheme = slashes < 0 ? "file" : contentId.Substring(0, slashes);
-                var path = slashes < 0 ? contentId : contentId.Substring(slashes + 3);
-                var segments = contentId.Split(new[] {"://", "/"}, StringSplitOptions.RemoveEmptyEntries);
-
                 Stream data;
 
                 try
                 {
-                    switch (scheme)
-                    {
-                        case "internal":
-                            data = GetEmbeddedFile(path);
-                            break;
-                        case "temp":
-                            data = File.OpenRead(Path.Combine(Engine.TempPath, path));
-                            break;
-                        case "file":
-                            data = File.Open(path, FileMode.Open);
-                            break;
-                        case "desktop":
-                            data =
-                                File.Open(
-                                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), path),
-                                    FileMode.Open);
-                            break;
-                        case "https":
-                        case "http":
-                            data = HttpService.Get(contentId).Result;
-                            break;
-                        case "rbxassetid":
-                            data = HttpService.Get("http://www.roblox.com/asset/?id=" + path).Result;
-                            break;
-                        case "rbxasset":
-                            throw new NotSupportedException("The rbxasset content protocol is not supported.");
-                        case "avatar":
-                            var size = (AvatarSize)Enum.Parse(typeof(AvatarSize), segments[2].UppercaseFirst());
-                            data = SocialService.GetAvatar(size,
-                                segments[1] == "0"
-                                    ? LoginService.SteamId
-                                    : new CSteamID(new AccountID_t(uint.Parse(segments[1])), EUniverse.k_EUniversePublic,
-                                        EAccountType.k_EAccountTypeIndividual));
-                            break;
-                        case "soundcloud":
-                            var trackId = int.Parse(segments[1]);
-                            var track = SoundService.Service.GetSoundcloudTrackInfo(trackId);
-                            if ((bool)track["downloadable"])
-                            {
-                                var url = track["download_url"] + "?client_id={ContentProvider.GetSoundcloudClientId()}";
-                                data = HttpService.Get(url).Result;
-                            }
-                            else if ((bool)track["streamable"])
-                            {
-                                var url = track["stream_url"] + "?client_id={ContentProvider.GetSoundcloudClientId()}";
-                                data = HttpService.Get(url).Result;
-                            }
-                            else
-                            {
-                                throw new InvalidDataException(
-                                    $"Cannot download or stream soundcloud track {trackId} ({track["title"]})");
-                            }
-                            break;
-                        default:
-                            if ((data = CustomFetchHandler?.Invoke(scheme, path)) == null)
-                                throw new NotSupportedException($"Unknown content protocol \"{scheme}\"");
-                            break;
-                    }
+                    IContentProtocol handler;
+                    if (!Protocols.TryGetValue(contentId.Scheme, out handler))
+                        throw new NotSupportedException($"No handler registered for protocol \"{contentId.Scheme}\"");
+
+                    data = handler.Fetch(contentId);
 
                     if (data != null)
                     {
@@ -305,14 +236,6 @@ namespace dEngine.Services
                 into method
                 select method.CreateDelegate(typeof(Action<string>)))
                 del.FastDynamicInvoke(resourceName);
-        }
-
-        /// <summary>
-        /// Returns true if the given format is a supported mesh format.
-        /// </summary>
-        public static bool IsMeshImportFormatSupported(string format)
-        {
-            return AssimpContext.IsImportFormatSupported(format);
         }
 
         private static Stream GetEmbeddedFile(string resource)

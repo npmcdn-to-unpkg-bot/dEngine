@@ -9,11 +9,8 @@ using dEngine.Graphics.Structs;
 using dEngine.Instances.Attributes;
 using dEngine.Instances.Materials;
 using dEngine.Utility.Extensions;
-using dEngine.Utility.FileFormats.Model;
-using dEngine.Utility.Native;
 using Microsoft.Scripting.Utils;
 using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
@@ -23,7 +20,7 @@ namespace dEngine.Data
     /// Represents a geometry. Instances of a geometry are rendered with a <see cref="RenderObject" />.
     /// </summary>
     [TypeId(21)]
-    public class Geometry : AssetBase, IEquatable<Geometry>
+    public sealed class Geometry : AssetBase, IEquatable<Geometry>
     {
         private static readonly byte[] _robloxMeshVersion1 = CollectionUtils.Select("version 1.00".ToCharArray(), Convert.ToByte).ToArray();
         private BoundingBox _boundingBox;
@@ -37,6 +34,7 @@ namespace dEngine.Data
             Vertices = new Vertex[0];
             Weights = null;
             Indices = new int[0];
+            PrimitiveTopology = PrimitiveTopology.TriangleList;
         }
 
         /// <summary>
@@ -186,9 +184,25 @@ namespace dEngine.Data
         }
 
         /// <summary />
+        protected override bool OnNonAsset(BinaryReader reader)
+        {
+            if (reader.BeginsWith(_robloxMeshVersion1)) // special case for roblox mesh
+            {
+                LoadRobloxMesh(reader.BaseStream);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary />
         protected override void OnSave(BinaryWriter writer)
         {
             base.OnSave(writer);
+
+            writer.Write(Name);
+            writer.Write((byte)PrimitiveTopology);
+            writer.Write(string.Empty);
 
             var vertCount = Vertices.Length;
             writer.Write(vertCount);
@@ -207,20 +221,12 @@ namespace dEngine.Data
         }
 
         /// <summary />
-        protected override bool OnNonAsset(BinaryReader reader)
-        {
-            if (reader.BeginsWith(_robloxMeshVersion1)) // special case for roblox mesh
-            {
-                LoadRobloxMesh(reader.BaseStream);
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary />
         protected override void OnLoad(BinaryReader reader)
         {
+            Name = reader.ReadString();
+            PrimitiveTopology = (PrimitiveTopology)reader.ReadByte();
+            var material = reader.ReadString();// material
+
             var vertCount = reader.ReadInt32();
             Vertices = new Vertex[vertCount];
             for (var i = 0; i < vertCount; i++)
@@ -245,6 +251,8 @@ namespace dEngine.Data
             {
                 Indices[i] = reader.ReadInt32();
             }
+
+            Renderer.InvokeResourceDependent(DoBuildBuffersJob);
         }
 
         /// <summary />

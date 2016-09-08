@@ -1,6 +1,8 @@
 ﻿// GodRaysEffect.cs - dEngine
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
+using System;
 using dEngine.Data;
 using dEngine.Graphics;
 using dEngine.Instances.Attributes;
@@ -94,7 +96,7 @@ namespace dEngine.Instances
         {
             if (IsDestroyed) return;
             _noiseTexture = new Texture();
-            _noiseTexture.Load(ContentProvider.DownloadStream("internal://textures/noise2.png").Result);
+            _noiseTexture.Load(ContentProvider.DownloadStream(new Uri("internal://textures/noise2.png")).Result);
         }
 
         internal override void Render(ref DeviceContext context)

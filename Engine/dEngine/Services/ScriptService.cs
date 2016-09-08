@@ -243,15 +243,7 @@ namespace dEngine.Services
             var identity = GetIdentity(thread);
             if ((identity == null) || (target.HasFlag(identity) == condition))
                 return; // threads with no identity are unrestricted
-#if DEBUG
-            var frame = new StackFrame(1);
-            var method = frame.GetMethod();
-            var type = method.DeclaringType;
-            var name = method.Name;
-            throw new SecurityException($"Method {type}.{name} requires identity level {target}. (Current: {identity})");
-#else
-            throw new SecurityException();
-#endif
+            throw new SecurityException($"Insufficent identity level. Expected: {target} Current: {identity}");
         }
 
         internal static ScriptIdentity? GetIdentity(LuaResult thread)

@@ -30,7 +30,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Undo";
         public override string Text => "Undoes the last action.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.Z, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -47,7 +46,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Redo";
         public override string Text => "Redoes the last undone action.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift);
 
         public override bool CanExecute(object parameter)
         {

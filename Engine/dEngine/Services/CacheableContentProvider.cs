@@ -17,7 +17,7 @@ namespace dEngine.Services
     /// </summary>
     public static class CacheableContentProvider<TAsset> where TAsset : AssetBase, new()
     {
-        private static readonly ConcurrentDictionary<string, Resource> _resources;
+        private static readonly ConcurrentDictionary<Uri, Resource> _resources;
 
         /// <summary>
         /// Determines if this content provider can download content.
@@ -32,7 +32,7 @@ namespace dEngine.Services
 
         static CacheableContentProvider()
         {
-            _resources = new ConcurrentDictionary<string, Resource>();
+            _resources = new ConcurrentDictionary<Uri, Resource>();
 
             var assetType = typeof(TAsset);
 
@@ -57,7 +57,8 @@ namespace dEngine.Services
 
         private static void RemoveResource(Resource resource)
         {
-            _resources.TryRemove(resource.Id);
+            if (resource.Uri != null)
+                _resources.TryRemove(resource.Uri);
         }
 
         /// <summary>
@@ -74,18 +75,23 @@ namespace dEngine.Services
         /// <summary>
         /// Redownloads the resource for the given content ID.
         /// </summary>
-        /// <param name="contentId"></param>
-        public static void RefreshResource(string contentId)
+        public static void RefreshResource(Uri uri)
         {
             Resource resource;
-            if (_resources.TryGetValue(contentId, out resource))
+            if (_resources.TryGetValue(uri, out resource))
                 resource.Download();
+        }
+
+        internal static Reference<TAsset> EmptyReference()
+        {
+            var resource = Resource.Empty;
+            return new Reference<TAsset>(resource);
         }
 
         /// <summary>
         /// Returns a reference without waiting for the resource to load.
         /// </summary>
-        internal static Reference<TAsset> GetAsync(string contentId)
+        internal static Reference<TAsset> GetAsync(Uri contentId)
         {
             Resource resource;
             if (!_resources.TryGetValue(contentId, out resource))
@@ -96,7 +102,7 @@ namespace dEngine.Services
         /// <summary>
         /// Returns a reference after waiting for the resource to load.
         /// </summary>
-        internal static Reference<TAsset> Get(string contentId)
+        internal static Reference<TAsset> Get(Uri contentId)
         {
             var reference = GetAsync(contentId);
             reference.Resource.WaitAsync().Wait();
@@ -104,9 +110,9 @@ namespace dEngine.Services
         }
 
 
-        internal static void Cache(string contentId, Stream stream)
+        internal static void Cache(Uri uri, Stream stream)
         {
-            _resources[contentId] = new Resource(contentId);
+            _resources[uri] = new Resource(uri);
         }
 
         internal class Resource : IDisposable
@@ -115,17 +121,21 @@ namespace dEngine.Services
             private TaskCompletionSource<bool> _downloadCompletionSource;
             private int _referenceCount;
 
+            private Resource()
+            {
+            }
+
             /// <summary>
             /// Creates a new resource.
             /// </summary>
-            /// <param name="contentId">The content id url.</param>
-            public Resource(string contentId)
+            /// <param name="contentUri">The content id url.</param>
+            public Resource(Uri contentUri)
             {
-                Id = contentId;
+                Uri = contentUri;
                 Download();
             }
 
-            public string Id { get; }
+            public Uri Uri { get; }
             public TAsset Content { get; private set; }
 
             public int ReferenceCount
@@ -141,6 +151,8 @@ namespace dEngine.Services
             }
 
             public bool IsDownloaded { get; private set; }
+
+            public static Resource Empty => new Resource();
 
             /// <summary>
             /// Disposes of the resource.
@@ -198,7 +210,7 @@ namespace dEngine.Services
                 IsDownloaded = false;
 
                 _downloadCompletionSource = new TaskCompletionSource<bool>();
-                ContentProvider.DownloadStream(Id)
+                ContentProvider.DownloadStream(Uri)
                     .ContinueWith(t =>
                     {
                         Content = GetAssetFromStream(t.Result);

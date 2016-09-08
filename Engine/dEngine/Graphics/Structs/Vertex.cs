@@ -34,6 +34,12 @@ namespace dEngine.Graphics.Structs
 
         public void Load(BinaryReader reader)
         {
+            Position.Load(reader);
+            Normal.Load(reader);
+            TexCoord.Load(reader);
+            Colour.Load(reader);
+            Tangent.Load(reader);
+            BiTangent.Load(reader);
         }
 
         public void Save(BinaryWriter writer)

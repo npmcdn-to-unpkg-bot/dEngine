@@ -1,55 +1,45 @@
-﻿// FBX.cs - dEngine
+﻿// MeshImporter.cs - dEditor
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using Assimp;
+using dEditor.Dialogs.ModelImport;
+using dEditor.Framework.Services;
+using dEditor.Widgets.ContentBrowser.Util;
+using dEngine;
 using dEngine.Data;
 using dEngine.Graphics.Structs;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
-using dEngine.Services;
 using SharpDX;
-using AssimpMaterial = Assimp.Material;
 using Bone = dEngine.Instances.Bone;
-using Material = dEngine.Instances.Materials.Material;
+using Vector2 = dEngine.Vector2;
+using Vector3 = dEngine.Vector3;
 
-#pragma warning disable 1591
-
-namespace dEngine.Utility.FileFormats.Model
+namespace dEditor.Framework.Content
 {
-    /// <summary>
-    /// Helper class for converting FBX files to dEngine assets.
-    /// </summary>
-    public static class FBX
+    public static class MeshImporter
     {
-        public static ImportResult Import(string filePath, ImportSettings settings)
+        public static AssimpContext AssimpContext = new AssimpContext { Scale = 0.01f };
+
+        public static string[] Import(ContentManager.ImportContext context)
         {
-            using (var stream = File.OpenRead(filePath))
+            MeshImportSettings settings;
+
+            if (context.SkipDialog)
+                settings = new MeshImportSettings();
+            else
             {
-                return Import(stream, settings, Path.GetExtension(filePath), filePath);
+                var dialog = new ModelImportViewModel(context);
+                Editor.Current.Shell.ShowDialog(dialog);
+                settings = dialog.ImportSettings;
             }
-        }
-
-        /// <summary>
-        /// Imports an FBX file.
-        /// </summary>
-        /// <param name="stream">The FBX stream.</param>
-        /// <param name="settings">An import settings object.</param>
-        /// <param name="format">The filetype of the mesh.</param>
-        /// <param name="filePath">The path to the file.</param>
-        /// <returns>An <see cref="ImportResult" /> object.</returns>
-        public static ImportResult Import(Stream stream, ImportSettings settings, string format, string filePath)
-        {
-            var sceneName = Path.GetFileNameWithoutExtension(filePath);
-
-            Debug.Assert(sceneName != null, "sceneName != null");
 
             var steps = PostProcessSteps.ValidateDataStructure
                         | PostProcessSteps.GenerateUVCoords
@@ -65,7 +55,7 @@ namespace dEngine.Utility.FileFormats.Model
             if (!settings.KeepOverlappingVertices) steps |= PostProcessSteps.JoinIdenticalVertices;
             if (!settings.ImportAsSkeletal) steps |= PostProcessSteps.Debone;
             if (settings.MergeMeshes) steps |= PostProcessSteps.OptimizeMeshes;
-
+            
             switch (settings.NormalImportMethod)
             {
                 case NormalImportMethod.ComputeNormals:
@@ -85,7 +75,7 @@ namespace dEngine.Utility.FileFormats.Model
                     throw new ArgumentOutOfRangeException();
             }
 
-            var scene = ContentProvider.AssimpContext.ImportFileFromStream(stream, steps, format);
+            var scene = AssimpContext.ImportFileFromStream(context.Stream, steps, context.Extension);
             Skeleton skeleton = null;
             var importedSkeleton = false;
             var importedAnimation = false;
@@ -93,8 +83,8 @@ namespace dEngine.Utility.FileFormats.Model
             var importedMaterials = false;
             var geometries = new Dictionary<string, Geometry>(scene.MeshCount);
             var animations = new AnimationData[scene.AnimationCount];
-            var materials = new Material[scene.MaterialCount];
-            var textures = new Data.Texture[scene.TextureCount];
+            var materials = new dEngine.Instances.Materials.Material[scene.MaterialCount];
+            var textures = new dEngine.Data.Texture[scene.TextureCount];
 
             if (settings.ImportAsSkeletal)
                 if (settings.Skeleton == null)
@@ -109,32 +99,27 @@ namespace dEngine.Utility.FileFormats.Model
                 }
                 else
                 {
-                    skeleton = settings.Skeleton;
+                    skeleton = Inst.Deserialize<Skeleton>(settings.Skeleton.Asset);
                 }
 
             if (scene.HasMaterials)
             {
                 importedMaterials = true;
-
-                if (filePath != null)
+                
+                for (var i = 0; i < scene.MaterialCount; i++)
                 {
-                    var fileFolder = Path.GetDirectoryName(filePath);
-                    for (var i = 0; i < scene.MaterialCount; i++)
-                    {
-                        var mat = scene.Materials[i];
+                    var mat = scene.Materials[i];
 
-                        var material = new Material();
-
-
-                        materials[i] = material;
-                    }
+                    var material = new dEngine.Instances.Materials.Material();
+                    
+                    materials[i] = material;
                 }
             }
 
             for (var i = 0; i < scene.MeshCount; i++)
             {
                 var mesh = scene.Meshes[i];
-                var meshName = string.IsNullOrWhiteSpace(mesh.Name) ? $"{sceneName} ({i})" : mesh.Name;
+                var meshName = string.IsNullOrWhiteSpace(mesh.Name) ? $"{context.Name} ({i})" : mesh.Name;
 
                 var vertices = new Vertex[mesh.VertexCount];
                 WeightedVertex[] weights = null;
@@ -156,12 +141,12 @@ namespace dEngine.Utility.FileFormats.Model
 
                     vertices[j] = new Vertex
                     {
-                        Position = (Vector3)mesh.Vertices[j],
-                        Normal = (Vector3)mesh.Normals[j],
-                        Colour = vertexColourChannel,
+                        Position = ConvertAssimpVector(mesh.Vertices[j]),
+                        Normal = ConvertAssimpVector(mesh.Normals[j]),
+                        Colour = new Colour(vertexColourChannel.R, vertexColourChannel.G, vertexColourChannel.B, vertexColourChannel.A),
                         TexCoord = new Vector2(texCoordChannel.X, texCoordChannel.Y),
-                        Tangent = (Vector3)tangent,
-                        BiTangent = (Vector3)bitangent
+                        Tangent = ConvertAssimpVector(tangent),
+                        BiTangent = ConvertAssimpVector(bitangent)
                     };
 
                     // TODO: add bone data
@@ -169,7 +154,7 @@ namespace dEngine.Utility.FileFormats.Model
 
                 importedMesh = true;
                 geometries[mesh.Name] = new Geometry(meshName, vertices.ToArray(), mesh.GetIndices(), weights?.ToArray())
-                    {MaterialIndex = mesh.MaterialIndex};
+                { MaterialIndex = mesh.MaterialIndex };
             }
 
             if (settings.MergeMeshes && !settings.ImportAsSkeletal)
@@ -199,7 +184,7 @@ namespace dEngine.Utility.FileFormats.Model
                 }
 
                 geometries.Clear();
-                geometries[sceneName] = new Geometry(sceneName, vertices, indices, weights);
+                geometries[context.Name] = new Geometry(context.Name, vertices, indices, weights);
             }
 
             for (var i = 0; i < scene.AnimationCount; i++)
@@ -211,24 +196,12 @@ namespace dEngine.Utility.FileFormats.Model
 
                 // TODO: import animations
             }
-
-            string path;
-
-            if (settings.ContentPath == null)
-            {
-                path = Path.Combine(Engine.TempPath, Guid.NewGuid().ToString("N"));
-                Directory.CreateDirectory(path);
-            }
-            else
-            {
-                path = settings.ContentPath;
-            }
-
+            
             #region File Creation
 
             foreach (var material in materials)
             {
-                var materialPath = Path.Combine(path, $"{material.Name}.material");
+                var materialPath = Path.Combine(context.OutputDirectory, $"{material.Name}.material");
                 if (materialPath == null) continue;
                 using (var file = File.Create(materialPath))
                 {
@@ -238,78 +211,74 @@ namespace dEngine.Utility.FileFormats.Model
 
             foreach (var geo in geometries.Values)
             {
-                var meshPath = GetFilePath(sceneName, path, settings);
-                if (meshPath == null) continue;
-                using (var file = File.Create(meshPath))
+                Stream stream;
+                if (ContentManager.CreateFile(context, geo.Name, "mesh", out stream))
+                using (stream)
                 {
                     geo.Material = materials[geo.MaterialIndex];
-                    geo.Save(file);
+                    geo.Save(stream);
                 }
             }
 
             if (importedSkeleton)
             {
-                var skeletonPath = GetFilePath(sceneName, path, settings);
-                if (skeletonPath != null)
-                    using (var file = File.Create(skeletonPath))
+                Stream stream;
+                if (ContentManager.CreateFile(context, context.Name, "skeleton", out stream))
+                {
+                    using (stream)
                     {
-                        Inst.Serialize(skeleton, file);
+                        Inst.Serialize(skeleton, stream);
                     }
+                }
             }
 
             foreach (var animation in animations)
             {
-                var animPath = GetFilePath(sceneName, path, settings);
-                if (animPath == null) continue;
-                using (var file = File.Create(animPath))
+                Stream stream;
+                if (ContentManager.CreateFile(context, context.Name, "skeleton", out stream))
                 {
-                    animation.Save(file);
+                    using (stream)
+                    {
+                        animation.Save(stream);
+                    }
                 }
             }
 
             #endregion
-
-            if (settings.ContentPath != null)
-                foreach (var file in Directory.GetFiles(path))
-                    File.Move(file, Path.Combine(settings.ContentPath, Path.GetFileName(file)));
-
-            return new ImportResult(geometries, animations, materials, skeleton, importedSkeleton, importedAnimation,
-                importedMesh, importedMaterials);
+            
+            return context.Results.ToArray();
         }
 
-        private static string ToContentId(string file, string contentPath, string scheme)
+        private static Vector3 ConvertAssimpVector(Vector3D assimp)
         {
-            return $"{scheme}://{file.Substring(contentPath.Length + 1)}";
+            return new Vector3(assimp.X, assimp.Y, assimp.Z);
         }
 
-        private static string GetFilePath(string name, string importPath, ImportSettings settings)
+        private static Matrix ToSharpDX(Matrix4x4 matrix)
         {
-            var path = $"{importPath}/{name}.bin";
+            var result = Matrix.Identity;
 
-            if (!File.Exists(path))
-                return path;
+            result.M11 = matrix.A1;
+            result.M12 = matrix.B1;
+            result.M13 = matrix.C1;
+            result.M14 = matrix.D1;
 
-            if (settings.ContentPath == null)
-                return path;
+            result.M21 = matrix.A2;
+            result.M22 = matrix.B2;
+            result.M23 = matrix.C2;
+            result.M24 = matrix.D2;
 
-            var result = MessageBox.Show($"An asset already exists at the import location: {path}\nOverwrite?",
-                "Overwrite File", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            result.M31 = matrix.A3;
+            result.M32 = matrix.B3;
+            result.M33 = matrix.C3;
+            result.M34 = matrix.D3;
 
-            switch (result)
-            {
-                case DialogResult.None:
-                case DialogResult.Cancel:
-                    //cancelled = true;
-                    return null;
-                case DialogResult.Yes:
-                    //cancelled = false;
-                    return path;
-                case DialogResult.No:
-                    //cancelled = false;
-                    return null;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            result.M41 = matrix.A4;
+            result.M42 = matrix.B4;
+            result.M43 = matrix.C4;
+            result.M44 = matrix.D4;
+
+            return result;
         }
 
         private static Skeleton ImportSkeleton(ref SkeletonNodeData nodeData)
@@ -351,7 +320,7 @@ namespace dEngine.Utility.FileFormats.Model
                     var isParentOffsetMatrixValid = nodeData.DeformationBones.TryGetValue(aiParent.Name,
                         out parentOffsetMatrix);
                     if (isOffsetMatrixValid && isParentOffsetMatrixValid)
-                        bone.CFrame = (CFrame)(Matrix.Invert(offsetMatrix)*parentOffsetMatrix);
+                        bone.CFrame = (CFrame)(Matrix.Invert(offsetMatrix) * parentOffsetMatrix);
                     else if (isOffsetMatrixValid && ((aiNode == nodeData.RootNode) || (aiParent == nodeData.RootNode)))
                         bone.CFrame = (CFrame)Matrix.Invert(offsetMatrix);
                     else
@@ -465,189 +434,79 @@ namespace dEngine.Utility.FileFormats.Model
 
             return offsetMatrices;
         }
-
-        private static Matrix ToSharpDX(Matrix4x4 matrix)
-        {
-            var result = Matrix.Identity;
-
-            result.M11 = matrix.A1;
-            result.M12 = matrix.B1;
-            result.M13 = matrix.C1;
-            result.M14 = matrix.D1;
-
-            result.M21 = matrix.A2;
-            result.M22 = matrix.B2;
-            result.M23 = matrix.C2;
-            result.M24 = matrix.D2;
-
-            result.M31 = matrix.A3;
-            result.M32 = matrix.B3;
-            result.M33 = matrix.C3;
-            result.M34 = matrix.D3;
-
-            result.M41 = matrix.A4;
-            result.M42 = matrix.B4;
-            result.M43 = matrix.C4;
-            result.M44 = matrix.D4;
-
-            return result;
-        }
-
-        /// <summary>
-        /// The result of the import.
-        /// </summary>
-        public struct ImportResult
-        {
-            public readonly Dictionary<string, Geometry> Meshes;
-            public readonly AnimationData[] Animations;
-            public readonly Material[] Materials;
-            public readonly Skeleton Skeleton;
-
-            public readonly bool HasSkeleton;
-            public readonly bool HasAnimations;
-            public readonly bool HasMeshes;
-            public readonly bool HasMaterials;
-            public bool WasCancelled;
-
-            public ImportResult(Dictionary<string, Geometry> meshes, AnimationData[] animations,
-                Material[] materials,
-                Skeleton skeleton, bool importedSkeleton, bool importedAnimations, bool importedMeshes,
-                bool importedMaterials)
-            {
-                Meshes = meshes;
-                Animations = animations;
-                Materials = materials;
-                Skeleton = skeleton;
-                HasSkeleton = importedSkeleton;
-                HasAnimations = importedAnimations;
-                HasMeshes = importedMeshes;
-                HasMaterials = importedMaterials;
-                WasCancelled = false;
-            }
-
-            public static ImportResult Cancelled => new ImportResult {WasCancelled = true};
-        }
-
-        private class SkeletonNodeData
+        
+        public class SkeletonNodeData
         {
             public Node RootNode { get; set; }
             public List<Node> Nodes { get; set; }
             public Dictionary<string, Matrix> DeformationBones { get; set; }
         }
+    }
+
+    public class MeshImportSettings
+    {
+        private bool _importAsSkeletal;
 
         /// <summary>
-        /// FBX import settings.
+        /// Determines if the mesh should be treated a a Sketal or Static mesh.
         /// </summary>
-        public class ImportSettings
+        [EditorVisible("Mesh", "Import as Skeletal")]
+        public bool ImportAsSkeletal
         {
-            private bool _importAsSkeletal;
-
-            public ImportSettings(string contentPath = null)
+            get { return _importAsSkeletal; }
+            set
             {
-                ContentPath = contentPath;
+                _importAsSkeletal = value;
+                ImportAsSkeletalChanged?.Invoke(value);
             }
-
-            public string ContentPath { get; }
-
-            /// <summary>
-            /// Determines if the mesh should be treated a a Sketal or Static mesh.
-            /// </summary>
-            [DisplayName("Import as Skeletal")]
-            [EditorVisible("Mesh")]
-            public bool ImportAsSkeletal
-            {
-                get { return _importAsSkeletal; }
-                set
-                {
-                    _importAsSkeletal = value;
-                    ImportAsSkeletalChanged?.Invoke(value);
-                }
-            }
-
-            /// <summary>
-            /// Determines whether or not duplicate vertices will be removed.
-            /// </summary>
-            [DisplayName("Keep Overlapping Vertices")]
-            [EditorVisible("Mesh")]
-            public bool KeepOverlappingVertices { get; set; } = false;
-
-            /// <summary>
-            /// Determines whether or not duplicate vertices will be removed.
-            /// </summary>
-            [DisplayName("Normal Import Method")]
-            [EditorVisible("Mesh")]
-            public NormalImportMethod NormalImportMethod { get; set; } = NormalImportMethod.ImportNormals;
-
-            /// <summary>
-            /// Determines if meshes should be merged.
-            /// </summary>
-            [DisplayName("Merge Meshes")]
-            [EditorVisible("Static")]
-            public bool MergeMeshes { get; set; } = true;
-
-            public event Action<bool> ImportAsSkeletalChanged;
-
-            #region Skeletal
-
-            /// <summary>
-            /// The existing skeleton to use for this mesh. If none is provided, the skeleton will be imported from the file.
-            /// </summary>
-            [DisplayName("Skeleton")]
-            [EditorVisible("Skeletal")]
-            public Skeleton Skeleton { get; set; }
-
-            /// <summary>
-            /// Determines if the skeleton reference pose should be updated.
-            /// </summary>
-            [DisplayName("Update Reference Pose")]
-            [EditorVisible("Skeletal")]
-            public bool UpdateReferencePose { get; set; }
-
-            /// <summary>
-            /// Determines if the first frame should be used as the reference pose.
-            /// </summary>
-            [DisplayName("Use First Frame As Reference Pose")]
-            [EditorVisible("Skeletal")]
-            public bool UseFirstFrameAsReferencePose { get; set; }
-
-            /// <summary>
-            /// If enabled, morph target swill be imported from the FBX file.
-            /// </summary>
-            [DisplayName("Import Morph Targets")]
-            [EditorVisible("Skeletal")]
-            public bool ImportMorphTargets { get; set; }
-
-            #endregion
-
-            #region Static
-
-            #endregion
         }
 
         /// <summary>
-        /// Enum for normal import methods.
+        /// Determines whether or not duplicate vertices will be removed.
         /// </summary>
-        public enum NormalImportMethod
-        {
-            /// <summary>
-            /// The importer will compute normals and tangents.
-            /// </summary>
-            ComputeNormals,
+        [EditorVisible("Mesh", "Keep Overlapping Vertices")]
+        public bool KeepOverlappingVertices { get; set; } = false;
 
-            /// <summary>
-            /// The importer will compute smooth normals and tangents.
-            /// </summary>
-            ComputeNormalsSmooth,
+        /// <summary>
+        /// Determines whether or not duplicate vertices will be removed.
+        /// </summary>
+        [EditorVisible("Mesh", "Normal Import Method")]
+        public NormalImportMethod NormalImportMethod { get; set; } = NormalImportMethod.ImportNormals;
 
-            /// <summary>
-            /// The importer will import normals but compute tangents.
-            /// </summary>
-            ImportNormals,
+        /// <summary>
+        /// Determines if meshes should be merged.
+        /// </summary>
+        [EditorVisible("Static", "Merge Meshes")]
+        public bool MergeMeshes { get; set; } = true;
 
-            /// <summary>
-            /// The importer will import normals and tangents.
-            /// </summary>
-            ImportNormalsAndTangents
-        }
+        public event Action<bool> ImportAsSkeletalChanged;
+
+        #region Skeletal
+
+        /// <summary>
+        /// The existing skeleton to use for this mesh. If none is provided, the skeleton will be imported from the file.
+        /// </summary>
+        [EditorVisible("Skeletal", "Skeleton")]
+        public Content<RawAsset> Skeleton { get; set; }
+
+        /// <summary>
+        /// Determines if the skeleton reference pose should be updated.
+        /// </summary>
+        [EditorVisible("Skeletal", "Update Reference Pose")]
+        public bool UpdateReferencePose { get; set; }
+
+        /// <summary>
+        /// Determines if the first frame should be used as the reference pose.
+        /// </summary>
+        [EditorVisible("Skeletal", "Use First Frame As Reference Pose")]
+        public bool UseFirstFrameAsReferencePose { get; set; }
+
+        /// <summary>
+        /// If enabled, morph target swill be imported from the FBX file.
+        /// </summary>
+        [EditorVisible("Skeletal", "Import Morph Targets")]
+        public bool ImportMorphTargets { get; set; }
+
+        #endregion
     }
 }

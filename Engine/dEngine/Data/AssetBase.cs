@@ -14,6 +14,7 @@ namespace dEngine.Data
     public abstract class AssetBase : IDisposable
     {
         private static readonly byte[] _assetHeader = Encoding.UTF8.GetBytes("ASSETBIN");
+
         /// <summary>
         /// Determines whether the asset is disposed.
         /// </summary>
@@ -61,7 +62,7 @@ namespace dEngine.Data
             ContentType? type;
             using (var reader = new BinaryReader(stream, Encoding.UTF8, true))
             {
-                if (!reader.BeginsWith(_assetHeader))
+                if (!reader.BeginsWith(_assetHeader, false))
                     type = null;
                 else
                     type = (ContentType)reader.ReadByte();

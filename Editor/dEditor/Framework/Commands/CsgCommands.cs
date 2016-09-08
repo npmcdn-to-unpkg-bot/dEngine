@@ -24,7 +24,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Union";
         public override string Text => "Merge selected parts.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.G, ModifierKeys.Control | ModifierKeys.Shift);
 
         public override bool CanExecute(object parameter)
         {
@@ -42,7 +41,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Negate";
         public override string Text => "Negates the part.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.N, ModifierKeys.Control | ModifierKeys.Shift);
 
         public override bool CanExecute(object parameter)
         {
@@ -60,7 +58,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Intersect";
         public override string Text => "The common area between two objects.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.None);
 
         public override bool CanExecute(object parameter)
         {
@@ -78,9 +75,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Seperate";
         public override string Text => "Seperate parts from a fused selection.";
-
-        public override KeyGesture KeyGesture
-            => new KeyGesture(Key.DbeCodeInput, ModifierKeys.Control | ModifierKeys.Shift);
 
         public override bool CanExecute(object parameter)
         {

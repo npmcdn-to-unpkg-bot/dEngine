@@ -23,7 +23,7 @@ namespace dEditor.Framework.Services
         {
             _icons =
                 HttpService.JsonDecode<Dictionary<string, string>>(
-                    ContentProvider.DownloadString("editor://IconDictionary.json"));
+                    ContentProvider.DownloadString(new Uri("editor://IconDictionary.json")));
         }
 
         public static string GetIconName(Type type)

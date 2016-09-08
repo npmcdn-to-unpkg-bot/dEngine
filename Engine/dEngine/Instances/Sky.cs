@@ -1,6 +1,8 @@
 ﻿// Sky.cs - dEngine
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
+using System;
 using dEngine.Data;
 using dEngine.Graphics;
 using dEngine.Graphics.Structs;
@@ -77,8 +79,8 @@ namespace dEngine.Instances
 
         private void SetTestMaps()
         {
-            _irradRef = CacheableContentProvider<Cubemap>.Get(@"C:\Users\Dan\cmft_win64\irradiance.dds");
-            _radRef = CacheableContentProvider<Cubemap>.Get(@"C:\Users\Dan\cmft_win64\radiance.dds");
+            _irradRef = CacheableContentProvider<Cubemap>.Get(new Uri(@"C:\Users\Dan\cmft_win64\irradiance.dds"));
+            _radRef = CacheableContentProvider<Cubemap>.Get(new Uri(@"C:\Users\Dan\cmft_win64\radiance.dds"));
         }
 
         private void GenerateStarfield()

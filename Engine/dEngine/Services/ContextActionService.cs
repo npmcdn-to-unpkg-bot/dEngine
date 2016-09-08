@@ -200,7 +200,7 @@ namespace dEngine.Services
                 {
                     if ((_contextAction == null) && !_contextActions.TryGetValue(_action, out _contextAction))
                         throw new Exception(
-                            $"Cannot get context action \"{_action}\". (For shortcut {string.Concat('+', Modifiers)}+{Key})");
+                            $"Cannot get context action \"{_action}\". (For shortcut {string.Concat(Modifiers)}+{Key})");
                     return _contextAction;
                 }
             }

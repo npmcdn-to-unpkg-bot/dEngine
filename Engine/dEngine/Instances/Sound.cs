@@ -78,7 +78,7 @@ namespace dEngine.Instances
                 IsLoaded = false;
 
                 _soundId = value;
-                //value.Subscribe(this, OnSoundLoaded);
+                value.Subscribe(this, OnSoundLoaded);
                 NotifyChanged();
             }
         }
@@ -243,7 +243,7 @@ namespace dEngine.Instances
 
         internal int SamplesPerSecond
             =>
-            _soundId.Asset.AudioSource.WaveFormat.BytesPerSecond/
+            _soundId.Asset.AudioSource.WaveFormat.BytesPerSecond /
             _soundId.Asset.AudioSource.WaveFormat.BytesPerSample;
 
         /// <summary>
@@ -256,8 +256,8 @@ namespace dEngine.Instances
             {
                 if (_voice == null)
                     return StartingPosition;
-                var samples = _soundId.Asset.AudioSource.Length/_soundId.Asset.AudioSource.WaveFormat.BytesPerSample;
-                var pos = (_voice.State.SamplesPlayed - samples*_loopCount)/SamplesPerSecond*
+                var samples = _soundId.Asset.AudioSource.Length / _soundId.Asset.AudioSource.WaveFormat.BytesPerSample;
+                var pos = (_voice.State.SamplesPlayed - samples * _loopCount) / SamplesPerSecond *
                           SoundService.MasteringVoice.VoiceDetails.InputChannels;
                 return TimeSpan.FromSeconds(pos);
             }
@@ -311,7 +311,7 @@ namespace dEngine.Instances
             {
                 case AttenuationType.Linear:
                     _attenuation = Math.Max(1,
-                        1 - SoundService.StaticRolloffScale*(distance - _minDistance)/(_maxDistance - _minDistance));
+                        1 - SoundService.StaticRolloffScale * (distance - _minDistance) / (_maxDistance - _minDistance));
                     break;
                 case AttenuationType.Logarithmic:
                     break;
@@ -330,7 +330,7 @@ namespace dEngine.Instances
 
         private void UpdateVolume()
         {
-            _voice?.SetVolume(_volume*_attenuation, 0);
+            _voice?.SetVolume(_volume * _attenuation, 0);
         }
 
         /// <inheritdoc />
@@ -390,9 +390,9 @@ namespace dEngine.Instances
 
         private int GetPlayOffset(double seconds)
         {
-            var samples = _soundId.Asset.AudioSource.Length/_soundId.Asset.AudioSource.WaveFormat.BytesPerSample;
-            var positionOffset = -((int)_voice.State.SamplesPlayed - samples*_loopCount);
-            positionOffset += (int)(StartingPosition.totalSeconds*SamplesPerSecond);
+            var samples = _soundId.Asset.AudioSource.Length / _soundId.Asset.AudioSource.WaveFormat.BytesPerSample;
+            var positionOffset = -((int)_voice.State.SamplesPlayed - samples * _loopCount);
+            positionOffset += (int)(StartingPosition.totalSeconds * SamplesPerSecond);
             return (int)positionOffset;
         }
 
@@ -410,20 +410,26 @@ namespace dEngine.Instances
                 return;
             }
 
+            Logger.Info("Activating sound");
             var alreadyPlaying = IsPlaying;
             if (alreadyPlaying || _isPaused || SoundService.TryActivateSound(this, _voice))
             {
-                if (_voice.State.BuffersQueued > 0)
+                Engine.AudioThread.Enqueue(() =>
                 {
-                    _voice.Stop();
-                    _voice.FlushSourceBuffers();
-                }
+                    Logger.Info("Voice starting");
+                    if (_voice.State.BuffersQueued > 0)
+                    {
+                        _voice.Stop();
+                        _voice.FlushSourceBuffers();
+                    }
 
-                var buffer = CurrentAudioBuffer;
+                    var buffer = CurrentAudioBuffer;
 
-                buffer.PlayBegin = GetPlayOffset(StartingPosition.totalSeconds);
-                _voice.SubmitSourceBuffer(buffer);
-                _voice.Start();
+                    buffer.PlayBegin = GetPlayOffset(StartingPosition.totalSeconds);
+                    _voice.SubmitSourceBuffer(buffer);
+                    _voice.Start();
+                    Logger.Info("Voice started");
+                });
 
                 IsPaused = false;
                 IsPlaying = true;
@@ -483,15 +489,15 @@ namespace dEngine.Instances
                 return;
             }
 
-            _callback?.Dispose();
-            _callback = new VoiceCallback();
-            _callback.LoopEnd += CallbackOnLoopEnd;
+            //_callback?.Dispose();
+            //_callback = new VoiceCallback();
+            //_callback.LoopEnd += CallbackOnLoopEnd;
 
             var source = data.AudioSource;
+            Logger.Info("Creating voice");
             _voice = SoundService.XAudio2.CreateSourceVoice(source.WaveFormat, VoiceFlags.None,
                 XAudio2.DefaultFrequencyRatio, null, null, null);
-
-            var length = (TimeSpan)source.GetLength();
+            Logger.Info("Voice created");
 
             var buffer = source.ToByteArray();
             var stream = new DataStream(buffer.Length, true, true);
@@ -511,12 +517,13 @@ namespace dEngine.Instances
                 Flags = XAudio2BufferFlags.EndOfStream,
                 LoopCount = XAudio2Buffer.LoopInfinite
             };
+            Logger.Info("Created buffers");
 
-            data.AudioSource.SetPosition((System.TimeSpan)StartingPosition);
+            //data.AudioSource.SetPosition((System.TimeSpan)StartingPosition);
             _voice.Volume = _volume;
             _voice.SetFrequencyRatio(_pitch);
 
-            TrackLength = length;
+            TrackLength = (TimeSpan)source.GetLength();
             IsLoaded = true;
             Loaded.Fire(soundId);
         }

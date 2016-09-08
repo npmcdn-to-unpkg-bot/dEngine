@@ -92,7 +92,7 @@ namespace dEngine.Services
             {
                 Name = "EngineFileTarget",
                 FileName = "${basedir}/logs/engine.log",
-                Layout = "${date:format=HH\\:mm\\:ss.fff} (${threadid}) ${logger:shortName=true}: ${message}",
+                Layout = "${date:universalTime=true:format=yyyy-MM-dd HH\\:ss.fff}|${level}|${logger:shortName=true}|${message}",
                 Encoding = Encoding.UTF8,
                 AutoFlush = true,
                 DeleteOldFileOnStartup = true,
@@ -107,7 +107,7 @@ namespace dEngine.Services
             {
                 Name = "EditorFileTarget",
                 FileName = "${basedir}/logs/editor.log",
-                Layout = "${date:format=HH\\:mm\\:ss.fff} (${threadid}) ${logger:shortName=true}: ${message}",
+                Layout = "${longdate:universalTime=true}|${level}|${logger:shortName=true}|${message}",
                 Encoding = Encoding.UTF8,
                 AutoFlush = true,
                 DeleteOldFileOnStartup = true,
@@ -120,7 +120,7 @@ namespace dEngine.Services
             {
                 Name = "ScriptFileTarget",
                 FileName = "${basedir}/logs/scripts.log",
-                Layout = "${longdate} - ${logger:shortName=true}: ${message}",
+                Layout = "${date:universalTime=true:format=HH\\:mm\\:ss.fff} - ${logger:shortName=true}: ${message}",
                 Encoding = Encoding.UTF8,
                 AutoFlush = true,
                 DeleteOldFileOnStartup = true,
@@ -165,7 +165,7 @@ namespace dEngine.Services
         /// <summary />
         public static void OnLog(string logger, string level, string message)
         {
-            Kernel32.OutputDebugString($"\n{logger}: {message}");
+            Kernel32.OutputDebugString($"{logger}: {message}\n");
             /*
 #if DEBUG
             if (level == "Error" || level == "Warn")

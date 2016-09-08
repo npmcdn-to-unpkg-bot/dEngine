@@ -185,6 +185,7 @@ namespace dEngine.Instances
         /// </summary>
         [InstMember(1)]
         [EditorVisible]
+        [NotNull]
         public string Name
         {
             get { return _name; }

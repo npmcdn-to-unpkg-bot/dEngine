@@ -11,7 +11,7 @@ namespace dEngine.Tests.Types
     {
         private const float TOLERANCE = 0.001f;
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void MatrixConstructor()
         {
             var expected = new[]
@@ -27,7 +27,7 @@ namespace dEngine.Tests.Types
             AssertArraysEqual(cframe.GetComponents(), expected, 12);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Components()
         {
             var expected = new[]
@@ -43,7 +43,7 @@ namespace dEngine.Tests.Types
             AssertArraysEqual(expected, actual, 12, "GetComponents() did not return expected values.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void EulerAngles()
         {
             var expectedMatrix = new[]
@@ -61,7 +61,7 @@ namespace dEngine.Tests.Types
             AssertArraysEqual(expectedEuler, resultEuler, 3, "CFrame.getEulerAngles() did not return expected values.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void New()
         {
             Assert.AreEqual(new CFrame(1, 2, 3), CFrame.@new(1, 2, 3));
@@ -72,7 +72,7 @@ namespace dEngine.Tests.Types
             Assert.AreEqual(new CFrame(1, 2, 3), CFrame.@new(1, 2, 3));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Identity()
         {
             var par0 = new CFrame(0, 0, 0);
@@ -81,7 +81,7 @@ namespace dEngine.Tests.Types
             Assert.IsFalse(par1.isIdentity, "isIdentity was true for non-identity matrix.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void HashCode()
         {
             var par0 = new CFrame(1, 1, 1);
@@ -93,14 +93,14 @@ namespace dEngine.Tests.Types
             Assert.AreNotEqual(par2.GetHashCode(), par3.GetHashCode(), "Hashcodes did match when they should not have.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Operators()
         {
             var actual1 = new CFrame(2, 4, 6) - new Vector3(2, 4, 6);
             Assert.IsTrue(actual1.isIdentity, "CFrame - Vector3 did not return expected results.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Composition()
         {
             var expected1 = new CFrame(1, 2, 3, 0.936293423f, -0.289629489f, 0.198669329f, 0.312991828f, 0.944702566f,
@@ -114,7 +114,7 @@ namespace dEngine.Tests.Types
             Assert.AreEqual(expected2, actual2, "Rotation * Translation did not return expected results.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Lerp()
         {
             var expected = new CFrame(2.5f, 3.5f, 4.5f, 0.858355939f, -0.272098392f, 0.434956968f, 0.359638363f,
@@ -125,7 +125,7 @@ namespace dEngine.Tests.Types
             Assert.AreEqual(expected, actual, "Rotation * Translation did not return expected results.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void AxisAngle()
         {
             var expected = new[]
@@ -146,7 +146,7 @@ namespace dEngine.Tests.Types
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Addition()
         {
             var expected1 = new CFrame(5, 16, 7, 0.87319833f, -0.477030426f, 0.0998334214f, 0.47942555f, 0.87758255f, 0,
@@ -158,7 +158,7 @@ namespace dEngine.Tests.Types
             Assert.AreEqual(expected1, result1, "Addition did not return expected results.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Subtraction()
         {
             var expected = new CFrame(-5, 4, -7, 0.87319833f, -0.477030426f, 0.0998334214f, 0.47942555f, 0.87758255f, 0f,
@@ -169,7 +169,7 @@ namespace dEngine.Tests.Types
             Assert.AreEqual(expected, actual, "Subtraction did not return expected results.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Quaternion()
         {
             var expected = new CFrame(1, 2, 3, 0.258819103f, 0, 0.965925753f, 0.965925753f, 5.96046448e-008f,
@@ -179,7 +179,7 @@ namespace dEngine.Tests.Types
             Assert.AreEqual(expected, actual, "Quaternion constructor did not return expected results.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Inverse()
         {
             var expected = new CFrame(-4.79425526f, -8.7758255f, -0, 0.87319833f, 0.47942555f, -0.0876120701f,
@@ -191,7 +191,7 @@ namespace dEngine.Tests.Types
             Assert.AreEqual(expected, actual, "Inverse did not return expected results.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void LookAt()
         {
             var expected = new CFrame(0, 10, 0, -0.980580688f, -0.0377425663f, -0.192450076f, -0f, 0.981306732f,
@@ -202,7 +202,7 @@ namespace dEngine.Tests.Types
             Assert.AreEqual(expected, actual, "LookAt constructor did not return expected results.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void Spatial()
         {
             var par1 = new CFrame(1, 2, 3)*CFrame.Angles(4, 5, 6);
@@ -235,7 +235,7 @@ namespace dEngine.Tests.Types
             Assert.AreEqual(expected6, actual6, "vectorToWorldSpace did not return expected results.");
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("CFrame")]
         public void UnitVectors()
         {
             var actualCF = new CFrame(1, 2, 3)*CFrame.Angles(4, 5, 6);

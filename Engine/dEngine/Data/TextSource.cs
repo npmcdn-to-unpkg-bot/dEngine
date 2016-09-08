@@ -11,7 +11,7 @@ namespace dEngine.Data
     /// Asset that contains a text string.
     /// </summary>
     [TypeId(26)]
-    public class TextSource : AssetBase
+    public sealed class TextSource : AssetBase
     {
         /// <summary>
         /// The source code.

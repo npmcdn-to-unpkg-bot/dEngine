@@ -154,16 +154,16 @@ namespace dEngine.Instances
                 var context = Renderer.Context2D;
                 context.Target = Target;
 
-                Action<GuiBase2D, IEnumerable<Instance>> DrawChildren = null;
+                Action<GuiBase2D, IEnumerable<Instance>, bool> DrawChildren = null;
 
                 // draws children of LayerCollector or GuiElement.
-                DrawChildren = (root, children) =>
+                DrawChildren = (root, children, zindexPass) =>
                 {
                     // draw children
                     foreach (var inst in children)
                     {
                         var element = inst as GuiElement;
-                        if ((element == null) || !element.CheckCanDraw() || (element.ZIndex != 0))
+                        if ((element == null) || !element.CheckCanDraw() || (element.ZIndex != 0 && !zindexPass))
                             continue;
 
                         // transform target
@@ -179,7 +179,7 @@ namespace dEngine.Instances
                         if (doClip)
                             context.PushAxisAlignedClip(element.RenderRect, AntialiasMode.Aliased);
                         {
-                            DrawChildren(element, element.Children);
+                            DrawChildren(element, element.Children, zindexPass);
                         }
                         if (doClip) context.PopAxisAlignedClip();
 
@@ -191,8 +191,8 @@ namespace dEngine.Instances
 
                 context.BeginDraw();
 
-                DrawChildren(this, Children);
-                DrawChildren(this, ZIndexedElements);
+                DrawChildren(this, Children, false);
+                DrawChildren(this, ZIndexedElements, true);
 
                 context.EndDraw();
             }
@@ -340,14 +340,8 @@ namespace dEngine.Instances
         {
             public int Compare(GuiElement x, GuiElement y)
             {
-                if (x.ZIndex < y.ZIndex)
-                    return -1;
-                if (x.ZIndex > y.ZIndex)
-                    return 1;
-                if (x.Equals(y))
-                    return 0;
-
-                return 1;
+                var zcompare = x.ZIndex.CompareTo(y.ZIndex);
+                return zcompare == 0 ? Convert.ToInt32(x != y) : zcompare;
             }
         }
 

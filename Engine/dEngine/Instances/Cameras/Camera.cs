@@ -563,7 +563,6 @@ namespace dEngine.Instances
 
         internal void UpdateCamera(double step)
         {
-            _currentBehaviour.Update(step);
             Velocity = _cameraSubject?.GetVelocity() ?? Vector3.Zero;
         }
 
@@ -586,12 +585,15 @@ namespace dEngine.Instances
             SwapChain = new SwapChain1(Renderer.Factory, Renderer.Device, handle, ref desc);
         }
 
-        internal void DisposeResources()
+        internal void DisposeResources(bool disposeSwapChain = false)
         {
+            CanRender = false;
+
+            if (Renderer.Context2D != null)
+                Renderer.Context2D.Target = null;
+
             RenderTarget2D?.Dispose();
             RenderTarget2D = null;
-
-            Renderer.Context2D.Target = null;
 
             _surface?.Dispose();
             BackBuffer?.Dispose();
@@ -600,6 +602,13 @@ namespace dEngine.Instances
             Buffer2?.Dispose();
             Buffer3?.Dispose();
             DepthStencilBuffer?.Dispose();
+
+            DepthStencilBuffer = null;
+            BackBuffer = null;
+            Buffer0 = null;
+            Buffer1 = null;
+            Buffer2 = null;
+            Buffer3 = null;
         }
 
         /// <summary>
@@ -812,28 +821,7 @@ namespace dEngine.Instances
 
                 Constants.Dispose();
 
-                RenderTarget2D?.Dispose();
-
-                BackBuffer?.Dispose();
-                Buffer0?.Dispose();
-                Buffer1?.Dispose();
-                Buffer2?.Dispose();
-                Buffer3?.Dispose();
-
-                BufferDownscaleHalf0?.Dispose();
-                BufferDownscaleHalf1?.Dispose();
-                BufferDownscaleQuarter0?.Dispose();
-                BufferDownscaleQuarter1?.Dispose();
-
-                DepthStencilBuffer?.Dispose();
-
-                SwapChain?.Dispose();
-
-                BackBuffer = null;
-                Buffer0 = null;
-                Buffer1 = null;
-                Buffer2 = null;
-                Buffer3 = null;
+                DisposeResources();
             }
         }
 

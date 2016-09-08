@@ -64,7 +64,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Copy";
         public override string Text => "Copies the selected object.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.C, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -81,7 +80,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Cut";
         public override string Text => "Copies and deletes the selected object.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.X, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -107,7 +105,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Paste";
         public override string Text => "Pastes object from clipboard.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.C, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -142,7 +139,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Paste Into";
         public override string Text => "Pastes an object from clipboard into the selected object.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.V, ModifierKeys.Shift | ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -167,7 +163,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Duplicate";
         public override string Text => "Duplicates the selected objects.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.D, ModifierKeys.Control);
 
         public override bool CanExecute(object parameter)
         {
@@ -191,7 +186,6 @@ namespace dEditor.Framework.Commands
     {
         public override string Name => "Delete";
         public override string Text => "Deletes the selected objects.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.Delete, ModifierKeys.None);
 
         public override bool CanExecute(object parameter)
         {
