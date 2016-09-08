@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using dEditor.Modules.Dialogs.NewPlace;
 using dEditor.Modules.Dialogs.NewProject;
 using dEditor.Modules.Shell;
+using dEditor.Modules.Shell.StatusBar;
 using Microsoft.Win32;
 
 namespace dEditor.Framework.Commands

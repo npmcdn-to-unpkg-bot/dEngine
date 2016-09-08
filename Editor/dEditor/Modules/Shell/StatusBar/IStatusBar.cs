@@ -5,5 +5,11 @@ namespace dEditor.Modules.Shell.StatusBar
 {
     public interface IStatusBar
     {
+        bool IsFrozen { get; set; }
+        string Text { get; set; }
+        int Line { get; set; }
+        int Char { get; set; }
+        void FreezeOutput(bool freeze);
+        void SetLineChar(int line, int @char);
     }
 }

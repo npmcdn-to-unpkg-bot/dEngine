@@ -12,7 +12,6 @@ namespace dEditor.Modules.Shell.Commands
     {
         public override string Name => "Plugins Folder";
         public override string Text => "Opens the plugins folder.";
-        public override KeyGesture KeyGesture { get; }
 
         public override bool CanExecute(object parameter)
         {

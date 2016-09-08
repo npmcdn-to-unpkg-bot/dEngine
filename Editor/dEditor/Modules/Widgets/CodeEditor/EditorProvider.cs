@@ -5,7 +5,7 @@
 using System.Linq;
 using dEngine.Instances;
 
-namespace dEditor.Widgets.CodeEditor
+namespace dEditor.Modules.Widgets.CodeEditor
 {
     public static class EditorProvider
     {

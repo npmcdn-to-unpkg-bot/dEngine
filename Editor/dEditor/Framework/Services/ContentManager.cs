@@ -5,12 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 using System.Windows.Forms;
-using Caliburn.Micro;
 using dEditor.Framework.Content;
 using dEditor.Framework.Content.Protocols;
-using dEditor.Shell.StatusBar;
 using dEngine.Data;
 using dEngine.Services;
 using MessageBox = System.Windows.MessageBox;

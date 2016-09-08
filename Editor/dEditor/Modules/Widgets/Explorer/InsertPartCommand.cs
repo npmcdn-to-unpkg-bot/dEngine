@@ -13,7 +13,6 @@ namespace dEditor.Modules.Widgets.Explorer
     {
         public override string Name => "Insert Part";
         public override string Text => "Inserts a Part into the selected object.";
-        public override KeyGesture KeyGesture { get; }
 
         public override bool CanExecute(object parameter)
         {

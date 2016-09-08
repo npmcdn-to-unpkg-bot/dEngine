@@ -8,9 +8,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Assimp;
-using dEditor.Dialogs.ModelImport;
 using dEditor.Framework.Services;
-using dEditor.Widgets.ContentBrowser.Util;
+using dEditor.Modules.Dialogs.MeshImport;
 using dEngine;
 using dEngine.Data;
 using dEngine.Graphics.Structs;
@@ -36,7 +35,7 @@ namespace dEditor.Framework.Content
                 settings = new MeshImportSettings();
             else
             {
-                var dialog = new ModelImportViewModel(context);
+                var dialog = new MeshImportViewModel(context);
                 Editor.Current.Shell.ShowDialog(dialog);
                 settings = dialog.ImportSettings;
             }

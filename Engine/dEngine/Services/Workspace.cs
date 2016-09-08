@@ -231,7 +231,7 @@ namespace dEngine.Services
                     return;
 
                 Logger.Trace($"Loading place. ({placeName})");
-                var placeId = $"places://{placeName}";
+                var placeId = $"place://{placeName}";
                 var stream = ContentProvider.DownloadStream(new Uri(placeId)).Result;
 
                 if (stream == null)

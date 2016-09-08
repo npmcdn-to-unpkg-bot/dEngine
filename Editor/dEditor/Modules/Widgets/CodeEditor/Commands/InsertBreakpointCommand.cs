@@ -19,7 +19,6 @@ namespace dEditor.Modules.Widgets.CodeEditor.Commands
 
         public override string Name => "Insert Breakpoint";
         public override string Text => "Inserts a breakpoint at the selected line.";
-        public override KeyGesture KeyGesture => new KeyGesture(Key.None);
 
         public override bool CanExecute(object parameter)
         {

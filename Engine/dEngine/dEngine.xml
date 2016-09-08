@@ -19,6 +19,20 @@
             Dumps the API as a string.
             </summary>
         </member>
+        <member name="T:dEngine.Data.RawAsset">
+            <summary>
+            A raw binary asset.
+            </summary>
+        </member>
+        <member name="P:dEngine.Data.RawAsset.ContentType">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.RawAsset.Dispose(System.Boolean)">
+            <summary/>
+        </member>
+        <member name="M:dEngine.Data.RawAsset.op_Implicit(dEngine.Data.RawAsset)~System.IO.Stream">
+            <summary/>
+        </member>
         <member name="T:dEngine.Data.TextSource">
             <summary>
             Asset that contains a text string.
@@ -234,7 +248,7 @@
             Creates an empty geometry.
             </summary>
         </member>
-        <member name="M:dEngine.Data.Geometry.#ctor(System.String,dEngine.Graphics.Structs.Vertex[],System.Int32[],dEngine.Graphics.Structs.WeightedVertex[],SharpDX.Direct3D.PrimitiveTopology,dEngine.Instances.Materials.Material)">
+        <member name="M:dEngine.Data.Geometry.#ctor(System.String,dEngine.Graphics.Structs.Vertex[],System.Int32[],dEngine.Graphics.Structs.WeightedVertex[],dEngine.PrimitiveTopology,dEngine.Instances.Materials.Material)">
             <summary>
             Creates a new geometry.
             </summary>
@@ -313,10 +327,10 @@
             Fired when the buffers are rebuilt.
             </summary>
         </member>
-        <member name="M:dEngine.Data.Geometry.OnSave(System.IO.BinaryWriter)">
+        <member name="M:dEngine.Data.Geometry.OnNonAsset(System.IO.BinaryReader)">
             <summary />
         </member>
-        <member name="M:dEngine.Data.Geometry.OnNonAsset(System.IO.BinaryReader)">
+        <member name="M:dEngine.Data.Geometry.OnSave(System.IO.BinaryWriter)">
             <summary />
         </member>
         <member name="M:dEngine.Data.Geometry.OnLoad(System.IO.BinaryReader)">
@@ -705,6 +719,16 @@
         </member>
         <member name="F:dEngine.Graphics.Renderer.PassType.Irradiance">
             <summary>
+            </summary>
+        </member>
+        <member name="T:dEngine.IContentProtocol">
+            <summary>
+            Interface for custom content protocols.
+            </summary>
+        </member>
+        <member name="M:dEngine.IContentProtocol.Fetch(System.Uri)">
+            <summary>
+            Return a stream from the given content path.
             </summary>
         </member>
         <member name="T:dEngine.Instances.Attributes.IValueAttribute">
@@ -3061,6 +3085,9 @@
         <member name="T:dEngine.Instances.Flex">
             <summary />
         </member>
+        <member name="M:dEngine.Instances.Flex.#ctor">
+            <summary />
+        </member>
         <member name="T:dEngine.Instances.ArcHandles">
             <summary>
             An object which draws 3D handles around the axes of <see cref="P:dEngine.Instances.PVAdornment.Adornee" />.
@@ -4285,17 +4312,8 @@
         </member>
         <member name="P:dEngine.Instances.GuiElement.IsHitTestVisible">
             <summary>
-            Determines whether this element is ingored by hit tests.
+            Determines whether this element is ignored by hit tests.
             </summary>
-        </member>
-        <member name="P:dEngine.Instances.GuiElement.ShadowOffset">
-            <summary />
-        </member>
-        <member name="P:dEngine.Instances.GuiElement.ShadowWidth">
-            <summary />
-        </member>
-        <member name="P:dEngine.Instances.GuiElement.ShadowBlur">
-            <summary />
         </member>
         <member name="P:dEngine.Instances.GuiElement.Container">
             <summary>
@@ -5597,6 +5615,62 @@
             A list of cached properties.
             </summary>
         </member>
+        <member name="T:dEngine.Services.ContentProvider">
+            <summary>
+            A service for managing content.
+            </summary>
+        </member>
+        <member name="F:dEngine.Services.ContentProvider.SupportedImageFormats">
+            <summary>Image Format string for file dialogs.</summary>
+        </member>
+        <member name="F:dEngine.Services.ContentProvider.SupportedAudioFormats">
+            <summary>Audio Format string for file dialogs.</summary>
+        </member>
+        <member name="F:dEngine.Services.ContentProvider.SupportedMeshFormats">
+            <summary>RenderMesh Format string for file dialogs.</summary>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.#ctor">
+            <summary />
+        </member>
+        <member name="P:dEngine.Services.ContentProvider.CacheMaxItemSize">
+            <summary>
+            If an item exceeds this size, it will not be cached.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.SetSoundcloudClientId(System.String)">
+            <summary>
+            Sets the client ID for the Soundcloud API.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.PreloadAsync(Neo.IronLua.LuaTable)">
+            <summary>
+            Yields untill all the given content urls have been downloaded.
+            </summary>
+            <param name="contentUrls">A table of content URLs to download.</param>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.Preload(System.String)">
+            <summary>
+            Preloads content from the given url.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.DownloadString(System.Uri)">
+            <summary>
+            Returns a stream of data from the given content id.
+            </summary>
+            <param name="contentId">The content id url.</param>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.DownloadStream(System.Uri)">
+            <summary>
+            Returns a stream of data from the given content id.
+            </summary>
+            <param name="contentId">The content URI.</param>
+        </member>
+        <member name="M:dEngine.Services.ContentProvider.RefreshResource(System.String)">
+            <summary>
+            Forces a cached resource to be redownloaded.
+            </summary>
+            <param name="resourceName"></param>
+        </member>
         <member name="T:dEngine.Services.ContextActionService">
             <summary>
             A service for binding context actions.
@@ -5975,27 +6049,26 @@
             Deserializes the given stream into an asset.
             </summary>
         </member>
-        <member name="M:dEngine.Services.CacheableContentProvider`1.RefreshResource(System.String)">
+        <member name="M:dEngine.Services.CacheableContentProvider`1.RefreshResource(System.Uri)">
             <summary>
             Redownloads the resource for the given content ID.
             </summary>
-            <param name="contentId"></param>
         </member>
-        <member name="M:dEngine.Services.CacheableContentProvider`1.GetAsync(System.String)">
+        <member name="M:dEngine.Services.CacheableContentProvider`1.GetAsync(System.Uri)">
             <summary>
             Returns a reference without waiting for the resource to load.
             </summary>
         </member>
-        <member name="M:dEngine.Services.CacheableContentProvider`1.Get(System.String)">
+        <member name="M:dEngine.Services.CacheableContentProvider`1.Get(System.Uri)">
             <summary>
             Returns a reference after waiting for the resource to load.
             </summary>
         </member>
-        <member name="M:dEngine.Services.CacheableContentProvider`1.Resource.#ctor(System.String)">
+        <member name="M:dEngine.Services.CacheableContentProvider`1.Resource.#ctor(System.Uri)">
             <summary>
             Creates a new resource.
             </summary>
-            <param name="contentId">The content id url.</param>
+            <param name="contentUri">The content id url.</param>
         </member>
         <member name="M:dEngine.Services.CacheableContentProvider`1.Resource.Dispose">
             <summary>
@@ -6315,72 +6388,6 @@
         <member name="M:dEngine.Services.Lighting.CalculateSunPosition(dEngine.DateTime,System.Double,System.Double)">
             <summary>
             Returns the Position of the sun at the given time and location in altitude and azimuth.
-            </summary>
-        </member>
-        <member name="T:dEngine.Services.ContentProvider">
-            <summary>
-            A service for managing content.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.#ctor">
-            <summary />
-        </member>
-        <member name="P:dEngine.Services.ContentProvider.CacheMaxItemSize">
-            <summary>
-            If an item exceeds this size, it will not be cached.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.SetSoundcloudClientId(System.String)">
-            <summary>
-            Sets the client ID for the Soundcloud API.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.PreloadAsync(Neo.IronLua.LuaTable)">
-            <summary>
-            Yields untill all the given content urls have been downloaded.
-            </summary>
-            <param name="contentUrls">A table of content URLs to download.</param>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.Preload(System.String)">
-            <summary>
-            Preloads content from the given url.
-            </summary>
-        </member>
-        <member name="F:dEngine.Services.ContentProvider.SupportedImageFormats">
-            <summary>Image Format string for file dialogs.</summary>
-        </member>
-        <member name="F:dEngine.Services.ContentProvider.SupportedAudioFormats">
-            <summary>Audio Format string for file dialogs.</summary>
-        </member>
-        <member name="F:dEngine.Services.ContentProvider.SupportedMeshFormats">
-            <summary>RenderMesh Format string for file dialogs.</summary>
-        </member>
-        <member name="P:dEngine.Services.ContentProvider.CustomFetchHandler">
-            <summary>
-            Allows the host application to add support for custom content uri protocols.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.DownloadString(System.String)">
-            <summary>
-            Returns a stream of data from the given content id.
-            </summary>
-            <param name="contentId">The content id url.</param>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.DownloadStream(System.String)">
-            <summary>
-            Returns a stream of data from the given content id.
-            </summary>
-            <param name="contentId">The content id url.</param>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.RefreshResource(System.String)">
-            <summary>
-            Forces a cached resource to be redownloaded.
-            </summary>
-            <param name="resourceName"></param>
-        </member>
-        <member name="M:dEngine.Services.ContentProvider.IsMeshImportFormatSupported(System.String)">
-            <summary>
-            Returns true if the given format is a supported mesh format.
             </summary>
         </member>
         <member name="T:dEngine.Services.Networking.NetworkClient">
@@ -8961,96 +8968,6 @@
             Tries to get the comment for the given key.
             </summary>
         </member>
-        <member name="T:dEngine.Utility.FileFormats.Model.FBX">
-            <summary>
-            Helper class for converting FBX files to dEngine assets.
-            </summary>
-        </member>
-        <member name="M:dEngine.Utility.FileFormats.Model.FBX.Import(System.IO.Stream,dEngine.Utility.FileFormats.Model.FBX.ImportSettings,System.String,System.String)">
-            <summary>
-            Imports an FBX file.
-            </summary>
-            <param name="stream">The FBX stream.</param>
-            <param name="settings">An import settings object.</param>
-            <param name="format">The filetype of the mesh.</param>
-            <param name="filePath">The path to the file.</param>
-            <returns>An <see cref="T:dEngine.Utility.FileFormats.Model.FBX.ImportResult" /> object.</returns>
-        </member>
-        <member name="T:dEngine.Utility.FileFormats.Model.FBX.ImportResult">
-            <summary>
-            The result of the import.
-            </summary>
-        </member>
-        <member name="T:dEngine.Utility.FileFormats.Model.FBX.ImportSettings">
-            <summary>
-            FBX import settings.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.ImportAsSkeletal">
-            <summary>
-            Determines if the mesh should be treated a a Sketal or Static mesh.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.KeepOverlappingVertices">
-            <summary>
-            Determines whether or not duplicate vertices will be removed.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.NormalImportMethod">
-            <summary>
-            Determines whether or not duplicate vertices will be removed.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.MergeMeshes">
-            <summary>
-            Determines if meshes should be merged.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.Skeleton">
-            <summary>
-            The existing skeleton to use for this mesh. If none is provided, the skeleton will be imported from the file.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.UpdateReferencePose">
-            <summary>
-            Determines if the skeleton reference pose should be updated.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.UseFirstFrameAsReferencePose">
-            <summary>
-            Determines if the first frame should be used as the reference pose.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.FileFormats.Model.FBX.ImportSettings.ImportMorphTargets">
-            <summary>
-            If enabled, morph target swill be imported from the FBX file.
-            </summary>
-        </member>
-        <member name="T:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod">
-            <summary>
-            Enum for normal import methods.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ComputeNormals">
-            <summary>
-            The importer will compute normals and tangents.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ComputeNormalsSmooth">
-            <summary>
-            The importer will compute smooth normals and tangents.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ImportNormals">
-            <summary>
-            The importer will import normals but compute tangents.
-            </summary>
-        </member>
-        <member name="F:dEngine.Utility.FileFormats.Model.FBX.NormalImportMethod.ImportNormalsAndTangents">
-            <summary>
-            The importer will import normals and tangents.
-            </summary>
-        </member>
         <member name="M:dEngine.Utility.InstanceHelper.Recurse(dEngine.Instances.Instance,System.Func{dEngine.Instances.Instance,System.SByte})">
             <summary>
             Calls func on the descendants of root.
@@ -10520,6 +10437,11 @@
             Gets the path to a temporary directory, which is deleted on engine shutdown.
             </summary>
         </member>
+        <member name="P:dEngine.Engine.DocumentsPath">
+            <summary>
+            Gets the path to a game directory in the user's documents folder.
+            </summary>
+        </member>
         <member name="P:dEngine.Engine.UserSettings">
             <summary>
             The user settings container.
@@ -10550,17 +10472,12 @@
             A callback which is invoked when the game is saved.
             </summary>
         </member>
-        <member name="E:dEngine.Engine.OnShutdown">
-            <summary>
-            Fired after the <see cref="M:dEngine.Engine.Shutdown(System.Int32)"/> method has completed.
-            </summary>
-        </member>
         <member name="E:dEngine.Engine.Exiting">
             <summary>
             Fired when the application is closing.
             </summary>
         </member>
-        <member name="M:dEngine.Engine.Start(dEngine.EngineMode)">
+        <member name="M:dEngine.Engine.Start(dEngine.EngineMode,System.String)">
             <summary>
             Fires up the engine. And then it makes noise.
             </summary>
@@ -11103,9 +11020,6 @@
             <summary />
         </member>
         <member name="M:dEngine.Colour.op_Implicit(dEngine.Colour)~SharpDX.Color">
-            <summary />
-        </member>
-        <member name="M:dEngine.Colour.op_Implicit(Assimp.Color4D)~dEngine.Colour">
             <summary />
         </member>
         <member name="M:dEngine.Colour.lerp(dEngine.Colour,System.Single)">

@@ -9,10 +9,12 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Forms.VisualStyles;
 using Caliburn.Micro;
 using dEditor.Framework;
 using dEditor.Framework.Commands;
 using dEditor.Framework.Services;
+using dEditor.Modules.Dialogs.MeshImport;
 using dEditor.Modules.Dialogs.ProjectProperties;
 using dEditor.Modules.Dialogs.Settings;
 using dEditor.Modules.Shell.CommandBar;
@@ -162,7 +164,7 @@ namespace dEditor.Modules.Shell
         /// <summary>
         /// Shows an instance of a dialog.
         /// </summary>
-        public void ShowDialog(Dialog dialog)
+        public void ShowDialog(IDialog dialog)
         {
             Editor.Current.WindowManager.ShowDialog(dialog, null, new Dictionary<string, object>
             {
@@ -283,10 +285,10 @@ namespace dEditor.Modules.Shell
                 }
             }
 
-            var item = (LayoutItem)Activator.CreateInstance(viewModelType);
+            var item = Activator.CreateInstance(viewModelType);
             tool = item as IWidget;
             doc = item as IDocument;
-            var dialog = item as Dialog;
+            var dialog = item as IDialog;
 
             if (tool != null)
                 ShowTool(tool);

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Xml.Serialization;
 using Caliburn.Micro;
 using dEditor.Modules.Dialogs.NewPlace;
+using dEditor.Modules.Shell.StatusBar;
 using dEditor.Modules.Widgets.Viewport;
 using dEngine;
 using dEngine.Instances;
