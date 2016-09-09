@@ -33,10 +33,6 @@ namespace dEditor
         private static string _autosavePath;
         private static int _autosaveInterval;
         private static bool _autosaveEnabled;
-        private static float _cameraSensitivity;
-        private static bool _cameraSpeedup;
-        private static float _cameraShiftSpeed;
-        private static float _cameraSpeed;
         private static bool _turnTabsIntoSpaces;
         private static bool _showDeprecated;
         private static Theme _theme;

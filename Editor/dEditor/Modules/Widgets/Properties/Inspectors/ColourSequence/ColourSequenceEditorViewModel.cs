@@ -29,7 +29,7 @@ namespace dEditor.Modules.Widgets.Properties.Inspectors.ColourSequence
         private void OpenCurveDialog()
         {
             var curveEditor = new CurveDialogViewModel(_instance, _propDesc.Name);
-            Editor.Current.Shell.ShowDialog(curveEditor);
+            Editor.ShowDialog(curveEditor);
         }
     }
 }

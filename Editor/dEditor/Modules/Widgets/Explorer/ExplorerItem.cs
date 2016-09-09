@@ -116,8 +116,6 @@ namespace dEditor.Modules.Widgets.Explorer
                 {
                     WeakReference<ExplorerItem> weak;
                     ExplorerViewModel.ExplorerItems.TryGetValue(parent, out weak);
-                    if (Name == "RegenGroupStairs")
-                    ;
                     if (weak == null)
                         return;
                     Debug.Assert(weak != null, "weak != null");

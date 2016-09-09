@@ -26,13 +26,6 @@ using Microsoft.Scripting.Utils;
 
 namespace dEngine.Serializer.V1
 {
-    /*
-172
-     */
-
-
-        // TODO: write IMetaData serialization
-
     /// <summary>
     /// Inst is a custom serialization format for <see cref="Instance" />s.
     /// </summary>
@@ -119,10 +112,25 @@ namespace dEngine.Serializer.V1
         public static void Serialize(Instance instance, Stream output, bool clone = false,
             bool includeWorkspaceInGame = true)
         {
+            var meta = instance as IMetaData;
+            var hasMetaData = meta != null;
+
             using (var writer = new BinaryWriter(output, Encoding.UTF8, true))
             {
                 writer.Write(_file);
                 writer.Write(Version);
+                writer.Write(hasMetaData);
+
+                if (hasMetaData)
+                {
+                    var metaData = meta.GetMetaData();
+                    writer.Write(metaData.Count);
+                    foreach (var kv in metaData)
+                    {
+                        writer.Write(kv.Key);
+                        writer.Write(kv.Value ?? "");
+                    }
+                }
 
                 var context = new Context
                 {
@@ -191,6 +199,18 @@ namespace dEngine.Serializer.V1
                 var version = reader.ReadString();
                 if (version != Version)
                     throw new InvalidDataException($"The serializer ({Version}) does not support version \"{version}\"");
+
+                var hasMetaData = reader.ReadBoolean();
+
+                if (hasMetaData)
+                {
+                    var count = reader.ReadInt32();
+                    for (var i = 0; i < count; i++)
+                    {
+                        reader.ReadString();
+                        reader.ReadString();
+                    }
+                }
 
                 var totalTypes = reader.ReadInt32();
                 var totalObjects = reader.ReadInt32();
@@ -438,7 +458,7 @@ namespace dEngine.Serializer.V1
 
         internal class PropertyRecord : IFileRecord
         {
-            private static readonly char[] _nullChars = {'N', 'U', 'L'};
+            private static readonly char[] _nullChars = { 'N', 'U', 'L' };
 
             public PropertyRecord(Context context, TypeRecord typeRecord)
             {
@@ -1127,9 +1147,32 @@ namespace dEngine.Serializer.V1
             Invalid = 255
         }
 
-        public static Dictionary<string, string> ReadMeta(FileStream stream)
+        public static Dictionary<string, string> ReadMeta(FileStream input)
         {
-            throw new NotImplementedException();
+            using (var reader = new BinaryReader(input))
+            {
+                var magic = reader.ReadChars(7);
+                if (VisualC.CompareMemory(magic, _file, 4) != 0)
+                    throw new InvalidDataException("The file does not have a valid header.");
+
+                var version = reader.ReadString();
+                if (version != Version)
+                    throw new InvalidDataException($"The serializer ({Version}) does not support version \"{version}\"");
+
+
+                var hasMetaData = reader.ReadBoolean();
+
+                if (!hasMetaData)
+                    throw new InvalidDataException("This instance has no metadata.");
+
+                var metaData = new Dictionary<string, string>();
+                var count = reader.ReadInt32();
+                for (var i = 0; i < count; i++)
+                {
+                    metaData[reader.ReadString()] = reader.ReadString();
+                }
+                return metaData;
+            }
         }
     }
 }

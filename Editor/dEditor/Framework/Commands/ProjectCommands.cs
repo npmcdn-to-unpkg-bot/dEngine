@@ -55,7 +55,7 @@ namespace dEditor.Framework.Commands
             Editor.Current.Dispatcher.InvokeAsync(() =>
             {
                 var newProjectVm = new NewProjectViewModel();
-                Editor.Current.WindowManager.ShowDialog(newProjectVm, null, newProjectVm.GetDialogSettings());
+                Editor.ShowDialog(newProjectVm);
             });
         }
     }

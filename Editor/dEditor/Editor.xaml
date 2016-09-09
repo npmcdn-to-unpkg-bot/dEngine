@@ -31,21 +31,15 @@
 
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/ScrollBar.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Styles/Controls/ComboBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/Expander.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/Ripple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/TabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/Controls/TextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/Controls/ComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/Controls/List.xaml" />
 
                 <ResourceDictionary>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
-                        <Setter Property="FontFamily" Value="Roboto" />
-                    </Style>
-                    <Style TargetType="Label">
-                        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
-                        <Setter Property="FontFamily" Value="Roboto" />
-                    </Style>
                     <Style TargetType="Border">
                         <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}"/>
                     </Style>
@@ -56,15 +50,13 @@
                     </Style>
                     <Style TargetType="Window">
                         <Setter Property="FontFamily" Value="Roboto" />
-                    </Style>
-                    <Style TargetType="TextBox">
                         <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
-                        <Setter Property="FontFamily" Value="Roboto" />
                     </Style>
                     <Style TargetType="ComboBox">
                         <Setter Property="Background" Value="{StaticResource BackgroundPrimary}"/>
                         <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}"/>
                         <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
+                        <Setter Property="Padding" Value="4" />
                     </Style>
                 </ResourceDictionary>
 

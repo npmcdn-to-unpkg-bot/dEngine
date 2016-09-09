@@ -589,7 +589,7 @@ namespace dEngine.Instances
         {
             CanRender = false;
 
-            if (Renderer.Context2D != null)
+            if (Renderer.Context2D.NativePointer != IntPtr.Zero)
                 Renderer.Context2D.Target = null;
 
             RenderTarget2D?.Dispose();

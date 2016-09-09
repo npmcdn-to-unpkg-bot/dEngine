@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using Steamworks;
@@ -103,7 +104,12 @@ namespace dEngine.Services
             LoggedIn = SteamLogin();
 
             if (LoggedIn)
-                AnalyticsService.BeginSession();
+            {
+                Task.Run(() =>
+                {
+                    AnalyticsService.BeginSession();
+                });
+            }
 
             return LoggedIn;
         }

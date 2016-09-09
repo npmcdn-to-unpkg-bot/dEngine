@@ -5,18 +5,22 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using dEditor.Framework;
+using dEditor.Modules.Dialogs.MeshImport;
 using dEditor.Modules.Widgets.StartPage;
 using Ookii.Dialogs.Wpf;
 
 namespace dEditor.Modules.Dialogs.NewProject
 {
-    public class NewProjectViewModel : Screen
+    public class NewProjectViewModel : Screen, IDialog, IDataErrorInfo
     {
         private bool _canCreate;
         private string _location;
@@ -29,7 +33,7 @@ namespace dEditor.Modules.Dialogs.NewProject
             _name = "MyGame";
 
             DisplayName = "New Project";
-            
+
             UpdateCanCreate();
         }
 
@@ -76,10 +80,7 @@ namespace dEditor.Modules.Dialogs.NewProject
 
         private void UpdateCanCreate()
         {
-            if (!string.IsNullOrWhiteSpace(_name) && (_name.Length < 43) && (SelectedTemplate != null))
-                CanCreate = true;
-            else
-                CanCreate = false;
+            CanCreate = this[nameof(Name)] == null && this[nameof(Location)] == null;
         }
 
         public void Browse()
@@ -114,18 +115,40 @@ namespace dEditor.Modules.Dialogs.NewProject
             TryClose(false);
         }
 
-        public IDictionary<string, object> GetDialogSettings()
+        public float MinWidth => 400;
+        public float MinHeight => 250;
+        public float MaxWidth => 400;
+        public float MaxHeight => 250;
+        public float StartingWidth => 400;
+        public float StartingHeight => 250;
+        public ICommand CloseCommand { get; }
+        public bool IsVisible { get; set; }
+
+        private static readonly Regex _invalidFileName = new Regex("(^(PRN|AUX|NUL|CON|COM[1-9]|LPT[1-9]|(\\.+)$)(\\..*)?$)|(([‌​\\x00-\\x1f\\\\?*:\"‌​;‌​|/<>])+)|([\\.]+)", RegexOptions.IgnoreCase);
+
+
+        public string this[string columnName]
         {
-            return new Dictionary<string, object>
+            get
             {
-                {"SizeToContent", SizeToContent.Manual},
-                {"MinWidth", 784},
-                {"MinHeight", 411},
-                {"Width", 768},
-                {"Height", 493},
-                {"ShowInTaskbar", false},
-                {"WindowStyle", WindowStyle.ToolWindow}
-            };
+                switch (columnName)
+                {
+                    case nameof(Name):
+                        if (Name.Length > 25)
+                            return "This name is too long.";
+                        if (string.IsNullOrWhiteSpace(Name))
+                            return "The project requires a name.";
+                        if (_invalidFileName.IsMatch(Name))
+                            return "This name cannot be used.";
+                        if (Directory.Exists(Path.Combine(Location, Name)))
+                            return "A project with this name already exists in the selected folder.";
+                        break;
+                }
+
+                return null;
+            }
         }
+
+        public string Error => null;
     }
 }

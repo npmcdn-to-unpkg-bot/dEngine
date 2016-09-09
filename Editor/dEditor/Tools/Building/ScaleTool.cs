@@ -41,9 +41,9 @@ namespace dEditor.Tools.Building
             UpdateHandles();
         }
 
-        private void UpdateHandles()
+        protected override void UpdateHandles()
         {
-            //throw new System.NotImplementedException();
+            base.UpdateHandles();
         }
 
         protected override void OnItemDeselected(Instance instance)

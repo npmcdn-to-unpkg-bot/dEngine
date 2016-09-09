@@ -7,7 +7,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:services="clr-namespace:dEditor.Framework.Services"
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="600"
+             d:DesignHeight="400" d:DesignWidth="900"
              x:Name="UserControl"
              Background="White">
     <UserControl.Resources>
@@ -74,7 +74,16 @@
                     </StackPanel>
                 </Grid>
             </Grid>
-            <Grid Background="{StaticResource BackgroundPrimary}" />
+            <Grid Background="{StaticResource BackgroundPrimary}">
+                <TabControl>
+                    <TabItem Header="Welcome">
+                        <Label FontWeight="Normal">Welcome to dEngine.</Label>
+                    </TabItem>
+                    <TabItem Header="Tutorials">
+                        <Label FontWeight="Normal">Tutorials go here if I ever write them.</Label>
+                    </TabItem>
+                </TabControl>
+            </Grid>
         </DockPanel>
     </ScrollViewer>
 </UserControl>

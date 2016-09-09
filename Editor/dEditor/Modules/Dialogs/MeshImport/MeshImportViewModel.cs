@@ -86,8 +86,8 @@ namespace dEditor.Modules.Dialogs.MeshImport
         public float MinHeight => 300;
         public float MaxWidth => float.PositiveInfinity;
         public float MaxHeight => float.PositiveInfinity;
-        public float Width => 400;
-        public float Height => 600;
+        public float StartingWidth => 400;
+        public float StartingHeight => 600;
         public bool IsVisible { get; set; }
         public ICommand CloseCommand { get; }
     }
@@ -125,8 +125,8 @@ namespace dEditor.Modules.Dialogs.MeshImport
         float MinHeight { get; }
         float MaxWidth { get; }
         float MaxHeight { get; }
-        float Width { get; }
-        float Height { get; }
+        float StartingWidth { get; }
+        float StartingHeight { get; }
         ICommand CloseCommand { get; }
         bool IsVisible { get; set; }
     }

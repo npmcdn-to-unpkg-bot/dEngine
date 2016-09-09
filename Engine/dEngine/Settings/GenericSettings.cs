@@ -86,7 +86,10 @@ namespace dEngine.Settings
                 foreach (var setting in Children.OfType<Settings>())
                     data.Merge(setting.GetIniData());
 
-                using (var stream = File.Create($"{Name}.ini"))
+                var settingsPath = Path.Combine(Engine.DocumentsPath, "Settings");
+                Directory.CreateDirectory(settingsPath);
+                var file = Path.Combine(settingsPath, $"{Name}.ini");
+                using (var stream = File.Create(file))
                 {
                     using (var writer = new StreamWriter(stream))
                     {
@@ -107,10 +110,11 @@ namespace dEngine.Settings
         /// </summary>
         public void Load()
         {
-            var file = Path.Combine(Engine.DocumentsPath, $"{Name}.ini");
+            var settingsPath = Path.Combine(Engine.DocumentsPath, "Settings");
+            var file = Path.Combine(settingsPath, $"{Name}.ini");
             if (!File.Exists(file))
             {
-                Logger.Warn($"No INI file found for {Name} - creating one.");
+                Logger.Warn($"Settings/{Name}.ini not found - creating it.");
                 Save();
                 return;
             }

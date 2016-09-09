@@ -677,6 +677,10 @@
       <HintPath>..\..\packages\SharpDX.XInput.3.0.2\lib\net45\SharpDX.XInput.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SharpSteer2, Version=10.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpSteer2.10.0.0.0\lib\net46\SharpSteer2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Steamworks.NET, Version=9.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ThirdParty\Steamworks.NET.dll</HintPath>

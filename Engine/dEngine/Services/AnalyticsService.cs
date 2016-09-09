@@ -71,8 +71,9 @@ namespace dEngine.Services
         internal static string SecretKey
             => UseProductionAPI ? _productionSecretKey : "16813a12f718bc5c620f56944e1abc3ea13ccbac";
 
-        private static string InitRoute { get; set; }
-        private static string EventsRoute { get; set; }
+
+        private static string RoutePrefix => UseProductionAPI ? "production-api" : "sandbox-api";
+        private static string Route => $"http://{RoutePrefix}.gameanalytics.com/v2/{GameKey}/";
 
         internal static bool Initialized { get; set; }
 
@@ -118,7 +119,7 @@ namespace dEngine.Services
             try
             {
                 resultJson =
-                    HttpService.Post(InitRoute, json, "application/json", true, new Dictionary<string, object>
+                    HttpService.Post($"{Route}/init", json, "application/json", true, new Dictionary<string, object>
                     {
                         {"Authorization", _authHash}
                     }).Result;
@@ -262,7 +263,7 @@ namespace dEngine.Services
                 var defaultAnnos = JObject.FromObject(defaultAnnotations);
                 obj.Merge(defaultAnnos);
 #pragma warning disable 4014
-                HttpService.Post(EventsRoute, obj.ToString(), "application/json", true,
+                HttpService.Post($"{Route}/events", obj.ToString(), "application/json", true,
                     new Dictionary<string, object> {{"Authorization", _authHash}});
 #pragma warning restore 4014
             }

@@ -24,8 +24,6 @@ namespace dEngine.Graphics
     {
         private static readonly GfxShader LineShader = Shaders.Get("Line");
         private static readonly GfxShader.Pass LinePass = LineShader.GetPass();
-        private static RenderObject _capsuleHeadRO;
-        private static RenderObject _capsuleBodyRO;
         private readonly PointArray _points;
         private bool _bufferDirty;
         private Camera _camera;
@@ -38,17 +36,6 @@ namespace dEngine.Graphics
 
         static PhysicsDebugDraw()
         {
-            /*
-            var capsuleStream = ContentProvider.DownloadStream("internal://content/meshes/capsule2.dae").Result;
-
-            var capsuleScene = ContentProvider.AssimpContext.ImportFileFromStream(capsuleStream, PostProcessSteps.None, ".dae");
-
-            var headGeo = capsuleScene.Meshes.Find(m => m.Name == "Head");
-            var bodyGeo = capsuleScene.Meshes.Find(m => m.Name == "Body");
-
-            _capsuleHeadRO = new RenderObject("CapsuleHead", headGeo);
-            _capsuleBodyRO = new RenderObject("CapsuleBody", bodyGeo);
-            */
         }
 
         /// <summary />
@@ -59,28 +46,10 @@ namespace dEngine.Graphics
 
         public override DebugDrawModes DebugMode { get; set; } = DebugDrawModes.DrawWireframe;
 
-        /*
-        public override void DrawCapsule(float radius, float halfHeight, int upAxis, ref Matrix transform,
-            ref BulletSharp.Math.Vector3 color)
-        {
-            _capsuleHeadRO.Add(new CapsuleHead(radius, halfHeight, upAxis, ref transform, ref color));
-            _capsuleBodyRO.Add(new CapsuleBody(radius, halfHeight, upAxis, ref transform, ref color));
-        }
-        */
-
         public void Draw(ref DeviceContext context, ref Camera camera)
         {
             _context = context;
             _camera = camera;
-
-            /*
-            _capsuleHeadRO.Draw(ref _context, ref _camera);
-            _capsuleHeadRO.Draw(ref _context, ref _camera);
-            _capsuleBodyRO.Draw(ref _context, ref _camera);
-
-            _capsuleHeadRO.Clear();
-            _capsuleBodyRO.Clear();
-            */
 
             if (_lineCount > 0)
             {

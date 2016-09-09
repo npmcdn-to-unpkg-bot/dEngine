@@ -13,8 +13,8 @@ namespace dEditor.Modules.Widgets.Properties.Inspectors
         public CurveDialogViewModel(dEngine.Instances.Instance instance, string propertyName)
         {
             DisplayName = $"{instance.GetFullName()}.{propertyName}";
-            Width = MinWidth = 800;
-            Height = MinHeight = 250;
+            StartingWidth = MinWidth = 800;
+            StartingHeight = MinHeight = 250;
         }
 
         public string DisplayName { get; }
@@ -22,8 +22,8 @@ namespace dEditor.Modules.Widgets.Properties.Inspectors
         public float MinHeight { get; } = 250;
         public float MaxWidth { get; } = 800;
         public float MaxHeight { get; } = 250;
-        public float Width { get; } = 800;
-        public float Height { get; } = 250;
+        public float StartingWidth { get; } = 800;
+        public float StartingHeight { get; } = 250;
         public ICommand CloseCommand { get; }
         public bool IsVisible { get; set; }
     }

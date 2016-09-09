@@ -176,8 +176,8 @@ namespace dEditor.Modules.Shell
                 {"MinHeight", dialog.MinHeight},
                 {"MaxWidth", dialog.MaxWidth},
                 {"MaxHeight", dialog.MaxHeight},
-                {"Width", dialog.Width},
-                {"Height", dialog.Height},
+                {"Width", dialog.StartingWidth},
+                {"Height", dialog.StartingHeight},
                 {"ShowInTaskbar", false},
                 {"WindowStyle", WindowStyle.ToolWindow}
             });

@@ -12,6 +12,8 @@ using System.Xaml;
 using Caliburn.Micro;
 using dEditor.Framework;
 using dEditor.Framework.Plugins;
+using dEditor.Modules.Dialogs.MeshImport;
+using dEditor.Modules.Dialogs.NewProject;
 using dEditor.Modules.Shell;
 using dEditor.Styles;
 using dEditor.Utility;
@@ -42,10 +44,9 @@ namespace dEditor
             var documents = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
             EditorDocumentsPath = Path.Combine(documents, "dEditor");
             PluginsPath = Path.Combine(EditorDocumentsPath, "Plugins");
+            LayoutFileName = Path.Combine(EditorDocumentsPath, "Layout.xaml");
 
             WindowManager = new WindowManager();
-
-            LayoutFileName = Path.Combine(Current.EditorDirectory, "Layout.xaml");
 
             DispatcherUnhandledException += CurrentOnDispatcherUnhandledException;
 
@@ -206,6 +207,11 @@ namespace dEditor
             {
                 Logger.Error(e, "Could not load theme.");
             }
+        }
+
+        public static void ShowDialog(IDialog dialog)
+        {
+            Current.Shell.ShowDialog(dialog);
         }
     }
 }

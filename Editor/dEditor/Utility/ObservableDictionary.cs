@@ -9,6 +9,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+// ReSharper disable All
+#pragma warning disable 693
 
 namespace dEditor.Utility
 {
@@ -67,8 +69,8 @@ namespace dEditor.Utility
 
         [Serializable]
         [StructLayout(LayoutKind.Sequential)]
-        public struct Enumerator<TKey, TValue> : IEnumerator<KeyValuePair<TKey, TValue>>, IDisposable,
-            IDictionaryEnumerator, IEnumerator
+        public struct Enumerator<TKey, TValue> : IEnumerator<KeyValuePair<TKey, TValue>>,
+            IDictionaryEnumerator
         {
             #region constructors
 

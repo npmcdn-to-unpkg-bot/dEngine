@@ -36,7 +36,7 @@ namespace dEditor.Framework.Content
             else
             {
                 var dialog = new MeshImportViewModel(context);
-                Editor.Current.Shell.ShowDialog(dialog);
+                Editor.ShowDialog(dialog);
                 settings = dialog.ImportSettings;
             }
 

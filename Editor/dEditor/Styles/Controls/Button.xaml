@@ -2,19 +2,21 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:dEditor.Styles.Controls"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-    <Style x:Key="RippleButtonStyle" TargetType="Button">
+
+    <Style TargetType="Button">
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Padding" Value="4"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-        <Setter Property="materialDesign:RippleAssist.IsCentered" Value="True"/>
-        <Setter Property="materialDesign:RippleAssist.RippleSizeMultiplier" Value="0.6"/>
-        <Setter Property="materialDesign:RippleAssist.ClipToBounds" Value="False"/>
+        <Setter Property="materialDesign:RippleAssist.IsCentered" Value="False"/>
+        <Setter Property="materialDesign:RippleAssist.RippleSizeMultiplier" Value="1"/>
+        <Setter Property="materialDesign:RippleAssist.ClipToBounds" Value="True"/>
         <Setter Property="materialDesign:RippleAssist.Feedback" Value="#A2A2A2" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="grid" CornerRadius="2">
-                        <materialDesign:Ripple Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Focusable="False"     
+                        <materialDesign:Ripple Foreground="{TemplateBinding Foreground}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Focusable="False"     
                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Padding="{TemplateBinding Padding}" 
@@ -42,11 +44,55 @@
         </Setter>
     </Style>
 
+
+    <Style x:Key="RippleButtonStyle" TargetType="Button" >
+        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="materialDesign:RippleAssist.IsCentered" Value="True"/>
+        <Setter Property="materialDesign:RippleAssist.RippleSizeMultiplier" Value="0.6"/>
+        <Setter Property="materialDesign:RippleAssist.ClipToBounds" Value="False"/>
+        <Setter Property="materialDesign:RippleAssist.Feedback" Value="#A2A2A2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="grid" CornerRadius="2">
+                        <materialDesign:Ripple Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Focusable="False"     
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Padding="{TemplateBinding Padding}" 
+                                               Foreground="{TemplateBinding Foreground}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="grid" Property="Background" Value="#DFDFDF" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="grid" Property="Background" Value="Transparent" />
+                        </Trigger>
+                        <Trigger Property="IsDefaulted" Value="True">
+
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="ToolBarButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource RippleButtonStyle}"/>
 
     <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Padding" Value="4"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="materialDesign:RippleAssist.IsCentered" Value="True"/>
         <Setter Property="materialDesign:RippleAssist.RippleSizeMultiplier" Value="0.6"/>
@@ -60,7 +106,8 @@
                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Padding="{TemplateBinding Padding}" 
-                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                               Foreground="{TemplateBinding Foreground}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">

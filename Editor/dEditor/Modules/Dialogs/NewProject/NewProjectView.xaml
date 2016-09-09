@@ -4,72 +4,71 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:newProject="clr-namespace:dEditor.Modules.Dialogs.NewProject"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
-             d:DesignHeight="621" d:DesignWidth="939">
-    <DockPanel LastChildFill="True">
-
-        <Grid Background="{StaticResource BackgroundPrimary}" DockPanel.Dock="Bottom" Height="156">
-            <DockPanel LastChildFill="True" Margin="4, 4, 300, 0">
-                <Button FontWeight="Normal" Style="{DynamicResource MaterialDesignFlatButton}" DockPanel.Dock="Right"
-                        Margin="0, 0, 0, 53" cal:Message.Attach="[Click] = [Browse()]" VerticalAlignment="Center"
-                        HorizontalAlignment="Left" Height="26">
-                    Browse...
-                </Button>
-                <StackPanel DockPanel.Dock="Left">
-                    <Grid Margin="4">
-                        <TextBlock FontSize="13" VerticalAlignment="Center">Name:</TextBlock>
-                        <TextBox Margin="80, 0, 0, 0" Text="{Binding Name}" />
-                    </Grid>
-                    <Grid Margin="4">
-                        <TextBlock FontSize="13" VerticalAlignment="Center">Location:</TextBlock>
-                        <TextBox Margin="80, 0, 0, 0" Text="{Binding Location}" />
-                    </Grid>
-                </StackPanel>
-            </DockPanel>
-            <Button FontWeight="Normal" Style="{DynamicResource MaterialDesignFlatButton}"
-                    cal:Message.Attach="[Click] = [Cancel()]" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                    Margin="0,0,10,10" Width="75" Height="31">
-                Cancel
-            </Button>
-            <Button FontWeight="Normal" Style="{DynamicResource MaterialDesignFlatButton}"
-                    cal:Message.Attach="[Click] = [Create()]" IsEnabled="{Binding CanCreate}"
-                    VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,90,10" Width="75" Height="31">
-                OK
-            </Button>
-        </Grid>
-
-        <Grid Background="White">
+             d:DesignHeight="250" d:DesignWidth="400" d:DataContext="{d:DesignInstance newProject:NewProjectViewModel}">
+    <DockPanel LastChildFill="True" Background="{StaticResource BackgroundPrimary}">
+        <Grid DockPanel.Dock="Bottom" Height="50"  Background="{StaticResource BackgroundSecondary}" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="8"/>
             </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
-                <ListView BorderThickness="1, 0, 1, 1" BorderBrush="{StaticResource BorderPrimary}" Background="{StaticResource BackgroundSecondary}"
-                          ItemsSource="{Binding Templates}" SelectedItem="{Binding SelectedTemplate}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Image Margin="8, 0, 0, 0" Source="{Binding Source}" Width="32" Height="32"
-                                       VerticalAlignment="Center" HorizontalAlignment="Left" />
-                                <Label Margin="52, 0, 0, 0" Content="{Binding Name}" VerticalAlignment="Center"
-                                       HorizontalAlignment="Left" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ListView>
-            </Grid>
-
-            <Border Grid.Column="1" BorderThickness="0" BorderBrush="{StaticResource BorderPrimary}" Background="{StaticResource BackgroundPrimary}">
-                <StackPanel Margin="12">
-                    <Label Margin="-4, 0, 0, 0" FontFamily="Roboto Light" FontSize="20" HorizontalAlignment="Left"
-                           Content="{Binding Path=SelectedTemplate.Name}" />
-                    <Image Margin="0, 4, 0, 0" Source="{Binding Path=SelectedTemplate.Thumbnail}" Width="197"
-                           Height="115" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                </StackPanel>
-            </Border>
-
+            <Button cal:Message.Attach="[Click] = [Create]" IsEnabled="{Binding CanCreate}" Foreground="{StaticResource AccentPrimary}" FontSize="14" Grid.Column="3" VerticalAlignment="Center" FontWeight="Medium">CREATE</Button>
+            <Button cal:Message.Attach="[Click] = [Cancel]" FontSize="14" Grid.Column="1" VerticalAlignment="Center">CANCEL</Button>
         </Grid>
+        <StackPanel DockPanel.Dock="Top" Margin="8, 0">
+            <TextBlock Padding="0, 12, 0, 4">Name</TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="32"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="NameField" ToolTip="The name for your project."  Grid.Column="0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate TargetType="Control">
+                            <TextBlock Text="{Binding .CurrentItem.ErrorContent}" Foreground="Red" Margin="0, 35, 0, 0" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
+                        </ControlTemplate>
+                    </Validation.ErrorTemplate>
+                </TextBox>
 
+                <Viewbox x:Name="NameTick" Grid.Column="2" Width="24" Height="24">
+                    <Viewbox.Style>
+                        <Style TargetType="Viewbox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=NameField}" Value="True">
+                                    <DataTrigger.Setters>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger.Setters>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Viewbox.Style>
+                    <Canvas Width="24" Height="24">
+                        <Path Fill="#2BB94C" Data="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z" />
+                    </Canvas>
+                </Viewbox>
+            </Grid>
+            <TextBlock Padding="0, 20, 0, 4">Location</TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="32"/>
+                </Grid.ColumnDefinitions>
+                <TextBox ToolTip="The directory that your project folder will be created under." Text="{Binding Location}" Grid.Column="0"></TextBox>
+                <Button Style="{StaticResource ToolBarButtonStyle}" Grid.Column="2" cal:Message.Attach="[Click] = [Browse]">
+                    <Viewbox Width="24" Height="24">
+                        <Canvas Width="24" Height="24">
+                            <Path Data="M20,18H4V8H20M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z" Fill="Black" />
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+            </Grid>
+        </StackPanel>
     </DockPanel>
 </UserControl>

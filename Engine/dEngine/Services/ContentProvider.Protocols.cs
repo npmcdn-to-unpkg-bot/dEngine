@@ -51,7 +51,7 @@ namespace dEngine.Services
         {
             public Stream Fetch(Uri uri)
             {
-                return File.Open(GetAbsolutePath(uri), FileMode.Open);
+                return File.Open(uri.AbsolutePath, FileMode.Open);
             }
         }
 
