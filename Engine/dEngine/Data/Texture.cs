@@ -666,5 +666,10 @@ namespace dEngine.Data
 
             return dataStream;
         }
+
+        public Stream SaveTga()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

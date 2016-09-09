@@ -1124,6 +1124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Icons\Thumbs\" />
+    <Folder Include="Content\Lib\" />
     <Folder Include="Modules\Widgets\Properties\Inspectors\NumberSequence\" />
   </ItemGroup>
   <ItemGroup>

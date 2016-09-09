@@ -64,13 +64,6 @@ namespace dEngine.Instances
             ParentLocked = true;
 
             Singleton = this;
-
-            if (!UnitTestDetector.IsInUnitTest)
-            {
-                Debug.Assert(Parent != null, "Parent != null");
-                Debug.Assert(Parent == workspace, "Parent == workspace");
-            }
-
             /*
             var size = 128;
             for (int i = 0; i <= size; i++)

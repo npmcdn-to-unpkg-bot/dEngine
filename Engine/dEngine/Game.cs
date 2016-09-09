@@ -76,6 +76,7 @@ namespace dEngine
             DataModel.GetService<HistoryService>();
             DataModel.GetService<SocialService>();
             DataModel.GetService<ContextActionService>();
+            DataModel.GetService<CubemapFiltering>();
 
             Analytics = DataModel.GetService<AnalyticsService>();
             Players = DataModel.GetService<Players>();

@@ -24,52 +24,5 @@ namespace dEngine.Utility
                 Recurse(kv, func);
             }
         }
-
-        public static List<Instance> Where(this Instance root, Predicate<Instance> predicate, bool recurse = true)
-        {
-            var results = new List<Instance>();
-
-            Recurse(root, x =>
-            {
-                if (predicate(x))
-                    results.Add(x);
-                return -1;
-            });
-
-            return results;
-        }
-
-        public static Instance First(this Instance root, Predicate<Instance> predicate, bool recurse = true)
-        {
-            Instance result = null;
-            Recurse(root, x =>
-            {
-                if (predicate(x))
-                {
-                    result = x;
-                    return -1;
-                }
-                return 01;
-            });
-            return result;
-        }
-
-        public static void ForEach(this Instance root, Action<Instance> action)
-        {
-            foreach (var kv in root.Children)
-                action(kv);
-        }
-
-        internal class RecurseResult
-        {
-            public bool Continue;
-            public bool RecurseThis;
-
-            public RecurseResult(bool @continue, bool recurseThis = true)
-            {
-                Continue = @continue;
-                RecurseThis = recurseThis;
-            }
-        }
     }
 }

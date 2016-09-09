@@ -5724,6 +5724,17 @@
         <member name="F:dEngine.Services.ContextActionService.KeyCollection.KeyComparer">
             <summary />
         </member>
+        <member name="T:dEngine.Services.CubemapFiltering">
+            <summary>
+            A service for interfacting with the cubemap filtering tool.
+            </summary>
+        </member>
+        <member name="M:dEngine.Services.CubemapFiltering.IrradianceFilter(System.IO.Stream)">
+            <summary>
+            Processes the irradiance map for a texture.
+            </summary>
+            <param name="inputStream">A stream of TGA data.</param>
+        </member>
         <member name="T:dEngine.Services.LoginService">
             <summary>
             A service for logging into a user account.
@@ -9369,14 +9380,6 @@
         </member>
         <member name="F:dEngine.Utility.RawInputDefinitions.RawMouseButtons.MouseWheel">
             <summary>Mouse wheel moved.</summary>
-        </member>
-        <member name="T:dEngine.Utility.UnitTestDetector">
-            <summary>
-            Detects if we are running inside a unit test.
-            </summary>
-        </member>
-        <member name="P:dEngine.Utility.UnitTestDetector.IsInUnitTest">
-            <summary/>
         </member>
         <member name="T:dEngine.FriendStatus">
             <summary>
