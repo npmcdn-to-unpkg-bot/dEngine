@@ -30,6 +30,9 @@ namespace dEngine.Serializer.V1
 172
      */
 
+
+        // TODO: write IMetaData serialization
+
     /// <summary>
     /// Inst is a custom serialization format for <see cref="Instance" />s.
     /// </summary>
@@ -1122,6 +1125,11 @@ namespace dEngine.Serializer.V1
             InstanceId,
             FontFamily,
             Invalid = 255
+        }
+
+        public static Dictionary<string, string> ReadMeta(FileStream stream)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -437,12 +437,6 @@
     <Compile Include="Modules\Widgets\ObjectBrowser\EnumItemEntry.cs" />
     <Compile Include="Modules\Widgets\ObjectBrowser\ObjectTypeEntry.cs" />
     <Compile Include="Modules\Widgets\ObjectBrowser\MemberEntry.cs" />
-    <Compile Include="Modules\Dialogs\NewPlace\NewPlaceView.xaml.cs">
-      <DependentUpon>NewPlaceView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Dialogs\NewPlace\NewPlaceViewModel.cs" />
-    <Compile Include="Modules\Dialogs\ProjectProperties\PlaceItem.cs" />
-    <Compile Include="Modules\Dialogs\ProjectProperties\TemplateItem.cs" />
     <Compile Include="Framework\Services\WatermarkService.cs" />
     <Compile Include="Modules\Widgets\AdvancedObjects\AdvancedObjectsViewModel.cs" />
     <Compile Include="Modules\Widgets\AdvancedObjects\AdvancedObjectsView.xaml.cs">
@@ -538,10 +532,6 @@
       <DependentUpon>OutputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Widgets\Output\OutputViewModel.cs" />
-    <Compile Include="Modules\Dialogs\ProjectProperties\ProjectViewModel.cs" />
-    <Compile Include="Modules\Dialogs\ProjectProperties\ProjectView.xaml.cs">
-      <DependentUpon>ProjectView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Modules\Widgets\StartPage\IStartPage.cs" />
     <Compile Include="Modules\Dialogs\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -865,14 +855,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\Dialogs\NewPlace\NewPlaceView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Dialogs\ProjectProperties\ProjectView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Modules\Widgets\TeamExplorer\TeamExplorerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1153,10 +1135,6 @@
     <ProjectReference Include="..\..\Engine\dEngine\dEngine.csproj">
       <Project>{9ceb02f6-9904-424a-9263-7ac95a867129}</Project>
       <Name>dEngine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TeamBuildServer\TeamBuildServer.csproj">
-      <Project>{bd36f10c-a6bf-44a0-8956-1ff0348833ee}</Project>
-      <Name>TeamBuildServer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

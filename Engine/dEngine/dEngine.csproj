@@ -85,6 +85,7 @@
     <Compile Include="Instances\GUI\Animation\UDim2Animation.cs" />
     <Compile Include="Instances\GUI\Effects\CustomTextRenderer.cs" />
     <Compile Include="Instances\Hint.cs" />
+    <Compile Include="Instances\Interfaces\IMetaData.cs" />
     <Compile Include="Instances\Materials\MaterialBase.cs" />
     <Compile Include="Instances\Materials\Material.cs" />
     <Compile Include="Instances\Materials\MaterialInstance.cs" />

@@ -1,11 +1,14 @@
 ﻿// Renderer.cs - dEngine
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using C5;
 using dEngine.Data;
 using dEngine.Graphics.States;
@@ -18,6 +21,8 @@ using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using SharpDX.DXGI;
+using SharpDX.WIC;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using DeviceD3D = SharpDX.Direct3D11.Device1;
 using DeviceD2D = SharpDX.Direct2D1.Device1;
@@ -80,6 +85,10 @@ namespace dEngine.Graphics
 
         internal static float DeltaTime;
 
+        private static Task<Stream> _screenshotTask;
+
+        internal static Adapter Adapter;
+
         static Renderer()
         {
             DeltaTime = 0;
@@ -119,6 +128,25 @@ namespace dEngine.Graphics
         }
 
         internal static GfxShader.Pass CurrentPass { get; set; }
+
+        /// <summary>
+        /// Takes a screenshot of the next frame.
+        /// </summary>
+        public static async Task<Stream> TakeScreeenshot()
+        {
+            var screenshotFunc = new Func<Stream>(() =>
+            {
+                var camera = Game.Workspace.CurrentCamera;
+                var target = camera?.BackBuffer;
+
+                if ((camera == null) || (target == null) || !camera.CanRender)
+                    return new MemoryStream();
+
+                return target.SavePng();
+            });
+            _screenshotTask = _screenshotTask ?? (_screenshotTask = new Task<Stream>(screenshotFunc));
+            return await _screenshotTask;
+        }
 
         /// <summary>
         /// Fired when the <see cref="Renderer" /> has been initialized.
@@ -201,7 +229,7 @@ namespace dEngine.Graphics
 
             Logger.Info("Attempting to create device.");
 
-            var adapter = Factory.GetAdapter(graphicsAdapter);
+            Adapter = Factory.GetAdapter(graphicsAdapter);
 
             var levels = new[]
             {
@@ -212,11 +240,11 @@ namespace dEngine.Graphics
                 FeatureLevel.Level_9_3
             };
 
-            var device = new SharpDX.Direct3D11.Device(adapter, deviceCreationFlags, levels)
-                {DebugName = adapter.Description.Description};
+            var device = new SharpDX.Direct3D11.Device(Adapter, deviceCreationFlags, levels)
+                {DebugName = Adapter.Description.Description};
 
             Logger.Info(
-                $"GPU{graphicsAdapter}: {device.DebugName} ({((long)adapter.Description.DedicatedVideoMemory).ToPrettySize()} VRAM)");
+                $"GPU{graphicsAdapter}: {device.DebugName} ({((long)Adapter.Description.DedicatedVideoMemory).ToPrettySize()} VRAM)");
 
             Device = device.QueryInterface<DeviceD3D>();
             Device.DebugName = device.DebugName;
@@ -245,7 +273,7 @@ namespace dEngine.Graphics
             Logger.Info("D2D Device created.");
 
             Logger.Info("Filling out DebugSettings GPU info.");
-            DebugSettings.FillGpuInfo(adapter);
+            DebugSettings.FillGpuInfo(Adapter);
 
 #if DEBUG
             try
@@ -370,6 +398,9 @@ namespace dEngine.Graphics
                     DrawBillboardGuis(camera);
                     DrawScreenGuis(camera);
                 }
+
+                _screenshotTask?.RunSynchronously();
+                _screenshotTask = null;
 
                 if (camera.RenderHandle == IntPtr.Zero)
                     Context.Flush();

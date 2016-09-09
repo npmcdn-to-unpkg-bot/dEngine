@@ -4,8 +4,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using dEngine.Graphics;
 using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
 using dEngine.Services;
@@ -75,6 +77,27 @@ namespace dEngine.Instances
         public static void SetStartupArguments(Dictionary<string, string> arguments)
         {
             _arguments = arguments;
+        }
+
+        /// <summary>
+        /// Saves a screenshot to the game's documents folder.
+        /// </summary>
+        /// <returns>The path to the file.</returns>
+        [ScriptSecurity(ScriptIdentity.Editor | ScriptIdentity.Plugin)]
+        public string TakeScreenshot()
+        {
+            var screenshotsDir = Path.Combine(Engine.DocumentsPath, "Screenshots");
+            Directory.CreateDirectory(screenshotsDir);
+            var path = Path.Combine(screenshotsDir, $"Screenshot_{System.DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss-ff", CultureInfo.InvariantCulture)}.png");
+
+            using (var png = Renderer.TakeScreeenshot().Result)
+            using (var file = File.Create(path))
+            {
+                png.CopyTo(file);
+                Logger.Trace($"Screenshot saved to {path}");
+            }
+
+            return path;
         }
 
         /// <summary>

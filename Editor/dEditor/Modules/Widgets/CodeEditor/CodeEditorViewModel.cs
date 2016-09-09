@@ -171,12 +171,6 @@ namespace dEditor.Modules.Widgets.CodeEditor
             callback(true);
         }
 
-        public static void TryOpenScript(LuaSourceContainer script, int lineNumber = 0)
-        {
-            var editor = IoC.Get<ICodeEditor>(script.InstanceId);
-            Editor.Current.Shell.ActiveDocument = (CodeEditorViewModel)editor;
-        }
-
         public static readonly DependencyProperty ZoomInCommandProperty = DependencyProperty.Register("ZoomInCommand",
             typeof(ICommand), typeof(CodeEditorViewModel));
 

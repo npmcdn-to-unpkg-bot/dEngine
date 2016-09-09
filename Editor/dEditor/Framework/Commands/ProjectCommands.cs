@@ -1,12 +1,12 @@
 ﻿// ProjectCommands.cs - dEditor
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using System.Windows.Input;
 using Caliburn.Micro;
-using dEditor.Modules.Dialogs.NewPlace;
 using dEditor.Modules.Dialogs.NewProject;
 using dEditor.Modules.Shell;
 using dEditor.Modules.Shell.StatusBar;
@@ -26,8 +26,7 @@ namespace dEditor.Framework.Commands
 
         public override void Execute(object parameter)
         {
-            var model = new NewPlaceViewModel();
-            Editor.Current.WindowManager.ShowDialog(model, null, model.GetDialogSettings());
+            throw new NotImplementedException();
         }
     }
 

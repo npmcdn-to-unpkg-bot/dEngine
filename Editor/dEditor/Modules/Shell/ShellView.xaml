@@ -19,11 +19,11 @@
     xmlns:objectBrowser="clr-namespace:dEditor.Modules.Widgets.ObjectBrowser"
     xmlns:diagnostics="clr-namespace:dEditor.Modules.Widgets.Diagnostics"
     xmlns:chat="clr-namespace:dEditor.Modules.Widgets.Chat"
-    xmlns:projecteditor="clr-namespace:dEditor.Modules.Dialogs.ProjectProperties"
     xmlns:statusBar="clr-namespace:dEditor.Modules.Shell.StatusBar"
     xmlns:commandBar="clr-namespace:dEditor.Modules.Shell.CommandBar"
     xmlns:themes="clr-namespace:dEditor.Modules.Shell.Themes"
     xmlns:shell="clr-namespace:dEditor.Modules.Shell"
+    xmlns:projecteditor="clr-namespace:dEditor.Modules.Widgets.ProjectEditor"
     x:Class="dEditor.Modules.Shell.ShellView"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="800"
@@ -156,7 +156,7 @@
                             <MenuItem Header="Build" />
                             <MenuItem Header="Properties" cal:Message.Attach="[Click] = [ShowProjectProperties()]">
                                 <MenuItem.Tag>
-                                    <x:Type TypeName="projecteditor:ProjectViewModel" />
+                                    <x:Type TypeName="projecteditor:ProjectEditorViewModel" />
                                 </MenuItem.Tag>
                             </MenuItem>
                         </MenuItem>

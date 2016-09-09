@@ -4,10 +4,12 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using dEngine.Graphics;
 using dEngine.Instances;
 using dEngine.Instances.Diagnostics;
 using dEngine.Settings;

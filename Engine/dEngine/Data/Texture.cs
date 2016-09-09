@@ -3,10 +3,12 @@
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using dEngine.Graphics;
 using dEngine.Instances.Attributes;
 using dEngine.Utility;
+using dEngine.Utility.Extensions;
 using dEngine.Utility.Texture;
 using SharpDX;
 using SharpDX.Direct2D1;
@@ -18,6 +20,7 @@ using AlphaMode = SharpDX.Direct2D1.AlphaMode;
 using Bitmap = System.Drawing.Bitmap;
 using MapFlags = SharpDX.Direct3D11.MapFlags;
 using PixelFormat = SharpDX.WIC.PixelFormat;
+using Resource = SharpDX.DXGI.Resource;
 
 #pragma warning disable 1591
 
@@ -235,7 +238,7 @@ namespace dEngine.Data
 
                 for (var i = 0; i < arraySize; i++)
                 {
-                    var rtvDesc = new RenderTargetViewDescription {Format = format};
+                    var rtvDesc = new RenderTargetViewDescription { Format = format };
 
                     if (arraySize == 1)
                     {
@@ -277,7 +280,7 @@ namespace dEngine.Data
 
                 for (var i = 0; i < arraySize; i++)
                 {
-                    var srvDesc = new ShaderResourceViewDescription {Format = format};
+                    var srvDesc = new ShaderResourceViewDescription { Format = format };
 
                     if (arraySize == 1)
                     {
@@ -320,7 +323,7 @@ namespace dEngine.Data
                             break;
                     }
 
-                    var dsvDesc = new DepthStencilViewDescription {Format = format};
+                    var dsvDesc = new DepthStencilViewDescription { Format = format };
 
                     if (arraySize == 1)
                     {
@@ -351,7 +354,7 @@ namespace dEngine.Data
             var h = NativeTexture.Description.Height;
             Width = w;
             Height = h;
-            TexelSize = new Vector4(1.0f/w, 1.0f/h, w, h);
+            TexelSize = new Vector4(1.0f / w, 1.0f / h, w, h);
         }
 
         public static implicit operator Texture2D(Texture texture)
@@ -405,8 +408,8 @@ namespace dEngine.Data
                         {
                             converter.Initialize(frame, PixelFormat.Format32bppPRGBA);
 
-                            var stride = frame.Size.Width*4;
-                            using (var buffer = new DataStream(frame.Size.Height*stride, true, true))
+                            var stride = frame.Size.Width * 4;
+                            using (var buffer = new DataStream(frame.Size.Height * stride, true, true))
                             {
                                 converter.CopyPixels(stride, buffer);
 
@@ -432,7 +435,7 @@ namespace dEngine.Data
 
                 NativeTexture = texture;
                 if (texture.Description.BindFlags.HasFlag(BindFlags.ShaderResource))
-                    SrvArraySlices.Add(new ShaderResourceView(Renderer.Device, texture) {Tag = this, DebugName = Name});
+                    SrvArraySlices.Add(new ShaderResourceView(Renderer.Device, texture) { Tag = this, DebugName = Name });
             }
 
             IsLoaded = true;
@@ -559,12 +562,12 @@ namespace dEngine.Data
                     WICTranslate.GUIDFromFormat(NativeTexture.Description.Format),
                     dataRectangle);
 
-                var bytes = new byte[height*width*4];
+                var bytes = new byte[height * width * 4];
 
                 using (var converter = new FormatConverter(Renderer.ImagingFactory))
                 {
                     converter.Initialize(bitmap, PixelFormat.Format32bppPBGRA);
-                    converter.CopyPixels(bytes, width*4);
+                    converter.CopyPixels(bytes, width * 4);
                 }
 
                 return bytes;
@@ -598,5 +601,70 @@ namespace dEngine.Data
 
         internal readonly List<RenderTargetView> RtvArraySlices;
         internal readonly List<ShaderResourceView> SrvArraySlices;
+
+        public Stream SavePng()
+        {
+            using (var input = GetRawStream())
+            {
+                var output = new MemoryStream();
+                var pf = WICTranslate.GUIDFromFormat(NativeTexture.Description.Format);
+                
+                var dataStream = DataStream.Create(input.ToArray(), true, false);
+                var dataBox = new DataBox(dataStream.DataPointer);
+
+                var dataRectangle = new DataRectangle
+                {
+                    DataPointer = dataStream.DataPointer,
+                    Pitch = Width * 4
+                };
+
+                var bitmap = new SharpDX.WIC.Bitmap(
+                    Renderer.ImagingFactory,
+                    Width,
+                    Height,
+                    pf,
+                    dataRectangle);
+
+
+                var encoder = new PngBitmapEncoder(Renderer.ImagingFactory, output);
+                var frame = new BitmapFrameEncode(encoder);
+                var stride = PixelFormat.GetStride(pf, Width);
+                frame.Initialize();
+                frame.SetSize(Width, Height);
+                frame.SetPixelFormat(ref pf);
+                frame.WriteSource(bitmap);
+                frame.Commit();
+                encoder.Commit();
+                output.Position = 0;
+                return output;
+            }
+        }
+
+        private DataStream GetRawStream()
+        {
+            var stagingTex = new Texture2D(Renderer.Device, new Texture2DDescription
+            {
+                Width = Width,
+                Height = Height,
+                MipLevels = 1,
+                ArraySize = 1,
+                Format = NativeTexture.Description.Format,
+                Usage = ResourceUsage.Staging,
+                SampleDescription = new SampleDescription(1, 0),
+                BindFlags = BindFlags.None,
+                CpuAccessFlags = CpuAccessFlags.Read,
+                OptionFlags = ResourceOptionFlags.None
+            });
+            Renderer.Context.CopyResource(NativeTexture, stagingTex);
+
+            var screenSurface = stagingTex.QueryInterface<Surface>();
+            DataStream dataStream;
+            screenSurface.Map(SharpDX.DXGI.MapFlags.Read, out dataStream);
+
+            screenSurface.Dispose();
+            stagingTex.Dispose();
+
+            return dataStream;
+        }
     }
 }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:services="clr-namespace:dEditor.Framework.Services"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="900">
     <UserControl.Resources>
@@ -61,7 +62,33 @@
                 <TabItem Header="PROJECT">
                     <Button>Test</Button>
                 </TabItem>
-                <TabItem Header="PLACES"></TabItem>
+                <TabItem Header="PLACES">
+                    <ListView>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="128"/>
+                                        <ColumnDefinition Width="8"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" VerticalAlignment="Center" Source="https://app.goocreate.com/api/thumbs/84cafd7001ffc2d7a18e2f251ebad52811f82a29.jpg"/>
+                                    <StackPanel Grid.Column="2" Height="100" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding}" Margin="0,10, 0, 0" FontFamily="Roboto" FontSize="17" FontWeight="Normal"/>
+                                        <TextBlock Width="600" TextWrapping="WrapWithOverflow"  FontFamily="Roboto" Opacity="0.7" FontSize="14" FontWeight="Normal" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent posuere elit a sodales interdum. Maecenas dictum, nunc sed luctus laoreet, dui lorem dignissim mauris, vitae dignissim quam sem quis nunc. "/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Items>
+                            <system:String>Frontend</system:String>
+                            <system:String>City</system:String>
+                            <system:String>Space</system:String>
+                            <system:String>Japan</system:String>
+                            <system:String>Desert</system:String>
+                        </ListView.Items>
+                    </ListView>
+                </TabItem>
                 <TabItem Header="ASSETS"></TabItem>
             </TabControl>
         </DockPanel>

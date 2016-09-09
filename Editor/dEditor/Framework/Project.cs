@@ -4,9 +4,9 @@
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml.Serialization;
 using Caliburn.Micro;
-using dEditor.Modules.Dialogs.NewPlace;
 using dEditor.Modules.Shell.StatusBar;
 using dEditor.Modules.Widgets.Viewport;
 using dEngine;
@@ -14,16 +14,51 @@ using dEngine.Instances;
 using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
 using dEngine.Services;
-using TeamBuildServer;
+using DateTime = System.DateTime;
 
 namespace dEditor.Framework
 {
     [Serializable]
+    [TypeId(2144)]
+    public class TeamProject : Project
+    {
+        
+    }
+
+    [TypeId(2143)]
+    public class Place
+    {
+        public string Name { get; set; }
+        public string File { get; set; }
+        public string Description { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+        public ImageSource Thumbnail { get; set; }
+    }
+
+    [Serializable]
     [TypeId(2142)]
-    public sealed class Project : PropertyChangedBase
+    public class Project : PropertyChangedBase
     {
         private string _startupPlace;
         private ViewportViewModel _viewportVm;
+
+        private Place LoadPlaceItem(string placeFile)
+        {
+            using (var stream = File.OpenRead(placeFile))
+            {
+                var content = Inst.ReadMeta(stream);
+
+                var place = new Place
+                {
+                    Name = Path.GetFileNameWithoutExtension(placeFile),
+                    Description = content["Description"],
+                    File = placeFile,
+                };
+
+                return place;
+            }
+        }
 
         public Project()
         {
@@ -134,7 +169,7 @@ namespace dEditor.Framework
             Editor.Current.Project = proj;
             Game.Workspace.PlaceId = proj.StartupPlace;
 
-            NewPlaceViewModel.LoadBaseplate();
+            // TODO: load baseplate
 
             proj.Save();
             proj.Open();
@@ -146,7 +181,7 @@ namespace dEditor.Framework
         /// <summary>
         /// Saves the loaded project.
         /// </summary>
-        public void Save(bool saveDM = true)
+        public void Save(bool saveGame = true)
         {
             if (RunService.SimulationState != SimulationState.Stopped)
                 throw new InvalidOperationException("Cannot save while simulation is running.");
@@ -160,7 +195,7 @@ namespace dEditor.Framework
                 projSerializer.Serialize(stream, this);
             }
 
-            if (saveDM)
+            if (saveGame)
             {
                 DataModel.Save(SaveFilter.SaveGame);
                 DataModel.Save(SaveFilter.SaveWorld);
@@ -266,11 +301,6 @@ namespace dEditor.Framework
                     .ToString()
                     .Replace('/', Path.DirectorySeparatorChar));
             return $"content://{uri}";
-        }
-
-        public static explicit operator TeamBuildProject(Project project)
-        {
-            return new TeamBuildProject(project.Name, project.AppId, Game.Workspace.PlaceId, project.ProjectPath);
         }
 
         #region XML Properties

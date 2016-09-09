@@ -45,6 +45,8 @@ namespace dEngine.Utility
 
         public static Guid GUIDFromFormat(Format format)
         {
+            if (format == Format.R8G8B8A8_UNorm_SRgb)
+                format = Format.R8G8B8A8_UNorm;
             return _dictionary.First(kv => kv.Value == format).Key;
         }
     }

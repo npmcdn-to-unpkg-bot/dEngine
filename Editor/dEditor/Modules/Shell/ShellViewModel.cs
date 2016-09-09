@@ -15,12 +15,12 @@ using dEditor.Framework;
 using dEditor.Framework.Commands;
 using dEditor.Framework.Services;
 using dEditor.Modules.Dialogs.MeshImport;
-using dEditor.Modules.Dialogs.ProjectProperties;
 using dEditor.Modules.Dialogs.Settings;
 using dEditor.Modules.Shell.CommandBar;
 using dEditor.Modules.Shell.Commands;
 using dEditor.Modules.Shell.StatusBar;
 using dEditor.Modules.Widgets.CodeEditor;
+using dEditor.Modules.Widgets.ProjectEditor;
 using dEditor.Modules.Widgets.Viewport;
 using dEditor.Tools;
 using dEditor.Tools.Building;
@@ -130,6 +130,9 @@ namespace dEditor.Modules.Shell
 
             var lastItem = ActiveItem;
 
+            // BUG: InvalidOperationException
+            // Cannot change ObservableCollection during a CollectionChanged event.
+            // when pressing ctrl+o
             base.ActivateItem(item);
 
             if (!ReferenceEquals(item, lastItem))
@@ -156,8 +159,9 @@ namespace dEditor.Modules.Shell
         {
             if (Project.Current != null)
             {
-                var projectVm = new ProjectViewModel();
-                Editor.Current.WindowManager.ShowDialog(projectVm, null, projectVm.GetDialogSettings());
+                var doc =
+                Editor.Current.Shell.Items.OfType<ProjectEditorViewModel>().FirstOrDefault() ?? new ProjectEditorViewModel();
+                doc.Activate();
             }
         }
 

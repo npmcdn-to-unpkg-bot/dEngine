@@ -232,18 +232,23 @@ namespace dEditor
 
             shell.OpenDocument(new StartPageViewModel());
 
-            // TODO: remove test autoload
-            var p = Project.Load(@"C:\Users\Dan\Documents\dEditor\Projects\\BoundingBoxTest\BoundingBoxTest.dproj");
-            p.Open();
 
-            shell.OpenDocument(new ProjectEditorViewModel());
-            /*
-            var mat = new Material();
-            var tex = new TextureParamaterNode();
-            mat.AddNode(tex);
-            tex.RGB.ConnectTo(((FinalNode)mat.FinalNode).BaseColour);
-            shell.OpenDocument(new MaterialEditorViewModel(mat));
-            */
+            var testProj = @"C:\Users\Dan\Documents\dEditor\Projects\BoundingBoxTest\BoundingBoxTest.dproj";
+            if (File.Exists(testProj))
+            {
+                // TODO: remove test autoload
+                var p = Project.Load(testProj);
+                p.Open();
+
+                shell.ShowProjectProperties();
+                /*
+                var mat = new Material();
+                var tex = new TextureParamaterNode();
+                mat.AddNode(tex);
+                tex.RGB.ConnectTo(((FinalNode)mat.FinalNode).BaseColour);
+                shell.OpenDocument(new MaterialEditorViewModel(mat));
+                */
+            }
         }
 
         protected override void OnExit(object sender, EventArgs e)

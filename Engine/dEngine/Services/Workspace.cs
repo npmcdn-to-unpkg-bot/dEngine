@@ -2,6 +2,7 @@
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 using System;
+using System.Collections.Generic;
 using System.IO;
 using dEngine.Graphics;
 using dEngine.Instances;
@@ -22,7 +23,7 @@ namespace dEngine.Services
     [TypeId(3)]
     [ExplorerOrder(1)]
     [ToolboxGroup("Containers")]
-    public sealed class Workspace : Service, IWorld
+    public sealed class Workspace : Service, IWorld, IMetaData
     {
         private Camera _currentCamera;
         private string _placeId = "";
@@ -83,6 +84,25 @@ namespace dEngine.Services
             {
                 if (value == _placeId) return;
                 _placeId = value;
+                NotifyChanged();
+            }
+        }
+
+        private string _description;
+
+        /// <summary>
+        /// A description of the place.
+        /// </summary>
+        [EditorVisible]
+        [InstMember(5)]
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                if (value == _description)
+                    return;
+                _description = value;
                 NotifyChanged();
             }
         }
@@ -301,5 +321,13 @@ namespace dEngine.Services
         }
 
 #endregion
+
+        Dictionary<string, string> IMetaData.GetMetaData()
+        {
+            return new Dictionary<string, string>
+            {
+                {"Description", Description},
+            };
+        }
     }
 }

@@ -666,6 +666,11 @@
             The size of the <see cref="P:dEngine.Engine.Control" />.
             </summary>
         </member>
+        <member name="M:dEngine.Graphics.Renderer.TakeScreeenshot">
+            <summary>
+            Takes a screenshot of the next frame.
+            </summary>
+        </member>
         <member name="E:dEngine.Graphics.Renderer.Initialized">
             <summary>
             Fired when the <see cref="T:dEngine.Graphics.Renderer" /> has been initialized.
@@ -1188,6 +1193,16 @@
         </member>
         <member name="M:dEngine.Instances.Hint.#ctor">
             <summary />
+        </member>
+        <member name="T:dEngine.Instances.IMetaData">
+            <summary>
+            Interface for objects to provide metadata which can be read without deserializing the entire hierarchy.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.IMetaData.GetMetaData">
+            <summary>
+            Returns a dictionary of metadata.
+            </summary>
         </member>
         <member name="T:dEngine.Instances.Materials.Material">
             <summary>
@@ -5176,6 +5191,12 @@
             Sets the startup arguments for the game.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.DataModel.TakeScreenshot">
+            <summary>
+            Saves a screenshot to the game's documents folder.
+            </summary>
+            <returns>The path to the file.</returns>
+        </member>
         <member name="M:dEngine.Instances.DataModel.GetStartupArguments">
             <summary>
             Returns a dictionary of startup arguments.
@@ -7176,6 +7197,11 @@
         <member name="P:dEngine.Services.Workspace.PlaceId">
             <summary>
             The name of the currently loaded place.
+            </summary>
+        </member>
+        <member name="P:dEngine.Services.Workspace.Description">
+            <summary>
+            A description of the place.
             </summary>
         </member>
         <member name="P:dEngine.Services.Workspace.DistributedGameTime">

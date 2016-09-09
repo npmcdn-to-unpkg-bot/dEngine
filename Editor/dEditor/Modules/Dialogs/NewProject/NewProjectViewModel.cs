@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using dEditor.Framework;
-using dEditor.Modules.Dialogs.NewPlace;
 using dEditor.Modules.Widgets.StartPage;
 using Ookii.Dialogs.Wpf;
 
@@ -30,17 +29,9 @@ namespace dEditor.Modules.Dialogs.NewProject
             _name = "MyGame";
 
             DisplayName = "New Project";
-
-            Templates = new ObservableCollection<ProjectTemplate>
-            {
-                new ProjectTemplate("Baseplate", NewPlaceViewModel.LoadBaseplate)
-            };
-
-            SelectedTemplate = Templates.First();
+            
             UpdateCanCreate();
         }
-
-        public ObservableCollection<ProjectTemplate> Templates { get; }
 
         public ProjectTemplate SelectedTemplate { get; set; }
 
