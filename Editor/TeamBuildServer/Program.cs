@@ -12,17 +12,12 @@ namespace TeamBuildServer
     public class TeamBuild
     {
         public static int Port { get; private set; } = 32300;
-        public static TeamBuildProject Project { get; private set; }
 
         private static void Main(string[] args)
         {
-#if DEBUG
-            Start(new TeamBuildProject("Test", 480, "Place1",
-                "C:/Users/Dan/Documents/dEditor/Projects/MyGametest/MyGametest.dproj"));
-#endif
         }
 
-        public static void Start(TeamBuildProject project)
+        public static void Start()
         {
             Engine.SaveGame = SaveGame;
 
@@ -38,7 +33,7 @@ namespace TeamBuildServer
                 Game.DataModel.SaveGame(SaveFilter.SaveWorld);
             }), 100000);
 
-            Game.Workspace.LoadPlace(project.Place);
+            //Game.Workspace.LoadPlace(project.Place);
         }
 
         private static void SaveGame(Stream stream)
