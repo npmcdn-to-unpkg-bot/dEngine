@@ -16,7 +16,7 @@ namespace dEditor.Modules.Shell.Commands
 
         public override bool CanExecute(object parameter)
         {
-            return Project.Current != null;
+            return true;
         }
 
         public override void Execute(object parameter)

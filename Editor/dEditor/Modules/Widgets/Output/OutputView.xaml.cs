@@ -20,7 +20,7 @@ namespace dEditor.Modules.Widgets.Output
 
         private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            var scrollViewer = (ScrollViewer)e.Source;
+            var scrollViewer = (ScrollViewer)e.OriginalSource;
 
             if (e.ExtentHeightChange == 0)
                 if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
@@ -29,7 +29,7 @@ namespace dEditor.Modules.Widgets.Output
                     _autoScroll = false;
 
             if (_autoScroll && (e.ExtentHeightChange != 0))
-                scrollViewer.ScrollToVerticalOffset((e.Source as ScrollViewer).ExtentHeight);
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
         }
     }
 }

@@ -139,11 +139,11 @@ namespace dEngine.Services
                         Script.IsRunning = true;
                         CurrentScript = Script;
 
-                        var chunk = Lua.CompileChunk(new StringReader(Script.Source), Script.InstanceId, compileOptions,
+                        var chunk = Lua.CompileChunk(Script.Source, Script.InstanceId, compileOptions,
                             new KeyValuePair<string, Type>("args", typeof(LuaTable)));
                         var argsTable = Args.ToLuaTable();
 
-                        Result = Script.LuaGlobal.DoChunk(chunk, argsTable);
+                        Result = GlobalEnvironment.DoChunk(chunk, argsTable);
                         Script.IsRunning = false;
                     }
                     catch (Exception e)

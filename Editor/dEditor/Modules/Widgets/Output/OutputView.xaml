@@ -31,7 +31,7 @@
 
         <DataTemplate DataType="{x:Type local:OutputItem}">
             <Grid IsSharedSizeScope="True">
-                <TextBlock Text="{Binding Message}" Foreground="{Binding Brush}"
+                <TextBlock Margin="0" Padding="0" FontFamily="{StaticResource PrimaryFont}" Text="{Binding Message, Mode=OneWay}" Foreground="{Binding Brush}"
                            TextWrapping="Wrap" />
             </Grid>
         </DataTemplate>
@@ -95,7 +95,7 @@
                     <Image Width="16" Height="16" Source="/Content/Icons/Toolbar/WordWrap_6774.png" />
                 </ToggleButton>
             </ToolBar>
-            <ItemsControl ItemsSource="{Binding Entries}" Style="{StaticResource LogViewerStyle}" />
+            <ItemsControl Padding="4" ItemsSource="{Binding Entries}" Style="{StaticResource LogViewerStyle}" />
         </DockPanel>
     </Grid>
 </UserControl>

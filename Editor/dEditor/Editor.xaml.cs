@@ -48,7 +48,8 @@ namespace dEditor
 
             WindowManager = new WindowManager();
 
-            PlaySoloScript = new Script {LinkedSource = "editor://Content/Scripts/PlaySolo.lua"};
+            PlaySoloScript = new Script {Name="PlaySolo", LinkedSource = "editor://Content/Scripts/PlaySolo.lua"};
+            TeamBuildClientScript = new Script { Name = "TeamBuildClient", LinkedSource = "editor://Content/Scripts/PlaySolo.lua" };
 
             DispatcherUnhandledException += CurrentOnDispatcherUnhandledException;
             ProjectChanged += OnProjectChanged;
@@ -88,6 +89,7 @@ namespace dEditor
 
         public AppArgs Args { get; set; }
         public static Script PlaySoloScript { get; set; }
+        public static Script TeamBuildClientScript { get; set; }
 
         /// <summary>
         /// Fired when <see cref="Project" /> is changed.

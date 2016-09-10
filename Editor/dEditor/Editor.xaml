@@ -10,7 +10,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Styles/Accents/Dark.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Styles/Accents/Light.xaml"/>
-                
+
                 <ResourceDictionary>
                     <local:AppBootstrapper x:Key="bootstrapper" />
                     <converters:BooleanToVisibilityConverter x:Key="BoolToVisConverter" True="Visible"
@@ -40,6 +40,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/Controls/List.xaml" />
 
                 <ResourceDictionary>
+                    <FontFamily x:Key="PrimaryFont">Roboto</FontFamily>
                     <Style TargetType="Border">
                         <Setter Property="BorderBrush" Value="{StaticResource BorderPrimary}"/>
                     </Style>
@@ -49,8 +50,14 @@
                         <Setter Property="BorderThickness" Value="0"/>
                     </Style>
                     <Style TargetType="Window">
-                        <Setter Property="FontFamily" Value="Roboto" />
+                        <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
                         <Setter Property="Foreground" Value="{StaticResource TextColourPrimary}"/>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
+                    </Style>
+                    <Style TargetType="Label">
+                        <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
                     </Style>
                     <Style TargetType="ComboBox">
                         <Setter Property="Background" Value="{StaticResource BackgroundPrimary}"/>

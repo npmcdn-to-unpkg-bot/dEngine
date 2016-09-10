@@ -464,7 +464,7 @@ namespace dEngine.Services
                 LightingConstantBuffer.Update(ref Renderer.Context);
             }
 
-            Shadows.Direction = new SharpDX.Vector3(-sunVector.x, sunVector.y, -sunVector.z);
+            Shadows.Direction = new SharpDX.Vector3(sunVector.x, sunVector.y, sunVector.z);
         }
 
         private Tuple<MinutePair<T>, MinutePair<T>, float> GetPairDelta<T>(IList<MinutePair<T>> list)

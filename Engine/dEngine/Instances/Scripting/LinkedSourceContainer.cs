@@ -11,14 +11,14 @@ namespace dEngine.Instances
     /// Base class for an object containing source code.
     /// </summary>
     [TypeId(59)]
-    public abstract class SourceContainer : Instance
+    public abstract class LinkedSourceContainer : Instance
     {
         private Content<TextSource> _linkedSource;
 
         private string _source;
 
         /// <inheritdoc />
-        protected SourceContainer()
+        protected LinkedSourceContainer()
         {
             _linkedSource = new Content<TextSource>();
 

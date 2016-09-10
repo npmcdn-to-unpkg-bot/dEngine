@@ -419,7 +419,7 @@
     <Compile Include="Instances\Model.cs" />
     <Compile Include="Instances\Scripting\Script.cs" />
     <Compile Include="Instances\Scripting\ModuleScript.cs" />
-    <Compile Include="Instances\Scripting\SourceContainer.cs" />
+    <Compile Include="Instances\Scripting\LinkedSourceContainer.cs" />
     <Compile Include="Services\StarterGui.cs" />
     <Compile Include="Services\Workspace.cs" />
     <Compile Include="Engine.cs" />

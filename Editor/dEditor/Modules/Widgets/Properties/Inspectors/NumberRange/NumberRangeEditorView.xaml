@@ -15,7 +15,7 @@
         <Grid Column="0" VerticalAlignment="Center">
             <TextBox services:InputBindingManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
                      TextAlignment="Left" Text="{Binding MinValue, Converter={StaticResource NumToTextConverter}}" />
-            <Label Margin="1" Padding="0, 4, 4, 0" Background="White" FontFamily="Roboto" Foreground="#CCC"
+            <Label Margin="1" Padding="0, 4, 4, 0" Background="White" FontFamily="{StaticResource PrimaryFont}" Foreground="#CCC"
                    HorizontalAlignment="Right">
                 <Label.Style>
                     <Style TargetType="Label">
@@ -40,7 +40,7 @@
             <TextBox services:InputBindingManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
                      Width="{Binding TextBoxWidth}"
                      Text="{Binding MaxValue, Converter={StaticResource NumToTextConverter}}" TextAlignment="Left" />
-            <Label Margin="1" Padding="0, 4, 4, 0" Background="White" FontFamily="Roboto" Foreground="#CCC"
+            <Label Margin="1" Padding="0, 4, 4, 0" Background="White" FontFamily="{StaticResource PrimaryFont}" Foreground="#CCC"
                    HorizontalAlignment="Right">
                 <Label.Style>
                     <Style TargetType="Label">

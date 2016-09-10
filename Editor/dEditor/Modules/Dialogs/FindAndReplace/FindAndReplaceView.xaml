@@ -12,9 +12,9 @@
             <Button>Close</Button>
         </StackPanel>
         <StackPanel>
-            <TextBlock Padding="4" FontFamily="Roboto" FontSize="15">Find what:</TextBlock>
+            <TextBlock Padding="4" FontFamily="{StaticResource PrimaryFont}" FontSize="15">Find what:</TextBlock>
             <TextBox Text="{Binding MatchText}" />
-            <TextBlock Padding="4" FontFamily="Roboto" FontSize="15">Look in:</TextBlock>
+            <TextBlock Padding="4" FontFamily="{StaticResource PrimaryFont}" FontSize="15">Look in:</TextBlock>
             <ComboBox SelectedIndex="{Binding LookInOptionIndex}" ItemsSource="{Binding LookInModes}" />
         </StackPanel>
     </DockPanel>

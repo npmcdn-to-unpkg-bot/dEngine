@@ -1,4 +1,5 @@
-﻿local username, userId = unpack(args)
+﻿print(args)
+local username, userId = unpack(args)
 
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")

@@ -34,7 +34,7 @@
             <Grid Background="MediumPurple">
                 <Grid Margin="10, 4, 36, 4">
                     <TextBlock Foreground="White" Margin="0, 1, 0, 0" Text="{Binding Path=DisplayName}"
-                               FontFamily="Roboto" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                               FontFamily="{StaticResource PrimaryFont}" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     <TextBlock Foreground="White" Margin="0, 16, 0, 0" Text="{Binding Path=SubName}"
                                Visibility="{Binding SubNameVisible, Converter={StaticResource BoolToVisConverter}}"
                                Opacity="0.8" FontFamily="Roboto Light" />

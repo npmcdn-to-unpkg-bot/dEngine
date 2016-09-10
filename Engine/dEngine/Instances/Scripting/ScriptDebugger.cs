@@ -125,7 +125,7 @@ namespace dEngine.Instances
         /// </summary>
         public Dictionary<string, object> GetGlobals()
         {
-            return Script.LuaGlobal.ToDictionary(pair => (string)pair.Key, pair => pair.Value);
+            return ScriptService.GlobalEnvironment.ToDictionary(pair => (string)pair.Key, pair => pair.Value);
         }
 
         /// <summary>
@@ -137,11 +137,11 @@ namespace dEngine.Instances
         }
 
         /// <summary>
-        /// Sets a global variable in the script.
+        /// Sets a global variable.
         /// </summary>
         public void SetGlobal(string key, object value)
         {
-            Script.LuaGlobal[key] = value;
+            ScriptService.GlobalEnvironment[key] = value;
         }
 
         /// <summary>

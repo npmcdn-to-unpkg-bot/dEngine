@@ -227,7 +227,7 @@ namespace dEngine.Instances
         /// The minimum draw distance.
         /// </summary>
         [InstMember(2)]
-        [EditorVisible("Camera")]
+        //[EditorVisible("Camera")]
         public float ClipNear
         {
             get { return _clipNear; }
@@ -245,7 +245,7 @@ namespace dEngine.Instances
         /// The maximum draw distance.
         /// </summary>
         [InstMember(3)]
-        [EditorVisible("Camera")]
+        //[EditorVisible("Camera")]
         public float ClipFar
         {
             get { return _clipFar; }
@@ -280,7 +280,7 @@ namespace dEngine.Instances
         /// The type of projection this camera uses.
         /// </summary>
         [InstMember(5)]
-        [EditorVisible("Camera")]
+        //[EditorVisible("Camera")]
         public Projection Projection
         {
             get { return _projection; }
@@ -564,6 +564,7 @@ namespace dEngine.Instances
         internal void UpdateCamera(double step)
         {
             Velocity = _cameraSubject?.GetVelocity() ?? Vector3.Zero;
+            _currentBehaviour.Update(step);
         }
 
         private void CreateSwapChain(IntPtr handle, Device device)

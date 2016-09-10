@@ -23,7 +23,7 @@
                 </Ellipse.Effect>
             </Ellipse>
             <TextBlock DockPanel.Dock="Right" x:Name="NodeLabel" Text="{Binding Header, ElementName=PinControl}"
-                       Foreground="Black" FontFamily="Roboto" VerticalAlignment="Center" />
+                       Foreground="Black" FontFamily="{StaticResource PrimaryFont}" VerticalAlignment="Center" />
         </DockPanel>
     </Button>
 </UserControl>

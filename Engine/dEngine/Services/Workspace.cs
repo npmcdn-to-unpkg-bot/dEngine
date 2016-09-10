@@ -172,6 +172,11 @@ namespace dEngine.Services
             }
         }
 
+        private void UpdateCamera(double step)
+        {
+            _currentCamera.UpdateCamera(step);
+        }
+
         /// <summary />
         protected override bool OnParentFilter(Instance newParent)
         {

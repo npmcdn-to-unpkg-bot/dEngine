@@ -421,7 +421,7 @@ namespace dEngine
 
             public static void Wait()
             {
-                _resetter.Wait();
+                _resetter.Wait(CancelTokenSource.Token);
             }
 
             public static void Enqueue(Action action)
@@ -473,7 +473,7 @@ namespace dEngine
 
             public static void Wait()
             {
-                _resetter.Wait();
+                _resetter.Wait(CancelTokenSource.Token);
             }
 
             public static void Enqueue(Action action)

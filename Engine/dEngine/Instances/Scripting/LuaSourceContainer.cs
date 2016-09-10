@@ -11,12 +11,11 @@ namespace dEngine.Instances
     /// Base class for an object containing Lua source code.
     /// </summary>
     [TypeId(209)]
-    public class LuaSourceContainer : SourceContainer
+    public abstract class LuaSourceContainer : LinkedSourceContainer
     {
         /// <summary />
-        public LuaSourceContainer()
+        protected LuaSourceContainer()
         {
-            LuaGlobal = ScriptService.GlobalEnvironment;
             Source = "print 'Hello world!'";
         }
 
@@ -28,7 +27,6 @@ namespace dEngine.Instances
         internal Player CurrentEditor { get; set; }
 
         internal LuaThread LuaThread { get; set; }
-        internal LuaGlobal LuaGlobal { get; set; }
         internal ScriptDebugger Debugger { get; set; }
 
         internal ScriptIdentity Identity { get; set; }

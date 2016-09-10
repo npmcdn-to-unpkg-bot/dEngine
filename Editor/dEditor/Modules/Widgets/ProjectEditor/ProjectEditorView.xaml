@@ -5,8 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:services="clr-namespace:dEditor.Framework.Services"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:converters="clr-namespace:dEditor.Framework.Converters"
+             xmlns:projectEditor="clr-namespace:dEditor.Modules.Widgets.ProjectEditor"
+             xmlns:framework="clr-namespace:dEditor.Framework"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="900">
+             d:DesignHeight="600" d:DesignWidth="900" d:DataContext="{d:DesignInstance projectEditor:ProjectEditorViewModel}">
     <UserControl.Resources>
         <Storyboard x:Key="UploadIconStoryboardEnter">
             <DoubleAnimation Duration="0:0:0.1" From="0" To="1" Storyboard.TargetProperty="Opacity"/>
@@ -14,6 +17,7 @@
         <Storyboard x:Key="UploadIconStoryboardLeave">
             <DoubleAnimation Duration="0:0:0.1" From="1" To="0" Storyboard.TargetProperty="Opacity"/>
         </Storyboard>
+        <converters:BooleanToVisibilityConverter x:Key="InvBoolToVisConverter" True="Hidden" False="Visible"/>
     </UserControl.Resources>
     <Grid Background="{StaticResource BackgroundPrimary}">
         <DockPanel>
@@ -21,18 +25,18 @@
                 <Grid x:Name="ProjectIcon">
                     <Image x:Name="ProjectImage" Width="48" Height="48" Source="/dEditor;component/Content/Icons/default-place-icon2.png"/>
                     <Grid Opacity="0" PreviewMouseLeftButtonDown="ImageUploader_OnPreviewMouseLeftButtonDown" x:Name="ImageUploader" Background="#7F000000">
-                         <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Style.Triggers>
-                                <EventTrigger RoutedEvent="MouseEnter">
-                                    <BeginStoryboard Storyboard="{StaticResource UploadIconStoryboardEnter}"/>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="MouseLeave">
-                                    <BeginStoryboard Storyboard="{StaticResource UploadIconStoryboardLeave}"/>
-                                </EventTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <EventTrigger RoutedEvent="MouseEnter">
+                                        <BeginStoryboard Storyboard="{StaticResource UploadIconStoryboardEnter}"/>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="MouseLeave">
+                                        <BeginStoryboard Storyboard="{StaticResource UploadIconStoryboardLeave}"/>
+                                    </EventTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
                         <Viewbox Width="24" Height="24">
                             <Canvas Width="24" Height="24">
                                 <Path Opacity="0.8" Fill="White" Data="M21,17H7V3H21M21,1H7A2,2 0 0,0 5,3V17A2,2 0 0,0 7,19H21A2,2 0 0,0 23,17V3A2,2 0 0,0 21,1M3,5H1V21A2,2 0 0,0 3,23H19V21H3M15.96,10.29L13.21,13.83L11.25,11.47L8.5,15H19.5L15.96,10.29Z" />
@@ -40,7 +44,7 @@
                         </Viewbox>
                     </Grid>
                 </Grid>
-                <TextBox Background="Transparent" MaxLength="25" Focusable="True" VerticalAlignment="Center" x:Name="ProjectTitle" Text="{Binding Path=Project.Name}" LostKeyboardFocus="ProjectTitle_OnLostKeyboardFocus" BorderThickness="0" IsReadOnly="true" Margin="8, 0" FontWeight="Normal" FontSize="24"  services:InputBindingManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
+                <TextBox Background="Transparent" KeyDown="ProjectTitle_OnKeyDown" MaxLength="25" Focusable="True" VerticalAlignment="Center" x:Name="ProjectTitle" Text="{Binding Path=Project.Name}" LostKeyboardFocus="ProjectTitle_OnLostKeyboardFocus" BorderThickness="0" IsReadOnly="true" Margin="8, 0" FontWeight="Normal" FontSize="24"  services:InputBindingManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
                 <Button x:Name="EditTitleButton" PreviewMouseLeftButtonDown="EditTitleButton_OnMouseLeftButtonDown" VerticalAlignment="Center" Margin="0, 0, 0, 0" Style="{StaticResource ToolBarButtonStyle}">
                     <Image Opacity="0.5" Width="24" Height="24" Stretch="None" Source="/dEditor;component/Content/Icons/Toolbar/PencilAngled_16xMD.png">
                         <Image.Style>
@@ -63,30 +67,28 @@
                     <Button>Test</Button>
                 </TabItem>
                 <TabItem Header="PLACES">
-                    <ListBox>
+                    <ListBox ItemsSource="{Binding Project.Places}" ScrollViewer.CanContentScroll="False" HorizontalContentAlignment="Stretch">
                         <ListBox.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="framework:Place">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="128"/>
                                         <ColumnDefinition Width="8"/>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="100"/>
                                     </Grid.ColumnDefinitions>
-                                    <Image Grid.Column="0" VerticalAlignment="Center" Source="https://app.goocreate.com/api/thumbs/84cafd7001ffc2d7a18e2f251ebad52811f82a29.jpg"/>
+                                    <Image Grid.Column="0" VerticalAlignment="Center" Source="{Binding Thumbnail}"/>
                                     <StackPanel Grid.Column="2" Height="100" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding}" Margin="0,10, 0, 0" FontFamily="Roboto" FontSize="17" FontWeight="Normal"/>
-                                        <TextBlock Width="600" TextWrapping="WrapWithOverflow"  FontFamily="Roboto" Opacity="0.7" FontSize="14" FontWeight="Normal" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent posuere elit a sodales interdum. Maecenas dictum, nunc sed luctus laoreet, dui lorem dignissim mauris, vitae dignissim quam sem quis nunc. "/>
+                                        <StackPanel Margin="0,10, 0, 0" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" FontFamily="{StaticResource PrimaryFont}" FontSize="17" FontWeight="Normal" HorizontalAlignment="Left"/>
+                                            <Image Visibility="{Binding Path=IsStartupPlace, Converter={StaticResource BoolToVisConverter}}" Margin="4, 3, 0, 0" Source="/dEditor;component/Content/Icons/Objects/world.png" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Width="600" TextWrapping="WrapWithOverflow" FontFamily="{StaticResource PrimaryFont}" Opacity="0.7" FontSize="14" FontWeight="Normal" Text="{Binding Description}" HorizontalAlignment="Left"/>
                                     </StackPanel>
+                                    <Button Visibility="{Binding Path=IsOpen, Converter={StaticResource InvBoolToVisConverter}}" Grid.Column="3" Opacity="0.7" Style="{StaticResource ToolBarButtonStyle}">OPEN</Button>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                        <ListBox.Items>
-                            <system:String>Frontend</system:String>
-                            <system:String>City</system:String>
-                            <system:String>Space</system:String>
-                            <system:String>Japan</system:String>
-                            <system:String>Desert</system:String>
-                        </ListBox.Items>
                     </ListBox>
                 </TabItem>
                 <TabItem Header="ASSETS"></TabItem>
@@ -94,3 +96,4 @@
         </DockPanel>
     </Grid>
 </UserControl>
+

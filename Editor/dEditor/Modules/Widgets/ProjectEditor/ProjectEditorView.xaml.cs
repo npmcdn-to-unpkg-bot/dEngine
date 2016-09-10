@@ -88,5 +88,13 @@ namespace dEditor.Modules.Widgets.ProjectEditor
                 MessageBox.Show($"Could not import icon: {e.Message}", "dEditor", MessageBoxButton.OK);
             }
         }
+
+        private void ProjectTitle_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Keyboard.ClearFocus();
+            }
+        }
     }
 }

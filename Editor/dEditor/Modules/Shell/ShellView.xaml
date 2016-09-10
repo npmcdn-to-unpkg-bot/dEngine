@@ -201,7 +201,7 @@
                                      RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True"
                                      UseLayoutRounding="True">
                             <ToolBar Template="{StaticResource ToolBarTemplate}">
-                                <Button Command="{Binding NewPlaceCommand}"
+                                <Button Command="{Binding NewPlaceCommand}" Margin="0, 0, 0, 1"
                                         Style="{StaticResource ToolBarButtonStyle}">
                                     <Image Source="/dEditor;component/Content/Icons/Toolbar/File.png" />
                                 </Button>
@@ -245,10 +245,10 @@
                                 </Button>
                             </ToolBar>
                             <ToolBar Template="{StaticResource ToolBarTemplate}">
-                                <Button Command="{Binding PlaySoloCommand}">
+                                <Button Command="{Binding PlaySoloCommand}" Style="{StaticResource ToolBarButtonStyle}">
                                     <Image Source="/dEditor;component/Content/Icons/Toolbar/playsolo.png" />
                                 </Button>
-                                <Button Command="{Binding RunCommand}">
+                                <Button Command="{Binding RunCommand}" Style="{StaticResource ToolBarButtonStyle}">
                                     <Image Source="/dEditor;component/Content/Icons/Toolbar/arrow_run_16xLG.png" />
                                 </Button>
                                 <Button Command="{Binding PauseCommand}" Style="{StaticResource ToolBarButtonStyle}">

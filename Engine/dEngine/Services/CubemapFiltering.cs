@@ -9,6 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using dEngine.Data;
 using dEngine.Instances;
+using dEngine.Instances.Attributes;
 using dEngine.Settings.Global;
 using dEngine.Utility;
 
@@ -17,6 +18,7 @@ namespace dEngine.Services
     /// <summary>
     /// A service for interfacting with the cubemap filtering tool.
     /// </summary>
+    [ExplorerOrder(-1)]
     internal class CubemapFiltering : Service
     {
         private static string _cmft;

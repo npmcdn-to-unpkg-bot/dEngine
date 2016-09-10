@@ -64,7 +64,7 @@ namespace dEngine.Instances
 
         internal override void Update(double step)
         {
-            var dt = (float)step/(1/16.0f);
+            var dt = (float)step/(1/60.0f);
             var camera = _camera;
 
             var camCF = camera.CFrame;
@@ -87,9 +87,9 @@ namespace dEngine.Instances
 
             focus = focus*
                     dt*
-                    (_shiftHeld
+                    ((_shiftHeld
                         ? UserGameSettings.CameraShiftSpeed
-                        : UserGameSettings.CameraSpeed) +
+                        : UserGameSettings.CameraSpeed) * 0.5f) +
                     camera.Focus.p;
 
             var lookVector = camera.CFrame.lookVector;

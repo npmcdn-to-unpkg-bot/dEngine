@@ -1,9 +1,10 @@
 ﻿// Project.cs - dEditor
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
 using Caliburn.Micro;
@@ -15,6 +16,7 @@ using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
 using dEngine.Services;
 using DateTime = System.DateTime;
+// ReSharper disable UnusedVariable
 
 namespace dEditor.Framework
 {
@@ -22,7 +24,6 @@ namespace dEditor.Framework
     [TypeId(2144)]
     public class TeamProject : Project
     {
-        
     }
 
     [TypeId(2143)]
@@ -34,6 +35,8 @@ namespace dEditor.Framework
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
         public ImageSource Thumbnail { get; set; }
+        public bool IsStartupPlace => Project.Current.StartupPlace == Name;
+        public bool IsOpen => Game.Workspace.PlaceId == Name;
     }
 
     [Serializable]
@@ -42,27 +45,22 @@ namespace dEditor.Framework
     {
         private string _startupPlace;
         private ViewportViewModel _viewportVm;
-
-        private Place LoadPlaceItem(string placeFile)
-        {
-            using (var stream = File.OpenRead(placeFile))
-            {
-                var content = Inst.ReadMeta(stream);
-
-                var place = new Place
-                {
-                    Name = Path.GetFileNameWithoutExtension(placeFile),
-                    Description = content["Description"],
-                    File = placeFile,
-                };
-
-                return place;
-            }
-        }
+        private List<Place> _places;
 
         public Project()
         {
             AppId = 480;
+        }
+
+        public List<Place> Places
+        {
+            get { return _places; }
+            set
+            {
+                if (Equals(value, _places)) return;
+                _places = value;
+                NotifyOfPropertyChange();
+            }
         }
 
         [XmlIgnore]
@@ -98,9 +96,40 @@ namespace dEditor.Framework
         /// </summary>
         public event Action<string> StartupPlaceChanged;
 
+        // TODO: add a file watcher
+        private void UpdatePlaces()
+        {
+            Places.Clear();
+
+            foreach (var file in Directory.GetFiles(Path.Combine(ProjectPath, "Places"), "*.place"))
+            {
+                Places.Add(LoadPlaceItem(file));
+            }
+        }
+
+        private static Place LoadPlaceItem(string placeFile)
+        {
+            using (var stream = File.OpenRead(placeFile))
+            {
+                var meta = Inst.ReadMeta(stream);
+
+                var place = new Place
+                {
+                    Name = Path.GetFileNameWithoutExtension(placeFile),
+                    Description = meta["Description"],
+                    File = placeFile,
+                    Created = File.GetCreationTimeUtc(placeFile),
+                    Modified = File.GetLastWriteTimeUtc(placeFile)
+                };
+
+                return place;
+            }
+        }
+
         /// <summary>
         /// Initializes a project object from the given project file.
         /// </summary>
+        /// <seealso cref="Open"/>
         public static Project Load(string projFile)
         {
             if (!File.Exists(projFile))
@@ -113,6 +142,7 @@ namespace dEditor.Framework
                 var project = (Project)serializer.Deserialize(reader);
                 project.ProjectFile = projFile;
                 project.ProjectPath = Path.GetDirectoryName(projFile);
+                project.UpdatePlaces();
 
                 return project;
             }
@@ -162,20 +192,34 @@ namespace dEditor.Framework
                 CompanyName = Environment.UserName,
                 ProjectPath = rootPath,
                 ProjectFile = projFile,
-                StartupPlace = "Place1",
+                StartupPlace = "Frontend",
                 IsNew = true
             };
 
             Editor.Current.Project = proj;
             Game.Workspace.PlaceId = proj.StartupPlace;
 
-            // TODO: load baseplate
-
+            GenerateFrontend();
+            
             proj.Save();
             proj.Open();
 
 
             return proj;
+        }
+
+        private static void GenerateFrontend()
+        {
+            var baseplate = new Part
+            {
+                Anchored = true,
+                Size = new Vector3(512, 10, 512),
+                Position = new Vector3(0, -10, 0),
+                Parent = Game.Workspace,
+                BrickColour = new Colour(0.388235f, 0.372549f, 0.384314f)
+            };
+
+            // TODO: generate a main menu
         }
 
         /// <summary>
@@ -203,7 +247,7 @@ namespace dEditor.Framework
         }
 
         /// <summary>
-        /// Opens the project.
+        /// Loads the game and startup place.
         /// </summary>
         public void Open()
         {
@@ -212,7 +256,7 @@ namespace dEditor.Framework
             statusBar.IsFrozen = true;
 
             IsOpen = true;
-            
+
             Editor.Current.Shell.Viewport?.TryClose();
             Editor.Current.Project = this;
 

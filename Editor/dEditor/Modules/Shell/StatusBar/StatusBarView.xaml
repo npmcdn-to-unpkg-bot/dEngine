@@ -7,6 +7,6 @@
              d:DesignHeight="300" d:DesignWidth="300"
              Background="{StaticResource AccentPrimary}"
              Height="23">
-    <TextBlock Margin="4, 1, 0, 0" FontSize="13" FontFamily="Roboto" Text="Ready" Foreground="White"
+    <TextBlock Margin="4, 1, 0, 0" FontSize="13" FontFamily="{StaticResource PrimaryFont}" Text="Ready" Foreground="White"
                VerticalAlignment="Center" />
 </UserControl>

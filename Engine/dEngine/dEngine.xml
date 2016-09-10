@@ -3804,7 +3804,7 @@
         </member>
         <member name="M:dEngine.Instances.ScriptDebugger.SetGlobal(System.String,System.Object)">
             <summary>
-            Sets a global variable in the script.
+            Sets a global variable.
             </summary>
         </member>
         <member name="F:dEngine.Instances.ScriptDebugger.BreakpointAdded">
