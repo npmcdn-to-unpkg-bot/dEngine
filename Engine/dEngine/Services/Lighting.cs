@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using dEngine.Data;
 using dEngine.Graphics;
 using dEngine.Graphics.Structs;
 using dEngine.Instances;

@@ -48,8 +48,9 @@ namespace dEditor
 
             WindowManager = new WindowManager();
 
-            DispatcherUnhandledException += CurrentOnDispatcherUnhandledException;
+            PlaySoloScript = new Script {LinkedSource = "editor://Content/Scripts/PlaySolo.lua"};
 
+            DispatcherUnhandledException += CurrentOnDispatcherUnhandledException;
             ProjectChanged += OnProjectChanged;
         }
 
@@ -86,6 +87,7 @@ namespace dEditor
         }
 
         public AppArgs Args { get; set; }
+        public static Script PlaySoloScript { get; set; }
 
         /// <summary>
         /// Fired when <see cref="Project" /> is changed.

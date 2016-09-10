@@ -23,8 +23,6 @@ namespace dEngine.Instances
     [ExplorerOrder(0)]
     public class Sky : Instance, IRenderable
     {
-        private Reference<Cubemap> _irradRef;
-        private Reference<Cubemap> _radRef;
         private Content<Cubemap> _skyboxContent;
 
         /// <inheritdoc />
@@ -50,8 +48,8 @@ namespace dEngine.Instances
             };
         }
 
-        internal Cubemap IrradianceMap => _irradRef;
-        internal Cubemap RadianceMap => _radRef;
+        internal Cubemap IrradianceMap { get; private set; }
+        internal Cubemap RadianceMap { get; private set; }
 
         /// <summary>
         /// The cubemap texture.
@@ -65,7 +63,11 @@ namespace dEngine.Instances
             set
             {
                 _skyboxContent = value;
-                value.Subscribe(this);
+                value.Subscribe(this, (s, cubemap) =>
+                {
+                    //IrradianceMap = CubemapFiltering.GetIrradianceMap(cubemap);
+                    //RadianceMap = CubemapFiltering.GetRadianceMap(cubemap);
+                });
                 NotifyChanged();
             }
         }
@@ -76,16 +78,9 @@ namespace dEngine.Instances
         internal Texture Starfield { get; private set; }
 
         internal Cubemap Cubemap => _skyboxContent.Asset;
-
-        private void SetTestMaps()
-        {
-            _irradRef = CacheableContentProvider<Cubemap>.Get(new Uri(@"C:\Users\Dan\cmft_win64\irradiance.dds"));
-            _radRef = CacheableContentProvider<Cubemap>.Get(new Uri(@"C:\Users\Dan\cmft_win64\radiance.dds"));
-        }
-
+        
         private void GenerateStarfield()
         {
-            SetTestMaps();
             Starfield?.Dispose();
 
             var data = new DataRectangle[6];

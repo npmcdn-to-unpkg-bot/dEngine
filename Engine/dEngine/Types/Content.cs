@@ -102,7 +102,7 @@ namespace dEngine
         ~Content()
         {
             _reference = null;
-            _onGot = null;
+            Unsubscribe();
         }
 
         /// <summary>
@@ -114,6 +114,12 @@ namespace dEngine
 
             if (IsLoaded)
                 callback?.Invoke(_contentId, Asset);
+        }
+
+        /// <inheritdoc />
+        public void Unsubscribe()
+        {
+            _onGot = null;
         }
 
         private void OnResourceDownloaded()

@@ -4008,6 +4008,9 @@
             The number of cells per chunk.
             </summary>
         </member>
+        <member name="M:dEngine.Instances.Terrain.ChangeRenderObject">
+            <summary/>
+        </member>
         <member name="P:dEngine.Instances.Terrain.MaxExtents">
             <summary>
             Displays the boundaries of the largest possible region.
@@ -5729,11 +5732,17 @@
             A service for interfacting with the cubemap filtering tool.
             </summary>
         </member>
+        <member name="M:dEngine.Services.CubemapFiltering.RadianceFilter(System.IO.Stream)">
+            <summary>
+            Processes the radiance map for a texture.
+            </summary>
+            <param name="textureStream">A stream of TGA/DDS data.</param>
+        </member>
         <member name="M:dEngine.Services.CubemapFiltering.IrradianceFilter(System.IO.Stream)">
             <summary>
             Processes the irradiance map for a texture.
             </summary>
-            <param name="inputStream">A stream of TGA data.</param>
+            <param name="textureStream">A stream of TGA/DDS data.</param>
         </member>
         <member name="T:dEngine.Services.LoginService">
             <summary>
@@ -6685,11 +6694,6 @@
         <member name="M:dEngine.Services.RunService.UnbindFromRenderStep(System.String)">
             <summary>
             Detaches the given function from the render loop.
-            </summary>
-        </member>
-        <member name="M:dEngine.Services.RunService.Play">
-            <summary>
-            Starts or resumes the simulation as a player.
             </summary>
         </member>
         <member name="M:dEngine.Services.RunService.Run">
@@ -11274,6 +11278,9 @@
             <summary>
             Sets the given object as the content owner, and subscribes with a callback.
             </summary>
+        </member>
+        <member name="M:dEngine.Content`1.Unsubscribe">
+            <inheritdoc />
         </member>
         <member name="M:dEngine.Content`1.ToString">
             <summary />

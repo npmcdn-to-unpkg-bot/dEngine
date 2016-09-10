@@ -203,7 +203,7 @@ namespace dEditor.Modules.Widgets.MaterialEditor
                 Size = new UDim2(0, 16, 0, 16),
                 AlignmentX = AlignmentX.Center,
                 AlignmentY = AlignmentY.Middle,
-                ImageId = $"editor://Icons/{icon}.png",
+                ImageId = $"editor://Content/Icons/{icon}.png",
                 Parent = button
             };
 

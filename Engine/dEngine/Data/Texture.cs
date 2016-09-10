@@ -604,11 +604,44 @@ namespace dEngine.Data
 
         public Stream SavePng()
         {
+                return SaveWithWic<PngBitmapEncoder>();
+        }
+
+        public Stream SaveDds()
+        {
+            if (!NativeTexture.Description.OptionFlags.HasFlag(ResourceOptionFlags.TextureCube))
+                return SaveWithWic<DdsBitmapEncoder>();
+
+            var output = new MemoryStream();
+            var pf = WICTranslate.GUIDFromFormat(NativeTexture.Description.Format);
+
+            var encoder = new DdsBitmapEncoder(this);
+
+            for (var i = 0; i < 6; i++)
+            {
+                int mipSize;
+                var box = Renderer.Context.MapSubresource(NativeTexture, 0, i, MapMode.Read, MapFlags.None, out mipSize);
+                var rect = new DataRectangle(box.DataPointer, box.RowPitch);
+                var frame = new BitmapFrameEncode(encoder);
+                frame.Initialize();
+                frame.SetSize(Width, Height);
+                frame.SetPixelFormat(ref pf);
+                frame.WritePixels(Height, rect);
+                frame.Commit();
+            }
+
+            encoder.Commit();
+            output.Position = 0;
+            return output;
+        }
+
+        private Stream SaveWithWic<TEncoder>() where TEncoder : BitmapEncoder
+        {
             using (var input = GetRawStream())
             {
                 var output = new MemoryStream();
                 var pf = WICTranslate.GUIDFromFormat(NativeTexture.Description.Format);
-                
+
                 var dataStream = DataStream.Create(input.ToArray(), true, false);
                 var dataBox = new DataBox(dataStream.DataPointer);
 
@@ -625,8 +658,7 @@ namespace dEngine.Data
                     pf,
                     dataRectangle);
 
-
-                var encoder = new PngBitmapEncoder(Renderer.ImagingFactory, output);
+                var encoder = (TEncoder)Dynamitey.Dynamic.InvokeConstructor(typeof(TEncoder), Renderer.ImagingFactory, output);
                 var frame = new BitmapFrameEncode(encoder);
                 var stride = PixelFormat.GetStride(pf, Width);
                 frame.Initialize();
@@ -665,11 +697,6 @@ namespace dEngine.Data
             stagingTex.Dispose();
 
             return dataStream;
-        }
-
-        public Stream SaveTga()
-        {
-            throw new NotImplementedException();
         }
     }
 }

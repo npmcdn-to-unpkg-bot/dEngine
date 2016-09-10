@@ -17,6 +17,7 @@ using MapFlags = SharpDX.Direct3D11.MapFlags;
 namespace dEngine.Utility.Texture
 {
     // TODO: decompression
+    // TODO: encoding
     internal class DDSImage : ITextureFormat, IDisposable
     {
         internal const int Magic = 'D' | ('D' << 8) | ('S' << 16) | (' ' << 24);

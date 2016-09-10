@@ -22,7 +22,7 @@ namespace dEngine.Services
     /// </summary>
     [TypeId(153)]
     [ExplorerOrder(-1)]
-    public partial class RunService : Service
+    public sealed class RunService : Service
     {
         private static readonly ConcurrentQueue<TaskCompletionSource<PhysicsSimulation>> _simulationCreationQueue =
             new ConcurrentQueue<TaskCompletionSource<PhysicsSimulation>>();
@@ -45,19 +45,10 @@ namespace dEngine.Services
             SimulationPaused = new Signal(this);
             SimulationResumed = new Signal(this);
             SimulationEnded = new Signal(this);
-
-            ContextActionService.Register("playPause", PlayPause);
+            
             ContextActionService.Register("stop", Stop);
 
             RenderStepped.Connect(OnRenderStep);
-        }
-
-        private void PlayPause()
-        {
-            if (SimulationState == SimulationState.Running)
-                Pause();
-            else
-                Play();
         }
 
         private void OnRenderStep(double dt)
@@ -97,25 +88,6 @@ namespace dEngine.Services
                     _dictionary.Remove(name);
                     _bindings.Remove(binding);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Starts or resumes the simulation as a player.
-        /// </summary>
-        public void Play()
-        {
-            switch (SimulationState)
-            {
-                case SimulationState.Running:
-                    throw new InvalidOperationException("The session is already running.");
-                case SimulationState.Paused:
-                    SimulationState = SimulationState.Running;
-                    Engine.GameThread.Enqueue(SimulationResumed.Fire);
-                    break;
-                default:
-                    _requestPlay = true;
-                    break;
             }
         }
 
@@ -286,10 +258,7 @@ namespace dEngine.Services
                 return Name?.GetHashCode() ?? 0;
             }
         }
-    }
 
-    public partial class RunService
-    {
         private static Logger InternalLogger;
         private static MemoryStream _dataModelStream;
         private static Stopwatch _updateStopwatch;
@@ -349,22 +318,7 @@ namespace dEngine.Services
             var isServer = NetworkPeer.IsServer();
             var isClient = NetworkPeer.IsClient();
 
-            if (isServer)
-                InternalLogger.Info("Server session starting.");
-
             ScriptService.ExecuteAllScripts(isClient, isServer);
-
-            if (isClient)
-            {
-                InternalLogger.Info("Client session starting.");
-
-                if (SimulationType == SimulationType.Play)
-                {
-                    var localPlayer = Players.Service.CreateLocalPlayer();
-                    Players.Service.LocalPlayer = localPlayer;
-                    Players.Service.PlayerAdded?.Fire(localPlayer);
-                }
-            }
 
             Service.SimulationStarted.Fire();
         }

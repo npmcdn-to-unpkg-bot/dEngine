@@ -91,6 +91,18 @@ namespace dEngine.Instances
             //SetCell(0, 0, 0, CellMaterial.Grass);
         }
 
+        /// <summary/>
+        protected override void ChangeRenderObject()
+        {
+            lock (Locker)
+            {
+                if (RenderObject != null)
+                    if (RenderIndex == -1)
+                        return;
+                RenderObject?.Remove(this);
+            }
+        }
+
         /// <summary>
         /// Displays the boundaries of the largest possible region.
         /// </summary>

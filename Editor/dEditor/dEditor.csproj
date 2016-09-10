@@ -305,6 +305,7 @@
     <Compile Include="Modules\Shell\CommandBar\CommandBarViewModel.cs" />
     <Compile Include="Modules\Shell\CommandBar\ICommandBar.cs" />
     <Compile Include="Modules\Shell\Commands\ExecuteScriptCommand.cs" />
+    <Compile Include="Modules\Shell\Commands\GarbageCollectCommand.cs" />
     <Compile Include="Modules\Shell\Commands\PluginsFolderCommand.cs" />
     <Compile Include="Modules\Shell\IShell.cs" />
     <Compile Include="Modules\Shell\StatusBar\IStatusBar.cs" />
@@ -629,6 +630,8 @@
     <EmbeddedResource Include="Content\Syntax\Lua.xshd" />
     <None Include="Content\BuiltInPlugins\RBXAvatarImport.Lua" />
     <Resource Include="Content\KeyboardShortcuts.json" />
+    <Resource Include="Content\Scripts\PlaySolo.lua" />
+    <Resource Include="Content\Scripts\TeamBuildClient.lua" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -1376,6 +1379,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Content\Icons\logo-small-invert.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Content\Icons\Objects\arrow_refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Content\Icons\Toolbar\playsolo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -63,8 +63,8 @@
                     <Button>Test</Button>
                 </TabItem>
                 <TabItem Header="PLACES">
-                    <ListView>
-                        <ListView.ItemTemplate>
+                    <ListBox>
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -79,15 +79,15 @@
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>
-                        </ListView.ItemTemplate>
-                        <ListView.Items>
+                        </ListBox.ItemTemplate>
+                        <ListBox.Items>
                             <system:String>Frontend</system:String>
                             <system:String>City</system:String>
                             <system:String>Space</system:String>
                             <system:String>Japan</system:String>
                             <system:String>Desert</system:String>
-                        </ListView.Items>
-                    </ListView>
+                        </ListBox.Items>
+                    </ListBox>
                 </TabItem>
                 <TabItem Header="ASSETS"></TabItem>
             </TabControl>

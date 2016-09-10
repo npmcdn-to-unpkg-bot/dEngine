@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
 using System.Windows.Input;
 using dEngine;
+using dEngine.Graphics;
 using dEngine.Services;
 using Key = System.Windows.Input.Key;
 
@@ -21,7 +22,7 @@ namespace dEditor.Framework.Commands
         }
     }
 
-    public class PlayCommand : SessionCommand
+    public class PlaySoloCommand : SessionCommand
     {
         public override string Name => "Play";
         public override string Text => "Simulate the game as a player.";
@@ -33,7 +34,7 @@ namespace dEditor.Framework.Commands
 
         public override void Execute(object parameter)
         {
-            RunService.Service.Play();
+            Editor.PlaySoloScript.Run(LoginService.ProfileName, LoginService.UserId);
         }
     }
 

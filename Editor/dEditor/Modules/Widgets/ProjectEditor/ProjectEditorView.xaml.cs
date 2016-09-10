@@ -46,7 +46,7 @@ namespace dEditor.Modules.Widgets.ProjectEditor
 
             if (!File.Exists(iconFile))
             {
-                using (var input = ContentProvider.DownloadStream(new Uri("editor://Icons/default-place.png")).Result)
+                using (var input = ContentProvider.DownloadStream(new Uri("editor://Content/Icons/default-place.png")).Result)
                 using (var output = File.Create(iconFile))
                 {
                     var encoder = new PngBitmapEncoder();

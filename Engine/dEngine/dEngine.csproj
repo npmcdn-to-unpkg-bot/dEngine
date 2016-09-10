@@ -124,6 +124,7 @@
     <Compile Include="Types\MaterialNodeCollection.cs" />
     <Compile Include="Utility\Collections\ArrayListEx.cs" />
     <Compile Include="Utility\Collections\OrderedDictionary.cs" />
+    <Compile Include="Utility\DirectDrawSurface.cs" />
     <Compile Include="Utility\Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Utility\Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="Utility\Extensions\StringExtensions.cs" />

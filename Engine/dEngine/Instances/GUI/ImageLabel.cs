@@ -1,6 +1,8 @@
 ﻿// ImageLabel.cs - dEngine
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
+using System;
 using dEngine.Data;
 using dEngine.Graphics;
 using dEngine.Instances.Attributes;
@@ -42,6 +44,7 @@ namespace dEngine.Instances
             get { return _imageContent; }
             set
             {
+                _imageContent?.Unsubscribe();
                 _imageContent = value;
                 value.Subscribe(value, OnImageContentUpdated);
                 NotifyChanged();
@@ -100,7 +103,7 @@ namespace dEngine.Instances
 
         private void OnImageContentUpdated(string url, Texture texture)
         {
-            if (url != _imageContent)
+            if (!string.Equals(url, _imageContent.ContentId, StringComparison.OrdinalIgnoreCase))
                 return;
 
             _bitmap?.Dispose();

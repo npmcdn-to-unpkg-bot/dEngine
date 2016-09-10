@@ -21,14 +21,18 @@ namespace dEngine.Services
     {
         private static string _cmft;
         private static string _filteringPath;
-        private const string _outputParams = "dds,rgb8,cubemap";
+        private const string _outputParams = "dds,BGR8,cubemap";
         private static MemoizingMRUCache<Cubemap, Cubemap> _irradianceCache;
         private static MemoizingMRUCache<Cubemap, Cubemap> _radianceCache;
 
+        internal static Service Service;
+
         public CubemapFiltering()
         {
-            _irradianceCache = new MemoizingMRUCache<Cubemap, Cubemap>((key, c) => LoadCubemap(IrradianceFilter(key.Texture.SaveTga()).Result), int.MaxValue);
-            _radianceCache = new MemoizingMRUCache<Cubemap, Cubemap>((key, c) => LoadCubemap(RadianceFilter(key.Texture.SaveTga()).Result), int.MaxValue);
+            Service = this;
+
+            _irradianceCache = new MemoizingMRUCache<Cubemap, Cubemap>((key, c) => LoadCubemap(IrradianceFilter(key.Texture.SaveDds()).Result), int.MaxValue);
+            _radianceCache = new MemoizingMRUCache<Cubemap, Cubemap>((key, c) => LoadCubemap(RadianceFilter(key.Texture.SaveDds()).Result), int.MaxValue);
 
             _filteringPath = Path.Combine(Engine.TempPath, "Filtering");
             Directory.CreateDirectory(_filteringPath);
@@ -40,12 +44,6 @@ namespace dEngine.Services
             {
                 cmftRaw.CopyTo(exe);
             }
-
-#if DEBUG
-            var result1 = IrradianceFilter(File.OpenRead(@"C:\Users\Dan\cmft_win64\sky512.tga")).Result;
-            var result2 = RadianceFilter(File.OpenRead(@"C:\Users\Dan\cmft_win64\sky512.tga")).Result;
-            Process.Start(_filteringPath);
-#endif
         }
 
         private Cubemap LoadCubemap(string file)
@@ -84,11 +82,11 @@ namespace dEngine.Services
         {
             const int srcFaceSize = 256;
             const int dstFaceSize = 256;
-            const int mipCount = 9;
-            const int glossScale = 10;
+            const int mipCount = 8;
+            const int glossScale = 8;
             const int glossBias = 1;
             const int numCpuProcessingThreads = 4;
-            const LightingModel lightingModel = LightingModel.PhongBrdf;
+            const LightingModel lightingModel = LightingModel.BlinnBrdf; // cmft doesn't support GGX yet
             const float inputGammaNumerator = 1.0f;
             const float inputGammaDenominator = 1.0f;
             const float outputGammaNumerator = 1.0f;
@@ -99,8 +97,8 @@ namespace dEngine.Services
 
             return await Task.Run(() =>
             {
-                var tempInput = Path.Combine(_filteringPath, $"{Guid.NewGuid():N}.tga");
-                var tempOutput = Path.Combine(_filteringPath, $"{Guid.NewGuid():N}.dds");
+                var tempInput = Path.Combine(_filteringPath, $"{Guid.NewGuid():N}.dds");
+                var tempOutput = Path.Combine(_filteringPath, $"{Guid.NewGuid():N}");
                 using (var inputStream = File.Create(tempInput))
                 {
                     textureStream.CopyTo(inputStream);
@@ -110,11 +108,17 @@ namespace dEngine.Services
                     FileName = _cmft,
                     CreateNoWindow = true,
                     UseShellExecute = false,
-                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     Arguments = $"--input {tempInput} --filter radiance --srcFaceSize {srcFaceSize} --dstFaceSize {dstFaceSize} --excludeBase {excludeBase} --generateMipChain {generateMipChain} --mipCount {mipCount} --glossScale {glossScale} --glossBias {glossBias} --lightingModel {lightingModel} --numCpuProcessingThreads {numCpuProcessingThreads} --useOpenCL {useOpenCL} --clVendor anyGpuVendor --deviceType gpu --deviceIndex {RenderSettings.GraphicsAdapter} --inputGammaNumerator {inputGammaNumerator} --inputGammaDenominator {inputGammaDenominator} --outputGammaNumerator {outputGammaNumerator} --outputGammaDenominator {outputGammaDenominator} --outputNum 1 --output0 {tempOutput} --output0params {_outputParams}"
                 });
-                proc?.WaitForExit();
-                return tempOutput;
+                Debug.Assert(proc != null, "proc != null");
+                while (!proc.StandardError.EndOfStream)
+                {
+                    Engine.Logger.Error(proc.StandardError.ReadLine());
+                }
+                proc.WaitForExit();
+                File.Delete(tempInput);
+                return tempOutput + ".dds";
             });
         }
 
@@ -126,8 +130,8 @@ namespace dEngine.Services
         {
             return await Task.Run(() =>
             {
-                var tempInput = Path.Combine(_filteringPath, $"{Guid.NewGuid():N}.tga");
-                var tempOutput = Path.Combine(_filteringPath, $"{Guid.NewGuid():N}.dds");
+                var tempInput = Path.Combine(_filteringPath, $"{Guid.NewGuid():N}.dds");
+                var tempOutput = Path.Combine(_filteringPath, $"{Guid.NewGuid():N}");
                 using (var inputStream = File.Create(tempInput))
                 {
                     textureStream.CopyTo(inputStream);
@@ -137,11 +141,17 @@ namespace dEngine.Services
                     FileName = _cmft,
                     CreateNoWindow = true,
                     UseShellExecute = false,
-                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     Arguments = $"--input {tempInput} --filter irradiance --outputNum 1 --output0 {tempOutput} --outputOparams {_outputParams}"
                 });
-                proc?.WaitForExit();
-                return tempOutput;
+                Debug.Assert(proc != null, "proc != null");
+                while (!proc.StandardError.EndOfStream)
+                {
+                    Engine.Logger.Error(proc.StandardError.ReadLine());
+                }
+                proc.WaitForExit();
+                File.Delete(tempInput);
+                return tempOutput + ".dds";
             });
         }
 

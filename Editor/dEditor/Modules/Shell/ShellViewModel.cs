@@ -324,7 +324,8 @@ namespace dEditor.Modules.Shell
         public GroupCommand GroupCommand { get; } = new GroupCommand();
         public UngroupCommand UngroupCommand { get; } = new UngroupCommand();
 
-        public PlayCommand PlayCommand { get; } = new PlayCommand();
+
+        public PlaySoloCommand PlaySoloCommand { get; } = new PlaySoloCommand();
         public RunCommand RunCommand { get; } = new RunCommand();
         public PauseCommand PauseCommand { get; } = new PauseCommand();
         public StopCommand StopCommand { get; } = new StopCommand();
@@ -333,6 +334,7 @@ namespace dEditor.Modules.Shell
         public RedoCommand RedoCommand { get; } = new RedoCommand();
 
         public ExecuteScriptCommand ExecuteScriptCommand { get; } = new ExecuteScriptCommand();
+        public GarbageCollectCommand GarbageCollectCommand { get; } = new GarbageCollectCommand();
 
         public CommandBarViewModel CommandBar { get; set; } = new CommandBarViewModel();
         public StatusBarViewModel StatusBar { get; set; } = new StatusBarViewModel();
