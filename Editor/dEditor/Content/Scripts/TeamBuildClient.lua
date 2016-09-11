@@ -27,7 +27,7 @@ function Orb.new (player, colour)
 	cylinder.Name = "Cylinder"
 	cylinder.Shape = Enum.Shape.Cylinder
 	cylinder.Size = Vector3.new(0.25, 2.5, 0.25)
-	..Transparency = transparency
+	cylinder.Transparency = transparency
 	cylinder.BrickColour = colour
 
 	local cone = Instance.new("Part", model)

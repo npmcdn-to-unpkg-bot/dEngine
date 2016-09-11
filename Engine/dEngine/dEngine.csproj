@@ -96,6 +96,13 @@
     <Compile Include="Instances\Materials\Slot.cs" />
     <Compile Include="Instances\Materials\SlotType.cs" />
     <Compile Include="Instances\Message.cs" />
+    <Compile Include="Instances\Networking\Messages\IMessageHandler.cs" />
+    <Compile Include="Instances\Networking\Messages\RemoteEventFire.cs" />
+    <Compile Include="Instances\Networking\Messages\RemoteFunctionInvoke.cs" />
+    <Compile Include="Instances\Networking\Messages\RemoteFunctionReturn.cs" />
+    <Compile Include="Instances\Networking\Messages\ReplicateObject.cs" />
+    <Compile Include="Instances\Networking\Messages\ReplicateProperty.cs" />
+    <Compile Include="Instances\Networking\Messages\WorldUpdate.cs" />
     <Compile Include="Instances\PostEffects\LensFlareEffect.cs" />
     <Compile Include="Instances\Scripting\BindableEvent.cs" />
     <Compile Include="Instances\Scripting\BindableFunction.cs" />
@@ -306,7 +313,6 @@
     <Compile Include="Enums\InputType.cs" />
     <Compile Include="Enums\Key.cs" />
     <Compile Include="Enums\MessageChannel.cs" />
-    <Compile Include="Enums\CustomMessageType.cs" />
     <Compile Include="Enums\InputMethod.cs" />
     <Compile Include="Enums\PeerType.cs" />
     <Compile Include="Enums\MouseButton.cs" />

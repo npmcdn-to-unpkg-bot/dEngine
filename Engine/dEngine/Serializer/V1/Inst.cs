@@ -29,6 +29,9 @@ namespace dEngine.Serializer.V1
     /// <summary>
     /// Inst is a custom serialization format for <see cref="Instance" />s.
     /// </summary>
+    /// <remarks>
+    /// Inst also supports caching non-instance types as a utility.
+    /// </remarks>
     public static class Inst
     {
         /// <summary>

@@ -5134,32 +5134,32 @@
         <member name="M:dEngine.Instances.ModuleScript.Destroy">
             <summary />
         </member>
-        <member name="T:dEngine.Instances.SourceContainer">
+        <member name="T:dEngine.Instances.LinkedSourceContainer">
             <summary>
             Base class for an object containing source code.
             </summary>
         </member>
-        <member name="M:dEngine.Instances.SourceContainer.#ctor">
+        <member name="M:dEngine.Instances.LinkedSourceContainer.#ctor">
             <inheritdoc />
         </member>
-        <member name="P:dEngine.Instances.SourceContainer.Source">
+        <member name="P:dEngine.Instances.LinkedSourceContainer.Source">
             <summary>
             The source code.
             </summary>
         </member>
-        <member name="P:dEngine.Instances.SourceContainer.LinkedSource">
+        <member name="P:dEngine.Instances.LinkedSourceContainer.LinkedSource">
             <summary>
             When set, will download and overwrite source code.
             </summary>
         </member>
-        <member name="P:dEngine.Instances.SourceContainer.LastModified">
+        <member name="P:dEngine.Instances.LinkedSourceContainer.LastModified">
             <summary>
             Gets the time the source was last modified.
             </summary>
         </member>
-        <member name="F:dEngine.Instances.SourceContainer.Downloaded">
+        <member name="F:dEngine.Instances.LinkedSourceContainer.Downloaded">
             <summary>
-            Fired when the source code is downloaded from <see cref="P:dEngine.Instances.SourceContainer.LinkedSource" />.
+            Fired when the source code is downloaded from <see cref="P:dEngine.Instances.LinkedSourceContainer.LinkedSource" />.
             </summary>
         </member>
         <member name="T:dEngine.Instances.DataModel">

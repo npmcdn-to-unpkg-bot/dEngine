@@ -9,6 +9,14 @@ namespace dEngine.Utility
 {
     internal static class InstanceHelper
     {
+        internal static void Recurse(this Instance root, Action<Instance> action)
+        {
+            foreach (var child in root.Children)
+            {
+                Recurse(child, action);
+            }
+        }
+
         /// <summary>
         /// Calls func on the descendants of root.
         /// </summary>

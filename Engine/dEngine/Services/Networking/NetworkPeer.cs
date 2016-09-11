@@ -1,7 +1,15 @@
 ﻿// NetworkPeer.cs - dEngine
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using dEngine.Instances;
 using dEngine.Instances.Attributes;
+using dEngine.Instances.Messages;
+using dEngine.Serializer.V1;
 using Lidgren.Network;
 
 namespace dEngine.Services.Networking
@@ -12,8 +20,22 @@ namespace dEngine.Services.Networking
     [TypeId(74)]
     public abstract class NetworkPeer : Service
     {
+        internal static Dictionary<byte, IMessageHandler> _messageHandlers;
         internal NetPeer _peer;
         internal NetPeerConfiguration _peerConfig;
+
+        static NetworkPeer()
+        {
+            _messageHandlers = new Dictionary<byte, IMessageHandler>();
+
+            RegisterHandler<WorldUpdate>();
+        }
+
+        internal static void RegisterHandler<TMessageHandler>() where TMessageHandler : IMessageHandler, new()
+        {
+            var handler = new TMessageHandler();
+            _messageHandlers.Add(handler.MessageId, handler);
+        }
 
         /// <summary/>
         protected double _accumulator;
@@ -35,6 +57,11 @@ namespace dEngine.Services.Networking
         }
 
         internal abstract void ProcessMessages();
+
+        /// <summary>
+        /// Sends the given message.
+        /// </summary>
+        protected abstract void SendMessage(IMessageHandler messageHandler, DeliveryMethod deliveryMethod, Player player = null);
 
         /// <summary>
         /// Performs a network update.

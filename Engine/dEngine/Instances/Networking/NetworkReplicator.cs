@@ -25,6 +25,8 @@ namespace dEngine.Instances
             Player = player;
         }
 
+        internal NetConnection Connection => _connection;
+
         /// <summary>
         /// Gets whether or not the connection is connected.
         /// </summary>

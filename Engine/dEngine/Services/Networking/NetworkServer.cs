@@ -1,13 +1,20 @@
 ﻿// NetworkServer.cs - dEngine
 // Copyright © https://github.com/DanDevPC/
 // This file is subject to the terms and conditions defined in the 'LICENSE' file.
+
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
+using dEngine.Instances.Handlers;
+using dEngine.Instances.Messages;
+using dEngine.Serializer.V1;
 using dEngine.Settings.Global;
+using dEngine.Utility;
 using Lidgren.Network;
+using LZ4;
 using Steamworks;
 
 namespace dEngine.Services.Networking
@@ -141,7 +148,7 @@ namespace dEngine.Services.Networking
                         AuthorizeConnection(msg);
                         break;
                     case NetIncomingMessageType.Data:
-                        ProcessCustomMessage(msg);
+                        var customId = msg.ReadByte();
                         break;
                     default:
                         Logger.Warn($"Unhandled MessageType \"{msg.MessageType}\"");
@@ -151,10 +158,22 @@ namespace dEngine.Services.Networking
                 _netServer.Recycle(msg);
             }
         }
-
-        private void ProcessCustomMessage(NetIncomingMessage msg)
+        
+        /// <summary/>
+        protected override void SendMessage(IMessageHandler messageHandler, DeliveryMethod deliveryMethod, Player player = null)
         {
-            throw new NotImplementedException();
+            var output = _netServer.CreateMessage();
+            output.Write(messageHandler.MessageId);
+            messageHandler.ServerWrite(output);
+
+            if (player != null)
+            {
+                _netServer.SendMessage(output, player.Replicator.Connection, (NetDeliveryMethod)deliveryMethod);
+            }
+            else
+            {
+                _netServer.SendToAll(output, (NetDeliveryMethod)deliveryMethod);
+            }
         }
 
         /// <summary>

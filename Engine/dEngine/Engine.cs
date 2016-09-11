@@ -222,6 +222,8 @@ namespace dEngine
         /// </summary>
         public static void Start(EngineMode engineMode, string gameName)
         {
+            var startupStopwatch = Stopwatch.StartNew();
+
             GameName = gameName;
             AppId = 480;
             Mode = engineMode;
@@ -263,20 +265,24 @@ namespace dEngine
 
             Inst.Init();
 
+            var graphicsStopwatch = Stopwatch.StartNew();
             Logger.Info("Starting GraphicsThread...");
             StartThread(nameof(GraphicsThread), GraphicsThread.Start);
             GraphicsThread.Wait();
-            Logger.Info("GraphicsThread started.");
+            Logger.Info($"GraphicsThread started, took {graphicsStopwatch:mm\\:ss}.");
 
+            var audioStopwatch = Stopwatch.StartNew();
             Logger.Info("Starting AudioThread...");
             StartThread(nameof(AudioThread), AudioThread.Start);
             AudioThread.Wait();
-            Logger.Info("AudioThread started.");
+            Logger.Info($"AudioThread started, took {audioStopwatch:mm\\:ss}.");
 
+            var gameStopwatch = Stopwatch.StartNew();
             Logger.Info("Starting GameThread...");
             StartThread(nameof(GameThread), GameThread.Start);
             GameThread.Wait();
-            Logger.Info("GameThread started.");
+            Logger.Info("GameThread started. (took {gameThreadStopwatch:mm\\:ss})");
+            Logger.Info($"Engine started, took {startupStopwatch:mm\\:ss}.");
 
             AppDomain.CurrentDomain.ProcessExit += (s, e) => Shutdown(0);
         }

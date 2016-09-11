@@ -62,7 +62,7 @@ namespace dEditor.Modules.Widgets.Output
                 return;
 
             Application.Current?.Dispatcher.InvokeAsync(
-                () => { Entries.Add(new OutputItem(ref msg, ref level, ref logger)); });
+                () => { _entries.Add(new OutputItem(ref msg, ref level, ref logger)); });
         }
 
         protected override void OnDeactivate(bool close)

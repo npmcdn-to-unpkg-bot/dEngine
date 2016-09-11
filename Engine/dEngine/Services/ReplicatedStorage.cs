@@ -17,9 +17,17 @@ namespace dEngine.Services
     [ToolboxGroup("Containers")]
     public sealed class ReplicatedStorage : Service
     {
+        /// <summary/>
+        public ReplicatedStorage()
+        {
+            Service = this;
+        }
+
         internal static object GetExisting()
         {
             return DataModel.GetService<ReplicatedStorage>();
         }
+
+        internal static ReplicatedStorage Service;
     }
 }
