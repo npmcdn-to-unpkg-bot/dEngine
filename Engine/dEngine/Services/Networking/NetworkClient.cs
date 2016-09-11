@@ -4,6 +4,7 @@
 using System;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
+using dEngine.Instances.Messages;
 using dEngine.Settings.Global;
 using Lidgren.Network;
 using Steamworks;
@@ -101,6 +102,14 @@ namespace dEngine.Services.Networking
                         OnStatusChanged(msg);
                         break;
                 }
+        }
+
+        private void SendMessage(IMessageHandler messageHandler, DeliveryMethod deliveryMethod)
+        {
+            var output = _netClient.CreateMessage();
+            output.Write(messageHandler.MessageId);
+            messageHandler.ServerWrite(output);
+            _netClient.SendMessage(output, (NetDeliveryMethod)deliveryMethod);
         }
 
         private void OnStatusChanged(NetIncomingMessage msg)

@@ -1419,6 +1419,31 @@
         <member name="M:dEngine.Instances.Message.Destroy">
             <summary/>
         </member>
+        <member name="T:dEngine.Instances.Messages.IMessageHandler">
+            <summary>
+            Interface for network messages.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.Messages.IMessageHandler.ClientWrite(Lidgren.Network.NetOutgoingMessage)">
+            <summary>
+            A method invoked on the client which writes data to a message which will be send to the server.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.Messages.IMessageHandler.ServerWrite(Lidgren.Network.NetOutgoingMessage)">
+            <summary>
+            A method invoked on the server which writes data to a message which will be send to the client.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.Messages.IMessageHandler.ClientRead(Lidgren.Network.NetOutgoingMessage)">
+            <summary>
+            A method invoked on the client which reads data from a message which was send from the server.
+            </summary>
+        </member>
+        <member name="M:dEngine.Instances.Messages.IMessageHandler.ServerRead(Lidgren.Network.NetOutgoingMessage)">
+            <summary>
+            A method invoked on the server which reads data from a message which was send from the client.
+            </summary>
+        </member>
         <member name="T:dEngine.Instances.LensFlareEffect">
             <summary>
             Lens flare.
@@ -5596,6 +5621,9 @@
             <summary>
             Inst is a custom serialization format for <see cref="T:dEngine.Instances.Instance" />s.
             </summary>
+            <remarks>
+            Inst also supports caching non-instance types as a utility.
+            </remarks>
         </member>
         <member name="F:dEngine.Serializer.V1.Inst.Version">
             <summary>
@@ -6547,6 +6575,9 @@
             Stops the server.
             </summary>
         </member>
+        <member name="M:dEngine.Services.Networking.NetworkServer.SendMessage(dEngine.Instances.Messages.IMessageHandler,dEngine.DeliveryMethod,dEngine.Instances.Player)">
+            <summary/>
+        </member>
         <member name="M:dEngine.Services.Networking.NetworkServer.AuthorizeConnection(Lidgren.Network.NetIncomingMessage)">
             <summary>
             Checks if the given <see cref="F:Lidgren.Network.NetIncomingMessageType.ConnectionApproval" /> request is authorized.
@@ -6677,6 +6708,9 @@
             <remarks>
             Objects stored in this container will be baked into both the client and the server files.
             </remarks>
+        </member>
+        <member name="M:dEngine.Services.ReplicatedStorage.#ctor">
+            <summary/>
         </member>
         <member name="T:dEngine.Services.RunService">
             <summary>
@@ -10204,39 +10238,6 @@
         <member name="F:dEngine.MessageChannel.Remote">
             <summary>
             Channel for <see cref="T:dEngine.Instances.RemoteFunction" /> and <see cref="T:dEngine.Instances.RemoteEvent" />.
-            </summary>
-        </member>
-        <member name="T:dEngine.CustomMessageType">
-            <summary>
-            Enum for custom network messages.
-            </summary>
-        </member>
-        <member name="F:dEngine.CustomMessageType.ReplicateObject">
-            <summary>
-            A request to replicate an object
-            </summary>
-        </member>
-        <member name="F:dEngine.CustomMessageType.ReplicateProperty">
-            <summary>
-            A request to replicate a property
-            </summary>
-        </member>
-        <member name="F:dEngine.CustomMessageType.RequestObject">
-            <summary></summary>
-        </member>
-        <member name="F:dEngine.CustomMessageType.RemoteEventFire">
-            <summary>
-            A request to fire a <see cref="T:dEngine.Instances.RemoteEvent" />.
-            </summary>
-        </member>
-        <member name="F:dEngine.CustomMessageType.RemoteFunctionInvoke">
-            <summary>
-            A request to invoke a <see cref="T:dEngine.Instances.RemoteFunction" />.
-            </summary>
-        </member>
-        <member name="F:dEngine.CustomMessageType.RemoteFunctionReturn">
-            <summary>
-            A response to a <see cref="F:dEngine.CustomMessageType.RemoteFunctionInvoke" />.
             </summary>
         </member>
         <member name="T:dEngine.InputMethod">

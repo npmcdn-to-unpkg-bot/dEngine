@@ -59,11 +59,6 @@ namespace dEngine.Services.Networking
         internal abstract void ProcessMessages();
 
         /// <summary>
-        /// Sends the given message.
-        /// </summary>
-        protected abstract void SendMessage(IMessageHandler messageHandler, DeliveryMethod deliveryMethod, Player player = null);
-
-        /// <summary>
         /// Performs a network update.
         /// </summary>
         /// <param name="step">The time since the last step.</param>

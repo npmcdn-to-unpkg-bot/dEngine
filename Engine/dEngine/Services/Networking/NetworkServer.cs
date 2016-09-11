@@ -4,17 +4,12 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using dEngine.Instances;
 using dEngine.Instances.Attributes;
-using dEngine.Instances.Handlers;
 using dEngine.Instances.Messages;
-using dEngine.Serializer.V1;
 using dEngine.Settings.Global;
-using dEngine.Utility;
 using Lidgren.Network;
-using LZ4;
 using Steamworks;
 
 namespace dEngine.Services.Networking
@@ -160,7 +155,7 @@ namespace dEngine.Services.Networking
         }
         
         /// <summary/>
-        protected override void SendMessage(IMessageHandler messageHandler, DeliveryMethod deliveryMethod, Player player = null)
+        private void SendMessage(IMessageHandler messageHandler, DeliveryMethod deliveryMethod, Player player = null)
         {
             var output = _netServer.CreateMessage();
             output.Write(messageHandler.MessageId);
