@@ -5,6 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media;
 using System.Xml.Serialization;
 using Caliburn.Micro;
@@ -16,6 +18,8 @@ using dEngine.Instances.Attributes;
 using dEngine.Serializer.V1;
 using dEngine.Services;
 using DateTime = System.DateTime;
+using MessageBox = System.Windows.Forms.MessageBox;
+
 // ReSharper disable UnusedVariable
 
 namespace dEditor.Framework
@@ -276,13 +280,8 @@ namespace dEditor.Framework
             {
                 statusBar.Text = $"Project could not be opened. ({e.GetType().Name})";
                 Editor.Logger.Error(e);
-#if DEBUG
-                throw;
-#else
-                MessageBox.Show($"Could not load project:\n\n{e.Message}", "Open Project", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageBox.Show($"Could not load project:\n\n{e.Message}", "Open Project", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
-#endif
                 return;
             }
             finally
